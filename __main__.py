@@ -9,7 +9,7 @@ import importlib
 
 import MainWin
 
-M_VERSION = "V2.0"
+M_VERSION = "V1.0.0"
 
 TODO = """更新展望(咕咕咕):
 1.背景图
@@ -25,7 +25,7 @@ TODO = """更新展望(咕咕咕):
 """
 
 UPDATE_LOG = """更新日志:
-V2.0
+V1.0.0
 改名为
 皓式可编程计算器hpyculator
 2022年1月19日添加了规范文档
