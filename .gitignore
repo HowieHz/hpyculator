@@ -1,5 +1,10 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+.vscode/
+.idea/
+皓式程序设置/
+皓式程序输出/
+*.bat
 *.py[cod]
 *$py.class
 
