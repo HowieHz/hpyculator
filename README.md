@@ -59,13 +59,13 @@ clone项目
 
 文档中文版由HowieHz编写
 
-我是学生党，是用空余时间维护项目的，对于不能及时回复表示抱歉
+本人为学生党，是用空余时间维护项目的，对于不能及时回复表示抱歉
 
 [个人b站页面](https://space.bilibili.com/176670190)
 
 ## 特别鸣谢
 
-[bilibili@星星上的圣诞树](https://space.bilibili.com/8222978) 在这些日子的精神支持，建议提供和测试帮助
+[bilibili@星星上的圣诞树](https://space.bilibili.com/8222978) 在这些日子的精神支持，建议提供和测试帮助。如果没有他的帮助，项目可能要延迟几个月上线
 
 [bilibili@珞晟](https://space.bilibili.com/312714981)           精神支持，水群支持
 
