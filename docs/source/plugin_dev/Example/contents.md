@@ -1,7 +1,7 @@
 插件参考（写法参考）
 ======================
 
-以下.py文件均代指内置插件
+以下.py文件均代指[内置插件](https://github.com/HowieHz/hpyculator/tree/main/Plugin)
 
 test9_one.py
     是test9系列中内存开销最大，时间开销最小的方案，
