@@ -23,7 +23,7 @@
 
     2.解压，双击目录下的__main__.exe
 
-    3.去[插件市场](https://github.com/HowieHz/PluginCatalogue）下点插件就能愉快的使用了
+    3.去[插件市场](https://github.com/HowieHz/PluginCatalogue)下点插件就能愉快的使用了
 
 
 ### 开发者（开发插件）
