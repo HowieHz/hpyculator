@@ -5,7 +5,6 @@ __pycache__/
 皓式程序设置/
 皓式程序输出/
 *.bat
-*.ico
 *.py[cod]
 *$py.class
 
