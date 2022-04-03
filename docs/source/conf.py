@@ -33,7 +33,6 @@ release = 'v1.0.0'
 extensions = [
     'recommonmark',
     'sphinx_markdown_tables'
-
 ]
 
 # Add any paths that contain templates here, relative to this directory.
