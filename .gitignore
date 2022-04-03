@@ -4,10 +4,12 @@ __pycache__/
 .idea/
 皓式程序设置/
 皓式程序输出/
-# *.bat
+*.bat
+*.ico
+
 *.py[cod]
 *$py.class
-ico.ico
+
 
 # C extensions
 *.so
