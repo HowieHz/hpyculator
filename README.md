@@ -27,6 +27,8 @@
 
 3.去[插件市场](https://github.com/HowieHz/hpyculatorPluginCatalogue)下点插件就能愉快的使用了
 
+（程序内置插件）
+
 
 ### 开发者（开发插件）
 
@@ -43,6 +45,8 @@ clone项目
 ## 插件
 
 [这里](https://github.com/HowieHz/PluginCatalogue) 是一个 hypc 的插件收集仓库（建设中）
+
+可以先提交到本仓库，作为内置插件发行
 
 ## 文档
 
