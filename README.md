@@ -6,7 +6,9 @@
   
   在[各类数组程序V1.2](https://www.bilibili.com/video/BV18p4y1h7bQ)的基础上开发而来
   
-  个人作品，难免有些不足，欢迎提出建议（包括文档，程序，api等方面的建议）
+  第一次写项目，难免有些不足，欢迎提出建议（包括文档，程序，api等方面的建议）
+  
+ >本项目基于python3.9构建
   
   #### 注：
       
@@ -19,7 +21,7 @@
 
 ### 用户
 
-1.从github的releases下载最新版本.zip
+1.从github的[releases](https://github.com/HowieHz/hpyculator/releases)下载最新版本.zip
 
 2.解压，双击目录下的__main__.exe
 
@@ -31,6 +33,12 @@
 从github的releases下载最新版本
 
 然后到[插件开发](https://hpyculator.readthedocs.io/zh_CN/latest/plugin_dev/index.html)页面查看详情
+
+### 开发者（程序）
+
+clone项目
+
+目前__main__.py是项目入口
 
 ## 插件
 
