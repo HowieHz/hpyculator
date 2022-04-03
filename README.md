@@ -19,18 +19,18 @@
 
 ### 用户
 
-    1.从github的releases下载最新版本.zip
+1.从github的releases下载最新版本.zip
 
-    2.解压，双击目录下的__main__.exe
+2.解压，双击目录下的__main__.exe
 
-    3.去[插件市场](https://github.com/HowieHz/PluginCatalogue)下点插件就能愉快的使用了
+3.去[插件市场](https://github.com/HowieHz/PluginCatalogue)下点插件就能愉快的使用了
 
 
 ### 开发者（开发插件）
 
-    从github的releases下载最新版本
+从github的releases下载最新版本
 
-    然后到[插件开发](https://hpyculator.readthedocs.io/zh_CN/latest/plugin_dev/index.html)
+然后到[插件开发](https://hpyculator.readthedocs.io/zh_CN/latest/plugin_dev/index.html)
 
 ## 插件
 
