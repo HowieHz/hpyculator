@@ -23,9 +23,9 @@ python3是必须的
 
 之后输入
 
-make clean
+    make clean
 
-make html
+    make html
 
 就好了
 
