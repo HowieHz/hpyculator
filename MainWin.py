@@ -1,0 +1,94 @@
+# -*- coding: utf-8 -*-
+import wx
+import wx.xrc
+
+M_VERSION = "V2.0"
+
+class MainWindow(wx.Frame):
+    def __init__(self):
+        wx.Frame.__init__(self, None, id=-1, title="各类数组计算程序%s-Howie皓子制作" % M_VERSION, size=(615, 502.5))
+        # 主窗口(MainFrame)选项，编辑标题
+
+        self.bkg = wx.Panel(self)  # bkg = background
+        self.start_button = wx.Button(self.bkg, label="计算")  # 计算按钮
+
+        self.save_check = wx.CheckBox(self.bkg, wx.ID_ANY, "保存为文件", wx.Point(250, 5), wx.DefaultSize, 0)  # 保存选项
+
+        #self.can_choose_number = ["杨辉三角", "斐波那契数列", "平均数,众数,中位数,方差,标准差"]  # 选择算法列表------------------------
+        #self.can_choose_number = []
+        self.choose_number = wx.Choice(self.bkg, wx.ID_ANY, choices=self.can_choose_number,style=1)  # 选择算法
+        # choose_number.SetSelection(0)#默认为选择杨辉三角
+
+        self.input_box = wx.TextCtrl(self.bkg)  # 输入行数的文本框
+        self.output = wx.TextCtrl(self.bkg, style=wx.TE_MULTILINE | wx.HSCROLL)  # 最大的文本框
+
+        self.file_menu = wx.Menu()  # WxPython 中使用wx.Menu()类来表示一个菜单
+        self.file_menu.Append(1002, '更新日志', '做完了做完了')
+        self.file_menu.Append(1001, '更新展望', '在做了在做了')
+        self.file_menu.Append(1000, '关于', '召唤作者的*话')
+
+
+        """
+        解读:此方法用于向菜单中添加一个选项
+        参数(wx.ID_SAVE):这是wxWidgets提供的标准事件ID，我们实现的是保存功能，所以使用了ID_SAVE，如果你需要了解更多的标准ID，请访问 事件ID列表
+        参数(保存):显示到选项上的文本
+        最后一个参数:当鼠标选择此选项时显示到窗口状态栏中的文本（状态栏待会会讲到，很简单的一个东西）
+        小提示:调用一次 Append() 添加一个菜单选项，调用多次可添加多个菜单选项
+        """
+        self.window_menu = wx.MenuBar()  # wxpython中使用wx.MenuBar()类来表示一个菜单栏（注意不是菜单哦）
+        self.window_menu.Append(self.file_menu, '一般菜单，点一下玩一年')
+        """
+        解读:此方法把菜单添加到菜单栏中
+        参数(file_menu):使用wx.Menu()创建的菜单
+        参数(文件):可以理解为菜单的名字，会显示到菜单栏中。
+        小提示:调用一次 Append() 把一个菜单添加到菜单栏，调用多次可添加多个菜单
+        """
+        self.SetMenuBar(self.window_menu)
+        """
+        解读:把创建好的菜单栏添加到窗口上（如果你忘了这一步，你的菜单栏将不会显示到窗口，所以要此步骤要牢记）
+        参数(window_menu):使用wx.MenuBar()创建的菜单栏
+        """
+
+        self.hbox = wx.BoxSizer()  # 尺寸器
+        self.hbox.Add(self.input_box, proportion=1, flag=wx.EXPAND)  # 输入行数的文本框的尺寸器
+        self.hbox.Add(self.start_button, proportion=0, flag=wx.EXPAND, border=5)  # 计算按钮的尺寸器
+        self.hbox.Add(self.choose_number, 0, wx.EXPAND | wx.LEFT, 5)  # 选择选项的尺寸器
+        self.hbox.Add(self.save_check, 0, wx.EXPAND | wx.LEFT, 5)  # 保存选项的尺寸器
+
+        self.vbox = wx.BoxSizer(wx.VERTICAL)
+        self.vbox.Add(self.hbox, proportion=0, flag=wx.EXPAND | wx.ALL, border=5)  # 尺寸器的尺寸器
+        self.vbox.Add(self.output, proportion=1, flag=wx.EXPAND | wx.LEFT | wx.BOTTOM | wx.RIGHT,
+                      border=5)  # 最大的文本框的尺寸器
+
+        self.bkg.SetSizer(self.vbox)  # 布局显示_必备
+        self.CreateStatusBar()  # 窗口状态栏显示_必备
+        self.Center()
+        # self.Show(True)#正常_必备_不要在此之后写任何窗口代码
+
+        self.start_button.Bind(wx.EVT_BUTTON, self.startEvent)  # 计算按钮事件
+        self.save_check.Bind(wx.EVT_CHECKBOX, self.saveCheckEvent)  # 保存选项事件
+        self.choose_number.Bind(wx.EVT_CHOICE, self.chooseNumberEvent)  # 选择算法事件
+        self.Bind(wx.EVT_MENU, self.showDONE, id=1002)
+        self.Bind(wx.EVT_MENU, self.showTODO, id=1001)
+        self.Bind(wx.EVT_MENU, self.showAbout, id=1000)
+
+    def __del__(self):
+        pass
+
+    def startEvent(self, event):
+        event.Skip()
+
+    def saveCheckEvent(self, event):
+        event.Skip()
+
+    def chooseNumberEvent(self, event):
+        event.Skip()
+
+    def showDONE(self, event):
+        event.Skip()
+
+    def showTODO(self, event):
+        event.Skip()
+
+    def showAbout(self, event):
+        event.Skip()
