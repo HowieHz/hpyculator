@@ -6,10 +6,11 @@ import wx
 import threading
 import sys
 import importlib
+#import pprint
 
 import MainWin
 
-M_VERSION = "V1.0.0"
+M_VERSION = "V1.1.0"
 
 TODO = """更新展望(咕咕咕):
 1.背景图
@@ -25,6 +26,11 @@ TODO = """更新展望(咕咕咕):
 """
 
 UPDATE_LOG = """更新日志:
+20220405
+V1.1.0
+增加了对文件插件的支持
+增加了很多提示，防止插件卡死程序
+
 V1.0.0
 改名为
 皓式可编程计算器hpyculator
@@ -145,12 +151,14 @@ class Application(MainWin.MainWindow):  # 主类
         #载入模块
         #self.plugin_files_path=[]
         self.plugin_files_name=[]
-        self.plugin_files_name_py=[]
+        self.plugin_files_name_folder= []
         self.can_choose_number = []
         self.plugin_filename_option_name_map = {}
         self.readPlugin(r'.\Plugin')
-        #print("读取到Plugin文件夹下文件:")
+        #pprint.pprint("读取到Plugin文件夹下文件:")
         #pprint.pprint(self.plugin_files_name)#读取到Plugin下面的文件
+        #pprint.pprint("读取到的文件夹插件:")
+        #pprint.pprint(self.plugin_files_name_folder)
         try:
             for list in self.plugin_files_name:#从所有读取的文件中挑选出.py为后缀的文件
                 if (list[0].split("."))[-1] == "py":
@@ -158,20 +166,11 @@ class Application(MainWin.MainWindow):  # 主类
         except:
             pass
 
-        self.plugin_files_name_py_nopy = self.plugin_files_name_py[:]
-        for i in range(0, len(self.plugin_files_name_py_nopy)):#去掉.py后缀
-            self.plugin_files_name_py_nopy[i]= self.plugin_files_name_py_nopy[i][:-3]
+        #pprint.pprint("读取到的.py文件:")
+        #pprint.pprint(self.plugin_files_name_py)
 
-        for name in self.plugin_files_name_py_nopy:
-            exec("self."+name+"=importlib.import_module('"+".{}'".format(name)+", package='Plugin')")
-            #self.i = importlib.import_module('.' + str(name), package='Plugin')  # 相对导入
-            try:
-                exec("self.can_choose_number.append(self."+name+".PLUGIN_METADATA['option_name'])")  # 读取模块元数据，添加gui选项
-                exec("self.plugin_filename_option_name_map[self."+name+".PLUGIN_METADATA['option_name']]=self."+name+".PLUGIN_METADATA['id']")
-            except:
-                pass
-
-
+        self.init_plugin_singerfile()#导入单文件插件
+        self.init_plugin_folder()#导入文件插件
 
         super().__init__()
 
@@ -194,9 +193,48 @@ class Application(MainWin.MainWindow):  # 主类
             self.setting['save_check'] = self.save_check.GetValue()
         self.setting.close()
 
+    def init_plugin_singerfile(self):
+        self.plugin_files_name_py_nopy = self.plugin_files_name_py[:]
+        for i in range(0, len(self.plugin_files_name_py_nopy)):  # 去掉.py后缀
+            self.plugin_files_name_py_nopy[i] = self.plugin_files_name_py_nopy[i][:-3]
+        #pprint.pprint("去掉.py后缀的文件名")
+        #pprint.pprint(self.plugin_files_name_py_nopy)
+        for name in self.plugin_files_name_py_nopy:
+            exec("self." + name + "=importlib.import_module('" + ".{}'".format(name) + ", package='Plugin')")
+            # self.i = importlib.import_module('.' + str(name), package='Plugin')  # 相对导入
+            try:
+                exec(
+                    "self.can_choose_number.append(self." + name + ".PLUGIN_METADATA['option_name'])")  # 读取模块元数据，添加gui选项
+                exec(
+                    "self.plugin_filename_option_name_map[self." + name + ".PLUGIN_METADATA['option_name']]=self." + name + ".PLUGIN_METADATA['id']")
+            except:
+                pass
+
+    def init_plugin_folder(self):
+        for name in self.plugin_files_name_folder:
+            exec("self." + name + "=importlib.import_module('" + ".{}.__init__'".format(name) + ", package='Plugin')")
+            # self.i = importlib.import_module('.' + str(name), package='Plugin')  # 相对导入
+            try:
+                exec(
+                    "self.can_choose_number.append(self." + name + ".PLUGIN_METADATA['option_name'])")  # 读取模块元数据，添加gui选项
+                exec(
+                    "self.plugin_filename_option_name_map[self." + name + ".PLUGIN_METADATA['option_name']]=self." + name + ".PLUGIN_METADATA['id']")
+            except:
+                pass
+
     def readPlugin(self,path):
         for root, dir, file in os.walk(path):
             self.plugin_files_name.append(file)
+            #print("root:"+str(root))
+            #print("root[:11]"+str(root)[:11])
+            #print("root[,]"+str(str(root).split("\\")))
+            #print("dir:"+str(dir))
+            #print("file:"+str(file))
+            #print("------")
+            if str(root)[:9]=='.\\Plugin\\':
+                if '__init__.py' in file:
+                    self.plugin_files_name_folder.append(str(root).split("\\")[2])
+
 
     def startEvent(self, event):
         # self.input_box_s_input - 储存输入框的内容
@@ -229,23 +267,28 @@ class Application(MainWin.MainWindow):  # 主类
         calculate_thread.start()
 
 
+
     def startCalculate(self):
         if self.is_thread_runing == False:
-            self.output.SetValue("")  # 清空输出框
-            self.output.AppendText("计算程序正在运行中，所需时间较长，请耐心等待")
-            if self.save_check.GetValue() == True:  # 检测保存按钮的状态判断是否保存
-                self.whatNeedCalculateWithSave()
-                # 以下是计算后工作
-                self.output.Clear() # 清空输出框
-                self.output.AppendText(
-                    "\n本次计算+保存花费了%.5f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
-                self.output.AppendText("\n计算结果已保存在" + os.path.abspath(".\\皓式程序输出\\") + self.name_text_file + ".txt")
-                self.output.AppendText("\n")
-            else:  # 选择不保存才输出结果
-                self.whatNeedCalculate()
-                # 以下是计算后工作
-                self.output.AppendText(
-                    "\n\n本次计算+输出花费了%.5f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+            try:
+                self.output.SetValue("")  # 清空输出框
+                self.output.AppendText("计算程序正在运行中，所需时间较长，请耐心等待")
+                if self.save_check.GetValue() == True:  # 检测保存按钮的状态判断是否保存
+                    self.whatNeedCalculateWithSave()
+                    # 以下是计算后工作
+                    self.output.Clear() # 清空输出框
+                    self.output.AppendText(
+                        "\n本次计算+保存花费了%.5f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+                    self.output.AppendText("\n计算结果已保存在" + os.path.abspath(".\\皓式程序输出\\") + self.name_text_file + ".txt")
+                    self.output.AppendText("\n")
+                else:  # 选择不保存才输出结果
+                    self.whatNeedCalculate()
+                    # 以下是计算后工作
+                    self.output.AppendText(
+                        "\n\n本次计算+输出花费了%.5f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+            except:
+                self.output.SetValue("插件发生错误，请检查输入格式")
+                self.is_thread_runing = False
         else:
             self.output.AppendText("\n运算程序正在进行中，请勿反复点击计算按钮！\n")  # 清空输出框
 
