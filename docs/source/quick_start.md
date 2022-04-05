@@ -4,7 +4,7 @@
 用户
 ---------------------
 
-1.从github的releases下载最新版本.zip
+1.从github的[releases](https://github.com/HowieHz/hpyculator/releases)下载最新版本.zip
 
 2.解压，双击目录下的__main__.exe
 
@@ -14,9 +14,9 @@
 开发者（开发插件）
 ---------------------
 
-从github的releases下载最新版本
+从github的[releases](https://github.com/HowieHz/hpyculator/releases)下载最新版本
 
-然后到[插件开发](plugin_dev.html)
+然后到[插件开发](plugin_dev/index.html)
 
 开发者（程序）
 ---------------------
