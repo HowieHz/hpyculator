@@ -3,6 +3,8 @@
 
 本文档是 `hpyculator <https://github.com/HowieHz/hpyculator>`_ 的说明及帮助文档
 
+.. image:: images/ico.ico
+
 .. toctree::
    :maxdepth: 2
    :caption: 目录
