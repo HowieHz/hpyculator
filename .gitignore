@@ -2,6 +2,7 @@
 __pycache__/
 .vscode/
 .idea/
+.cspell/
 皓式程序设置/
 皓式程序输出/
 *.bat

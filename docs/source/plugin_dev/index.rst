@@ -5,9 +5,9 @@
    :maxdepth: 2
    :caption: 目录
 
-   开始<Start/contents>
-   元数据<Metadata/contents>
-   插件事件<Events/contents>
-   函数<API/contents>
-   插件仓库<PluginCatalogue/contents>
-   插件参考（写法参考）<Example/contents>
+   开始<Start>
+   元数据<Metadata>
+   插件事件<Events>
+   函数<API>
+   插件仓库<PluginCatalogue>
+   插件参考（写法参考）<Example>
