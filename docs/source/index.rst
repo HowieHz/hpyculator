@@ -1,6 +1,8 @@
 欢迎来到 hpyculator 文档！
 ======================================
 
+本文档是 `hpyculator <https://github.com/HowieHz/hpyculator>`_ 的说明及帮助文档
+
 .. toctree::
    :maxdepth: 2
    :caption: 目录
