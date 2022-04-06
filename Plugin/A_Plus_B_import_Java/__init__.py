@@ -76,7 +76,6 @@ def main(input,self):
         jpype.startJVM(jvm_path,"-ea", "-Djava.class.path=%s" % jar_path, convertStrings=False)
     javaClass = jpype.JClass('com.shacha.Main')
     javaInstance = javaClass()
-    print( javaInstance.main(a, b))
     output(self,javaInstance.main(a,b))
     try:
         jpype.shutdownJVM()
