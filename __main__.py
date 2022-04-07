@@ -10,7 +10,7 @@ import importlib
 
 import MainWin
 
-M_VERSION = "V1.2.0"
+M_VERSION = "V1.2.1"
 
 TODO = """更新展望(咕咕咕):
 1.背景图
@@ -23,6 +23,11 @@ TODO = """更新展望(咕咕咕):
 """
 
 UPDATE_LOG = """更新日志:
+20220407
+V1.2.1
+修复了无插件打不开的bug
+修复了退出后还残留后台程序的bug
+
 20220407
 V1.2.0
 修改gui
@@ -173,9 +178,15 @@ class Application(MainWin.MainWindow):  # 主类
 
         #pprint.pprint("读取到的.py文件:")
         #pprint.pprint(self.plugin_files_name_py)
+        try:
+            self.init_plugin_singerfile()#导入单文件插件
+        except:
+            pass
 
-        self.init_plugin_singerfile()#导入单文件插件
-        self.init_plugin_folder()#导入文件插件
+        try:
+            self.init_plugin_folder()#导入文件插件
+        except:
+            pass
 
         self.list_box.Append(self.can_choose_number)
 
@@ -297,8 +308,10 @@ class Application(MainWin.MainWindow):  # 主类
                         # 以下是计算后工作
                         self.output.AppendText(
                             "\n\n本次计算+输出花费了%.5f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
-            except:
-                self.output.SetValue("插件发生错误，请检查输入格式")
+            except Exception as e:
+                self.output.Clear()
+                self.output.SetValue(str(e))
+                self.output.AppendText("\n\n插件发生错误，请检查输入格式")
                 self.is_thread_runing = False
         else:
             self.output.AppendText("\n运算程序正在进行中，请勿反复点击计算按钮！\n")  # 清空输出框
@@ -445,7 +458,10 @@ class Application(MainWin.MainWindow):  # 主类
         return
 
     def quit_event(self,event): #菜单栏退出事件
-        self.Close()
+        sys.exit(0)
+
+    def __del__(self):
+        sys.exit(0)
 
     def search_text(self,event): # 搜索框按回车之后的事件
         self.search_keyword = event.GetString()
