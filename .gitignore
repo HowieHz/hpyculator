@@ -5,6 +5,7 @@ __pycache__/
 .cspell/
 皓式程序设置/
 皓式程序输出/
+Python混合编程支持/
 *.bat
 *.py[cod]
 *$py.class

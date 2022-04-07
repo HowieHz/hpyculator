@@ -6,23 +6,30 @@ import wx
 import threading
 import sys
 import importlib
+import webbrowser
+#import jpype
 #import pprint
 
 import MainWin
 
-M_VERSION = "V1.2.1"
+M_VERSION = "V1.2.2"
 
 TODO = """更新展望(咕咕咕):
 1.背景图
 2.可自定义文件保存的文件名格式
 3.可选文件的保存位置
-7.检查更新按钮
 8.可以分享脚本的平台（qq群也不错
-9.用pyqt重构
+#9.用pyqt重构
 10.上线网页版
+11.可以读取文件作为输入
 """
 
 UPDATE_LOG = """更新日志:
+20220407
+V1.2.2
+修复了内置插件无法正常工作的问题
+添加了更新检查按钮(打开浏览器跳转到https://github.com/HowieHz/hpyculator/releases)
+
 20220407
 V1.2.1
 修复了无插件打不开的bug
@@ -459,6 +466,9 @@ class Application(MainWin.MainWindow):  # 主类
 
     def quit_event(self,event): #菜单栏退出事件
         sys.exit(0)
+
+    def cheak_update(self,event):
+        webbrowser.open("https://github.com/HowieHz/hpyculator/releases")
 
     def __del__(self):
         sys.exit(0)

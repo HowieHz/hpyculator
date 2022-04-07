@@ -2,7 +2,7 @@
 import wx
 import wx.xrc
 
-M_VERSION = "V1.2.1"
+M_VERSION = "V1.2.2"
 
 class MainWindow(wx.Frame):
     def __init__(self):
@@ -31,6 +31,7 @@ class MainWindow(wx.Frame):
         self.file_menu.Append(1002, '更新日志', '做完了做完了')
         self.file_menu.Append(1001, '更新展望', '在做了在做了')
         self.file_menu.Append(1000, '关于', '召唤作者的*话')
+        self.file_menu.Append(1004, '检查更新', 'goto github')
         self.quit = wx.MenuItem(self.file_menu, 1003, '&退出\tCtrl+Q')
         self.file_menu.Append(self.quit)
 
@@ -96,6 +97,7 @@ class MainWindow(wx.Frame):
         self.Bind(wx.EVT_MENU, self.showTODO, id=1001)
         self.Bind(wx.EVT_MENU, self.showAbout, id=1000)
         self.Bind(wx.EVT_MENU, self.quit_event,id=1003)
+        self.Bind(wx.EVT_MENU, self.cheak_update, id=1004)
         self.Bind(wx.EVT_LISTBOX,self.chooseNumberEvent,self.list_box)
         self.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN,self.search_text)#搜索框回车后执行的函数，self.search_text
         self.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.search_cancel)
@@ -126,6 +128,10 @@ class MainWindow(wx.Frame):
 
     def quit_event(self,event):
         event.Skip()
+
+    def cheak_update(self,event):
+        event.Skip()
+
 
     def search_text(self,event):
         event.Skip()

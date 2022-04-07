@@ -5,7 +5,7 @@ PLUGIN_METADATA = {
     'input_mode': '0',  # 输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)（必须）
     'id': 'A_Plus_B_import_Java',  # ID,插件标识符,需要和文件名一致（必须）
     'option_name': "A+B_Problem_with_Java V1.0.0 by shacha086,HowieHz",  # 选项名-在选择算法列表中（必须）
-    'version': 'V1.0.0',  # 版本号（必须）
+    'version': 'V1.0.1',  # 版本号（必须）
 
     'save_name': "",  # 文件保存项目名-在输出（必须）
     'quantifier': "的答案",  # 文件保存量词-在输入后面(可选)
@@ -22,18 +22,16 @@ PLUGIN_METADATA = {
 输出格式
     N
     （N是A+B的和）
-    
+
 注：
-    本插件基于jdk17构建
-    C:\Program Files\Java\jdk-17.0.2\bin\server\jvm.dll为默认地址
-    如此地址无jdk17，请传入第三个参数（用逗号分隔），第三个参数为\jdk-17.0.2\bin\server\jvm.dll的绝对地址
-    
+    本项目基于java8构建
+
 shacha086构建了计算核心
 HowieHz构建了插件化的部分
     """,  # 帮助和说明(可选)
     'output_end': "",  # 输出小尾巴(可选)
 
-    'output_mode': '',
+    'output_mode': '3',
     # 调用类main的return形式，
     # 0为返回一次（适用于return字符串等情况），
     # 1为返回多次（适用于return列表等情况），
@@ -45,6 +43,14 @@ HowieHz构建了插件化的部分
     # 如果是1，则self.quantifier无效化
     "fullwidth_symbol": '1'  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
 }
+
+"""
+改成jdk8构建了，这个懒得再打一遍了，先放在这
+    注：
+    本插件基于jdk17构建
+    C:\Program Files\Java\jdk-17.0.2\bin\server\jvm.dll为默认地址
+    如此地址无jdk17，请传入第三个参数（用逗号分隔），第三个参数为\jdk-17.0.2\bin\server\jvm.dll的绝对地址
+    """
 
 def write(file, anything, end="\n"):
     file.write(str(anything) + end)
@@ -63,39 +69,64 @@ def output(self, anything, end="\n"):
     self.output.AppendText(str(anything) + end)
 
 def main(input,self):
-    try:
-        a,b,c=input.split(",")
-    except:
-        input += r",C:\Program Files\Java\jdk-17.0.2\bin\server\jvm.dll"
-        a, b, c = input.split(",")
-    jar_path=str(os.path.abspath(__file__))[:-11]+"A+Bproj.jar"
-    #jvm_path = jpype.getDefaultJVMPath()
-    jvm_path=c
-    jvm_arg = "-Xint"
+    # try:
+    # a,b,c=input.split(",")
+    # except:
+    # input += r",C:\\Program Files\\Java\\jdk-17.0.2\\bin\\server\\jvm.dll"
+    # a, b, c = input.split(",")
+    a, b = input.split(",")
+    jar_path = str(os.path.abspath(__file__))[:-11] + "A+Bproj.jar"
+    # jvm_path=c
+    jvm_path = jpype.getDefaultJVMPath()
     if not jpype.isJVMStarted():
-        jpype.startJVM(jvm_path,"-ea", "-Djava.class.path=%s" % jar_path, convertStrings=False)
-    javaClass = jpype.JClass('com.shacha.Main')
-    javaInstance = javaClass()
-    output(self,javaInstance.main(a,b))
+        jpype.startJVM(jvm_path, '-ea', "-Djava.class.path=%s" % jar_path, convertStrings=False)
+    # javaClass = jpype.JClass('com.shacha.Main')
+    # javaInstance = javaClass()
+    output(self, jpype.JClass('com.shacha.Main').main(a, b))
+    # return javaInstance.main(a, b)
     try:
         jpype.shutdownJVM()
     except:
         pass
 
 def main_save(input,self):
-    try:
-        a,b,c=input.split(",")
-    except:
-        input += r",C:\Program Files\Java\jdk-17.0.2\bin\server\jvm.dll"
-        a, b, c = input.split(",")
-    jar_path=str(os.path.abspath(__file__))[:-11]+"A+Bproj.jar"
-    #jvm_path = jpype.getDefaultJVMPath()
-    jvm_path=c
-    print(jvm_path)
-    jvm_arg = "-Xint"
+    # try:
+    # a,b,c=input.split(",")
+    # except:
+    # input += r",C:\\Program Files\\Java\\jdk-17.0.2\\bin\\server\\jvm.dll"
+    # a, b, c = input.split(",")
+    a, b = input.split(",")
+    jar_path = str(os.path.abspath(__file__))[:-11] + "A+Bproj.jar"
+    # jvm_path=c
+    jvm_path = jpype.getDefaultJVMPath()
     if not jpype.isJVMStarted():
-        jpype.startJVM(jvm_path,"-ea", "-Djava.class.path=%s" % jar_path, convertStrings=False)
-    javaClass = jpype.JClass('com.shacha.Main')
-    javaInstance = javaClass()
-    write(self,javaInstance.main(a,b))
-    jpype.shutdownJVM()
+        jpype.startJVM(jvm_path, '-ea', "-Djava.class.path=%s" % jar_path, convertStrings=False)
+    # javaClass = jpype.JClass('com.shacha.Main')
+    # javaInstance = javaClass()
+    write(self, jpype.JClass('com.shacha.Main').main(a, b))
+    # return javaInstance.main(a, b)
+    try:
+        jpype.shutdownJVM()
+    except:
+        pass
+
+def main_test(input,self):
+    # try:
+    # a,b,c=input.split(",")
+    # except:
+    # input += r",C:\\Program Files\\Java\\jdk-17.0.2\\bin\\server\\jvm.dll"
+    # a, b, c = input.split(",")
+    a, b = input.split(",")
+    jar_path = str(os.path.abspath(__file__))[:-11] + "A+Bproj.jar"
+    # jvm_path=c
+    jvm_path = jpype.getDefaultJVMPath()
+    if not jpype.isJVMStarted():
+        jpype.startJVM(jvm_path, '-ea', "-Djava.class.path=%s" % jar_path, convertStrings=False)
+    # javaClass = jpype.JClass('com.shacha.Main')
+    # javaInstance = javaClass()
+    return (jpype.JClass('com.shacha.Main').main(a, b))
+    # return javaInstance.main(a, b)
+    try:
+        jpype.shutdownJVM()
+    except:
+        pass
