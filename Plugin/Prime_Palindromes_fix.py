@@ -52,16 +52,21 @@ def main(input,self,do_what):
         except:
             write_without_flush(self,"我开摆了，这么大的数你还是找其他插件吧")
         return
-    if do_what == "output":
-        for i in list:
-            if i > input:
-                return
-            output(self,i)
-    else:
+    if do_what == "save":
         for i in list:
             if i > input:
                 return
             write_without_flush(self,i)
+    elif do_what == "test":
+        for i in list:
+            if i > input:
+                return
+    else:
+        for i in list:
+            if i > input:
+                return
+            output(self,i)
+
 
 
 

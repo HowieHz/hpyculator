@@ -7,6 +7,8 @@
 
 并且完成 ``main`` 和 ``main_save`` 函数
 
+可选项： ``main_test`` 函数用于测试性能，无需输出和保存
+
 .. code-block:: python
 
     PLUGIN_METADATA = {
@@ -57,6 +59,9 @@
         
     def main_save(input,file):#保存到文件
         pass
+
+    #def main_test(input,file):#测试函数，无需输出和保存,如果不写这个函数请注释掉
+        #pass
             
 
 

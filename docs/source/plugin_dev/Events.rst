@@ -55,12 +55,27 @@
 
 .. code-block:: python
 
-    def main(input,file)
+    def main_save(input,file)
         #插件主体，需要保存的时候使用下面的语句
         write(file,"你要保存的东西")
         #或者
         write_without_flush(file,"你要保存的东西")
         #记得配合flush(file)使用，不然就和方案1没啥区别了
+
+当用户选择测试
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+调用插件的 ``main_test``\函数，
+
+    传入的第一个参数且为唯一一个参数是用户的输入值
+
+    第二个参数是指代主程序的主类（测试的话不输出不保存没啥用）
+
+    .. code-block:: python
+
+        def main_test(input)
+            #插件主体
+            return
 
 当 ``output_mode``\为4
 -----------------------------------
@@ -88,3 +103,14 @@
     第二个参数是指代文件流（打开的文件）（请将第二个参数作为 `write <API.html#write>`__\或者 `write_without_flush <API.html#write-without-flush>`__\的第一个参数）
 
     第三个参数传入的是 ``'save'``
+
+当用户选择测试
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+调用插件的 ``main``\函数，
+
+    传入的第一个参数是用户的输入值，
+
+    第二个参数是指代主程序的主类（测试的话不输出不保存没啥用）
+
+    第三个参数传入的是 ``'test'``

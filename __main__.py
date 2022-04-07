@@ -10,7 +10,7 @@ import importlib
 
 import MainWin
 
-M_VERSION = "V1.1.0"
+M_VERSION = "V1.2.0"
 
 TODO = """更新展望(咕咕咕):
 1.背景图
@@ -20,10 +20,15 @@ TODO = """更新展望(咕咕咕):
 8.可以分享脚本的平台（qq群也不错
 9.用pyqt重构
 10.上线网页版
-11.更精确的模块计算时间
 """
 
 UPDATE_LOG = """更新日志:
+20220407
+V1.2.0
+修改gui
+增加了搜索框
+添加了测试选项，勾选之后程序就会使用test模式
+
 20220405
 V1.1.0
 增加了对文件插件的支持
@@ -102,7 +107,7 @@ Howie皓子制作
 
 首先选择你要计算的东西
 然后在上方输入框输入你要计算的项数（行数）
-然后按下输入框右边按钮
+之后在左侧选择计算核心
 
 必读:
 
@@ -116,7 +121,6 @@ Howie皓子制作
 2.(2)内置模块说明:(n系列占用内存最小，读写速度最慢),
                 (one系列占用内存最大（算太多内存占用会起飞，出问题概不负责）),
                 (fix系列在n系列和one系列中找了一个平衡点，推荐使用),
-3.在输入框输入 stop 或者 停止 可以强制停止当前计算线程
 
 
 交流群694413711 - 此群安静的像一滩死水 -=作者中考完了，消息一般都会会
@@ -131,6 +135,9 @@ class Application(MainWin.MainWindow):  # 主类
     def __init__(self):
         # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
         # self.setting - 配置文件ShelfFile(\皓式程序设置\hpyculator_setting)
+
+        super().__init__()
+
         if os.path.exists(os.path.abspath(r'.\皓式程序设置')):
             pass
         else:
@@ -170,7 +177,7 @@ class Application(MainWin.MainWindow):  # 主类
         self.init_plugin_singerfile()#导入单文件插件
         self.init_plugin_folder()#导入文件插件
 
-        super().__init__()
+        self.list_box.Append(self.can_choose_number)
 
         #print("\n\n选项和文件名（ID）映射表:")
         #pprint.pprint(self.plugin_filename_option_name_map)
@@ -251,7 +258,7 @@ class Application(MainWin.MainWindow):  # 主类
             #self.output.SetValue("当前计算线程已停止")
             #self.is_thread_runing = False
             #return
-        if self.choose_number.GetString(self.choose_number.GetSelection()) == "":  # 是否选择检测
+        if self.list_box.GetString(self.list_box.GetSelection()) == "":  # 是否选择检测
             self.output.SetValue("\n\n" + "不选要算什么我咋知道要算啥子嘞" + "\n")
             return
         if str(self.input_box.GetValue()) == "":  # 是否输入检测
@@ -271,19 +278,25 @@ class Application(MainWin.MainWindow):  # 主类
             try:
                 self.output.SetValue("")  # 清空输出框
                 self.output.AppendText("计算程序正在运行中，所需时间较长，请耐心等待")
-                if self.save_check.GetValue() == True:  # 检测保存按钮的状态判断是否保存
-                    self.whatNeedCalculateWithSave()
-                    # 以下是计算后工作
-                    self.output.Clear() # 清空输出框
-                    self.output.AppendText(
-                        "\n本次计算+保存花费了%.5f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
-                    self.output.AppendText("\n计算结果已保存在" + os.path.abspath(".\\皓式程序输出\\") + self.name_text_file + ".txt")
-                    self.output.AppendText("\n")
-                else:  # 选择不保存才输出结果
-                    self.whatNeedCalculate()
+                if self.test_check.GetValue() == True:
+                    self.whatNeedCalculateWithTest()
                     # 以下是计算后工作
                     self.output.AppendText(
-                        "\n\n本次计算+输出花费了%.5f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+                        "\n\n本次测试花费了%.5f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+                else:
+                    if self.save_check.GetValue() == True:  # 检测保存按钮的状态判断是否保存
+                        self.whatNeedCalculateWithSave()
+                        # 以下是计算后工作
+                        self.output.Clear() # 清空输出框
+                        self.output.AppendText(
+                            "\n本次计算+保存花费了%.5f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+                        self.output.AppendText("\n计算结果已保存在" + os.path.abspath(".\\皓式程序输出\\") + self.name_text_file + ".txt")
+                        self.output.AppendText("\n")
+                    else:  # 选择不保存才输出结果
+                        self.whatNeedCalculate()
+                        # 以下是计算后工作
+                        self.output.AppendText(
+                            "\n\n本次计算+输出花费了%.5f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
             except:
                 self.output.SetValue("插件发生错误，请检查输入格式")
                 self.is_thread_runing = False
@@ -364,9 +377,38 @@ class Application(MainWin.MainWindow):  # 主类
 
         self.time_after_calculate = time.time()  # 储存结束时间
 
+    def whatNeedCalculateWithTest(self):
+        self.is_thread_runing = True
+        if self.input_mode == '0':
+            self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
+        else:
+            self.input_box_s_input = int(self.input_box.GetValue())  # 取得输入框的数字
+
+        try:
+            if self.output_mode == '4':
+                self.output.Clear()  # 清空输出框
+
+                self.time_before_calculate = time.time()  # 储存开始时间
+                exec("self." + self.Selection + ".main(self.input_box_s_input,self,'test')")
+                self.time_after_calculate = time.time()  # 储存结束时间
+                if self.output.GetValue() != "":
+                    self.output.Clear()  # 清空输出框
+                    self.output.SetValue("发生错误，请检查输入格式，以及插件是否有test模式")
+            else:
+                self.output.Clear()  # 清空输出框
+
+                self.time_before_calculate = time.time()  # 储存开始时间
+                exec("self." + self.Selection + ".main_test(self.input_box_s_input,self)")
+                self.time_after_calculate = time.time()  # 储存结束时间
+        except:
+            self.time_after_calculate = time.time()  # 储存结束时间
+            self.output.SetValue("发生错误，请检查输入格式，以及插件是否有test模式")
+
+        self.is_thread_runing = False
+
     def chooseNumberEvent(self, event):  # 选择算法事件
         self.Selection = self.plugin_filename_option_name_map[
-            self.choose_number.GetString(self.choose_number.GetSelection())]
+            self.list_box.GetString(self.list_box.GetSelection())]
         self.required_parameters = ['input_mode','output_mode','save_name','output_name','save_mode','version']
         self.optional_parameters = ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol','input_mode','output_mode','save_name','output_name','save_mode','version']
         self.required_parameters.extend(self.optional_parameters)
@@ -383,19 +425,57 @@ class Application(MainWin.MainWindow):  # 主类
         self.output.AppendText("使用提示：\n"+self.help + "\n")
         self.output.AppendText(self.output_end)
 
-    def showAbout(self, event):  # 关于作者
+    def showAbout(self, event):  # 菜单栏 关于作者
         self.output.SetValue(START_SHOW)
 
-    def showTODO(self, event):  # 更新展望
+    def showTODO(self, event):  # 菜单栏 更新展望
         self.output.SetValue(TODO)
 
-    def showDONE(self, event):  # 更新日志
+    def showDONE(self, event):  # 菜单栏 更新日志
         self.output.SetValue(UPDATE_LOG)
 
-    def saveCheckEvent(self, event):  # 保存选项事件
+    def saveCheckEvent(self, event):  # 保存选项（那个√）事件
         self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)
         self.setting['save_check'] = self.save_check.GetValue()
         self.setting.close()
+        return
+
+    def testCheckEvent(self,event):
+        self.save_check.SetValue(False)
+        return
+
+    def quit_event(self,event): #菜单栏退出事件
+        self.Close()
+
+    def search_text(self,event): # 搜索框按回车之后的事件
+        self.search_keyword = event.GetString()
+        print(self.can_choose_number)
+        self.search.ShowCancelButton(True)
+
+
+        try:#清空选择栏
+            for i in range(0,len(self.can_choose_number)):
+                self.list_box.Delete(0)
+        except:
+            pass
+
+        for i in self.can_choose_number:#选出符合要求的
+            if i.find(self.search_keyword)==-1:
+                continue
+            else:
+                self.list_box.Append(i)
+
+        return
+
+    def search_cancel(self,event):#取消搜索结果，显示全部插件
+        self.search.ShowCancelButton(False)
+
+        try:
+            for i in range(0, len(self.can_choose_number)):
+                self.list_box.Delete(0)
+        except:
+            pass
+        self.list_box.Append(self.can_choose_number)
         return
 
 if __name__ == '__main__':

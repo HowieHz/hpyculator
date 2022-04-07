@@ -67,3 +67,9 @@ def main_save(input,self):
     a=int(a)
     b=int(b)
     write(self,a+b)
+
+def main_test(input,self):
+    a, b = input.split(",")
+    a=int(a)
+    b=int(b)
+    return a+b

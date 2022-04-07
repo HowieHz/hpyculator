@@ -8,6 +8,7 @@ __pycache__/
 *.bat
 *.py[cod]
 *$py.class
+*.fbp
 
 
 # C extensions
