@@ -4,6 +4,7 @@ import shelve
 import time
 import wx
 import threading
+import multiprocessing as mp
 import sys
 import importlib
 import webbrowser
@@ -289,42 +290,17 @@ class Application(MainWin.MainWindow):  # 主类
         self.result_last = []  # 返回一次就输出、保存专用
 
         #以上是计算前工作
-        calculate_thread=threading.Thread(target=self.startCalculate)
-        calculate_thread.start()
+        #calculate_thread=threading.Thread(target=self.startCalculate)
+        #calculate_thread.start()
+
+        self.calculate_process = mp.Process(target=MainCalculateProcess.startCalculate())
+        try:
+            self.calculate_process.start()
+        except Exception as e:
+            print(str(e))
 
 
 
-    def startCalculate(self):
-        if self.is_thread_runing == False:
-            try:
-                wx.CallAfter(self.clearOutPut) # 清空输出框
-                wx.CallAfter(self.outPutToOutPut,"计算程序正在运行中，所需时间较长，请耐心等待")
-                if self.test_check.GetValue() == True:
-                    self.whatNeedCalculateWithTest()
-                    # 以下是计算后工作
-                    wx.CallAfter(self.outPutToOutPut,
-                        "\n\n本次测试花费了%.10f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
-                else:
-                    if self.save_check.GetValue() == True:  # 检测保存按钮的状态判断是否保存
-                        self.whatNeedCalculateWithSave()
-                        # 以下是计算后工作
-                        wx.CallAfter(self.clearOutPut) # 清空输出框
-                        wx.CallAfter(self.outPutToOutPut,
-                            "\n本次计算+保存花费了%.10f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
-                        wx.CallAfter(self.outPutToOutPut,"\n计算结果已保存在" + os.path.abspath(".\\皓式程序输出\\") + self.name_text_file + ".txt")
-                        wx.CallAfter(self.outPutToOutPut,"\n")
-                    else:  # 选择不保存才输出结果
-                        self.whatNeedCalculate()
-                        # 以下是计算后工作
-                        wx.CallAfter(self.outPutToOutPut,
-                            "\n\n本次计算+输出花费了%.10f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
-            except Exception as e:
-                wx.CallAfter(self.clearOutPut)
-                wx.CallAfter(self.setOutPut,str(e))
-                wx.CallAfter(self.outPutToOutPut,"\n\n插件发生错误，请检查输入格式")
-                self.is_thread_runing = False
-        else:
-            wx.CallAfter(self.outPutToOutPut,"\n运算程序正在进行中，请勿反复点击计算按钮！\n")  # 清空输出框
 
     def outPutToOutPut(self, msg:str):
         self.output.AppendText(msg)
@@ -362,6 +338,11 @@ class Application(MainWin.MainWindow):  # 主类
             wx.CallAfter(self.clearOutPut) # 清空输出框
             exec("self." + self.Selection + ".main(self.input_box_s_input,self)")
         self.time_after_calculate = time.time()  # 储存结束时间
+
+
+        wx.CallAfter(self.outPutToOutPut,
+                     "\n\n本次计算+输出花费了%.10f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+
         self.is_thread_runing = False
 
     def whatNeedCalculateWithSave(self):  # 选择检测+计算
@@ -404,9 +385,17 @@ class Application(MainWin.MainWindow):  # 主类
                 exec("self." + self.Selection + ".main_save(self.input_box_s_input,save)")
         finally:
             save.close()
-            self.is_thread_runing = False
+
 
         self.time_after_calculate = time.time()  # 储存结束时间
+
+        wx.CallAfter(self.clearOutPut)  # 清空输出框
+        wx.CallAfter(self.outPutToOutPut,
+                     "\n本次计算+保存花费了%.10f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+        wx.CallAfter(self.outPutToOutPut, "\n计算结果已保存在" + os.path.abspath(".\\皓式程序输出\\") + self.name_text_file + ".txt")
+        wx.CallAfter(self.outPutToOutPut, "\n")
+
+        self.is_thread_runing = False
 
     def whatNeedCalculateWithTest(self):
         self.is_thread_runing = True
@@ -434,6 +423,9 @@ class Application(MainWin.MainWindow):  # 主类
         except:
             self.time_after_calculate = time.time()  # 储存结束时间
             wx.CallAfter(self.setOutPut,"发生错误，请检查输入格式，以及插件是否有test模式")
+
+        wx.CallAfter(self.outPutToOutPut,
+                     "\n\n本次测试花费了%.10f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
 
         self.is_thread_runing = False
 
@@ -521,10 +513,44 @@ class Application(MainWin.MainWindow):  # 主类
         self.list_box.Append(self.can_choose_number)
         return
 
+class CalculateProcess():
+    def startCalculate(self):
+        self = mainWindow
+        if self.is_thread_runing == False:
+            try:
+                wx.CallAfter(self.clearOutPut) # 清空输出框
+                wx.CallAfter(self.outPutToOutPut,"计算程序正在运行中，所需时间较长，请耐心等待")
+                if self.test_check.GetValue() == True:
+                    self.whatNeedCalculateWithTest()
+                    # 以下是计算后工作
+                    #self.calculate_process.join()
+
+                else:
+                    if self.save_check.GetValue() == True:  # 检测保存按钮的状态判断是否保存
+                        self.whatNeedCalculateWithSave()
+                        # 以下是计算后工作
+                        #self.calculate_process.join()
+
+                    else:  # 选择不保存才输出结果
+                        self.whatNeedCalculate()
+                        # 以下是计算后工作
+                        #self.calculate_process.join()
+
+            except Exception as e:
+                wx.CallAfter(self.clearOutPut)
+                wx.CallAfter(self.setOutPut,str(e))
+                wx.CallAfter(self.outPutToOutPut,"\n\n插件发生错误，请检查输入格式")
+                self.is_thread_runing = False
+        else:
+            wx.CallAfter(self.outPutToOutPut,"\n运算程序正在进行中，请勿反复点击计算按钮！\n")  # 清空输出框
+
+
 if __name__ == '__main__':
     # app=wx.PySimpleApp()
+    print("多核优化 开")
     app = wx.App()
     # wx.App(False)
     mainWindow = Application()
+    MainCalculateProcess=CalculateProcess()
     mainWindow.Show(True)
     app.MainLoop()  # 正常_必备_主事件循环

@@ -40,7 +40,9 @@
                                         #如果是1，则self.quantifier无效化
         "fullwidth_symbol" : '0' #懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
         }
-        
+
+    import wx
+
     def write(file,anything,end="\n"):#写入数据到硬盘
         file.write(str(anything)+end)
         file.flush()
@@ -52,7 +54,16 @@
         file.flush()
 
     def output(self,anything,end="\n"):#输出到框体内
-        self.output.AppendText(str(anything)+end)
+        wx.CallAfter(self.outPutToOutPut,self,str(anything)+end)
+
+    def outPutToOutPut(self, msg:str):
+        self.output.AppendText(msg)
+
+    def clearOutPut(self):
+        self.output.Clear()
+
+    def setOutPut(self, msg:str):
+        self.output.SetValue(msg)
         
     def main(input,self):#输出到框体内
         pass

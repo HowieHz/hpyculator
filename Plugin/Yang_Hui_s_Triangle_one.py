@@ -1,5 +1,3 @@
-import  re
-
 PLUGIN_METADATA = {
     'input_mode' : '1',
     'id' : 'Yang_Hui_s_Triangle_one',
@@ -32,3 +30,27 @@ def main(num):#返回一个列表
         l1.append(list(map(lambda x, y: x + y, [0] + l1[-1], l1[-1] + [0])))
         n += 1
     return l1
+
+import wx
+
+def write(file,anything,end="\n"):
+    file.write(str(anything)+end)
+    file.flush()
+
+def write_without_flush(file,anything,end="\n"):
+    file.write(str(anything)+end)
+
+def flush(file):
+    file.flush()
+
+def output(self,anything,end="\n"):
+    wx.CallAfter(self.outPutToOutPut,str(anything)+end)
+
+def outPutToOutPut(self, msg:str):
+    self.output.AppendText(msg)
+
+def clearOutPut(self):
+    self.output.Clear()
+
+def setOutPut(self, msg:str):
+    self.output.SetValue(msg)
