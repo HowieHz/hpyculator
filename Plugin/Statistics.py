@@ -1,10 +1,8 @@
-import  re
-
 PLUGIN_METADATA = {
     'input_mode' : '0',
     'id' : 'Statistics',
-    'option_name' : "平均数,众数,中位数,方差,标准差V1.0.0 by HowieHz",
-    'version' : 'V1.0.0',
+    'option_name' : "平均数,众数,中位数,方差,标准差V1.0.1 by HowieHz",
+    'version' : 'V1.0.1',
 
     'save_name' : "平均数,众数,中位数,方差,标准差",
     'quantifier' : "",
@@ -14,11 +12,10 @@ PLUGIN_METADATA = {
     'author' : "HowieHz",
     'help' : """
     输入若干个数字，以此来计算这些数字的 平均数,众数,中位数,方差,标准差
-
-    注：使用除了减号（-）的其他符号（汉字字母都可以）分隔各个数字
-
-    例：1,2.3-13-2.3,12yesh8nb1（这种都可以，但是不能用-分隔，因为-是用来打负数的
-    （上面读取出来的是1  2.3  -13  -2.3  12  8  1）
+    
+    输入格式:
+    A,B,C,...
+    （用半角逗号隔开的实数）
 """,
 
     'output_end' : "",
@@ -29,11 +26,7 @@ PLUGIN_METADATA = {
 }
 
 def main(num):
-    # r-正则过滤用
-    # getline-直接储存输入框的内容
-    # input_box_s_input - 储存getline被正则过滤之后的内容
-    r = re.compile(r'-?\d+\.?\d*')  # (-?\d+)(\.\d+)?#正则过滤表达式
-    num = r.findall(str(num))  # 过滤输入框的数字并且将结果储存
+    num = str(num).split(",")  # 过滤输入框的数字并且将结果储存
 
     list = []
     for i in num:

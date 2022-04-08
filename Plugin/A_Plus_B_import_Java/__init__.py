@@ -5,7 +5,7 @@ import hpyculator as hpyc
 PLUGIN_METADATA = {
     'input_mode': '0',  # 输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)（必须）
     'id': 'A_Plus_B_import_Java',  # ID,插件标识符,需要和文件名一致（必须）
-    'option_name': "A+B_Problem_with_Java V1.0.0 by shacha086,HowieHz",  # 选项名-在选择算法列表中（必须）
+    'option_name': "A+B_Problem_with_Java V1.0.1 by shacha086,HowieHz",  # 选项名-在选择算法列表中（必须）
     'version': 'V1.0.1',  # 版本号（必须）
 
     'save_name': "",  # 文件保存项目名-在输出（必须）
@@ -42,7 +42,7 @@ HowieHz构建了插件化的部分
     'save_mode': '0',  # 保存名的形式，0为 时间+算法名+输入+量词  1为 时间+输入+“的”+算法名（必须）
     # 回文质数第5项(第1-5项)   51,12,31,45的方差（未加入特性）
     # 如果是1，则self.quantifier无效化
-    "fullwidth_symbol": '1'  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
+    "fullwidth_symbol": '0'  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
 }
 
 """

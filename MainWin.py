@@ -2,7 +2,7 @@
 import wx
 import wx.xrc
 
-M_VERSION = "V1.2.3"
+M_VERSION = "V1.2.4"
 
 class MainWindow(wx.Frame):
     def __init__(self):
@@ -20,6 +20,9 @@ class MainWindow(wx.Frame):
 
         self.input_box = wx.TextCtrl(self.bkg, style=wx.TE_MULTILINE)  # 输入行数的文本框
         self.output = wx.TextCtrl(self.bkg, style=wx.TE_MULTILINE)  # 最大的文本框
+        self.save_location_input_box = wx.TextCtrl(self.bkg, style=wx.TE_MULTILINE)  # 输入保存位置的文本框
+
+        self.staticText_save_location = wx.StaticText(self.bkg,wx.ID_ANY,u"文件保存位置（支持绝对/相对路径）",style=wx.ALIGN_CENTER_HORIZONTAL)
 
         self.search = wx.SearchCtrl(self.bkg, wx.ID_ANY,style=wx.TE_PROCESS_ENTER)
         self.search.SetHint('输入后回车进行搜索')
@@ -32,6 +35,9 @@ class MainWindow(wx.Frame):
         self.file_menu.Append(1001, '更新展望', '在做了在做了')
         self.file_menu.Append(1000, '开屏介绍', '召唤作者的*话')
         self.file_menu.Append(1004, '检查更新', 'goto github')
+
+        self.reset_menu = wx.Menu()  # WxPython 中使用wx.Menu()类来表示一个菜单
+        self.reset_menu.Append(1020,'重置保存路径','重置！重置！')
 
         self.stop_menu = wx.Menu()  # WxPython 中使用wx.Menu()类来表示一个菜单
         self.stop_menu.Append(1010, '终止当前运算', '不准算！')
@@ -48,6 +54,7 @@ class MainWindow(wx.Frame):
         """
         self.window_menu = wx.MenuBar()  # wxpython中使用wx.MenuBar()类来表示一个菜单栏（注意不是菜单哦）
         self.window_menu.Append(self.file_menu, '|----关于----|')
+        self.window_menu.Append(self.reset_menu, '|----重置----|')
         self.window_menu.Append(self.stop_menu, '|----终止----|')
         """
         解读:此方法把菜单添加到菜单栏中
@@ -81,8 +88,10 @@ class MainWindow(wx.Frame):
 
 
         self.vbox2 = wx.BoxSizer(wx.VERTICAL)
+        self.vbox2.Add(self.staticText_save_location, proportion=0, flag=wx.EXPAND | wx.ALL, border=5)
+        self.vbox2.Add(self.save_location_input_box, proportion=1, flag=wx.EXPAND|wx.BOTTOM, border=10)
         self.vbox2.Add(self.search, proportion=1, flag=wx.EXPAND)
-        self.vbox2.Add(self.list_box, proportion=5, flag=wx.EXPAND)
+        self.vbox2.Add(self.list_box, proportion=7, flag=wx.EXPAND|wx.BOTTOM, border=5)
 
         self.hboxMain = wx.BoxSizer()  # 尺寸器
         self.hboxMain.Add(self.vbox2,proportion=1, flag=wx.EXPAND)
@@ -103,6 +112,7 @@ class MainWindow(wx.Frame):
         self.Bind(wx.EVT_MENU, self.quit_event,id=1011)
         self.Bind(wx.EVT_MENU, self.stop_compute, id=1010)
         self.Bind(wx.EVT_MENU, self.cheak_update, id=1004)
+        self.Bind(wx.EVT_MENU, self.reset_save_location, id=1020)
         self.Bind(wx.EVT_LISTBOX,self.chooseNumberEvent,self.list_box)
         self.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN,self.search_text)#搜索框回车后执行的函数，self.search_text
         self.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.search_cancel)
@@ -140,6 +150,8 @@ class MainWindow(wx.Frame):
     def cheak_update(self,event):
         event.Skip()
 
+    def reset_save_location(self,event):
+        event.Skip()
 
     def search_text(self,event):
         event.Skip()

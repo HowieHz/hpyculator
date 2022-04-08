@@ -4,8 +4,8 @@ PLUGIN_METADATA = {
     'input_mode': '0',  # 输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)
     # self.input_box_amount=1 #输入框数量
     'id': 'test9_fix',  # ID,插件标识符
-    'option_name': "tset⑨_fixV1.0.0 by HowieHz",  # 选项名-在选择算法列表中
-    'version': 'V1.0.0',  # 版本号
+    'option_name': "tset⑨_fixV1.0.1 by HowieHz",  # 选项名-在选择算法列表中
+    'version': 'V1.0.1',  # 版本号
     'save_name': "tset⑨",  # 文件保存项目名-在输出
     'quantifier': "",  # 文件保存量词-在输入后面
     'output_start': "",  # 输出头

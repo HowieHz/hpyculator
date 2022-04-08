@@ -3,8 +3,8 @@ import hpyculator as hpyc
 PLUGIN_METADATA = {
     'input_mode' : '1',
     'id' : 'Yang_Hui_s_Triangle_n',
-    'option_name' : "杨辉三角_nV1.0.0 by HowieHz",
-    'version' : 'V1.0.0',
+    'option_name' : "杨辉三角_nV1.0.1 by HowieHz",
+    'version' : 'V1.0.1',
 
     'save_name' : "杨辉三角前",
     'quantifier' : "行",

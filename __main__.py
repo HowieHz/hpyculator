@@ -18,7 +18,6 @@ M_VERSION = "V1.2.4"
 TODO = """更新展望(咕咕咕):
 1.背景图
 2.可自定义文件保存的文件名格式
-3.可选文件的保存位置
 8.可以分享脚本的平台（qq群也不错
 #9.用pyqt重构
 10.上线网页版
@@ -30,6 +29,7 @@ UPDATE_LOG = """更新日志:
 V1.2.4
 hpyculator模块上传了！现可通过pip下载
 重写了内置插件
+修改了gui,可自选保存位置
 
 20220408
 V1.2.3
@@ -80,7 +80,7 @@ HELLO_WORLD 常量(NEVER_GIVE_UP)全部大写，使用下划线连接单词
 
 
 
-
+来自 各类数组计算程序
 2021年6月27日
 V1.2
 选择保存文件时不再输出
@@ -214,6 +214,7 @@ class Application(MainWin.MainWindow):  # 主类
         # self.mainWindow()  # 初始化窗口
         self.is_thread_runing = False
 
+        self.save_location_input_box.SetValue(os.path.abspath(".\\皓式程序输出\\"))
 
         # 关于gui显示内容的初始化
         self.output.SetValue(START_SHOW)  # 开启的展示
@@ -223,6 +224,10 @@ class Application(MainWin.MainWindow):  # 主类
             self.save_check.SetValue(self.setting['save_check'])  # 根据数据设置选项状态
         except:
             self.setting['save_check'] = self.save_check.GetValue()
+        try:
+            self.save_location_input_box.SetValue(self.setting['save_location'])  # 根据数据设置选项状态
+        except:
+            self.setting['save_location'] = str(self.save_location_input_box.GetValue())
         self.setting.close()
 
     def init_plugin_singerfile(self):
@@ -273,6 +278,9 @@ class Application(MainWin.MainWindow):  # 主类
         # self.time_before_calculate,self.time_after_calculate - 临时储存时间，计录 计算时间
         # self.result_process  - 储存计算结果 （用于for循环,就是个i
         # self.result_last  - 储存计算结果
+        self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)
+        self.setting['save_location'] = str(self.save_location_input_box.GetValue())
+        self.setting.close()
 
         if str(self.input_box.GetValue()) == "update_log":  # update_log检测
             wx.CallAfter(self.setOutPut,UPDATE_LOG)
@@ -386,7 +394,7 @@ class Application(MainWin.MainWindow):  # 主类
         else:
             self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') +'  '+ self.save_name + str(self.input_box_s_input) + self.quantifier
 
-        save = open(os.path.abspath('.\\皓式程序输出\\' + self.name_text_file + ".txt"), "w", encoding="utf-8")
+        save = open(os.path.join(os.path.abspath(self.save_location_input_box.GetValue()),self.name_text_file + ".txt"), "w", encoding="utf-8")
 
         self.time_before_calculate = time.time()  # 储存开始时间
 
@@ -478,23 +486,28 @@ class Application(MainWin.MainWindow):  # 主类
         self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)
         self.setting['save_check'] = self.save_check.GetValue()
         self.setting.close()
-        return
 
     def testCheckEvent(self,event):
         self.save_check.SetValue(False)
         return
 
     def quit_event(self,event): #菜单栏退出事件
-        sys.exit(0)
+        self.Close(True)
 
     def stop_compute(self,event):
-        sys.exit(0)
+        self.Destroy()
 
     def cheak_update(self,event):
         webbrowser.open("https://github.com/HowieHz/hpyculator/releases")
 
+    def reset_save_location(self,event):
+        self.save_location_input_box.SetValue(os.path.abspath(".\\皓式程序输出\\"))
+        self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)  # 读取设置文件
+        self.setting['save_location'] = str(self.save_location_input_box.GetValue())
+        self.setting.close()
+
     def __del__(self):
-        sys.exit(0)
+        self.Destroy()
 
     def search_text(self,event): # 搜索框按回车之后的事件
         self.search_keyword = event.GetString()

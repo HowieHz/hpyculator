@@ -3,8 +3,8 @@ import hpyculator as hpyc
 PLUGIN_METADATA = {
     'input_mode' : '1',#输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)（必须）
     'id' : 'Yang_Hui_s_Triangle_fix',#ID,插件标识符,需要和文件名一致（必须）
-    'option_name' : "杨辉三角_fixV1.0.0 by HowieHz",#选项名-在选择算法列表中（必须）
-    'version' : 'V1.0.0',#版本号（必须）
+    'option_name' : "杨辉三角_fixV1.0.1 by HowieHz",#选项名-在选择算法列表中（必须）
+    'version' : 'V1.0.1',#版本号（必须）
 
     'save_name' : "杨辉三角前",#文件保存项目名-在输出（必须）
     'quantifier' : "行",#文件保存量词-在输入后面(可选)

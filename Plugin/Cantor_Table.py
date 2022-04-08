@@ -3,8 +3,8 @@ import hpyculator as hpyc
 PLUGIN_METADATA = {
     'input_mode': '1',  # 输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)（必须）
     'id': 'Cantor_Table',  # ID,插件标识符,需要和文件名一致（必须）
-    'option_name': "Cantor表_fixV1.0.0 by HowieHz",  # 选项名-在选择算法列表中（必须）
-    'version': 'V1.0.0',  # 版本号（必须）
+    'option_name': "Cantor表_fixV1.0.1 by HowieHz",  # 选项名-在选择算法列表中（必须）
+    'version': 'V1.0.1',  # 版本号（必须）
 
     'save_name': "Cantor表前",  # 文件保存项目名-在输出（必须）
     'quantifier': "项",  # 文件保存量词-在输入后面(可选)
@@ -28,10 +28,10 @@ PLUGIN_METADATA = {
     我们以 Z 字形给上表的每一项编号。第一项是 1/1，然后是 1/2，2/1，3/1，2/2，…
 
 输入格式
-    整数N（1≤N).
+    整数N（1≤N)
 
 输出格式
-    表中的前 N 项。
+    表中的前 N 项
     
     哈哈，把自己的题解拿来用了""",  # 帮助和说明(可选)
     'output_end': "",  # 输出小尾巴(可选)

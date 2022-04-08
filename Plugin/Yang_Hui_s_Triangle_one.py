@@ -1,8 +1,8 @@
 PLUGIN_METADATA = {
     'input_mode' : '1',
     'id' : 'Yang_Hui_s_Triangle_one',
-    'option_name' : "杨辉三角_oneV1.0.0 by HowieHz",
-    'version' : 'V1.0.0',
+    'option_name' : "杨辉三角_oneV1.0.1 by HowieHz",
+    'version' : 'V1.0.1',
 
     'save_name' : "杨辉三角前",
     'quantifier' : "行",
