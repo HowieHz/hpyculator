@@ -52,6 +52,21 @@ HowieHz构建了插件化的部分
     如此地址无jdk17，请传入第三个参数（用逗号分隔），第三个参数为\jdk-17.0.2\bin\server\jvm.dll的绝对地址
     """
 
+def write(file, anything, end="\n"):
+    file.write(str(anything) + end)
+    file.flush()
+
+
+def write_without_flush(file, anything, end="\n"):
+    file.write(str(anything) + end)
+
+
+def flush(file):
+    file.flush()
+
+
+def output(self, anything, end="\n"):
+    self.output.AppendText(str(anything) + end)
 
 def main(input,self):
     # try:
@@ -115,43 +130,3 @@ def main_test(input,self):
         jpype.shutdownJVM()
     except:
         pass
-
-
-import wx
-
-
-def write(file, anything, end="\n"):  # 写入数据到硬盘
-    file.write(str(anything) + end)
-    file.flush()
-
-
-def write_without_flush(file, anything, end="\n"):  # 写入数据到内存
-    file.write(str(anything) + end)
-
-
-def flush(file):  # 写入内存中的数据到硬盘
-    file.flush()
-
-
-def output(self, anything, end="\n"):  # 输出到框体内
-    wx.CallAfter(self.outPutToOutPut, self, str(anything) + end)
-
-
-def outPutToOutPut(self, msg: str):
-    self.output.AppendText(msg)
-
-
-def clearOutPut(self):
-    self.output.Clear()
-
-
-def setOutPut(self, msg: str):
-    self.output.SetValue(msg)
-
-
-def main(input, self):  # 输出到框体内
-    pass
-
-
-def main_save(input, file):  # 保存到文件
-    pass

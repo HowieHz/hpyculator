@@ -28,29 +28,18 @@
 
                 .. code-block:: python
 
-                        import wx
+                    def write(file,anything,end="\n"):
+                        file.write(str(anything)+end)
+                        file.flush()
 
-                        def write(file,anything,end="\n"):#写入数据到硬盘
-                            file.write(str(anything)+end)
-                            file.flush()
+                    def write_without_flush(file,anything,end="\n"):
+                        file.write(str(anything)+end)
 
-                        def write_without_flush(file,anything,end="\n"):#写入数据到内存
-                            file.write(str(anything)+end)
+                    def flush(file):
+                        file.flush()
 
-                        def flush(file):#写入内存中的数据到硬盘
-                            file.flush()
-
-                        def output(self,anything,end="\n"):#输出到框体内
-                            wx.CallAfter(self.outPutToOutPut,self,str(anything)+end)
-
-                        def outPutToOutPut(self, msg:str):
-                            self.output.AppendText(msg)
-
-                        def clearOutPut(self):
-                            self.output.Clear()
-
-                        def setOutPut(self, msg:str):
-                            self.output.SetValue(msg)
+                    def output(self,anything,end="\n"):
+                        self.output.AppendText(str(anything)+end)
 
 
         然后写 ``main``\函数用于计算并且输入到内框， ``main_save``\函数用于计算并保存

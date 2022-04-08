@@ -1,3 +1,5 @@
+import  re
+
 PLUGIN_METADATA = {
     'input_mode' : '1',#输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)（必须）
     'id' : 'Yang_Hui_s_Triangle_fix',#ID,插件标识符,需要和文件名一致（必须）
@@ -31,11 +33,7 @@ PLUGIN_METADATA = {
 def main(num,self):#返回一个列表
     if num <=3000:
         if num == 0:
-            output(self, [])
-            return
-        if num == 1:
-            output(self, [1])
-            return
+            return []
         l1 = [[1]]
         n = 1
         while n < num:
@@ -44,6 +42,13 @@ def main(num,self):#返回一个列表
         for i in l1:
             output(self,i)
     else:
+        if num == 0:
+            output(self,[])
+            return
+        if num == 1:
+            output(self,[1])
+            return
+
         for i in range(0,num):
             output(self,GetTriangleRow(i))
         return
@@ -99,41 +104,15 @@ def GetTriangleRow(n):
 #https://www.zhihu.com/people/coder-the-fish
 #https://zhuanlan.zhihu.com/p/105454576
 
-import wx
-
-
-def write(file, anything, end="\n"):  # 写入数据到硬盘
-    file.write(str(anything) + end)
+def write(file,anything,end="\n"):
+    file.write(str(anything)+end)
     file.flush()
 
+def write_without_flush(file,anything,end="\n"):
+    file.write(str(anything)+end)
 
-def write_without_flush(file, anything, end="\n"):  # 写入数据到内存
-    file.write(str(anything) + end)
-
-
-def flush(file):  # 写入内存中的数据到硬盘
+def flush(file):
     file.flush()
 
-
-def output(self, anything, end="\n"):  # 输出到框体内
-    wx.CallAfter(self.outPutToOutPut, self, str(anything) + end)
-
-
-def outPutToOutPut(self, msg: str):
-    self.output.AppendText(msg)
-
-
-def clearOutPut(self):
-    self.output.Clear()
-
-
-def setOutPut(self, msg: str):
-    self.output.SetValue(msg)
-
-
-def main(input, self):  # 输出到框体内
-    pass
-
-
-def main_save(input, file):  # 保存到文件
-    pass
+def output(self,anything,end="\n"):
+    self.output.AppendText(str(anything)+end)

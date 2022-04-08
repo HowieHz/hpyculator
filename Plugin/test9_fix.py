@@ -54,8 +54,6 @@ def main_save(input,file):#返回一个字符串，第一个参数是输入，�
     need_write = None
     return
 
-import wx
-
 def write(file,anything,end="\n"):
     file.write(str(anything)+end)
     file.flush()
@@ -67,13 +65,7 @@ def flush(file):
     file.flush()
 
 def output(self,anything,end="\n"):
-    wx.CallAfter(self.outPutToOutPut,str(anything)+end)
+    self.output.AppendText(str(anything)+end)
 
-def outPutToOutPut(self, msg:str):
-    self.output.AppendText(msg)
-
-def clearOutPut(self):
-    self.output.Clear()
-
-def setOutPut(self, msg:str):
-    self.output.SetValue(msg)
+def output_set(self,anything,end="\n"):
+    self.output.SetValue(str(anything)+end)

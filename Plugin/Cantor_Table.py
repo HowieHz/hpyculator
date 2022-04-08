@@ -47,6 +47,23 @@ PLUGIN_METADATA = {
     "fullwidth_symbol": '1'  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
 }
 
+
+def write(file, anything, end="\n"):
+    file.write(str(anything) + end)
+    file.flush()
+
+
+def write_without_flush(file, anything, end="\n"):
+    file.write(str(anything) + end)
+
+
+def flush(file):
+    file.flush()
+
+
+def output(self, anything, end="\n"):
+    self.output.AppendText(str(anything) + end)
+
 def main(n,self,do_what):
     if do_what == "output":
         a = 1
@@ -156,27 +173,3 @@ def main(n,self,do_what):
                     write_without_flush(self, str(a) + "/" + str(b))
                     len += 1
                     continue
-
-import wx
-
-def write(file,anything,end="\n"):
-    file.write(str(anything)+end)
-    file.flush()
-
-def write_without_flush(file,anything,end="\n"):
-    file.write(str(anything)+end)
-
-def flush(file):
-    file.flush()
-
-def output(self,anything,end="\n"):
-    wx.CallAfter(self.outPutToOutPut,str(anything)+end)
-
-def outPutToOutPut(self, msg:str):
-    self.output.AppendText(msg)
-
-def clearOutPut(self):
-    self.output.Clear()
-
-def setOutPut(self, msg:str):
-    self.output.SetValue(msg)

@@ -1,3 +1,6 @@
+import os
+import jpype
+
 PLUGIN_METADATA = {
     'input_mode': '0',  # 输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)（必须）
     'id': 'A_Plus_B',  # ID,插件标识符,需要和文件名一致（必须）
@@ -37,6 +40,22 @@ PLUGIN_METADATA = {
     "fullwidth_symbol": '1'  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
 }
 
+def write(file, anything, end="\n"):
+    file.write(str(anything) + end)
+    file.flush()
+
+
+def write_without_flush(file, anything, end="\n"):
+    file.write(str(anything) + end)
+
+
+def flush(file):
+    file.flush()
+
+
+def output(self, anything, end="\n"):
+    self.output.AppendText(str(anything) + end)
+
 def main(input,self):
     a,b=input.split(",")
     a = int(a)
@@ -54,43 +73,3 @@ def main_test(input,self):
     a=int(a)
     b=int(b)
     return a+b
-
-
-import wx
-
-
-def write(file, anything, end="\n"):  # 写入数据到硬盘
-    file.write(str(anything) + end)
-    file.flush()
-
-
-def write_without_flush(file, anything, end="\n"):  # 写入数据到内存
-    file.write(str(anything) + end)
-
-
-def flush(file):  # 写入内存中的数据到硬盘
-    file.flush()
-
-
-def output(self, anything, end="\n"):  # 输出到框体内
-    wx.CallAfter(self.outPutToOutPut, self, str(anything) + end)
-
-
-def outPutToOutPut(self, msg: str):
-    self.output.AppendText(msg)
-
-
-def clearOutPut(self):
-    self.output.Clear()
-
-
-def setOutPut(self, msg: str):
-    self.output.SetValue(msg)
-
-
-def main(input, self):  # 输出到框体内
-    pass
-
-
-def main_save(input, file):  # 保存到文件
-    pass

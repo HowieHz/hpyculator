@@ -1,3 +1,5 @@
+import  re
+
 PLUGIN_METADATA = {
     'input_mode' : '1',
     'id' : 'Yang_Hui_s_Triangle_n',
@@ -65,8 +67,6 @@ def GetTriangleRow(n):
 #https://www.zhihu.com/people/coder-the-fish
 #https://zhuanlan.zhihu.com/p/105454576
 
-import wx
-
 def write(file,anything,end="\n"):
     file.write(str(anything)+end)
     file.flush()
@@ -78,13 +78,4 @@ def flush(file):
     file.flush()
 
 def output(self,anything,end="\n"):
-    wx.CallAfter(self.outPutToOutPut,str(anything)+end)
-
-def outPutToOutPut(self, msg:str):
-    self.output.AppendText(msg)
-
-def clearOutPut(self):
-    self.output.Clear()
-
-def setOutPut(self, msg:str):
-    self.output.SetValue(msg)
+    self.output.AppendText(str(anything)+end)

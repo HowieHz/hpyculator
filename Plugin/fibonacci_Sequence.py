@@ -1,3 +1,5 @@
+import  re
+
 PLUGIN_METADATA = {
     'input_mode' : '1',
     'id' : 'fibonacci_Sequence',
@@ -88,26 +90,9 @@ def main(num,self,do_what):#返回一个列表
     else:
         pass
 
-import wx
-
 def write(file,anything,end="\n"):
     file.write(str(anything)+end)
     file.flush()
 
-def write_without_flush(file,anything,end="\n"):
-    file.write(str(anything)+end)
-
-def flush(file):
-    file.flush()
-
 def output(self,anything,end="\n"):
-    wx.CallAfter(self.outPutToOutPut,str(anything)+end)
-
-def outPutToOutPut(self, msg:str):
-    self.output.AppendText(msg)
-
-def clearOutPut(self):
-    self.output.Clear()
-
-def setOutPut(self, msg:str):
-    self.output.SetValue(msg)
+    self.output.AppendText(str(anything)+end)
