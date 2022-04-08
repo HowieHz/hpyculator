@@ -12,7 +12,7 @@ import webbrowser
 
 import MainWin
 
-M_VERSION = "V1.2.2"
+M_VERSION = "V1.2.3"
 
 TODO = """更新展望(咕咕咕):
 1.背景图
@@ -25,6 +25,11 @@ TODO = """更新展望(咕咕咕):
 """
 
 UPDATE_LOG = """更新日志:
+20220408
+V1.2.3
+修复了多线程的问题
+修改了菜单栏
+
 20220407
 V1.2.2
 修复了内置插件无法正常工作的问题
@@ -127,8 +132,7 @@ Howie皓子制作
 0.建议保存到文件，这样不会内屏输出导致卡死!!--------重点！！！
 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 
-1.“保存”会将结果保存到程序所在目录下的
-“年_月_日 时_分_秒 (计算种类)计算结果(输入数据).txt”
+1.“保存”会将结果保存到程序所在目录下 "\皓式程序输出"
 2.设置行(项)数较大请选择保存到文件，算的不久，但是导出很久，可以看看任务管理器，不同插件性能（读写速度和）不同，要看插件作者的水平
 2.(2)内置模块说明:(n系列占用内存最小，读写速度最慢),
                 (one系列占用内存最大（算太多内存占用会起飞，出问题概不负责）),
@@ -136,8 +140,8 @@ Howie皓子制作
 
 
 交流群694413711 - 此群安静的像一滩死水 -=作者中考完了，消息一般都会会
-仅供学习，请勿进行商业用途
-(好像这也没法用于进行商业用途的说2333)
+
+已在github开源 禁止商用
 
 悄悄说:在输入栏输入update_log之后点击运算就可以看更新日志了""" % M_VERSION)
 
@@ -205,7 +209,6 @@ class Application(MainWin.MainWindow):  # 主类
         self.is_thread_runing = False
 
 
-
         # 关于gui显示内容的初始化
         self.output.SetValue(START_SHOW)  # 开启的展示
 
@@ -266,21 +269,21 @@ class Application(MainWin.MainWindow):  # 主类
         # self.result_last  - 储存计算结果
 
         if str(self.input_box.GetValue()) == "update_log":  # update_log检测
-            self.output.SetValue(UPDATE_LOG)
+            wx.CallAfter(self.setOutPut,UPDATE_LOG)
             return
         #if str(self.input_box.GetValue()) == "停止":  # u停止检测
-            #self.output.SetValue("当前计算线程已停止")
+            #wx.CallAfter(self.setOutPut,"当前计算线程已停止")
             #self.is_thread_runing = False
             #return
         #if str(self.input_box.GetValue()) == "stop":  # stop检测
-            #self.output.SetValue("当前计算线程已停止")
+            #wx.CallAfter(self.setOutPut,"当前计算线程已停止")
             #self.is_thread_runing = False
             #return
         if self.list_box.GetString(self.list_box.GetSelection()) == "":  # 是否选择检测
-            self.output.SetValue("\n\n" + "不选要算什么我咋知道要算啥子嘞" + "\n")
+            wx.CallAfter(self.setOutPut,"\n\n" + "不选要算什么我咋知道要算啥子嘞" + "\n")
             return
         if str(self.input_box.GetValue()) == "":  # 是否输入检测
-            self.output.SetValue("\n\n" + "不输要算什么我咋知道要算啥子嘞" + "\n")
+            wx.CallAfter(self.setOutPut,"\n\n" + "不输要算什么我咋知道要算啥子嘞" + "\n")
             return
 
         self.result_last = []  # 返回一次就输出、保存专用
@@ -294,35 +297,43 @@ class Application(MainWin.MainWindow):  # 主类
     def startCalculate(self):
         if self.is_thread_runing == False:
             try:
-                self.output.SetValue("")  # 清空输出框
-                self.output.AppendText("计算程序正在运行中，所需时间较长，请耐心等待")
+                wx.CallAfter(self.clearOutPut) # 清空输出框
+                wx.CallAfter(self.outPutToOutPut,"计算程序正在运行中，所需时间较长，请耐心等待")
                 if self.test_check.GetValue() == True:
                     self.whatNeedCalculateWithTest()
                     # 以下是计算后工作
-                    self.output.AppendText(
-                        "\n\n本次测试花费了%.5f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+                    wx.CallAfter(self.outPutToOutPut,
+                        "\n\n本次测试花费了%.10f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
                 else:
                     if self.save_check.GetValue() == True:  # 检测保存按钮的状态判断是否保存
                         self.whatNeedCalculateWithSave()
                         # 以下是计算后工作
-                        self.output.Clear() # 清空输出框
-                        self.output.AppendText(
-                            "\n本次计算+保存花费了%.5f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
-                        self.output.AppendText("\n计算结果已保存在" + os.path.abspath(".\\皓式程序输出\\") + self.name_text_file + ".txt")
-                        self.output.AppendText("\n")
+                        wx.CallAfter(self.clearOutPut) # 清空输出框
+                        wx.CallAfter(self.outPutToOutPut,
+                            "\n本次计算+保存花费了%.10f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+                        wx.CallAfter(self.outPutToOutPut,"\n计算结果已保存在" + os.path.abspath(".\\皓式程序输出\\") + self.name_text_file + ".txt")
+                        wx.CallAfter(self.outPutToOutPut,"\n")
                     else:  # 选择不保存才输出结果
                         self.whatNeedCalculate()
                         # 以下是计算后工作
-                        self.output.AppendText(
-                            "\n\n本次计算+输出花费了%.5f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+                        wx.CallAfter(self.outPutToOutPut,
+                            "\n\n本次计算+输出花费了%.10f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
             except Exception as e:
-                self.output.Clear()
-                self.output.SetValue(str(e))
-                self.output.AppendText("\n\n插件发生错误，请检查输入格式")
+                wx.CallAfter(self.clearOutPut)
+                wx.CallAfter(self.setOutPut,str(e))
+                wx.CallAfter(self.outPutToOutPut,"\n\n插件发生错误，请检查输入格式")
                 self.is_thread_runing = False
         else:
-            self.output.AppendText("\n运算程序正在进行中，请勿反复点击计算按钮！\n")  # 清空输出框
+            wx.CallAfter(self.outPutToOutPut,"\n运算程序正在进行中，请勿反复点击计算按钮！\n")  # 清空输出框
 
+    def outPutToOutPut(self, msg:str):
+        self.output.AppendText(msg)
+
+    def clearOutPut(self):
+        self.output.Clear()
+
+    def setOutPut(self, msg:str):
+        self.output.SetValue(msg)
 
     def whatNeedCalculate(self):
         self.is_thread_runing = True
@@ -335,20 +346,20 @@ class Application(MainWin.MainWindow):  # 主类
 
         if self.output_mode == '0':
             exec("self.result_last = self." + self.Selection + ".main(self.input_box_s_input)")
-            self.output.SetValue(str(self.result_last) + "\n")  # 结果为str，直接输出
+            wx.CallAfter(self.setOutPut,str(self.result_last) + "\n")  # 结果为str，直接输出
         elif self.output_mode == '2': # 算一行输出一行，但是没有换行
-            self.output.Clear()  # 清空输出框
+            wx.CallAfter(self.clearOutPut) # 清空输出框
             exec("for self.result_process in self." + self.Selection + """.main(self.input_box_s_input):  # 计算
-        self.output.AppendText(str(self.result_process))""")  # 算一行输出一行
+        wx.CallAfter(self.outPutToOutPut,str(self.result_process))""")  # 算一行输出一行
         elif self.output_mode == '1': # 算一行输出一行
-            self.output.Clear()  # 清空输出框
+            wx.CallAfter(self.clearOutPut) # 清空输出框
             exec("for self.result_process in self." + self.Selection + """.main(self.input_box_s_input):  # 计算
-    self.output.AppendText(str(self.result_process)+"\\n")""")  # 算一行输出一行
+    wx.CallAfter(self.outPutToOutPut,str(self.result_process)+"\\n")""")  # 算一行输出一行
         elif self.output_mode == '4':
-            self.output.Clear()  # 清空输出框
+            wx.CallAfter(self.clearOutPut) # 清空输出框
             exec("self." + self.Selection + ".main(self.input_box_s_input,self,'output')")
         else:
-            self.output.Clear()  # 清空输出框
+            wx.CallAfter(self.clearOutPut) # 清空输出框
             exec("self." + self.Selection + ".main(self.input_box_s_input,self)")
         self.time_after_calculate = time.time()  # 储存结束时间
         self.is_thread_runing = False
@@ -406,25 +417,28 @@ class Application(MainWin.MainWindow):  # 主类
 
         try:
             if self.output_mode == '4':
-                self.output.Clear()  # 清空输出框
+                wx.CallAfter(self.clearOutPut) # 清空输出框
 
                 self.time_before_calculate = time.time()  # 储存开始时间
                 exec("self." + self.Selection + ".main(self.input_box_s_input,self,'test')")
                 self.time_after_calculate = time.time()  # 储存结束时间
                 if self.output.GetValue() != "":
-                    self.output.Clear()  # 清空输出框
-                    self.output.SetValue("发生错误，请检查输入格式，以及插件是否有test模式")
+                    wx.CallAfter(self.clearOutPut) # 清空输出框
+                    wx.CallAfter(self.setOutPut,"发生错误，请检查输入格式，以及插件是否有test模式")
             else:
-                self.output.Clear()  # 清空输出框
+                wx.CallAfter(self.clearOutPut) # 清空输出框
 
                 self.time_before_calculate = time.time()  # 储存开始时间
                 exec("self." + self.Selection + ".main_test(self.input_box_s_input,self)")
                 self.time_after_calculate = time.time()  # 储存结束时间
         except:
             self.time_after_calculate = time.time()  # 储存结束时间
-            self.output.SetValue("发生错误，请检查输入格式，以及插件是否有test模式")
+            wx.CallAfter(self.setOutPut,"发生错误，请检查输入格式，以及插件是否有test模式")
 
         self.is_thread_runing = False
+
+
+
 
     def chooseNumberEvent(self, event):  # 选择算法事件
         self.Selection = self.plugin_filename_option_name_map[
@@ -465,6 +479,9 @@ class Application(MainWin.MainWindow):  # 主类
         return
 
     def quit_event(self,event): #菜单栏退出事件
+        sys.exit(0)
+
+    def stop_compute(self,event):
         sys.exit(0)
 
     def cheak_update(self,event):

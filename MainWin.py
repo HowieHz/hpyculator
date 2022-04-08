@@ -2,7 +2,7 @@
 import wx
 import wx.xrc
 
-M_VERSION = "V1.2.2"
+M_VERSION = "V1.2.3"
 
 class MainWindow(wx.Frame):
     def __init__(self):
@@ -30,10 +30,13 @@ class MainWindow(wx.Frame):
         self.file_menu = wx.Menu()  # WxPython 中使用wx.Menu()类来表示一个菜单
         self.file_menu.Append(1002, '更新日志', '做完了做完了')
         self.file_menu.Append(1001, '更新展望', '在做了在做了')
-        self.file_menu.Append(1000, '关于', '召唤作者的*话')
+        self.file_menu.Append(1000, '开屏介绍', '召唤作者的*话')
         self.file_menu.Append(1004, '检查更新', 'goto github')
-        self.quit = wx.MenuItem(self.file_menu, 1003, '&退出\tCtrl+Q')
-        self.file_menu.Append(self.quit)
+
+        self.stop_menu = wx.Menu()  # WxPython 中使用wx.Menu()类来表示一个菜单
+        self.stop_menu.Append(1010, '终止当前运算', '不准算！')
+        self.quit = wx.MenuItem(self.stop_menu, 1011, '&退出程序\tCtrl+Q')
+        self.stop_menu.Append(self.quit)
 
 
         """
@@ -44,7 +47,8 @@ class MainWindow(wx.Frame):
         小提示:调用一次 Append() 添加一个菜单选项，调用多次可添加多个菜单选项
         """
         self.window_menu = wx.MenuBar()  # wxpython中使用wx.MenuBar()类来表示一个菜单栏（注意不是菜单哦）
-        self.window_menu.Append(self.file_menu, '一般菜单，点一下玩一年')
+        self.window_menu.Append(self.file_menu, '|----关于----|')
+        self.window_menu.Append(self.stop_menu, '|----终止----|')
         """
         解读:此方法把菜单添加到菜单栏中
         参数(file_menu):使用wx.Menu()创建的菜单
@@ -96,7 +100,8 @@ class MainWindow(wx.Frame):
         self.Bind(wx.EVT_MENU, self.showDONE, id=1002)
         self.Bind(wx.EVT_MENU, self.showTODO, id=1001)
         self.Bind(wx.EVT_MENU, self.showAbout, id=1000)
-        self.Bind(wx.EVT_MENU, self.quit_event,id=1003)
+        self.Bind(wx.EVT_MENU, self.quit_event,id=1011)
+        self.Bind(wx.EVT_MENU, self.stop_compute, id=1010)
         self.Bind(wx.EVT_MENU, self.cheak_update, id=1004)
         self.Bind(wx.EVT_LISTBOX,self.chooseNumberEvent,self.list_box)
         self.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN,self.search_text)#搜索框回车后执行的函数，self.search_text
@@ -127,6 +132,9 @@ class MainWindow(wx.Frame):
         event.Skip()
 
     def quit_event(self,event):
+        event.Skip()
+
+    def stop_compute(self,event):
         event.Skip()
 
     def cheak_update(self,event):
