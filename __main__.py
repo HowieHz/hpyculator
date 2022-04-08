@@ -7,12 +7,13 @@ import threading
 import sys
 import importlib
 import webbrowser
+import hpyculator
 #import jpype
 #import pprint
 
 import MainWin
 
-M_VERSION = "V1.2.3"
+M_VERSION = "V1.2.4"
 
 TODO = """更新展望(咕咕咕):
 1.背景图
@@ -25,6 +26,11 @@ TODO = """更新展望(咕咕咕):
 """
 
 UPDATE_LOG = """更新日志:
+20220408
+V1.2.4
+hpyculator模块上传了！现可通过pip下载
+重写了内置插件
+
 20220408
 V1.2.3
 修复了多线程的问题

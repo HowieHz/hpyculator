@@ -1,3 +1,5 @@
+import hpyculator as hpyc
+
 PLUGIN_METADATA = {
     'input_mode': '0',  # 输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)（必须）
     'id': 'Heron_s_Formula',  # ID,插件标识符,需要和文件名一致（必须）
@@ -40,7 +42,7 @@ def main(num:str,self,do_what):#返回一个列表
     try:
         a,b,c = num.split(",")
     except:
-        output(self, "请按格式输入！！！")
+        hpyc.output(self, "请按格式输入！！！")
         return
     a=int(a)
     b=int(b)
@@ -48,23 +50,6 @@ def main(num:str,self,do_what):#返回一个列表
     p=(a+b+c)/2
     s=(p*(p-a)*(p-b)*(p-c))**0.5
     if do_what == "output":
-        output(self,"以"+str(a) +","+ str(b)+"," +str(c)+"为边长的三角形的面积是:\n"+str(s))
+        hpyc.output(self,"以"+str(a) +","+ str(b)+"," +str(c)+"为边长的三角形的面积是:\n"+str(s))
     if do_what == "save":
-        write(self,str(s))
-
-
-def write(file, anything, end="\n"):
-    file.write(str(anything) + end)
-    file.flush()
-
-
-def write_without_flush(file, anything, end="\n"):
-    file.write(str(anything) + end)
-
-
-def flush(file):
-    file.flush()
-
-
-def output(self, anything, end="\n"):
-    self.output.AppendText(str(anything) + end)
+        hpyc.write(self,str(s))

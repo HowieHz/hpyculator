@@ -1,4 +1,4 @@
-import  re
+import hpyculator as hpyc
 
 PLUGIN_METADATA = {
     'input_mode' : '1',#输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)（必须）
@@ -40,31 +40,31 @@ def main(num,self):#返回一个列表
             l1.append(list(map(lambda x, y: x + y, [0] + l1[-1], l1[-1] + [0])))
             n += 1
         for i in l1:
-            output(self,i)
+            hpyc.output(self,i)
     else:
         if num == 0:
-            output(self,[])
+            hpyc.output(self,[])
             return
         if num == 1:
-            output(self,[1])
+            hpyc.output(self,[1])
             return
 
         for i in range(0,num):
-            output(self,GetTriangleRow(i))
+            hpyc.output(self,GetTriangleRow(i))
         return
 
 def main_save(num,file):#返回一个列表
     if num <= 3000:
         if num == 0:
-            write(file,[])
+            hpyc.write(file,[])
         l1 = [[1]]
         n = 1
         while n < num:
             l1.append(list(map(lambda x, y: x + y, [0] + l1[-1], l1[-1] + [0])))
             n += 1
         for i in l1:
-            write_without_flush(file,i)
-        flush(file)
+            hpyc.write_without_flush(file,i)
+        hpyc.flush(file)
         l1=None
         return
     else:
@@ -75,11 +75,11 @@ def main_save(num,file):#返回一个列表
             need_write_len += 1
             if need_write_len >= 3000:
                 for write_i in need_write:
-                    write_without_flush(file, write_i)
-                flush(file)
+                    hpyc.write_without_flush(file, write_i)
+                hpyc.flush(file)
                 need_write_len = 0
         for write_i in need_write:
-            write(file, write_i)
+            hpyc.write(file, write_i)
         need_write = None
         return
 
@@ -103,16 +103,3 @@ def GetTriangleRow(n):
 
 #https://www.zhihu.com/people/coder-the-fish
 #https://zhuanlan.zhihu.com/p/105454576
-
-def write(file,anything,end="\n"):
-    file.write(str(anything)+end)
-    file.flush()
-
-def write_without_flush(file,anything,end="\n"):
-    file.write(str(anything)+end)
-
-def flush(file):
-    file.flush()
-
-def output(self,anything,end="\n"):
-    self.output.AppendText(str(anything)+end)

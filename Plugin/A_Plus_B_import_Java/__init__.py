@@ -1,5 +1,6 @@
 import os
 import jpype
+import hpyculator as hpyc
 
 PLUGIN_METADATA = {
     'input_mode': '0',  # 输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)（必须）
@@ -52,22 +53,6 @@ HowieHz构建了插件化的部分
     如此地址无jdk17，请传入第三个参数（用逗号分隔），第三个参数为\jdk-17.0.2\bin\server\jvm.dll的绝对地址
     """
 
-def write(file, anything, end="\n"):
-    file.write(str(anything) + end)
-    file.flush()
-
-
-def write_without_flush(file, anything, end="\n"):
-    file.write(str(anything) + end)
-
-
-def flush(file):
-    file.flush()
-
-
-def output(self, anything, end="\n"):
-    self.output.AppendText(str(anything) + end)
-
 def main(input,self):
     # try:
     # a,b,c=input.split(",")
@@ -82,7 +67,7 @@ def main(input,self):
         jpype.startJVM(jvm_path, '-ea', "-Djava.class.path=%s" % jar_path, convertStrings=False)
     # javaClass = jpype.JClass('com.shacha.Main')
     # javaInstance = javaClass()
-    output(self, jpype.JClass('com.shacha.Main').main(a, b))
+    hpyc.output(self, jpype.JClass('com.shacha.Main').main(a, b))
     # return javaInstance.main(a, b)
     try:
         jpype.shutdownJVM()
@@ -103,7 +88,7 @@ def main_save(input,self):
         jpype.startJVM(jvm_path, '-ea', "-Djava.class.path=%s" % jar_path, convertStrings=False)
     # javaClass = jpype.JClass('com.shacha.Main')
     # javaInstance = javaClass()
-    write(self, jpype.JClass('com.shacha.Main').main(a, b))
+    hpyc.write(self, jpype.JClass('com.shacha.Main').main(a, b))
     # return javaInstance.main(a, b)
     try:
         jpype.shutdownJVM()

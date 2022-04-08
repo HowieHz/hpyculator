@@ -1,5 +1,4 @@
-import os
-import jpype
+import hpyculator as hpyc
 
 PLUGIN_METADATA = {
     'input_mode': '0',  # 输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)（必须）
@@ -40,33 +39,17 @@ PLUGIN_METADATA = {
     "fullwidth_symbol": '1'  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
 }
 
-def write(file, anything, end="\n"):
-    file.write(str(anything) + end)
-    file.flush()
-
-
-def write_without_flush(file, anything, end="\n"):
-    file.write(str(anything) + end)
-
-
-def flush(file):
-    file.flush()
-
-
-def output(self, anything, end="\n"):
-    self.output.AppendText(str(anything) + end)
-
 def main(input,self):
     a,b=input.split(",")
     a = int(a)
     b = int(b)
-    output(self,a+b)
+    hpyc.output(self,a+b)
 
 def main_save(input,self):
     a, b = input.split(",")
     a=int(a)
     b=int(b)
-    write(self,a+b)
+    hpyc.write(self,a+b)
 
 def main_test(input,self):
     a, b = input.split(",")

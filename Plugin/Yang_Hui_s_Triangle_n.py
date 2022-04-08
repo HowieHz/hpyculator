@@ -1,4 +1,4 @@
-import  re
+import hpyculator as hpyc
 
 PLUGIN_METADATA = {
     'input_mode' : '1',
@@ -25,25 +25,25 @@ PLUGIN_METADATA = {
 
 def main(num,self):#返回一个列表
     if num == 0:
-        output(self,[])
+        hpyc.output(self,[])
         return
     if num == 1:
-        output(self,[1])
+        hpyc.output(self,[1])
         return
 
     for i in range(0,num):
-        output(self,GetTriangleRow(i))
+        hpyc.output(self,GetTriangleRow(i))
     return
 
 def main_save(num,file):#返回一个列表
     if num == 0:
-        write(file, [])
+        hpyc.write(file, [])
         return
     if num == 1:
-        write(file, [1])
+        hpyc.write(file, [1])
         return
     for i in range(0,num):
-        write(file, GetTriangleRow(i))
+        hpyc.write(file, GetTriangleRow(i))
     return
 
 #来源,知乎@酸痛鱼
@@ -66,16 +66,3 @@ def GetTriangleRow(n):
 
 #https://www.zhihu.com/people/coder-the-fish
 #https://zhuanlan.zhihu.com/p/105454576
-
-def write(file,anything,end="\n"):
-    file.write(str(anything)+end)
-    file.flush()
-
-def write_without_flush(file,anything,end="\n"):
-    file.write(str(anything)+end)
-
-def flush(file):
-    file.flush()
-
-def output(self,anything,end="\n"):
-    self.output.AppendText(str(anything)+end)

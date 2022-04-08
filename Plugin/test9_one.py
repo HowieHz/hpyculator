@@ -1,3 +1,5 @@
+import hpyculator as hpyc
+
 PLUGIN_METADATA = {
     'input_mode': '0',  # 输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)
     # self.input_box_amount=1 #输入框数量
@@ -32,18 +34,11 @@ def main(input,self):#调用时传入两个参数，第一个参数是输入，�
     num=input
     num=int(num)
     strings="⑨\n"*num
-    output(self,strings)
+    hpyc.output(self,strings)
     return
 
 def main_save(input,file):#返回一个字符串，第一个参数是输入，第二个参数是需要被保存的文件流，要作为保存函数的第一个参数
     num =input
     num = int(num)
-    write(file,"⑨\n"*num)
+    hpyc.write(file,"⑨\n"*num)
     return
-
-def write(file,anything,end="\n"):
-    file.write(str(anything)+end)
-    file.flush()
-
-def output(self,anything,end="\n"):
-    self.output.AppendText(str(anything)+end)

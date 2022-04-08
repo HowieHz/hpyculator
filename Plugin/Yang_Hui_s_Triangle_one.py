@@ -1,5 +1,3 @@
-import  re
-
 PLUGIN_METADATA = {
     'input_mode' : '1',
     'id' : 'Yang_Hui_s_Triangle_one',

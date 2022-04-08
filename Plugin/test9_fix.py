@@ -1,3 +1,5 @@
+import hpyculator as hpyc
+
 PLUGIN_METADATA = {
     'input_mode': '0',  # 输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)
     # self.input_box_amount=1 #输入框数量
@@ -22,7 +24,7 @@ def main(input,self):#调用时传入两个参数，第一个参数是输入，�
     num=int(num)
     if num<=100000000:
         strings = "⑨\n" * num
-        output(self, strings)
+        hpyc.output(self, strings)
     else:
         need_write = ""
         need_write_len = 0
@@ -30,10 +32,10 @@ def main(input,self):#调用时传入两个参数，第一个参数是输入，�
             need_write += "⑨\n"
             need_write_len += 1
             if need_write_len >= 100000000:
-                output(self, need_write)
+                hpyc.output(self, need_write)
                 need_write_len = 0
         for i in need_write:
-            write(self, need_write)
+            hpyc.write(self, need_write)
         need_write = None
     return
 
@@ -46,26 +48,10 @@ def main_save(input,file):#返回一个字符串，第一个参数是输入，�
         need_write+="⑨\n"
         need_write_len+=1
         if need_write_len >= 100000000:
-            write_without_flush(file, need_write)
-            flush(file)
+            hpyc.write_without_flush(file, need_write)
+            hpyc.flush(file)
             need_write_len=0
     for i in need_write:
-        write(file, need_write)
+        hpyc.write(file, need_write)
     need_write = None
     return
-
-def write(file,anything,end="\n"):
-    file.write(str(anything)+end)
-    file.flush()
-
-def write_without_flush(file,anything,end="\n"):
-    file.write(str(anything)+end)
-
-def flush(file):
-    file.flush()
-
-def output(self,anything,end="\n"):
-    self.output.AppendText(str(anything)+end)
-
-def output_set(self,anything,end="\n"):
-    self.output.SetValue(str(anything)+end)

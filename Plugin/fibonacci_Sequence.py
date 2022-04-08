@@ -1,4 +1,4 @@
-import  re
+import hpyculator as hpyc
 
 PLUGIN_METADATA = {
     'input_mode' : '1',
@@ -53,12 +53,12 @@ PLUGIN_METADATA = {
 def main(num,self,do_what):#返回一个列表
     if do_what == "output":
         if num == 0:
-            output(self,"")
+            hpyc.output(self,"")
         if num == 1:
-            output(self,"1")
+            hpyc.output(self,"1")
         if num >= 2:
-            output(self,"1")
-            output(self, "1")
+            hpyc.output(self,"1")
+            hpyc.output(self, "1")
         fs1 = 1
         fs2 = 1
         fs3 = 1
@@ -67,16 +67,16 @@ def main(num,self,do_what):#返回一个列表
             fs3 = fs1
             fs1 += fs2
             fs2 = fs3
-            output(self,fs1)
+            hpyc.output(self,fs1)
             n += 1
     if do_what == "save":
         if num == 0:
-            write(self, "")
+            hpyc.write(self, "")
         if num == 1:
-            write(self, "1")
+            hpyc.write(self, "1")
         if num >= 2:
-            write(self, "1")
-            write(self, "1")
+            hpyc.write(self, "1")
+            hpyc.write(self, "1")
         fs1 = 1
         fs2 = 1
         fs3 = 1
@@ -85,14 +85,7 @@ def main(num,self,do_what):#返回一个列表
             fs3 = fs1
             fs1 += fs2
             fs2 = fs3
-            write(self,fs1)
+            hpyc.write(self,fs1)
             n += 1
     else:
         pass
-
-def write(file,anything,end="\n"):
-    file.write(str(anything)+end)
-    file.flush()
-
-def output(self,anything,end="\n"):
-    self.output.AppendText(str(anything)+end)
