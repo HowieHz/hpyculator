@@ -3,7 +3,8 @@ import os
 import shelve
 import time
 import wx
-import threading
+#import threading as td
+import multiprocessing as mp
 import sys
 import importlib
 import webbrowser
@@ -202,7 +203,7 @@ class Application(MainWin.MainWindow):  # 主类
 
         # self.events=Events()#实例化Events
         # self.mainWindow()  # 初始化窗口
-        self.is_thread_runing = False
+        self.is_process_runing = False
 
 
 
@@ -265,17 +266,23 @@ class Application(MainWin.MainWindow):  # 主类
         # self.result_process  - 储存计算结果 （用于for循环,就是个i
         # self.result_last  - 储存计算结果
 
+        #self.calculate_thread = td.Thread(target=self.startCalculate)
+
         if str(self.input_box.GetValue()) == "update_log":  # update_log检测
             self.output.SetValue(UPDATE_LOG)
             return
-        #if str(self.input_box.GetValue()) == "停止":  # u停止检测
-            #self.output.SetValue("当前计算线程已停止")
-            #self.is_thread_runing = False
-            #return
-        #if str(self.input_box.GetValue()) == "stop":  # stop检测
-            #self.output.SetValue("当前计算线程已停止")
-            #self.is_thread_runing = False
-            #return
+        if str(self.input_box.GetValue()) == "停止":  # u停止检测
+            if self.is_process_runing == True:
+                calculate_process.terminate()
+                self.is_process_runing = False
+                self.output.SetValue("当前计算线程已停止")
+            return
+        if str(self.input_box.GetValue()) == "stop":  # stop检测
+            if self.is_process_runing == True:
+                calculate_process.terminate()
+                self.is_process_runing = False
+                self.output.SetValue("当前计算线程已停止")
+            return
         if self.list_box.GetString(self.list_box.GetSelection()) == "":  # 是否选择检测
             self.output.SetValue("\n\n" + "不选要算什么我咋知道要算啥子嘞" + "\n")
             return
@@ -286,13 +293,18 @@ class Application(MainWin.MainWindow):  # 主类
         self.result_last = []  # 返回一次就输出、保存专用
 
         #以上是计算前工作
-        calculate_thread=threading.Thread(target=self.startCalculate)
-        calculate_thread.start()
+        #self.calculate_thread.start()
+        calculate_process.start()
+        print("进程启动")
+        calculate_process.terminate()
+        print("进程停止")
+        print(self.calculate_process.is_alive())
+        print(self.calculate_process.is_alive())
 
 
 
     def startCalculate(self):
-        if self.is_thread_runing == False:
+        if self.is_process_runing == False:
             try:
                 self.output.SetValue("")  # 清空输出框
                 self.output.AppendText("计算程序正在运行中，所需时间较长，请耐心等待")
@@ -319,13 +331,13 @@ class Application(MainWin.MainWindow):  # 主类
                 self.output.Clear()
                 self.output.SetValue(str(e))
                 self.output.AppendText("\n\n插件发生错误，请检查输入格式")
-                self.is_thread_runing = False
+                self.is_process_runing = False
         else:
             self.output.AppendText("\n运算程序正在进行中，请勿反复点击计算按钮！\n")  # 清空输出框
 
 
     def whatNeedCalculate(self):
-        self.is_thread_runing = True
+        self.is_process_runing = True
         if self.input_mode == '0':
             self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
         else:
@@ -351,12 +363,11 @@ class Application(MainWin.MainWindow):  # 主类
             self.output.Clear()  # 清空输出框
             exec("self." + self.Selection + ".main(self.input_box_s_input,self)")
         self.time_after_calculate = time.time()  # 储存结束时间
-        self.is_thread_runing = False
 
     def whatNeedCalculateWithSave(self):  # 选择检测+计算
         # self.name_text_file - 储存保存到哪个文件里
         # now - 保存datetime类型的当前时间
-        self.is_thread_runing = True
+        self.is_process_runing = True
         if self.input_mode == '0':
             self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
         else:
@@ -393,12 +404,11 @@ class Application(MainWin.MainWindow):  # 主类
                 exec("self." + self.Selection + ".main_save(self.input_box_s_input,save)")
         finally:
             save.close()
-            self.is_thread_runing = False
 
         self.time_after_calculate = time.time()  # 储存结束时间
 
     def whatNeedCalculateWithTest(self):
-        self.is_thread_runing = True
+        self.is_process_runing = True
         if self.input_mode == '0':
             self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
         else:
@@ -423,8 +433,6 @@ class Application(MainWin.MainWindow):  # 主类
         except:
             self.time_after_calculate = time.time()  # 储存结束时间
             self.output.SetValue("发生错误，请检查输入格式，以及插件是否有test模式")
-
-        self.is_thread_runing = False
 
     def chooseNumberEvent(self, event):  # 选择算法事件
         self.Selection = self.plugin_filename_option_name_map[
@@ -505,9 +513,138 @@ class Application(MainWin.MainWindow):  # 主类
         return
 
 if __name__ == '__main__':
+    def startCalculate(self):
+        if self.is_process_runing == False:
+            try:
+                self.output.SetValue("")  # 清空输出框
+                self.output.AppendText("计算程序正在运行中，所需时间较长，请耐心等待")
+                if self.test_check.GetValue() == True:
+                    whatNeedCalculateWithTest(self)
+                    # 以下是计算后工作
+                    self.output.AppendText(
+                        "\n\n本次测试花费了%.5f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+                else:
+                    if self.save_check.GetValue() == True:  # 检测保存按钮的状态判断是否保存
+                        whatNeedCalculateWithSave(self)
+                        # 以下是计算后工作
+                        self.output.Clear() # 清空输出框
+                        self.output.AppendText(
+                            "\n本次计算+保存花费了%.5f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+                        self.output.AppendText("\n计算结果已保存在" + os.path.abspath(".\\皓式程序输出\\") + self.name_text_file + ".txt")
+                        self.output.AppendText("\n")
+                    else:  # 选择不保存才输出结果
+                        whatNeedCalculate(self)
+                        # 以下是计算后工作
+                        self.output.AppendText(
+                            "\n\n本次计算+输出花费了%.5f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+            except Exception as e:
+                self.output.Clear()
+                self.output.SetValue(str(e))
+                self.output.AppendText("\n\n插件发生错误，请检查输入格式")
+            self.is_process_runing = False
+        else:
+            self.output.AppendText("\n运算程序正在进行中，请勿反复点击计算按钮！\n")  # 清空输出框
+    def whatNeedCalculate(self):
+        self.is_process_runing = True
+        if self.input_mode == '0':
+            self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
+        else:
+            self.input_box_s_input = int(self.input_box.GetValue())  # 取得输入框的数字
+
+        self.time_before_calculate = time.time()  # 储存开始时间
+
+        if self.output_mode == '0':
+            exec("self.result_last = self." + self.Selection + ".main(self.input_box_s_input)")
+            self.output.SetValue(str(self.result_last) + "\n")  # 结果为str，直接输出
+        elif self.output_mode == '2': # 算一行输出一行，但是没有换行
+            self.output.Clear()  # 清空输出框
+            exec("for self.result_process in self." + self.Selection + """.main(self.input_box_s_input):  # 计算
+        self.output.AppendText(str(self.result_process))""")  # 算一行输出一行
+        elif self.output_mode == '1': # 算一行输出一行
+            self.output.Clear()  # 清空输出框
+            exec("for self.result_process in self." + self.Selection + """.main(self.input_box_s_input):  # 计算
+    self.output.AppendText(str(self.result_process)+"\\n")""")  # 算一行输出一行
+        elif self.output_mode == '4':
+            self.output.Clear()  # 清空输出框
+            exec("self." + self.Selection + ".main(self.input_box_s_input,self,'output')")
+        else:
+            self.output.Clear()  # 清空输出框
+            exec("self." + self.Selection + ".main(self.input_box_s_input,self)")
+        self.time_after_calculate = time.time()  # 储存结束时间
+
+    def whatNeedCalculateWithSave(self):  # 选择检测+计算
+        # self.name_text_file - 储存保存到哪个文件里
+        # now - 保存datetime类型的当前时间
+        self.is_process_runing = True
+        if self.input_mode == '0':
+            self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
+        else:
+            self.input_box_s_input = int(self.input_box.GetValue())  # 取得输入框的数字
+
+        now = datetime.datetime.now()  # 保存当前时间，用于文件名
+
+        if self.save_mode == '1':
+            self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') +'  '+ str(self.input_box_s_input).replace('.','_')+"的"+self.save_name
+        else:
+            self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') +'  '+ self.save_name + str(self.input_box_s_input) + self.quantifier
+
+        save = open(os.path.abspath('.\\皓式程序输出\\' + self.name_text_file + ".txt"), "w", encoding="utf-8")
+
+        self.time_before_calculate = time.time()  # 储存开始时间
+
+        try:
+            if self.output_mode == '0':  # 分布输出和一次输出
+                exec("self.result_last = self." + self.Selection + ".main(self.input_box_s_input)")
+                save.write(str(self.result_last) + "\n")
+            elif self.output_mode == '2':  # 算一行输出一行，但是没有换行
+                exec("for self.result_process in self." + self.Selection + """.main(self.input_box_s_input):  # 计算
+    save.write(str(self.result_process))
+    save.flush()
+                    """)  # 算出来就存进去
+            elif self.output_mode == '1': # 算一行输出一行，但是没有换行
+                exec("for self.result_process in self." + self.Selection + """.main(self.input_box_s_input):  # 计算
+    save.write(str(self.result_process)+"\\n")
+    save.flush()
+            """)  # 算出来就存进去
+            elif self.output_mode == '4':
+                exec("self." + self.Selection + ".main(self.input_box_s_input,save,'save')")
+            else:
+                exec("self." + self.Selection + ".main_save(self.input_box_s_input,save)")
+        finally:
+            save.close()
+
+        self.time_after_calculate = time.time()  # 储存结束时间
+
+    def whatNeedCalculateWithTest(self):
+        self.is_process_runing = True
+        if self.input_mode == '0':
+            self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
+        else:
+            self.input_box_s_input = int(self.input_box.GetValue())  # 取得输入框的数字
+
+        try:
+            if self.output_mode == '4':
+                self.output.Clear()  # 清空输出框
+
+                self.time_before_calculate = time.time()  # 储存开始时间
+                exec("self." + self.Selection + ".main(self.input_box_s_input,self,'test')")
+                self.time_after_calculate = time.time()  # 储存结束时间
+                if self.output.GetValue() != "":
+                    self.output.Clear()  # 清空输出框
+                    self.output.SetValue("发生错误，请检查输入格式，以及插件是否有test模式")
+            else:
+                self.output.Clear()  # 清空输出框
+
+                self.time_before_calculate = time.time()  # 储存开始时间
+                exec("self." + self.Selection + ".main_test(self.input_box_s_input,self)")
+                self.time_after_calculate = time.time()  # 储存结束时间
+        except:
+            self.time_after_calculate = time.time()  # 储存结束时间
+            self.output.SetValue("发生错误，请检查输入格式，以及插件是否有test模式")
     # app=wx.PySimpleApp()
     app = wx.App()
     # wx.App(False)
     mainWindow = Application()
+    calculate_process = mp.Process(target=startCalculate(mainWindow))
     mainWindow.Show(True)
     app.MainLoop()  # 正常_必备_主事件循环
