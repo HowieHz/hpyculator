@@ -11,6 +11,8 @@
 
 .. code-block:: python
 
+    import hpyculator as hpyc
+
     PLUGIN_METADATA = {
         'input_mode' : '[]',#输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)
         'id' : '[文件名]',#ID，插件标识符，需要和文件名一致

@@ -296,7 +296,7 @@ class Application(MainWin.MainWindow):  # 主类
             #wx.CallAfter(self.setOutPut,"当前计算线程已停止")
             #self.is_thread_runing = False
             #return
-        print(self.list_box.GetSelection())
+        #print(self.list_box.GetSelection())#选择位置输出
         if self.list_box.GetSelection() == -1:  # 是否选择检测
             wx.CallAfter(self.setOutPut,"\n\n" +
                          """
