@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import wx
 import wx.xrc
+import wx.adv
 
 M_VERSION = "V1.2.4"
 
@@ -13,7 +14,8 @@ class MainWindow(wx.Frame):
         self.start_button = wx.Button(self.bkg, label="计算")  # 计算按钮
 
         self.save_check = wx.CheckBox(self.bkg, wx.ID_ANY, "保存为文件", wx.Point(250, 5), wx.DefaultSize, 0)  # 保存选项
-        self.test_check = wx.CheckBox(self.bkg, wx.ID_ANY, "测试模块性能", wx.Point(250, 5), wx.DefaultSize, 0)  # 保存选项
+        self.test_check = wx.CheckBox(self.bkg, wx.ID_ANY, "测试模块性能", wx.Point(250, 5), wx.DefaultSize, 0)  #测试选项
+        self.output_optimization_check = wx.CheckBox(self.bkg, wx.ID_ANY, "输出防卡死", wx.Point(250, 5), wx.DefaultSize, 0) #输出性能优化选项
 
         #self.can_choose_number=[]
         #self.choose_number = wx.Choice(self.bkg, wx.ID_ANY, choices=self.can_choose_number)  # 选择算法
@@ -44,7 +46,6 @@ class MainWindow(wx.Frame):
         self.quit = wx.MenuItem(self.stop_menu, 1011, '&退出程序\tCtrl+Q')
         self.stop_menu.Append(self.quit)
 
-
         """
         解读:此方法用于向菜单中添加一个选项
         参数(wx.ID_SAVE):这是wxWidgets提供的标准事件ID，我们实现的是保存功能，所以使用了ID_SAVE，如果你需要了解更多的标准ID，请访问 事件ID列表
@@ -73,6 +74,7 @@ class MainWindow(wx.Frame):
         #self.hbox1.Add(self.choose_number, 0, wx.EXPAND | wx.LEFT, 5)  # 选择选项的尺寸器
         self.hbox1.Add(self.save_check, 0, wx.EXPAND | wx.LEFT, 5)  # 保存选项的尺寸器
         self.hbox1.Add(self.test_check, 0, wx.EXPAND | wx.LEFT, 5)  # 测试选项的尺寸器
+        self.hbox1.Add(self.output_optimization_check, 0, wx.EXPAND | wx.LEFT, 5)  # 测试选项的尺寸器
 
         self.hbox2 = wx.BoxSizer()  # 尺寸器
         self.hbox2.Add(self.input_box, proportion=1, flag=wx.EXPAND)  # 输入行数的文本框的尺寸器
@@ -105,6 +107,7 @@ class MainWindow(wx.Frame):
         self.start_button.Bind(wx.EVT_BUTTON, self.startEvent)  # 计算按钮事件
         self.save_check.Bind(wx.EVT_CHECKBOX, self.saveCheckEvent)  # 保存选项事件
         self.test_check.Bind(wx.EVT_CHECKBOX, self.testCheckEvent)  #测试模式选项事件
+        self.output_optimization_check.Bind(wx.EVT_CHECKBOX, self.outputOptimizationCheckEvent)  # 测试模式选项事件
         #self.choose_number.Bind(wx.EVT_CHOICE, self.chooseNumberEvent)  # 选择算法事件
         self.Bind(wx.EVT_MENU, self.showDONE, id=1002)
         self.Bind(wx.EVT_MENU, self.showTODO, id=1001)
@@ -127,6 +130,9 @@ class MainWindow(wx.Frame):
         event.Skip()
 
     def testCheckEvent(self,event):
+        event.Skip()
+
+    def outputOptimizationCheckEvent(self,event):
         event.Skip()
 
     def chooseNumberEvent(self, event):

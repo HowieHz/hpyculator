@@ -45,11 +45,11 @@ def main(input,self):
     b = int(b)
     hpyc.output(self,a+b)
 
-def main_save(input,self):
+def main_save(input,filename):
     a, b = input.split(",")
     a=int(a)
     b=int(b)
-    hpyc.write(self,a+b)
+    hpyc.write(filename,a+b)
 
 def main_test(input,self):
     a, b = input.split(",")

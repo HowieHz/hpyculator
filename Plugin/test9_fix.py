@@ -33,9 +33,10 @@ def main(input,self):#调用时传入两个参数，第一个参数是输入，�
             need_write_len += 1
             if need_write_len >= 100000000:
                 hpyc.output(self, need_write)
+                need_write=""
                 need_write_len = 0
         for i in need_write:
-            hpyc.write(self, need_write)
+            hpyc.output(self, need_write)
         need_write = None
     return
 
@@ -50,6 +51,7 @@ def main_save(input,file):#返回一个字符串，第一个参数是输入，�
         if need_write_len >= 100000000:
             hpyc.write_without_flush(file, need_write)
             hpyc.flush(file)
+            need_write=""
             need_write_len=0
     for i in need_write:
         hpyc.write(file, need_write)

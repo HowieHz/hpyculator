@@ -77,6 +77,7 @@ def main_save(num,file):#返回一个列表
                 for write_i in need_write:
                     hpyc.write_without_flush(file, write_i)
                 hpyc.flush(file)
+                need_write = []
                 need_write_len = 0
         for write_i in need_write:
             hpyc.write(file, write_i)
