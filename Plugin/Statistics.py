@@ -1,8 +1,8 @@
 PLUGIN_METADATA = {
     'input_mode' : '0',
     'id' : 'Statistics',
-    'option_name' : "平均数,众数,中位数,方差,标准差V1.0.1 by HowieHz",
-    'version' : 'V1.0.1',
+    'option_name' : "平均数,众数,中位数,方差,标准差V1.1.0 by HowieHz",
+    'version' : 'V1.1.0',
 
     'save_name' : "平均数,众数,中位数,方差,标准差",
     'quantifier' : "",
