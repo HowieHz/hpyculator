@@ -13,7 +13,7 @@ import hpyculator
 
 import MainWin
 
-M_VERSION = "V1.2.4"
+M_VERSION = "V1.2.5"
 
 TODO = """更新展望(咕咕咕):
 1.背景图
@@ -25,6 +25,11 @@ TODO = """更新展望(咕咕咕):
 """
 
 UPDATE_LOG = """更新日志:
+20220409
+V1.2.5
+修复了遗留问题
+完善了输出优化模式
+
 20220408
 V1.2.4
 hpyculator模块上传了！现可通过pip下载
@@ -184,19 +189,19 @@ class Application(MainWin.MainWindow):  # 主类
             for list in self.plugin_files_name:#从所有读取的文件中挑选出.py为后缀的文件
                 if (list[0].split("."))[-1] == "py":
                     self.plugin_files_name_py = list
-        except:
+        except Exception:
             pass
 
         #pprint.pprint("读取到的.py文件:")
         #pprint.pprint(self.plugin_files_name_py)
         try:
             self.init_plugin_singerfile()#导入单文件插件
-        except:
+        except Exception:
             pass
 
         try:
             self.init_plugin_folder()#导入文件插件
-        except:
+        except Exception:
             pass
 
         self.list_box.Append(self.can_choose_number)
@@ -216,15 +221,15 @@ class Application(MainWin.MainWindow):  # 主类
         self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)#读取设置文件
         try:
             self.save_check.SetValue(self.setting['save_check'])  # 根据数据设置选项状态
-        except:
+        except Exception:
             self.setting['save_check'] = self.save_check.GetValue()
         try:
             self.save_location_input_box.SetValue(self.setting['save_location'])  # 根据数据设置选项状态
-        except:
+        except Exception:
             self.setting['save_location'] = str(self.save_location_input_box.GetValue())
         try:
             self.output_optimization_check.SetValue(self.setting['output_optimization'])  # 根据数据设置选项状态
-        except:
+        except Exception:
             self.setting['output_optimization'] = self.output_optimization_check.GetValue()
         self.setting.close()
 
@@ -242,7 +247,7 @@ class Application(MainWin.MainWindow):  # 主类
                     "self.can_choose_number.append(self." + name + ".PLUGIN_METADATA['option_name'])")  # 读取模块元数据，添加gui选项
                 exec(
                     "self.plugin_filename_option_name_map[self." + name + ".PLUGIN_METADATA['option_name']]=self." + name + ".PLUGIN_METADATA['id']")
-            except:
+            except Exception:
                 pass
 
     def init_plugin_folder(self):
@@ -254,7 +259,7 @@ class Application(MainWin.MainWindow):  # 主类
                     "self.can_choose_number.append(self." + name + ".PLUGIN_METADATA['option_name'])")  # 读取模块元数据，添加gui选项
                 exec(
                     "self.plugin_filename_option_name_map[self." + name + ".PLUGIN_METADATA['option_name']]=self." + name + ".PLUGIN_METADATA['id']")
-            except:
+            except Exception:
                 pass
 
     def readPlugin(self,path):
@@ -291,11 +296,25 @@ class Application(MainWin.MainWindow):  # 主类
             #wx.CallAfter(self.setOutPut,"当前计算线程已停止")
             #self.is_thread_runing = False
             #return
-        if self.list_box.GetString(self.list_box.GetSelection()) == "":  # 是否选择检测
-            wx.CallAfter(self.setOutPut,"\n\n" + "不选要算什么我咋知道要算啥子嘞" + "\n")
+        print(self.list_box.GetSelection())
+        if self.list_box.GetSelection() == -1:  # 是否选择检测
+            wx.CallAfter(self.setOutPut,"\n\n" +
+                         """
+不选要算什么我咋知道要算啥子嘞
+                         
+请在左侧选择运算核心
+          ↓
+← ← ←""")
             return
         if str(self.input_box.GetValue()) == "":  # 是否输入检测
-            wx.CallAfter(self.setOutPut,"\n\n" + "不输要算什么我咋知道要算啥子嘞" + "\n")
+            wx.CallAfter(self.setOutPut,"""                                                  ↑
+                                                  ↑上面的就是输入框了
+不输要算什么我咋知道要算啥子嘞     ↑
+         → → → → → → → → → →  ↑
+         ↑
+请在上面的框输入需要被处理的数据
+
+如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）""")
             return
 
         self.result_last = []  # 返回一次就输出、保存专用
@@ -445,9 +464,9 @@ class Application(MainWin.MainWindow):  # 主类
             self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') + '  ' + self.save_name + str(
                 self.input_box_s_input) + self.quantifier
 
-        save = open(
-            os.path.join(os.path.abspath(self.save_location_input_box.GetValue()), self.name_text_file + ".txt"), "w",
-            encoding="utf-8")
+        file_path = os.path.join(os.path.abspath(self.save_location_input_box.GetValue()), "临时文件_"+self.name_text_file +".txt")
+
+        save = open(file_path, "w",encoding="utf-8")
 
         self.time_before_calculate = time.time()  # 储存开始时间
 
@@ -472,14 +491,25 @@ class Application(MainWin.MainWindow):  # 主类
         finally:
             save.close()
             wx.CallAfter(self.clearOutPut)  # 清空输出框
-            with open(os.path.join(os.path.abspath(self.save_location_input_box.GetValue()), self.name_text_file + ".txt"),"r",encoding="utf-8") as f:
+            with open(file_path,"r",encoding="utf-8") as f:
+                times=0
                 while True:
-                    line = f.readline()
+                    line = f.readline(2048)
+                    times+=1
                     wx.CallAfter(self.outPutToOutPut,line)
+                    #time.sleep(0.00000001)
                     if line == "":
+                        break
+                    if times>=256:
+                        wx.CallAfter(self.outPutToOutPut,"\n\n输出防卡死：检测到输出数据过大，请使用保存到文件")
                         break
 
         self.time_after_calculate = time.time()  # 储存结束时间
+        if os.path.exists(file_path):  # 如果文件存在
+           os.remove(file_path)
+            # os.unlink(path)
+        else:
+            print('no such file:%s' % file_path)  # 则返回文件不存在
 
 
 
@@ -506,7 +536,7 @@ class Application(MainWin.MainWindow):  # 主类
                 self.time_before_calculate = time.time()  # 储存开始时间
                 exec("self." + self.Selection + ".main_test(self.input_box_s_input,self)")
                 self.time_after_calculate = time.time()  # 储存结束时间
-        except:
+        except Exception:
             self.time_after_calculate = time.time()  # 储存结束时间
             wx.CallAfter(self.setOutPut,"发生错误，请检查输入格式，以及插件是否有test模式")
 
@@ -522,7 +552,7 @@ class Application(MainWin.MainWindow):  # 主类
         for i in self.required_parameters:
             try:
                 exec("self."+i+"=str(self." + self.Selection + ".PLUGIN_METADATA['"+i+"'])")
-            except:
+            except Exception:
                 exec("self." + i + "=''")
         if self.fullwidth_symbol == '1':
             self.help = self.help.replace(",","，").replace(".","。").replace("'","‘").replace('"','”').replace('(','（').replace(')','）')
@@ -557,9 +587,11 @@ class Application(MainWin.MainWindow):  # 主类
 
     def quit_event(self,event): #菜单栏退出事件
         self.Close(True)
+        sys.exit(0)
 
     def stop_compute(self,event):
         self.Destroy()
+        sys.exit(0)
 
     def cheak_update(self,event):
         webbrowser.open("https://github.com/HowieHz/hpyculator/releases")
@@ -571,7 +603,7 @@ class Application(MainWin.MainWindow):  # 主类
         self.setting.close()
 
     def __del__(self):
-        self.Destroy()
+        pass
 
     def search_text(self,event): # 搜索框按回车之后的事件
         self.search_keyword = event.GetString()
@@ -582,7 +614,7 @@ class Application(MainWin.MainWindow):  # 主类
         try:#清空选择栏
             for i in range(0,len(self.can_choose_number)):
                 self.list_box.Delete(0)
-        except:
+        except Exception:
             pass
 
         for i in self.can_choose_number:#选出符合要求的
@@ -599,7 +631,7 @@ class Application(MainWin.MainWindow):  # 主类
         try:
             for i in range(0, len(self.can_choose_number)):
                 self.list_box.Delete(0)
-        except:
+        except Exception:
             pass
         self.list_box.Append(self.can_choose_number)
         return

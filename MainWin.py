@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 import wx
 import wx.xrc
-import wx.adv
 
-M_VERSION = "V1.2.4"
+M_VERSION = "V1.2.5"
 
 class MainWindow(wx.Frame):
     def __init__(self):
-        wx.Frame.__init__(self, None, id=-1, title="各类数组计算程序%s-Howie皓子制作" % M_VERSION, size=(1000, 750))
+        main_window=wx.Frame.__init__(self, None, id=-1, title="各类数组计算程序%s-Howie皓子制作" % M_VERSION, size=(1000, 750))
         # 主窗口(MainFrame)选项，编辑标题
 
         self.bkg = wx.Panel(self)  # bkg = background
@@ -119,6 +118,15 @@ class MainWindow(wx.Frame):
         self.Bind(wx.EVT_LISTBOX,self.chooseNumberEvent,self.list_box)
         self.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN,self.search_text)#搜索框回车后执行的函数，self.search_text
         self.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.search_cancel)
+
+        #win = wx.Frame(self, -1, "输出框")
+        #self.bkg2 = wx.Panel(win)
+        #self.output = wx.TextCtrl(self.bkg2, style=wx.TE_MULTILINE)  # 最大的文本框
+        #self.hbox_output = wx.BoxSizer()  # 尺寸器
+        #self.hbox_output.Add(self.output, proportion=1, flag=wx.EXPAND,
+        #               border=5)  # 最大的文本框的尺寸器
+        #self.bkg2.SetSizer(self.hbox_output)  # 布局显示_必备
+        #uwin.Show(True)
 
     def __del__(self):
         pass
