@@ -12,7 +12,9 @@ PLUGIN_METADATA = {
     'output_name': "test⑨",
     'author': "HowieHz",  # 作者
     'help': """
-    test,输出几个⑨
+    输入n，输出n个⑨
+    
+    不满一个的⑨就会被uuz吃掉
 """,  # 帮助和说明
     # self.output_init=""#选择后默认输出
     'output_end': "",  # 输出小尾巴
@@ -28,33 +30,6 @@ PLUGIN_METADATA = {
     # 如果是1，则self.quantifier无效化
     # save_mode,output_mode,input_mode的值为int
 }
-
-"""主框在选择后的输出
-            self.output_start
-            self.output_name self.version
-            self.author制作
-
-            self.help
-
-            self.output_end
-            """
-
-"""主框在输出后的输出
-            本次计算花费了*秒
-            在经过self.output_mode对应形式处理之后的输出（选择不保存）
-            保存计算结果至文件中···（选择保存）
-            计算结果已保存在 保存文件名的完整路径（选择保存）
-
-            """
-
-"""保存文件名
-            时间 + self.save_name+ str(self.input_box_s_input(指代输入框的输入))+self.quantifier .txt
-            """
-
-"""添加的选项
-            self.option_name
-            """
-
 
 def main(input,self):#调用时传入两个参数，第一个参数是输入，第二个参数是程序的主类，要作为输出函数的的第一个参数\
     num=input

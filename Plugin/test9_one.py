@@ -12,7 +12,10 @@ PLUGIN_METADATA = {
     'output_name': "test⑨",
     'author': "HowieHz",  # 作者
     'help': """
-    test,输出几个⑨
+    输入n，输出n个⑨
+    
+    不满一个的⑨就会被uuz吃掉
+    
     one系列使用警告：如果输入过大的数导致内存爆炸，作者概不负责
 """,  # 帮助和说明
     # self.output_init=""#选择后默认输出
