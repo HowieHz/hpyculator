@@ -179,6 +179,7 @@ class Application(MainWin.MainWindow):  # 主类
         self.plugin_files_name=[]
         self.plugin_files_name_folder= []
         self.can_choose_number = []
+        self.plugin_files_name_py=[]
         self.plugin_filename_option_name_map = {}
         self.readPlugin(r'.\Plugin')
         #pprint.pprint("读取到Plugin文件夹下文件:")
@@ -188,7 +189,9 @@ class Application(MainWin.MainWindow):  # 主类
         try:
             for list in self.plugin_files_name:#从所有读取的文件中挑选出.py为后缀的文件
                 if (list[0].split("."))[-1] == "py":
-                    self.plugin_files_name_py = list
+                    if  self.plugin_files_name_py==[]:
+                        self.plugin_files_name_py = list
+        #这行bug很多，小心
         except Exception:
             pass
 
@@ -643,6 +646,7 @@ hello_world 变量全部小写，使用下划线连接
 helloWorld 函数(def)和方法使用小驼峰式命名法，首单词字母小写，后面单词字母大写
 HelloWorld 类名(Class)、文件名(Xswl.txt)使用帕斯卡命名规则(大驼峰式命名法,每一个单词的首字母都采用大写字母)。
 HELLO_WORLD 常量(NEVER_GIVE_UP)全部大写，使用下划线连接单词
+numba vx jax感觉两个差不多
 """
 if __name__ == '__main__':
     # app=wx.PySimpleApp()

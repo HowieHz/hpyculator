@@ -6,7 +6,7 @@ M_VERSION = "V1.2.5"
 
 class MainWindow(wx.Frame):
     def __init__(self):
-        main_window=wx.Frame.__init__(self, None, id=-1, title="各类数组计算程序%s-Howie皓子制作" % M_VERSION, size=(1000, 750))
+        main_window=wx.Frame.__init__(self, None, id=-1, title="各类数组计算程序%s-Howie皓子制作" % M_VERSION, size=(1250, 950))
         # 主窗口(MainFrame)选项，编辑标题
 
         self.bkg = wx.Panel(self)  # bkg = background

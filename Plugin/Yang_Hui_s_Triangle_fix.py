@@ -50,7 +50,24 @@ def main(num,self):#返回一个列表
             return
 
         for i in range(0,num):
-            hpyc.output(self,GetTriangleRow(i))
+
+            size = i + 1
+            result = [1] * size
+
+            for cols in range(2, size):
+                m = cols // 2
+                mid_val = result[m - 1] + result[m]
+                for j in range(1, m):
+                    result[j] = result[cols - j] + result[cols - j - 1]
+
+                result[m] = mid_val
+
+                for j in range(m + 1, cols):
+                    result[j] = result[cols - j]
+            #https: // www.zhihu.com / people / coder - the - fish
+            # https://zhuanlan.zhihu.com/p/105454576
+
+            hpyc.output(self,result)
         return
 
 def main_save(num,file):#返回一个列表
@@ -71,7 +88,23 @@ def main_save(num,file):#返回一个列表
         need_write = []
         need_write_len = 0
         for i in range(0,num):
-            need_write.append(GetTriangleRow(i))
+
+            size = i + 1
+            result = [1] * size
+
+            for cols in range(2, size):
+                m = cols // 2
+                mid_val = result[m - 1] + result[m]
+                for j in range(1, m):
+                    result[j] = result[cols - j] + result[cols - j - 1]
+
+                result[m] = mid_val
+
+                for j in range(m + 1, cols):
+                    result[j] = result[cols - j]
+            #https: // www.zhihu.com / people / coder - the - fish
+            # https://zhuanlan.zhihu.com/p/105454576
+            need_write.append(result)
             need_write_len += 1
             if need_write_len >= 3000:
                 for write_i in need_write:
@@ -83,24 +116,3 @@ def main_save(num,file):#返回一个列表
             hpyc.write(file, write_i)
         need_write = None
         return
-
-#来源,知乎@酸痛鱼
-def GetTriangleRow(n):
-    size = n + 1
-    result = [1] * size
-
-    for cols in range(2, size):
-        m = cols // 2
-        mid_val = result[m - 1] + result[m]
-        for j in range(1, m):
-            result[j] = result[cols - j] + result[cols - j - 1]
-
-        result[m] = mid_val
-
-        for j in range(m + 1, cols):
-            result[j] = result[cols - j]
-
-    return result
-
-#https://www.zhihu.com/people/coder-the-fish
-#https://zhuanlan.zhihu.com/p/105454576
