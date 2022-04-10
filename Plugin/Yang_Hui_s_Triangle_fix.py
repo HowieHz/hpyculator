@@ -31,88 +31,22 @@ PLUGIN_METADATA = {
 }
 
 def main(num,self):#返回一个列表
-    if num <=3000:
-        if num == 0:
-            return []
-        l1 = [[1]]
-        n = 1
-        while n < num:
-            l1.append(list(map(lambda x, y: x + y, [0] + l1[-1], l1[-1] + [0])))
-            n += 1
-        for i in l1:
-            hpyc.output(self,i)
-    else:
-        if num == 0:
-            hpyc.output(self,[])
-            return
-        if num == 1:
-            hpyc.output(self,[1])
-            return
-
-        for i in range(0,num):
-
-            size = i + 1
-            result = [1] * size
-
-            for cols in range(2, size):
-                m = cols // 2
-                mid_val = result[m - 1] + result[m]
-                for j in range(1, m):
-                    result[j] = result[cols - j] + result[cols - j - 1]
-
-                result[m] = mid_val
-
-                for j in range(m + 1, cols):
-                    result[j] = result[cols - j]
-            #https: // www.zhihu.com / people / coder - the - fish
-            # https://zhuanlan.zhihu.com/p/105454576
-
-            hpyc.output(self,result)
-        return
+    if num == 0:
+        return []
+    l1 = [[1]]
+    for _ in range(0,num-1):
+        l1.append(list(map(lambda x, y: x + y, [0] + l1[-1], l1[-1] + [0])))
+    for i in l1:
+        hpyc.output(self,i)
 
 def main_save(num,file):#返回一个列表
-    if num <= 3000:
-        if num == 0:
-            hpyc.write(file,[])
-        l1 = [[1]]
-        n = 1
-        while n < num:
-            l1.append(list(map(lambda x, y: x + y, [0] + l1[-1], l1[-1] + [0])))
-            n += 1
-        for i in l1:
-            hpyc.write_without_flush(file,i)
-        hpyc.flush(file)
-        l1=None
-        return
-    else:
-        need_write = []
-        need_write_len = 0
-        for i in range(0,num):
-
-            size = i + 1
-            result = [1] * size
-
-            for cols in range(2, size):
-                m = cols // 2
-                mid_val = result[m - 1] + result[m]
-                for j in range(1, m):
-                    result[j] = result[cols - j] + result[cols - j - 1]
-
-                result[m] = mid_val
-
-                for j in range(m + 1, cols):
-                    result[j] = result[cols - j]
-            #https: // www.zhihu.com / people / coder - the - fish
-            # https://zhuanlan.zhihu.com/p/105454576
-            need_write.append(result)
-            need_write_len += 1
-            if need_write_len >= 3000:
-                for write_i in need_write:
-                    hpyc.write_without_flush(file, write_i)
-                hpyc.flush(file)
-                need_write = []
-                need_write_len = 0
-        for write_i in need_write:
-            hpyc.write(file, write_i)
-        need_write = None
-        return
+    if num == 0:
+        hpyc.write(file,[])
+    l1 = [[1]]
+    for _ in range(0,num-1):
+        l1.append(list(map(lambda x, y: x + y, [0] + l1[-1], l1[-1] + [0])))
+    for i in l1:
+        hpyc.write_without_flush(file,i)
+    hpyc.flush(file)
+    l1=None
+    return
