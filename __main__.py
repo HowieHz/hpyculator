@@ -8,6 +8,7 @@ import sys
 import importlib
 import webbrowser
 import hpyculator
+import tempfile
 #import jpype
 #import pprint
 
@@ -133,6 +134,7 @@ Howie皓子制作
 
 必读:
 
+
 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 0.建议保存到文件，这样不会内屏输出导致卡死!!--------重点！！！
 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
@@ -227,14 +229,22 @@ class Application(MainWin.MainWindow):  # 主类
             self.save_check.SetValue(self.setting['save_check'])  # 根据数据设置选项状态
         except Exception:
             self.setting['save_check'] = self.save_check.GetValue()
+
         try:
             self.save_location_input_box.SetValue(self.setting['save_location'])  # 根据数据设置选项状态
         except Exception:
-            self.setting['save_location'] = str(self.save_location_input_box.GetValue())
+            self.setting['save_location'] = self.save_location_input_box.GetValue()
+
         try:
             self.output_optimization_check.SetValue(self.setting['output_optimization'])  # 根据数据设置选项状态
         except Exception:
-            self.setting['output_optimization'] = self.output_optimization_check.GetValue()
+            self.setting['output_optimization'] = True
+            self.output_optimization_check.SetValue(self.setting['output_optimization'])
+        try:
+            self.output_optimization_check.SetValue(self.setting['output_lock_maximums'])  # 根据数据设置选项状态
+        except Exception:
+            self.setting['output_lock_maximums'] = True
+            self.output_optimization_check.SetValue(self.setting['output_optimization'])
         self.setting.close()
 
     def init_plugin_singerfile(self):
@@ -468,53 +478,53 @@ class Application(MainWin.MainWindow):  # 主类
             self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') + '  ' + self.save_name + str(
                 self.input_box_s_input) + self.quantifier
 
-        file_path = os.path.join(os.path.abspath(self.save_location_input_box.GetValue()), "临时文件_"+self.name_text_file +".txt")
 
-        save = open(file_path, "w",encoding="utf-8")
 
-        self.time_before_calculate = time.time()  # 储存开始时间
+        with tempfile.TemporaryFile('w+t', encoding='utf-8', errors='ignore') as save:
+            self.time_before_calculate = time.time()  # 储存开始时间
 
-        try:
-            if self.output_mode == '0':  # 分布输出和一次输出
-                exec("self.result_last = self." + self.Selection + ".main(self.input_box_s_input)")
-                save.write(str(self.result_last) + "\n")
-            elif self.output_mode == '2':  # 算一行输出一行，但是没有换行
-                exec("for self.result_process in self." + self.Selection + """.main(self.input_box_s_input):  # 计算
-            save.write(str(self.result_process))
-            save.flush()
-                            """)  # 算出来就存进去
-            elif self.output_mode == '1':  # 算一行输出一行，但是没有换行
-                exec("for self.result_process in self." + self.Selection + """.main(self.input_box_s_input):  # 计算
-            save.write(str(self.result_process)+"\\n")
-            save.flush()
-                    """)  # 算出来就存进去
-            elif self.output_mode == '4':
-                exec("self." + self.Selection + ".main(self.input_box_s_input,save,'save')")
-            else:
-                exec("self." + self.Selection + ".main_save(self.input_box_s_input,save)")
-        finally:
-            save.close()
-            wx.CallAfter(self.clearOutPut)  # 清空输出框
-            with open(file_path,"r",encoding="utf-8") as f:
+            try:
+                if self.output_mode == '0':  # 分布输出和一次输出
+                    exec("self.result_last = self." + self.Selection + ".main(self.input_box_s_input)")
+                    save.write(str(self.result_last) + "\n")
+                elif self.output_mode == '2':  # 算一行输出一行，但是没有换行
+                    exec("for self.result_process in self." + self.Selection + """.main(self.input_box_s_input):  # 计算
+                save.write(str(self.result_process))
+                save.flush()
+                                """)  # 算出来就存进去
+                elif self.output_mode == '1':  # 算一行输出一行，但是没有换行
+                    exec("for self.result_process in self." + self.Selection + """.main(self.input_box_s_input):  # 计算
+                save.write(str(self.result_process)+"\\n")
+                save.flush()
+                        """)  # 算出来就存进去
+                elif self.output_mode == '4':
+                    exec("self." + self.Selection + ".main(self.input_box_s_input,save,'save')")
+                else:
+                    exec("self." + self.Selection + ".main_save(self.input_box_s_input,save)")
+            finally:
+                wx.CallAfter(self.clearOutPut)  # 清空输出框
                 times=0
-                while True:
-                    line = f.readline(2048)
-                    times+=1
-                    wx.CallAfter(self.outPutToOutPut,line)
-                    #time.sleep(0.00000001)
-                    if line == "":
-                        break
-                    if times>=256:
-                        wx.CallAfter(self.outPutToOutPut,"\n\n输出防卡死：检测到输出数据过大，请使用保存到文件")
-                        break
+                save.seek(0)# 将文件指针移到开始处，准备读取文件
+                if self.output_optimization_check.GetValue():
+                    while True:
+                        line = save.readline(2048)
+                        times+=1
+                        wx.CallAfter(self.outPutToOutPut,line)
+                        if line == "":
+                            break
+                        if times>=256:
+                            wx.CallAfter(self.outPutToOutPut,"\n\n输出上限：检测到输出数据过大，请使用保存到文件防止卡死")
+                            break
+                else:
+                    while True:
+                        line = save.readline(2048)
+                        times+=1
+                        wx.CallAfter(self.outPutToOutPut,line)
+                        if line == "":
+                            break
+
 
         self.time_after_calculate = time.time()  # 储存结束时间
-        if os.path.exists(file_path):  # 如果文件存在
-           os.remove(file_path)
-            # os.unlink(path)
-        else:
-            print('no such file:%s' % file_path)  # 则返回文件不存在
-
 
 
     def whatNeedCalculateWithTest(self):
@@ -578,15 +588,42 @@ class Application(MainWin.MainWindow):  # 主类
     def saveCheckEvent(self, event):  # 保存选项（那个√）事件
         self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)
         self.setting['save_check'] = self.save_check.GetValue()
+        if self.test_check.GetValue():
+            self.test_check.SetValue(False)
+        else:
+            pass
         self.setting.close()
 
-    def testCheckEvent(self,event):
-        self.save_check.SetValue(False)
-        return
+    def testCheckEvent(self,event):#test开就不报存
+        self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)
+        if self.save_check.GetValue():
+            self.save_check.SetValue(False)
+            self.setting['save_location'] = False
+        else:
+            pass
+        self.setting.close()
 
     def outputOptimizationCheckEvent(self,event):
         self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)
+        if self.output_optimization_check.GetValue():
+            pass
+        else:
+            self.output_lock_maximums_check.SetValue(False)
+            self.setting['output_lock_maximums'] = False
         self.setting['output_optimization'] = self.output_optimization_check.GetValue()
+        self.setting.close()
+
+    def outputLockMaximumsCheckEvent(self, event):#锁上限开，就要开优化
+        self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)
+        if self.output_lock_maximums_check.GetValue():
+            if self.output_optimization_check.GetValue():
+                pass
+            else:
+                self.output_optimization_check.SetValue(True)
+                self.setting['output_optimization'] = True
+            self.setting['output_lock_maximums'] = True
+        else:
+            self.setting['output_lock_maximums'] = False
         self.setting.close()
 
     def quit_event(self,event): #菜单栏退出事件

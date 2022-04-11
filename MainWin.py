@@ -4,32 +4,37 @@ import wx.xrc
 
 M_VERSION = "V1.2.5"
 
+
 class MainWindow(wx.Frame):
     def __init__(self):
-        main_window=wx.Frame.__init__(self, None, id=-1, title="各类数组计算程序%s-Howie皓子制作" % M_VERSION, size=(1250, 950))
+        main_window = wx.Frame.__init__(self, None, id=-1, title="各类数组计算程序%s-Howie皓子制作" % M_VERSION, size=(1250, 950))
         # 主窗口(MainFrame)选项，编辑标题
 
         self.bkg = wx.Panel(self)  # bkg = background
         self.start_button = wx.Button(self.bkg, label="计算")  # 计算按钮
 
         self.save_check = wx.CheckBox(self.bkg, wx.ID_ANY, "保存为文件", wx.Point(250, 5), wx.DefaultSize, 0)  # 保存选项
-        self.test_check = wx.CheckBox(self.bkg, wx.ID_ANY, "测试模块性能", wx.Point(250, 5), wx.DefaultSize, 0)  #测试选项
-        self.output_optimization_check = wx.CheckBox(self.bkg, wx.ID_ANY, "输出防卡死", wx.Point(250, 5), wx.DefaultSize, 0) #输出性能优化选项
+        self.test_check = wx.CheckBox(self.bkg, wx.ID_ANY, "测试模块性能", wx.Point(250, 5), wx.DefaultSize, 0)  # 测试选项
+        self.output_optimization_check = wx.CheckBox(self.bkg, wx.ID_ANY, "输出优化", wx.Point(250, 5), wx.DefaultSize,
+                                                     0)  # 输出性能优化选项
+        self.output_lock_maximums_check = wx.CheckBox(self.bkg, wx.ID_ANY, "内屏输出上限", wx.Point(250, 5), wx.DefaultSize,
+                                                     0)  # 输出上限选项
 
-        #self.can_choose_number=[]
-        #self.choose_number = wx.Choice(self.bkg, wx.ID_ANY, choices=self.can_choose_number)  # 选择算法
+        # self.can_choose_number=[]
+        # self.choose_number = wx.Choice(self.bkg, wx.ID_ANY, choices=self.can_choose_number)  # 选择算法
 
         self.input_box = wx.TextCtrl(self.bkg, style=wx.TE_MULTILINE)  # 输入行数的文本框
         self.output = wx.TextCtrl(self.bkg, style=wx.TE_MULTILINE)  # 最大的文本框
         self.save_location_input_box = wx.TextCtrl(self.bkg, style=wx.TE_MULTILINE)  # 输入保存位置的文本框
 
-        self.staticText_save_location = wx.StaticText(self.bkg,wx.ID_ANY,u"文件保存位置（支持绝对/相对路径）",style=wx.ALIGN_CENTER_HORIZONTAL)
+        self.staticText_save_location = wx.StaticText(self.bkg, wx.ID_ANY, u"文件保存位置（支持绝对/相对路径）",
+                                                      style=wx.ALIGN_CENTER_HORIZONTAL)
 
-        self.search = wx.SearchCtrl(self.bkg, wx.ID_ANY,style=wx.TE_PROCESS_ENTER)
+        self.search = wx.SearchCtrl(self.bkg, wx.ID_ANY, style=wx.TE_PROCESS_ENTER)
         self.search.SetHint('输入后回车进行搜索')
 
         self.can_choose_number = []
-        self.list_box = wx.ListBox(self.bkg,choices=self.can_choose_number,style=wx.LB_SINGLE)
+        self.list_box = wx.ListBox(self.bkg, choices=self.can_choose_number, style=wx.LB_SINGLE)
 
         self.file_menu = wx.Menu()  # WxPython 中使用wx.Menu()类来表示一个菜单
         self.file_menu.Append(1002, '更新日志', '做完了做完了')
@@ -38,7 +43,7 @@ class MainWindow(wx.Frame):
         self.file_menu.Append(1004, '检查更新', 'goto github')
 
         self.reset_menu = wx.Menu()  # WxPython 中使用wx.Menu()类来表示一个菜单
-        self.reset_menu.Append(1020,'重置保存路径','重置！重置！')
+        self.reset_menu.Append(1020, '重置保存路径', '重置！重置！')
 
         self.stop_menu = wx.Menu()  # WxPython 中使用wx.Menu()类来表示一个菜单
         self.stop_menu.Append(1010, '终止当前运算', '不准算！')
@@ -70,33 +75,33 @@ class MainWindow(wx.Frame):
 
         self.hbox1 = wx.BoxSizer()  # 尺寸器
         self.hbox1.Add(self.start_button, proportion=1, flag=wx.EXPAND)  # 计算按钮的尺寸器
-        #self.hbox1.Add(self.choose_number, 0, wx.EXPAND | wx.LEFT, 5)  # 选择选项的尺寸器
+        # self.hbox1.Add(self.choose_number, 0, wx.EXPAND | wx.LEFT, 5)  # 选择选项的尺寸器
         self.hbox1.Add(self.save_check, 0, wx.EXPAND | wx.LEFT, 5)  # 保存选项的尺寸器
         self.hbox1.Add(self.test_check, 0, wx.EXPAND | wx.LEFT, 5)  # 测试选项的尺寸器
-        self.hbox1.Add(self.output_optimization_check, 0, wx.EXPAND | wx.LEFT, 5)  # 测试选项的尺寸器
+        self.hbox1.Add(self.output_optimization_check, 0, wx.EXPAND | wx.LEFT, 5)  # 优化输出选项的尺寸器
+        self.hbox1.Add(self.output_lock_maximums_check, 0, wx.EXPAND | wx.LEFT, 5)  #解锁上限
 
         self.hbox2 = wx.BoxSizer()  # 尺寸器
         self.hbox2.Add(self.input_box, proportion=1, flag=wx.EXPAND)  # 输入行数的文本框的尺寸器
 
         self.hbox3 = wx.BoxSizer()  # 尺寸器
         self.hbox3.Add(self.output, proportion=1, flag=wx.EXPAND,
-                      border=5)  # 最大的文本框的尺寸器
+                       border=5)  # 最大的文本框的尺寸器
 
         self.vbox = wx.BoxSizer(wx.VERTICAL)
         self.vbox.Add(self.hbox1, proportion=0, flag=wx.EXPAND | wx.ALL, border=5)  # 尺寸器的尺寸器
         self.vbox.Add(self.hbox2, proportion=1, flag=wx.EXPAND | wx.ALL, border=5)  # 尺寸器的尺寸器
         self.vbox.Add(self.hbox3, proportion=3, flag=wx.EXPAND | wx.ALL, border=5)  # 尺寸器的尺寸器
 
-
         self.vbox2 = wx.BoxSizer(wx.VERTICAL)
         self.vbox2.Add(self.staticText_save_location, proportion=0, flag=wx.EXPAND | wx.ALL, border=5)
-        self.vbox2.Add(self.save_location_input_box, proportion=1, flag=wx.EXPAND|wx.BOTTOM, border=10)
+        self.vbox2.Add(self.save_location_input_box, proportion=1, flag=wx.EXPAND | wx.BOTTOM, border=10)
         self.vbox2.Add(self.search, proportion=1, flag=wx.EXPAND)
-        self.vbox2.Add(self.list_box, proportion=7, flag=wx.EXPAND|wx.BOTTOM, border=5)
+        self.vbox2.Add(self.list_box, proportion=7, flag=wx.EXPAND | wx.BOTTOM, border=5)
 
         self.hboxMain = wx.BoxSizer()  # 尺寸器
-        self.hboxMain.Add(self.vbox2,proportion=1, flag=wx.EXPAND)
-        self.hboxMain.Add(self.vbox,proportion=2, flag=wx.EXPAND)
+        self.hboxMain.Add(self.vbox2, proportion=1, flag=wx.EXPAND)
+        self.hboxMain.Add(self.vbox, proportion=2, flag=wx.EXPAND)
 
         self.bkg.SetSizer(self.hboxMain)  # 布局显示_必备
         self.CreateStatusBar()  # 窗口状态栏显示_必备
@@ -105,28 +110,29 @@ class MainWindow(wx.Frame):
 
         self.start_button.Bind(wx.EVT_BUTTON, self.startEvent)  # 计算按钮事件
         self.save_check.Bind(wx.EVT_CHECKBOX, self.saveCheckEvent)  # 保存选项事件
-        self.test_check.Bind(wx.EVT_CHECKBOX, self.testCheckEvent)  #测试模式选项事件
-        self.output_optimization_check.Bind(wx.EVT_CHECKBOX, self.outputOptimizationCheckEvent)  # 测试模式选项事件
-        #self.choose_number.Bind(wx.EVT_CHOICE, self.chooseNumberEvent)  # 选择算法事件
+        self.test_check.Bind(wx.EVT_CHECKBOX, self.testCheckEvent)  # 测试模式选项事件
+        self.output_optimization_check.Bind(wx.EVT_CHECKBOX, self.outputOptimizationCheckEvent)  # 优化输出选项事件
+        self.output_lock_maximums_check.Bind(wx.EVT_CHECKBOX, self.outputLockMaximumsCheckEvent)  # 解锁上限选项事件
+        # self.choose_number.Bind(wx.EVT_CHOICE, self.chooseNumberEvent)  # 选择算法事件
         self.Bind(wx.EVT_MENU, self.showDONE, id=1002)
         self.Bind(wx.EVT_MENU, self.showTODO, id=1001)
         self.Bind(wx.EVT_MENU, self.showAbout, id=1000)
-        self.Bind(wx.EVT_MENU, self.quit_event,id=1011)
+        self.Bind(wx.EVT_MENU, self.quit_event, id=1011)
         self.Bind(wx.EVT_MENU, self.stop_compute, id=1010)
         self.Bind(wx.EVT_MENU, self.cheak_update, id=1004)
         self.Bind(wx.EVT_MENU, self.reset_save_location, id=1020)
-        self.Bind(wx.EVT_LISTBOX,self.chooseNumberEvent,self.list_box)
-        self.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN,self.search_text)#搜索框回车后执行的函数，self.search_text
+        self.Bind(wx.EVT_LISTBOX, self.chooseNumberEvent, self.list_box)
+        self.Bind(wx.EVT_SEARCHCTRL_SEARCH_BTN, self.search_text)  # 搜索框回车后执行的函数，self.search_text
         self.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self.search_cancel)
 
-        #win = wx.Frame(self, -1, "输出框")
-        #self.bkg2 = wx.Panel(win)
-        #self.output = wx.TextCtrl(self.bkg2, style=wx.TE_MULTILINE)  # 最大的文本框
-        #self.hbox_output = wx.BoxSizer()  # 尺寸器
-        #self.hbox_output.Add(self.output, proportion=1, flag=wx.EXPAND,
+        # win = wx.Frame(self, -1, "输出框")
+        # self.bkg2 = wx.Panel(win)
+        # self.output = wx.TextCtrl(self.bkg2, style=wx.TE_MULTILINE)  # 最大的文本框
+        # self.hbox_output = wx.BoxSizer()  # 尺寸器
+        # self.hbox_output.Add(self.output, proportion=1, flag=wx.EXPAND,
         #               border=5)  # 最大的文本框的尺寸器
-        #self.bkg2.SetSizer(self.hbox_output)  # 布局显示_必备
-        #uwin.Show(True)
+        # self.bkg2.SetSizer(self.hbox_output)  # 布局显示_必备
+        # uwin.Show(True)
 
     def __del__(self):
         pass
@@ -137,10 +143,13 @@ class MainWindow(wx.Frame):
     def saveCheckEvent(self, event):
         event.Skip()
 
-    def testCheckEvent(self,event):
+    def testCheckEvent(self, event):
         event.Skip()
 
-    def outputOptimizationCheckEvent(self,event):
+    def outputOptimizationCheckEvent(self, event):
+        event.Skip()
+
+    def outputLockMaximumsCheckEvent(self, event):
         event.Skip()
 
     def chooseNumberEvent(self, event):
@@ -155,20 +164,20 @@ class MainWindow(wx.Frame):
     def showAbout(self, event):
         event.Skip()
 
-    def quit_event(self,event):
+    def quit_event(self, event):
         event.Skip()
 
-    def stop_compute(self,event):
+    def stop_compute(self, event):
         event.Skip()
 
-    def cheak_update(self,event):
+    def cheak_update(self, event):
         event.Skip()
 
-    def reset_save_location(self,event):
+    def reset_save_location(self, event):
         event.Skip()
 
-    def search_text(self,event):
+    def search_text(self, event):
         event.Skip()
 
-    def search_cancel(self,event):
+    def search_cancel(self, event):
         event.Skip()
