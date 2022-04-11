@@ -199,10 +199,10 @@ class Application(MainWin.MainWindow):  # 主类
         #pprint.pprint("读取到的文件夹插件:")
         #pprint.pprint(self.plugin_files_name_folder)
         try:
-            for list in self.plugin_files_name:#从所有读取的文件中挑选出.py为后缀的文件
-                if (list[0].split("."))[-1] == "py":
+            for i_list in self.plugin_files_name:#从所有读取的文件中挑选出.py为后缀的文件
+                if (i_list[0].split("."))[-1] == "py":
                     if  self.plugin_files_name_py==[]:
-                        self.plugin_files_name_py = list
+                        self.plugin_files_name_py = i_list
         #这行bug很多，小心
         except Exception:
             pass
@@ -248,12 +248,12 @@ class Application(MainWin.MainWindow):  # 主类
             self.output_optimization_check.SetValue(self.setting['output_optimization'])  # 根据数据设置选项状态
         except Exception:
             self.setting['output_optimization'] = True
-            self.output_optimization_check.SetValue(self.setting['output_optimization'])
+            self.output_optimization_check.SetValue(True)
         try:
-            self.output_optimization_check.SetValue(self.setting['output_lock_maximums'])  # 根据数据设置选项状态
+            self.output_lock_maximums_check.SetValue(self.setting['output_lock_maximums'])  # 根据数据设置选项状态
         except Exception:
             self.setting['output_lock_maximums'] = True
-            self.output_optimization_check.SetValue(self.setting['output_optimization'])
+            self.output_lock_maximums_check.SetValue(True)
         self.setting.close()
 
     def init_plugin_singerfile(self):
@@ -607,7 +607,7 @@ class Application(MainWin.MainWindow):  # 主类
         self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)
         if self.save_check.GetValue():
             self.save_check.SetValue(False)
-            self.setting['save_location'] = False
+            self.setting['save_check'] = False
         else:
             pass
         self.setting.close()
@@ -625,14 +625,11 @@ class Application(MainWin.MainWindow):  # 主类
     def outputLockMaximumsCheckEvent(self, event):#锁上限开，就要开优化
         self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)
         if self.output_lock_maximums_check.GetValue():
-            if self.output_optimization_check.GetValue():
-                pass
-            else:
-                self.output_optimization_check.SetValue(True)
-                self.setting['output_optimization'] = True
-            self.setting['output_lock_maximums'] = True
+            self.output_optimization_check.SetValue(True)
+            self.setting['output_optimization'] = True
+            self.setting['output_lock_maximums'] = self.output_lock_maximums_check.GetValue()#True
         else:
-            self.setting['output_lock_maximums'] = False
+            self.setting['output_lock_maximums'] = self.output_lock_maximums_check.GetValue()#False
         self.setting.close()
 
     def quit_event(self,event): #菜单栏退出事件
