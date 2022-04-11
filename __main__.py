@@ -148,7 +148,7 @@ Howie皓子制作
 0.建议保存到文件，这样不会内屏输出导致卡死!!--------重点！！！
 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 
-1.“保存”会将结果保存到程序所在目录下 "\皓式程序输出"
+1.“保存”会将结果保存到程序所在目录下 "皓式程序输出" 文件夹内
 2.设置行(项)数较大请选择保存到文件，算的不久，但是导出很久，可以看看任务管理器，不同插件性能（读写速度和）不同，要看插件作者的水平
 
 交流群694413711 - 此群安静的像一滩死水 -=作者中考完了，消息一般都会会
@@ -187,7 +187,6 @@ class Application(MainWin.MainWindow):  # 主类
 
 
         #载入模块
-        #self.plugin_files_path=[]
         self.plugin_files_name=[]
         self.plugin_files_name_folder= []
         self.can_choose_number = []
@@ -201,10 +200,10 @@ class Application(MainWin.MainWindow):  # 主类
         try:
             for i_list in self.plugin_files_name:#从所有读取的文件中挑选出.py为后缀的文件
                 if (i_list[0].split("."))[-1] == "py":
-                    if  self.plugin_files_name_py==[]:
+                    if not self.plugin_files_name_py:  # 第一遍空列表才写入
                         self.plugin_files_name_py = i_list
         #这行bug很多，小心
-        except Exception:
+        except Exception as e:
             pass
 
         #pprint.pprint("读取到的.py文件:")
