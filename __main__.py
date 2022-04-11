@@ -269,8 +269,8 @@ class Application(MainWin.MainWindow):  # 主类
                     "self.can_choose_number.append(self." + name + ".PLUGIN_METADATA['option_name'])")  # 读取模块元数据，添加gui选项
                 exec(
                     "self.plugin_filename_option_name_map[self." + name + ".PLUGIN_METADATA['option_name']]=self." + name + ".PLUGIN_METADATA['id']")
-            except Exception:
-                pass
+            except Exception as e:
+                print(e)
 
     def init_plugin_folder(self):
         for name in self.plugin_files_name_folder:
@@ -281,8 +281,8 @@ class Application(MainWin.MainWindow):  # 主类
                     "self.can_choose_number.append(self." + name + ".PLUGIN_METADATA['option_name'])")  # 读取模块元数据，添加gui选项
                 exec(
                     "self.plugin_filename_option_name_map[self." + name + ".PLUGIN_METADATA['option_name']]=self." + name + ".PLUGIN_METADATA['id']")
-            except Exception:
-                pass
+            except Exception as e:
+                print(e)
 
     def readPlugin(self,path):
         for root, dir, file in os.walk(path):
@@ -339,7 +339,6 @@ class Application(MainWin.MainWindow):  # 主类
 如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）""")
             return
 
-        self.result_last = []  # 返回一次就输出、保存专用
 
         #以上是计算前工作
         calculate_thread=threading.Thread(target=self.startCalculate)
@@ -370,10 +369,9 @@ class Application(MainWin.MainWindow):  # 主类
                         if self.output_optimization_check.GetValue() == True:
                             self.whatNeedCalculateWithOutputOptimization()
                             # 以下是计算后工作
-                            wx.CallAfter(self.outPutToOutPut,
-                                         "\n\n本次计算+输出花费了%.7f秒\n" % (
-                                                     self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
-                            wx.CallAfter(self.outPutToOutPut,"已启用输出优化")
+                            wx.CallAfter(self.outPutToOutPut, "\n\n本次计算+输出花费了%.7f秒\n" % (
+                                        self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+                            wx.CallAfter(self.outPutToOutPut, "已启用输出优化")
                         else:
                             self.whatNeedCalculate()
                             # 以下是计算后工作
@@ -398,6 +396,8 @@ class Application(MainWin.MainWindow):  # 主类
         self.output.SetValue(msg)
 
     def whatNeedCalculate(self):
+        module_return = None  # 用来输出的，outputmode2和1的时候有用
+        result_last = None  # 用来输出的，outputmode0的时候有用
         self.is_thread_runing = True
         if self.input_mode == '0':
             self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
@@ -407,16 +407,18 @@ class Application(MainWin.MainWindow):  # 主类
         self.time_before_calculate = time.time()  # 储存开始时间
 
         if self.output_mode == '0':
-            exec("self.result_last = self." + self.Selection + ".main(self.input_box_s_input)")
-            wx.CallAfter(self.setOutPut,str(self.result_last) + "\n")  # 结果为str，直接输出
+            exec("result_last = self." + self.Selection + ".main(self.input_box_s_input)")
+            wx.CallAfter(self.setOutPut, str(result_last) + "\n")  # 结果为str，直接输出
         elif self.output_mode == '2': # 算一行输出一行，但是没有换行
-            wx.CallAfter(self.clearOutPut) # 清空输出框
-            exec("for self.result_process in self." + self.Selection + """.main(self.input_box_s_input):  # 计算
-        wx.CallAfter(self.outPutToOutPut,str(self.result_process))""")  # 算一行输出一行
+            wx.CallAfter(self.clearOutPut)  # 清空输出框
+            exec("module_return=self." + self.Selection + ".main(self.input_box_s_input")
+            for result_process in module_return:  # 计算
+                wx.CallAfter(self.outPutToOutPut, str(result_process))  # 算一行输出一行
         elif self.output_mode == '1': # 算一行输出一行
-            wx.CallAfter(self.clearOutPut) # 清空输出框
-            exec("for self.result_process in self." + self.Selection + """.main(self.input_box_s_input):  # 计算
-    wx.CallAfter(self.outPutToOutPut,str(self.result_process)+"\\n")""")  # 算一行输出一行
+            wx.CallAfter(self.clearOutPut)  # 清空输出框
+            exec("module_return=self." + self.Selection + ".main(self.input_box_s_input")
+            for result_process in module_return:  # 计算 啊，定义就在上一行，hoyc你是看不到吗？
+                wx.CallAfter(self.outPutToOutPut, str(result_process) + "\\n")  # 算一行输出一行
         elif self.output_mode == '4':
             wx.CallAfter(self.clearOutPut) # 清空输出框
             exec("self." + self.Selection + ".main(self.input_box_s_input,self,'output')")
@@ -428,6 +430,8 @@ class Application(MainWin.MainWindow):  # 主类
     def whatNeedCalculateWithSave(self):  # 选择检测+计算
         # self.name_text_file - 储存保存到哪个文件里
         # now - 保存datetime类型的当前时间
+        module_return = None  # 用来输出的，outputmode2和1的时候有用
+        result_last = None  # 用来输出的，outputmode0的时候有用
         self.is_thread_runing = True
         if self.input_mode == '0':
             self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
@@ -437,7 +441,8 @@ class Application(MainWin.MainWindow):  # 主类
         now = datetime.datetime.now()  # 保存当前时间，用于文件名
 
         if self.save_mode == '1':
-            self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') +'  '+ str(self.input_box_s_input).replace('.','_')+"的"+self.save_name
+            self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') + '  ' + str(self.input_box_s_input).replace('.',
+                                                                                                                 '_') + "的" + self.save_name
         else:
             self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') +'  '+ self.save_name + str(self.input_box_s_input) + self.quantifier
 
@@ -447,18 +452,18 @@ class Application(MainWin.MainWindow):  # 主类
 
         try:
             if self.output_mode == '0':  # 分布输出和一次输出
-                exec("self.result_last = self." + self.Selection + ".main(self.input_box_s_input)")
-                save.write(str(self.result_last) + "\n")
+                exec("result_last = self." + self.Selection + ".main(self.input_box_s_input)")
+                save.write(str(result_last) + "\n")
             elif self.output_mode == '2':  # 算一行输出一行，但是没有换行
-                exec("for self.result_process in self." + self.Selection + """.main(self.input_box_s_input):  # 计算
-    save.write(str(self.result_process))
-    save.flush()
-                    """)  # 算出来就存进去
-            elif self.output_mode == '1': # 算一行输出一行，但是没有换行
-                exec("for self.result_process in self." + self.Selection + """.main(self.input_box_s_input):  # 计算
-    save.write(str(self.result_process)+"\\n")
-    save.flush()
-            """)  # 算出来就存进去
+                exec("module_return=self." + self.Selection + ".main(self.input_box_s_input")
+                for result_process in module_return:  # 计算
+                    save.write(str(result_process))
+                    save.flush()  # 算出来就存进去
+            elif self.output_mode == '1':  # 算一行输出一行，但是没有换行
+                exec("module_return=self." + self.Selection + ".main(self.input_box_s_input")
+                for result_process in module_return:  # 计算
+                    save.write(str(result_process) + "\\n")
+                    save.flush()  # 算出来就存进去
             elif self.output_mode == '4':
                 exec("self." + self.Selection + ".main(self.input_box_s_input,save,'save')")
             else:
@@ -493,18 +498,21 @@ class Application(MainWin.MainWindow):  # 主类
 
             try:
                 if self.output_mode == '0':  # 分布输出和一次输出
-                    exec("self.result_last = self." + self.Selection + ".main(self.input_box_s_input)")
-                    save.write(str(self.result_last) + "\n")
+                    result_last = None  # 用来输出的，outputmode0的时候有用
+                    exec("result_last = self." + self.Selection + ".main(self.input_box_s_input)")
+                    save.write(str(result_last) + "\n")
                 elif self.output_mode == '2':  # 算一行输出一行，但是没有换行
-                    exec("for self.result_process in self." + self.Selection + """.main(self.input_box_s_input):  # 计算
-                save.write(str(self.result_process))
-                save.flush()
-                                """)  # 算出来就存进去
+                    module_return = None  # 用来输出的，outputmode2和1的时候有用
+                    exec("module_return=self." + self.Selection + ".main(self.input_box_s_input")
+                    for result_process in module_return:  # 计算
+                        save.write(str(result_process))
+                        save.flush()  # 算出来就存进去
                 elif self.output_mode == '1':  # 算一行输出一行，但是没有换行
-                    exec("for self.result_process in self." + self.Selection + """.main(self.input_box_s_input):  # 计算
-                save.write(str(self.result_process)+"\\n")
-                save.flush()
-                        """)  # 算出来就存进去
+                    module_return = None  # 用来输出的，outputmode2和1的时候有用
+                    exec("module_return=self." + self.Selection + ".main(self.input_box_s_input")
+                    for result_process in module_return:  # 计算
+                        save.write(str(result_process) + "\\n")
+                        save.flush()  # 算出来就存进去
                 elif self.output_mode == '4':
                     exec("self." + self.Selection + ".main(self.input_box_s_input,save,'save')")
                 else:
@@ -568,20 +576,24 @@ class Application(MainWin.MainWindow):  # 主类
     def chooseNumberEvent(self, event):  # 选择算法事件
         self.Selection = self.plugin_filename_option_name_map[
             self.list_box.GetString(self.list_box.GetSelection())]
-        self.required_parameters = ['input_mode','output_mode','save_name','output_name','save_mode','version']
-        self.optional_parameters = ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol','input_mode','output_mode','save_name','output_name','save_mode','version']
-        self.required_parameters.extend(self.optional_parameters)
-        for i in self.required_parameters:
+        # self.required_parameters = ['input_mode','output_mode','save_name','output_name','save_mode','version']
+        # self.optional_parameters=['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol']
+        # self.parameters_list = ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol','input_mode','output_mode','save_name','output_name','save_mode','version']
+        # self.required_parameters.extend(self.optional_parameters)
+        for i in ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol', 'input_mode',
+                  'output_mode', 'save_name', 'output_name', 'save_mode', 'version']:
             try:
-                exec("self."+i+"=str(self." + self.Selection + ".PLUGIN_METADATA['"+i+"'])")
+                exec("self." + i + "=str(self." + self.Selection + ".PLUGIN_METADATA['" + i + "'])")
             except Exception:
                 exec("self." + i + "=''")
         if self.fullwidth_symbol == '1':
-            self.help = self.help.replace(",","，").replace(".","。").replace("'","‘").replace('"','”').replace('(','（').replace(')','）')
-        self.output.SetValue(self.output_start+"\n")
-        self.output.AppendText(self.output_name+" "+self.version+"\n")
-        self.output.AppendText("by "+self.author+"\n"+"\n")
-        self.output.AppendText("使用提示：\n"+self.help + "\n")
+            self.help = self.help.replace(",", "，").replace(".", "。").replace("'", "‘").replace('"', '”').replace('(',
+                                                                                                                  '（').replace(
+                ')', '）')
+        self.output.SetValue(self.output_start + "\n")
+        self.output.AppendText(self.output_name + " " + self.version + "\n")
+        self.output.AppendText("by " + self.author + "\n" + "\n")
+        self.output.AppendText("使用提示：\n" + self.help + "\n")
         self.output.AppendText(self.output_end)
 
     def showAbout(self, event):  # 菜单栏 关于作者
