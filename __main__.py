@@ -347,30 +347,33 @@ class Application(MainWin.MainWindow):  # 主类
 
 
     def startCalculate(self):
-        if self.is_thread_runing == False:
+        if not self.is_thread_runing:
             try:
-                wx.CallAfter(self.clearOutPut) # 清空输出框
-                wx.CallAfter(self.outPutToOutPut,"计算程序正在运行中，所需时间较长，请耐心等待")
-                if self.test_check.GetValue() == True:
+                wx.CallAfter(self.clearOutPut)  # 清空输出框
+                wx.CallAfter(self.outPutToOutPut, "计算程序正在运行中，所需时间较长，请耐心等待")
+                if self.test_check.GetValue():
                     self.whatNeedCalculateWithTest()
                     # 以下是计算后工作
                     wx.CallAfter(self.outPutToOutPut,
-                        "\n\n本次测试花费了%.7f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+                                 "\n\n本次测试花费了%.7f秒\n" % (
+                                             self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
                 else:
-                    if self.save_check.GetValue() == True:  # 检测保存按钮的状态判断是否保存
+                    if self.save_check.GetValue():  # 检测保存按钮的状态判断是否保存
                         self.whatNeedCalculateWithSave()
                         # 以下是计算后工作
-                        wx.CallAfter(self.clearOutPut) # 清空输出框
+                        wx.CallAfter(self.clearOutPut)  # 清空输出框
                         wx.CallAfter(self.outPutToOutPut,
-                            "\n本次计算+保存花费了%.7f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
-                        wx.CallAfter(self.outPutToOutPut,"\n计算结果已保存在" + os.path.abspath(".\\皓式程序输出\\") + self.name_text_file + ".txt")
-                        wx.CallAfter(self.outPutToOutPut,"\n")
+                                     "\n本次计算+保存花费了%.7f秒\n" % (
+                                                 self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+                        wx.CallAfter(self.outPutToOutPut,
+                                     "\n计算结果已保存在" + os.path.abspath(".\\皓式程序输出\\") + self.name_text_file + ".txt")
+                        wx.CallAfter(self.outPutToOutPut, "\n")
                     else:  # 选择不保存才输出结果
-                        if self.output_optimization_check.GetValue() == True:
+                        if self.output_optimization_check.GetValue():
                             self.whatNeedCalculateWithOutputOptimization()
                             # 以下是计算后工作
                             wx.CallAfter(self.outPutToOutPut, "\n\n本次计算+输出花费了%.7f秒\n" % (
-                                        self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+                                    self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
                             wx.CallAfter(self.outPutToOutPut, "已启用输出优化")
                         else:
                             self.whatNeedCalculate()
