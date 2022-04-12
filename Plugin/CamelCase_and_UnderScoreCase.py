@@ -29,7 +29,7 @@ PLUGIN_METADATA = {
     """,  # 帮助和说明(可选)
     'output_end': "",  # 输出小尾巴(可选)
 
-    'output_mode': '3',
+    'output_mode': '4',
     # 调用类main的return形式，
     # 0为返回一次（适用于return字符串等情况），
     # 1为返回多次（适用于return列表等情况），
@@ -42,7 +42,7 @@ PLUGIN_METADATA = {
     "fullwidth_symbol": '0'  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
 }
 
-def main(input,self):
+def main(input,self,todo):
     text,input_mode,output_mode=input.split(",")
     print("text:",text)
     print("input_mode:", input_mode)
@@ -109,7 +109,7 @@ def main(input,self):
         text = text[:-1]
     else:
         pass
-    hpyc.output(self,text)
-
-def main_save(input,filename):
-    return
+    if todo=="output":
+        hpyc.output(self,text)
+    else:
+        hpyc.write(self,text)

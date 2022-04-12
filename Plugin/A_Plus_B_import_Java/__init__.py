@@ -32,7 +32,7 @@ HowieHz构建了插件化的部分
     """,  # 帮助和说明(可选)
     'output_end': "",  # 输出小尾巴(可选)
 
-    'output_mode': '3',
+    'output_mode': '4',
     # 调用类main的return形式，
     # 0为返回一次（适用于return字符串等情况），
     # 1为返回多次（适用于return列表等情况），
@@ -53,7 +53,7 @@ HowieHz构建了插件化的部分
     如此地址无jdk17，请传入第三个参数（用逗号分隔），第三个参数为\jdk-17.0.2\bin\server\jvm.dll的绝对地址
     """
 
-def main(input,self):
+def main(input,self,todo):
     # try:
     # a,b,c=input.split(",")
     # except:
@@ -67,28 +67,10 @@ def main(input,self):
         jpype.startJVM(jvm_path, '-ea', "-Djava.class.path=%s" % jar_path, convertStrings=False)
     # javaClass = jpype.JClass('com.shacha.Main')
     # javaInstance = javaClass()
-    hpyc.output(self, jpype.JClass('com.shacha.Main').main(a, b))
-    # return javaInstance.main(a, b)
-    try:
-        jpype.shutdownJVM()
-    except:
-        pass
-
-def main_save(input,self):
-    # try:
-    # a,b,c=input.split(",")
-    # except:
-    # input += r",C:\\Program Files\\Java\\jdk-17.0.2\\bin\\server\\jvm.dll"
-    # a, b, c = input.split(",")
-    a, b = input.split(",")
-    jar_path = str(os.path.abspath(__file__))[:-11] + "A+Bproj.jar"
-    # jvm_path=c
-    jvm_path = jpype.getDefaultJVMPath()
-    if not jpype.isJVMStarted():
-        jpype.startJVM(jvm_path, '-ea', "-Djava.class.path=%s" % jar_path, convertStrings=False)
-    # javaClass = jpype.JClass('com.shacha.Main')
-    # javaInstance = javaClass()
-    hpyc.write(self, jpype.JClass('com.shacha.Main').main(a, b))
+    if todo=="output":
+        hpyc.output(self, jpype.JClass('com.shacha.Main').main(a, b))
+    else:
+        hpyc.write(self, jpype.JClass('com.shacha.Main').main(a, b))
     # return javaInstance.main(a, b)
     try:
         jpype.shutdownJVM()

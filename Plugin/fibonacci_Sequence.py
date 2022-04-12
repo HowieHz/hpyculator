@@ -43,7 +43,7 @@ def main(num,self,do_what):#返回一个列表
             fs2 = fs3
             hpyc.output(self,fs1)
             n += 1
-    if do_what == "save":
+    else:
         if num == 0:
             hpyc.write(self, "")
         if num == 1:
@@ -61,5 +61,3 @@ def main(num,self,do_what):#返回一个列表
             fs2 = fs3
             hpyc.write(self,fs1)
             n += 1
-    else:
-        pass

@@ -39,19 +39,19 @@ PLUGIN_METADATA = {
     "fullwidth_symbol": '0'  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
 }
 
-def main(input,self):
+def main(input:str,self) -> None:
     a,b=input.split(",")
     a = int(a)
     b = int(b)
     hpyc.output(self,a+b)
 
-def main_save(input,filename):
+def main_save(input:str,filename) -> None:
     a, b = input.split(",")
     a=int(a)
     b=int(b)
     hpyc.write(filename,a+b)
 
-def main_test(input,self):
+def main_test(input:str,self) -> int:
     a, b = input.split(",")
     a=int(a)
     b=int(b)

@@ -14,6 +14,12 @@ import tempfile
 
 import MainWin
 
+'''
+@author: HowieHz
+@time: 2022/4/11 17:27
+@desc:
+'''
+
 M_VERSION = "V1.2.6"
 
 TODO = """更新展望(咕咕咕):
