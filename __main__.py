@@ -9,6 +9,7 @@ import importlib
 import webbrowser
 import hpyculator
 import tempfile
+from functools import partial#偏函数真好用
 #import jpype
 #import pprint
 
@@ -16,11 +17,11 @@ import MainWin
 
 '''
 @author: HowieHz
-@time: 2022/4/11 17:27
+@time: 2022/4/121 14:00
 @desc:
 '''
 
-M_VERSION = "V1.2.6"
+M_VERSION = "V1.2.7"
 
 TODO = """更新展望(咕咕咕):
 1.背景图
@@ -32,6 +33,12 @@ TODO = """更新展望(咕咕咕):
 """
 
 UPDATE_LOG = """更新日志:
+202204012
+v1.2.7
+优化，更多的优化
+主程序优化
+插件优化
+
 202204011
 V1.2.6
 增加了输出上限的选项
@@ -531,26 +538,21 @@ class Application(MainWin.MainWindow):  # 主类
                 times=0
                 save.seek(0)# 将文件指针移到开始处，准备读取文件
                 if self.output_optimization_check.GetValue():
-                    while True:
-                        line = save.readline(2048)
+                    for line in self.quickTraverseFile(save):
                         times+=1
                         wx.CallAfter(self.outPutToOutPut,line)
-                        if line == "":
-                            break
-                        if times>=256:
+                        if times>=128:
                             wx.CallAfter(self.outPutToOutPut,"\n\n输出上限：检测到输出数据过大，请使用保存到文件防止卡死")
                             break
                 else:
-                    while True:
-                        line = save.readline(2048)
-                        times+=1
+                    for line in self.quickTraverseFile(save):
                         wx.CallAfter(self.outPutToOutPut,line)
-                        if line == "":
-                            break
-
 
         self.time_after_calculate = time.time()  # 储存结束时间
 
+    def quickTraverseFile(self,file,chunk_size=8192):
+        for chunk in iter(partial(file.read,chunk_size), ''):#用readline的话，读到换行符就会直接停止读取，不会读取到8192B，会增加读取次数
+            yield chunk
 
     def whatNeedCalculateWithTest(self):
         self.is_thread_runing = True

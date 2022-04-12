@@ -2,7 +2,7 @@
 import wx
 import wx.xrc
 
-M_VERSION = "V1.2.6"
+M_VERSION = "V1.2.7"
 
 
 class MainWindow(wx.Frame):
