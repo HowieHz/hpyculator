@@ -63,7 +63,7 @@ hpyculator 在 `pypi <https://pypi.org/project/hpyculator>`__ 中可用。它可
 __main__.py内的Application类继承MainWin的MainWindow类，然后重写对应窗口控件的方法
 
 读取插件的流程
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 主流程在在Application类__init__中
 
@@ -74,7 +74,7 @@ __init__读取\Plugin目录下的.py文件作为单文件插件，然后调用in
 __init__读取\Plugin目录下的文件夹，且文件下有__init__.py文件作为文件夹插件，然后调用init_plugin_folder加载文件夹插件
 
 计算的流程
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 按下计算按钮之后，主程序调用startEvent，
 
