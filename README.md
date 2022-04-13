@@ -40,7 +40,9 @@
 
 ### 开发者（程序）
 
-目前__main__.py是项目入口
+从github项目src文件夹获取源码
+
+前往 [文档](https://hpyculator.readthedocs.io/zh_CN/latest/quick_start.html#id9) 查看简单流程
 
 ## 插件
 
