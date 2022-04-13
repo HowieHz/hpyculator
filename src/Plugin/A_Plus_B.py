@@ -1,7 +1,7 @@
 import hpyculator as hpyc
 
 PLUGIN_METADATA = {
-    'input_mode': '0',  # 输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)（必须）
+    'input_mode': '0',  # 输入模式，string和0为传入字符串 num和1位传入float(传入的作为main函数的开始计算值)（必须）
     'id': 'A_Plus_B',  # ID,插件标识符,需要和文件名一致（必须）
     'option_name': "A+B_Problem V1.0.1 by HowieHz",  # 选项名-在选择算法列表中（必须）
     'version': 'V1.0.1',  # 版本号（必须）

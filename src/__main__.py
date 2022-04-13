@@ -21,7 +21,7 @@ class Application(MainWin.MainWindow):  # 主类
 
     def __init__(self):
         # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
-        # self.setting - 配置文件ShelfFile(\皓式程序设置\hpyculator_setting)
+        # setting_file - 配置文件ShelfFile(\皓式程序设置\hpyculator_setting)
 
         super().__init__()
 
@@ -86,55 +86,54 @@ class Application(MainWin.MainWindow):  # 主类
         # 关于gui显示内容的初始化
         self.output.SetValue(Doc.START_SHOW)  # 开启的展示
 
-        self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)#读取设置文件
-        try:
-            self.save_check.SetValue(self.setting['save_check'])  # 根据数据设置选项状态
-        except Exception:
-            self.setting['save_check'] = self.save_check.GetValue()
+        with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:#读取设置文件
+            try:
+                self.save_check.SetValue(setting_file['save_check'])  # 根据数据设置选项状态
+            except Exception:
+                setting_file['save_check'] = self.save_check.GetValue()
 
-        try:
-            self.save_location_input_box.SetValue(self.setting['save_location'])  # 根据数据设置选项状态
-        except Exception:
-            self.setting['save_location'] = self.save_location_input_box.GetValue()
+            try:
+                self.save_location_input_box.SetValue(setting_file['save_location'])  # 根据数据设置选项状态
+            except Exception:
+                setting_file['save_location'] = self.save_location_input_box.GetValue()
 
-        try:
-            self.output_optimization_check.SetValue(self.setting['output_optimization'])  # 根据数据设置选项状态
-        except Exception:
-            self.setting['output_optimization'] = True
-            self.output_optimization_check.SetValue(True)
-        try:
-            self.output_lock_maximums_check.SetValue(self.setting['output_lock_maximums'])  # 根据数据设置选项状态
-        except Exception:
-            self.setting['output_lock_maximums'] = True
-            self.output_lock_maximums_check.SetValue(True)
-        self.setting.close()
+            try:
+                self.output_optimization_check.SetValue(setting_file['output_optimization'])  # 根据数据设置选项状态
+            except Exception:
+                setting_file['output_optimization'] = True
+                self.output_optimization_check.SetValue(True)
+            try:
+                self.output_lock_maximums_check.SetValue(setting_file['output_lock_maximums'])  # 根据数据设置选项状态
+            except Exception:
+                setting_file['output_lock_maximums'] = True
+                self.output_lock_maximums_check.SetValue(True)
 
     def init_plugin_singerfile(self):
         self.plugin_files_name_py_nopy = self.plugin_files_name_py[:]
-        for i in range(0, len(self.plugin_files_name_py_nopy)):  # 去掉.py后缀
-            self.plugin_files_name_py_nopy[i] = self.plugin_files_name_py_nopy[i][:-3]
+        for index,value in enumerate(self.plugin_files_name_py_nopy):  # 去掉.py后缀
+            self.plugin_files_name_py_nopy[index] = value[:-3]
         #pprint.pprint("去掉.py后缀的文件名")
         #pprint.pprint(self.plugin_files_name_py_nopy)
         for name in self.plugin_files_name_py_nopy:
-            exec("self." + name + "=importlib.import_module('" + ".{}'".format(name) + ", package='Plugin')")
+            exec(f"self.{name}=importlib.import_module('.{name}', package='Plugin')")
             # self.i = importlib.import_module('.' + str(name), package='Plugin')  # 相对导入
             try:
                 exec(
-                    "self.can_choose_number.append(self." + name + ".PLUGIN_METADATA['option_name'])")  # 读取模块元数据，添加gui选项
+                    f"self.can_choose_number.append(self.{name}.PLUGIN_METADATA['option_name'])")  # 读取模块元数据，添加gui选项
                 exec(
-                    "self.plugin_filename_option_name_map[self." + name + ".PLUGIN_METADATA['option_name']]=self." + name + ".PLUGIN_METADATA['id']")
+                    f"self.plugin_filename_option_name_map[self.{name}.PLUGIN_METADATA['option_name']]=self.{name}.PLUGIN_METADATA['id']")
             except Exception as e:
                 print(e)
 
     def init_plugin_folder(self):
         for name in self.plugin_files_name_folder:
-            exec("self." + name + "=importlib.import_module('" + ".{}.__init__'".format(name) + ", package='Plugin')")
+            exec(f"self.{name}=importlib.import_module('.{name}.__init__', package='Plugin')")
             # self.i = importlib.import_module('.' + str(name), package='Plugin')  # 相对导入
             try:
                 exec(
-                    "self.can_choose_number.append(self." + name + ".PLUGIN_METADATA['option_name'])")  # 读取模块元数据，添加gui选项
+                    f"self.can_choose_number.append(self.{name}.PLUGIN_METADATA['option_name'])")  # 读取模块元数据，添加gui选项
                 exec(
-                    "self.plugin_filename_option_name_map[self." + name + ".PLUGIN_METADATA['option_name']]=self." + name + ".PLUGIN_METADATA['id']")
+                    f"self.plugin_filename_option_name_map[self.{name}.PLUGIN_METADATA['option_name']]=self.{name}.PLUGIN_METADATA['id']")
             except Exception as e:
                 print(e)
 
@@ -157,9 +156,8 @@ class Application(MainWin.MainWindow):  # 主类
         # self.time_before_calculate,self.time_after_calculate - 临时储存时间，计录 计算时间
         # self.result_process  - 储存计算结果 （用于for循环,就是个i
         # self.result_last  - 储存计算结果
-        self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)
-        self.setting['save_location'] = str(self.save_location_input_box.GetValue())
-        self.setting.close()
+        with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:  # 读取设置文件
+            setting_file['save_location'] = str(self.save_location_input_box.GetValue())
 
         if str(self.input_box.GetValue()) == "update_log":  # update_log检测
             wx.CallAfter(self.setOutPut,Doc.UPDATE_LOG)
@@ -208,32 +206,25 @@ class Application(MainWin.MainWindow):  # 主类
                 if self.test_check.GetValue():
                     self.whatNeedCalculateWithTest()
                     # 以下是计算后工作
-                    wx.CallAfter(self.outPutToOutPut,
-                                 "\n\n本次测试花费了%.7f秒\n" % (
-                                             self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+                    wx.CallAfter(self.outPutToOutPut,f"\n\n本次测试花费了{self.time_after_calculate - self.time_before_calculate:.6f}秒\n")  # 输出本次计算时间
                 else:
                     if self.save_check.GetValue():  # 检测保存按钮的状态判断是否保存
                         self.whatNeedCalculateWithSave()
                         # 以下是计算后工作
                         wx.CallAfter(self.clearOutPut)  # 清空输出框
-                        wx.CallAfter(self.outPutToOutPut,
-                                     "\n本次计算+保存花费了%.7f秒\n" % (
-                                                 self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
-                        wx.CallAfter(self.outPutToOutPut,
-                                     "\n计算结果已保存在" + os.path.abspath(".\\皓式程序输出\\") + self.name_text_file + ".txt")
-                        wx.CallAfter(self.outPutToOutPut, "\n")
+                        wx.CallAfter(self.outPutToOutPut,f"\n本次计算+保存花费了{self.time_after_calculate - self.time_before_calculate:.6f}秒\n")  # 输出本次计算时间
+                        wx.CallAfter(self.outPutToOutPut,"\n计算结果已保存在" + os.path.abspath(".\\皓式程序输出\\") + self.name_text_file + ".txt")
+                        wx.CallAfter(self.outPutToOutPut,"\n")
                     else:  # 选择不保存才输出结果
                         if self.output_optimization_check.GetValue():
                             self.whatNeedCalculateWithOutputOptimization()
                             # 以下是计算后工作
-                            wx.CallAfter(self.outPutToOutPut, "\n\n本次计算+输出花费了%.7f秒\n" % (
-                                    self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+                            wx.CallAfter(self.outPutToOutPut, f"\n\n本次计算+输出花费了{self.time_after_calculate - self.time_before_calculate:.6f}秒\n")  # 输出本次计算时间
                             wx.CallAfter(self.outPutToOutPut, "已启用输出优化")
                         else:
                             self.whatNeedCalculate()
                             # 以下是计算后工作
-                            wx.CallAfter(self.outPutToOutPut,
-                                "\n\n本次计算+输出花费了%.7f秒\n" % (self.time_after_calculate - self.time_before_calculate))  # 输出本次计算时间
+                            wx.CallAfter(self.outPutToOutPut,f"\n\n本次计算+输出花费了{self.time_after_calculate - self.time_before_calculate:.6f}秒\n")  # 输出本次计算时间
             except Exception as e:
                 wx.CallAfter(self.clearOutPut)
                 wx.CallAfter(self.setOutPut,str(e))
@@ -243,46 +234,41 @@ class Application(MainWin.MainWindow):  # 主类
         else:
             wx.CallAfter(self.outPutToOutPut,"\n运算程序正在进行中，请勿反复点击计算按钮！\n")  # 清空输出框
 
-    def outPutToOutPut(self, msg:str):
-        self.output.AppendText(msg)
-
-    def clearOutPut(self):
-        self.output.Clear()
-
-    def setOutPut(self, msg:str):
-        self.output.SetValue(msg)
-
     def whatNeedCalculate(self):
         module_return = None  # 用来输出的，outputmode2和1的时候有用
         result_last = None  # 用来输出的，outputmode0的时候有用
         self.is_thread_runing = True
-        if self.input_mode == '0':
+        if self.input_mode == 'string':
             self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
-        else:
+        elif self.input_mode == 'num':
+            self.input_box_s_input = int(self.input_box.GetValue())  # 取得输入框的数字
+        elif self.input_mode == '0':
+            self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
+        elif self.input_mode == '1':
             self.input_box_s_input = int(self.input_box.GetValue())  # 取得输入框的数字
 
-        self.time_before_calculate = time.time()  # 储存开始时间
+        self.time_before_calculate = time.perf_counter()  # 储存开始时间
 
         if self.output_mode == '0':
-            exec("result_last = self." + self.Selection + ".main(self.input_box_s_input)")
+            exec(f"result_last = self.{self.Selection}.main(self.input_box_s_input)")
             wx.CallAfter(self.setOutPut, str(result_last) + "\n")  # 结果为str，直接输出
         elif self.output_mode == '2': # 算一行输出一行，但是没有换行
             wx.CallAfter(self.clearOutPut)  # 清空输出框
-            exec("module_return=self." + self.Selection + ".main(self.input_box_s_input")
+            exec(f"module_return=self.{self.Selection}.main(self.input_box_s_input")
             for result_process in module_return:  # 计算
                 wx.CallAfter(self.outPutToOutPut, str(result_process))  # 算一行输出一行
         elif self.output_mode == '1': # 算一行输出一行
             wx.CallAfter(self.clearOutPut)  # 清空输出框
-            exec("module_return=self." + self.Selection + ".main(self.input_box_s_input")
+            exec(f"module_return=self.{self.Selection}.main(self.input_box_s_input")
             for result_process in module_return:  # 计算 啊，定义就在上一行，hoyc你是看不到吗？
                 wx.CallAfter(self.outPutToOutPut, str(result_process) + "\\n")  # 算一行输出一行
         elif self.output_mode == '4':
             wx.CallAfter(self.clearOutPut) # 清空输出框
-            exec("self." + self.Selection + ".main(self.input_box_s_input,self,'output')")
+            exec(f"self.{self.Selection}.main(self.input_box_s_input,self,'output')")
         else:
             wx.CallAfter(self.clearOutPut) # 清空输出框
-            exec("self." + self.Selection + ".main(self.input_box_s_input,self)")
-        self.time_after_calculate = time.time()  # 储存结束时间
+            exec(f"self.{self.Selection}.main(self.input_box_s_input,self)")
+        self.time_after_calculate = time.perf_counter()  # 储存结束时间
 
     def whatNeedCalculateWithSave(self):  # 选择检测+计算
         # self.name_text_file - 储存保存到哪个文件里
@@ -290,9 +276,13 @@ class Application(MainWin.MainWindow):  # 主类
         module_return = None  # 用来输出的，outputmode2和1的时候有用
         result_last = None  # 用来输出的，outputmode0的时候有用
         self.is_thread_runing = True
-        if self.input_mode == '0':
+        if self.input_mode == 'string':
             self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
-        else:
+        elif self.input_mode == 'num':
+            self.input_box_s_input = int(self.input_box.GetValue())  # 取得输入框的数字
+        elif self.input_mode == '0':
+            self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
+        elif self.input_mode == '1':
             self.input_box_s_input = int(self.input_box.GetValue())  # 取得输入框的数字
 
         now = datetime.datetime.now()  # 保存当前时间，用于文件名
@@ -305,38 +295,42 @@ class Application(MainWin.MainWindow):  # 主类
 
         save = open(os.path.join(os.path.abspath(self.save_location_input_box.GetValue()),self.name_text_file + ".txt"), "w", encoding="utf-8")
 
-        self.time_before_calculate = time.time()  # 储存开始时间
+        self.time_before_calculate = time.perf_counter()  # 储存开始时间
 
         try:
             if self.output_mode == '0':  # 分布输出和一次输出
-                exec("result_last = self." + self.Selection + ".main(self.input_box_s_input)")
+                exec(f"result_last = self.{self.Selection}.main(self.input_box_s_input)")
                 save.write(str(result_last) + "\n")
             elif self.output_mode == '2':  # 算一行输出一行，但是没有换行
-                exec("module_return=self." + self.Selection + ".main(self.input_box_s_input")
+                exec(f"module_return=self.{self.Selection}.main(self.input_box_s_input")
                 for result_process in module_return:  # 计算
                     save.write(str(result_process))
                     save.flush()  # 算出来就存进去
             elif self.output_mode == '1':  # 算一行输出一行，但是没有换行
-                exec("module_return=self." + self.Selection + ".main(self.input_box_s_input")
+                exec(f"module_return=self.{self.Selection}.main(self.input_box_s_input")
                 for result_process in module_return:  # 计算
                     save.write(str(result_process) + "\\n")
                     save.flush()  # 算出来就存进去
             elif self.output_mode == '4':
-                exec("self." + self.Selection + ".main(self.input_box_s_input,save,'save')")
+                exec(f"self.{self.Selection}.main(self.input_box_s_input,save,'save')")
             else:
-                exec("self." + self.Selection + ".main_save(self.input_box_s_input,save)")
+                exec(f"self.{self.Selection}.main_save(self.input_box_s_input,save)")
         finally:
             save.close()
 
-        self.time_after_calculate = time.time()  # 储存结束时间
+        self.time_after_calculate = time.perf_counter()  # 储存结束时间
 
     def whatNeedCalculateWithOutputOptimization(self):
         # self.name_text_file - 储存保存到哪个文件里
         # now - 保存datetime类型的当前时间
         self.is_thread_runing = True
-        if self.input_mode == '0':
+        if self.input_mode == 'string':
             self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
-        else:
+        elif self.input_mode == 'num':
+            self.input_box_s_input = int(self.input_box.GetValue())  # 取得输入框的数字
+        elif self.input_mode == '0':
+            self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
+        elif self.input_mode == '1':
             self.input_box_s_input = int(self.input_box.GetValue())  # 取得输入框的数字
 
         now = datetime.datetime.now()  # 保存当前时间，用于文件名
@@ -351,36 +345,34 @@ class Application(MainWin.MainWindow):  # 主类
 
 
         with tempfile.TemporaryFile('w+t', encoding='utf-8', errors='ignore') as save:
-            self.time_before_calculate = time.time()  # 储存开始时间
+            self.time_before_calculate = time.perf_counter()  # 储存开始时间
 
             try:
                 if self.output_mode == '0':  # 分布输出和一次输出
                     result_last = None  # 用来输出的，outputmode0的时候有用
-                    exec("result_last = self." + self.Selection + ".main(self.input_box_s_input)")
+                    exec(f"result_last = self.{self.Selection}.main(self.input_box_s_input)")
                     save.write(str(result_last) + "\n")
                 elif self.output_mode == '2':  # 算一行输出一行，但是没有换行
                     module_return = None  # 用来输出的，outputmode2和1的时候有用
-                    exec("module_return=self." + self.Selection + ".main(self.input_box_s_input")
+                    exec(f"module_return=self.{self.Selection}.main(self.input_box_s_input")
                     for result_process in module_return:  # 计算
                         save.write(str(result_process))
                         save.flush()  # 算出来就存进去
                 elif self.output_mode == '1':  # 算一行输出一行，但是没有换行
                     module_return = None  # 用来输出的，outputmode2和1的时候有用
-                    exec("module_return=self." + self.Selection + ".main(self.input_box_s_input")
+                    exec(f"module_return=self.{self.Selection}.main(self.input_box_s_input")
                     for result_process in module_return:  # 计算
                         save.write(str(result_process) + "\\n")
                         save.flush()  # 算出来就存进去
                 elif self.output_mode == '4':
-                    exec("self." + self.Selection + ".main(self.input_box_s_input,save,'save')")
+                    exec(f"self.{self.Selection}.main(self.input_box_s_input,save,'save')")
                 else:
-                    exec("self." + self.Selection + ".main_save(self.input_box_s_input,save)")
+                    exec(f"self.{self.Selection}.main_save(self.input_box_s_input,save)")
             finally:
                 wx.CallAfter(self.clearOutPut)  # 清空输出框
-                times=0
                 save.seek(0)# 将文件指针移到开始处，准备读取文件
                 if self.output_optimization_check.GetValue():
-                    for line in self.quickTraverseFile(save):
-                        times+=1
+                    for times,line in enumerate(self.quickTraverseFile(save)):
                         wx.CallAfter(self.outPutToOutPut,line)
                         if times>=128:
                             wx.CallAfter(self.outPutToOutPut,"\n\n输出上限：检测到输出数据过大，请使用保存到文件防止卡死")
@@ -389,7 +381,7 @@ class Application(MainWin.MainWindow):  # 主类
                     for line in self.quickTraverseFile(save):
                         wx.CallAfter(self.outPutToOutPut,line)
 
-        self.time_after_calculate = time.time()  # 储存结束时间
+        self.time_after_calculate = time.perf_counter()  # 储存结束时间
 
     def quickTraverseFile(self,file,chunk_size=8192):
         for chunk in iter(partial(file.read,chunk_size), ''):#用readline的话，读到换行符就会直接停止读取，不会读取到8192B，会增加读取次数
@@ -397,32 +389,43 @@ class Application(MainWin.MainWindow):  # 主类
 
     def whatNeedCalculateWithTest(self):
         self.is_thread_runing = True
-        if self.input_mode == '0':
+        if self.input_mode == 'string':
             self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
-        else:
+        elif self.input_mode == 'num':
+            self.input_box_s_input = int(self.input_box.GetValue())  # 取得输入框的数字
+        elif self.input_mode == '0':
+            self.input_box_s_input = str(self.input_box.GetValue())  # 取得输入框的数字
+        elif self.input_mode == '1':
             self.input_box_s_input = int(self.input_box.GetValue())  # 取得输入框的数字
 
         try:
             if self.output_mode == '4':
                 wx.CallAfter(self.clearOutPut) # 清空输出框
 
-                self.time_before_calculate = time.time()  # 储存开始时间
-                exec("self." + self.Selection + ".main(self.input_box_s_input,self,'test')")
-                self.time_after_calculate = time.time()  # 储存结束时间
+                self.time_before_calculate = time.perf_counter()  # 储存开始时间
+                exec(f"self.{self.Selection}.main(self.input_box_s_input,self,'test')")
+                self.time_after_calculate = time.perf_counter()  # 储存结束时间
                 if self.output.GetValue() != "":
                     wx.CallAfter(self.clearOutPut) # 清空输出框
                     wx.CallAfter(self.setOutPut,"发生错误，请检查输入格式，以及插件是否有test模式")
             else:
                 wx.CallAfter(self.clearOutPut) # 清空输出框
 
-                self.time_before_calculate = time.time()  # 储存开始时间
-                exec("self." + self.Selection + ".main_test(self.input_box_s_input,self)")
-                self.time_after_calculate = time.time()  # 储存结束时间
+                self.time_before_calculate = time.perf_counter()  # 储存开始时间
+                exec(f"self.{self.Selection}.main_test(self.input_box_s_input,self)")
+                self.time_after_calculate = time.perf_counter()  # 储存结束时间
         except Exception:
-            self.time_after_calculate = time.time()  # 储存结束时间
+            self.time_after_calculate = time.perf_counter()  # 储存结束时间
             wx.CallAfter(self.setOutPut,"发生错误，请检查输入格式，以及插件是否有test模式")
 
+    def outPutToOutPut(self, msg:str):
+        self.output.AppendText(msg)
 
+    def clearOutPut(self):
+        self.output.Clear()
+
+    def setOutPut(self, msg:str):
+        self.output.SetValue(msg)
 
 
     def chooseNumberEvent(self, event):  # 选择算法事件
@@ -432,16 +435,13 @@ class Application(MainWin.MainWindow):  # 主类
         # self.optional_parameters=['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol']
         # self.parameters_list = ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol','input_mode','output_mode','save_name','output_name','save_mode','version']
         # self.required_parameters.extend(self.optional_parameters)
-        for i in ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol', 'input_mode',
-                  'output_mode', 'save_name', 'output_name', 'save_mode', 'version']:
+        for option_name in ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol', 'input_mode','output_mode', 'save_name', 'output_name', 'save_mode', 'version']:
             try:
-                exec("self." + i + "=str(self." + self.Selection + ".PLUGIN_METADATA['" + i + "'])")
+                exec(f"self.{option_name}=str(self.{self.Selection}.PLUGIN_METADATA['{option_name}'])")
             except Exception:
-                exec("self." + i + "=''")
+                exec(f"self.{option_name}=''")
         if self.fullwidth_symbol == '1':
-            self.help = self.help.replace(",", "，").replace(".", "。").replace("'", "‘").replace('"', '”').replace('(',
-                                                                                                                  '（').replace(
-                ')', '）')
+            self.help = self.help.replace(",", "，").replace(".", "。").replace("'", "‘").replace('"', '”').replace('(','（').replace(')', '）')
         self.output.SetValue(self.output_start + "\n")
         self.output.AppendText(self.output_name + " " + self.version + "\n")
         self.output.AppendText("by " + self.author + "\n" + "\n")
@@ -458,42 +458,38 @@ class Application(MainWin.MainWindow):  # 主类
         self.output.SetValue(Doc.UPDATE_LOG)
 
     def saveCheckEvent(self, event):  # 保存选项（那个√）事件
-        self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)
-        self.setting['save_check'] = self.save_check.GetValue()
+        with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:  # 读取设置文件
+            setting_file['save_check'] = self.save_check.GetValue()
         if self.test_check.GetValue():
             self.test_check.SetValue(False)
         else:
             pass
-        self.setting.close()
 
     def testCheckEvent(self,event):#test开就不报存
-        self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)
-        if self.save_check.GetValue():
-            self.save_check.SetValue(False)
-            self.setting['save_check'] = False
-        else:
-            pass
-        self.setting.close()
+        with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:  # 读取设置文件
+            if self.save_check.GetValue():
+                self.save_check.SetValue(False)
+                setting_file['save_check'] = False
+            else:
+                pass
 
     def outputOptimizationCheckEvent(self,event):
-        self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)
-        if self.output_optimization_check.GetValue():
-            pass
-        else:
-            self.output_lock_maximums_check.SetValue(False)
-            self.setting['output_lock_maximums'] = False
-        self.setting['output_optimization'] = self.output_optimization_check.GetValue()
-        self.setting.close()
+        with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:  # 读取设置文件
+            if self.output_optimization_check.GetValue():
+                pass
+            else:
+                self.output_lock_maximums_check.SetValue(False)
+                setting_file['output_lock_maximums'] = False
+            setting_file['output_optimization'] = self.output_optimization_check.GetValue()
 
     def outputLockMaximumsCheckEvent(self, event):#锁上限开，就要开优化
-        self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)
-        if self.output_lock_maximums_check.GetValue():
-            self.output_optimization_check.SetValue(True)
-            self.setting['output_optimization'] = True
-            self.setting['output_lock_maximums'] = self.output_lock_maximums_check.GetValue()#True
-        else:
-            self.setting['output_lock_maximums'] = self.output_lock_maximums_check.GetValue()#False
-        self.setting.close()
+        with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:  # 读取设置文件
+            if self.output_lock_maximums_check.GetValue():
+                self.output_optimization_check.SetValue(True)
+                setting_file['output_optimization'] = True
+                setting_file['output_lock_maximums'] = self.output_lock_maximums_check.GetValue()#True
+            else:
+                setting_file['output_lock_maximums'] = self.output_lock_maximums_check.GetValue()#False
 
     def quit_event(self,event): #菜单栏退出事件
         self.Close(True)
@@ -508,9 +504,8 @@ class Application(MainWin.MainWindow):  # 主类
 
     def reset_save_location(self,event):
         self.save_location_input_box.SetValue(os.path.abspath(".\\皓式程序输出\\"))
-        self.setting = shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True)  # 读取设置文件
-        self.setting['save_location'] = str(self.save_location_input_box.GetValue())
-        self.setting.close()
+        with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:  # 读取设置文件
+            setting_file['save_location'] = str(self.save_location_input_box.GetValue())
 
     def __del__(self):
         pass
@@ -522,13 +517,13 @@ class Application(MainWin.MainWindow):  # 主类
 
 
         try:#清空选择栏
-            for i in range(0,len(self.can_choose_number)):
+            for i in range(len(self.can_choose_number)):
                 self.list_box.Delete(0)
         except Exception:
             pass
 
         for i in self.can_choose_number:#选出符合要求的
-            if i.find(self.search_keyword)==-1:
+            if i.find(self.search_keyword)==-1:#字符串方法，没找到指定子串就-1
                 continue
             else:
                 self.list_box.Append(i)
@@ -539,7 +534,7 @@ class Application(MainWin.MainWindow):  # 主类
         self.search.ShowCancelButton(False)
 
         try:
-            for i in range(0, len(self.can_choose_number)):
+            for i in range(len(self.can_choose_number)):
                 self.list_box.Delete(0)
         except Exception:
             pass
