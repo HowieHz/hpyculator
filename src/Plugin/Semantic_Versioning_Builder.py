@@ -61,7 +61,6 @@ def main(input:str):
     except Exception as e:
         c = ""
         a, b = input.split(",")
-
     if c == "wdnmd":
         list = []
         aq, aw, ae = map(str, a.split("."))

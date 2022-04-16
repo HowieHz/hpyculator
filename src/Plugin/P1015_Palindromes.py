@@ -91,3 +91,27 @@ def ishw(list):
         return True
     else:
         return False
+
+def main_save(input:str,save):
+    o, p = input.strip().split(",")
+    a = int(o.strip())  # a是多少进制
+    b_list = list(map(lambda x: int(x, a), list(p.strip())))
+    times = 0
+    c_list = b_list[:]
+    b_list.reverse()  # 左边是个位，右边是高位
+    for _ in range(0, 30):
+        if ishw(b_list):
+            hpyc.write(save, "STEP=" + str(times))
+            return
+        times += 1
+        for i in range(0, len(b_list)):
+            b_list[i] = str(int(c_list[i]) + int(b_list[i]))
+            if int(b_list[i]) > (a - 1):
+                b_list[i] = str(int(b_list[i]) - a)
+                if i != (len(b_list) - 1):
+                    b_list[i + 1] = str(int(b_list[i + 1]) + 1)
+                else:
+                    b_list.append("1")
+        c_list = b_list[:]
+        c_list.reverse()
+    hpyc.write(save, "Impossible!")

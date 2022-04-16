@@ -26,7 +26,7 @@ PLUGIN_METADATA = {
                     """,
     'output_end': "",
 
-    'output_mode': '3',
+    'output_mode': '4',
     'save_mode': '1',
     "fullwidth_symbol": '0'
 }
@@ -54,9 +54,13 @@ def main(input:str, self,todo):  # 输出到框体内
         hpyc.output(self,"八进制：" + str(oct(num))[2:])
         hpyc.output(self,"十进制：" + str(num))
         hpyc.output(self,"十六进制：" + str(hex(num))[2:].upper())
+    elif todo == "save":
+        hpyc.write_without_flush(self, "二进制：" + str(bin(num))[2:])
+        hpyc.write_without_flush(self, "八进制：" + str(oct(num))[2:])
+        hpyc.write_without_flush(self, "十进制：" + str(num))
+        hpyc.write_without_flush(self, "十六进制：" + str(hex(num))[2:].upper())
+    elif todo == "test":
+        pass
     else:
-        hpyc.output(self, "二进制：" + str(bin(num))[2:])
-        hpyc.output(self, "八进制：" + str(oct(num))[2:])
-        hpyc.output(self, "十进制：" + str(num))
-        hpyc.output(self, "十六进制：" + str(hex(num))[2:].upper())
+        pass
     return

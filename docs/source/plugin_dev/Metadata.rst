@@ -12,7 +12,7 @@
 .. code-block:: python
 
     PLUGIN_METADATA = {
-        'input_mode' : '{}',#输入模式，string为传入字符串 num位传入float(传入的作为main函数的开始计算值)
+        'input_mode' : '{}',#输入模式，string为传入字符串,num为传入int,float为传入float(传入的作为main函数的开始计算值)
         'id' : '[文件名]',#ID，插件标识符，需要和文件名一致
         'option_name' : "[算法名][版本号(推荐语义化版本)] by [作者名]",#选项名-在选择算法列表中
         'version' : '[版本号(推荐语义化版本)]',#版本号
