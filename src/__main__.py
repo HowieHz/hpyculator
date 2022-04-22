@@ -23,11 +23,10 @@ from PySide6.QtWidgets import QApplication, QMainWindow
 from ui.MainWindow import Ui_MainWindow
 from ui.Signal import main_window_signal
 
-
-class Application(QMainWindow):  # 主类
-
+# 主类
+class Application(QMainWindow):
+    # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
     def __init__(self):
-        # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
         # setting_file - 配置文件ShelfFile(\皓式程序设置\hpyculator_setting)
 
         super().__init__()
@@ -35,10 +34,11 @@ class Application(QMainWindow):  # 主类
         self.ui.setupUi(self)
         self.band()#信号和槽的绑定
 
-        self.main_window_signal=main_window_signal
+        self.main_window_signal=main_window_signal#更方便的使用自定义事件
 
-        self.setWindowTitle("各类数组计算程序%s-Howie皓子制作" % Version.VERSION)
+        self.setWindowTitle("各类数组计算程序%s-Howie皓子制作" % Version.VERSION)#设置标题
 
+        #检查文件夹是否存在
         if os.path.exists(os.path.abspath(r'.\皓式程序设置')):
             pass
         else:
@@ -55,18 +55,16 @@ class Application(QMainWindow):  # 主类
 
 
         #载入模块
-        self.plugin_files_name=[]
-        self.plugin_files_name_folder= []
-        self.can_choose_number = []
-        self.plugin_files_name_py=[]
-        self.plugin_filename_option_name_map = {}
-        self.readPlugin(r'.\Plugin')
-        #pprint.pprint("读取到Plugin文件夹下文件:")
-        #pprint.pprint(self.plugin_files_name)#读取到Plugin下面的文件
-        #pprint.pprint("读取到的文件夹插件:")
-        #pprint.pprint(self.plugin_files_name_folder)
+        self.plugin_files_name=[]#Plugin目录下读取到的文件
+        self.plugin_files_name_folder= []#Plugin目录下读取到的有__init__.py的文件夹
+        self.can_choose_number = []#选择列表，储存着所有的选项名
+        self.plugin_files_name_py=[]#储存着
+        self.plugin_filename_option_name_map = {}#选项名和实际文件名的映射表
+        self.readPlugin(r'.\Plugin')#读
+
+        # 从所有读取的文件中挑选出.py为后缀的文件
         try:
-            for i_list in self.plugin_files_name:#从所有读取的文件中挑选出.py为后缀的文件
+            for i_list in self.plugin_files_name:
                 if (i_list[0].split("."))[-1] == "py":
                     if not self.plugin_files_name_py:  # 第一遍空列表才写入
                         self.plugin_files_name_py = i_list
@@ -74,8 +72,7 @@ class Application(QMainWindow):  # 主类
         except Exception as e:
             pass
 
-        #pprint.pprint("读取到的.py文件:")
-        #pprint.pprint(self.plugin_files_name_py)
+        #加载插件
         try:
             self.init_plugin_singerfile()#导入单文件插件
         except Exception as e:
@@ -86,33 +83,20 @@ class Application(QMainWindow):  # 主类
         except Exception as e:
             print(e)
 
-        #self.__init__ui()
 
-        self.ui.choices_list_box.addItems(self.can_choose_number)
-        print(self.can_choose_number)
-        #print("\n\n选项和文件名（ID）映射表:")
-        #pprint.pprint(self.plugin_filename_option_name_map)
+        self.ui.choices_list_box.addItems(self.can_choose_number)#选项名添加到ui上
 
-        # self.events=Events()#实例化Events
-        # self.mainWindow()  # 初始化窗口
-        self.is_thread_runing = False
-
-        #self.ui.save_location_input_box.SetValue(os.path.abspath(".\\皓式程序输出\\")) ---TODO这个一要放在设置窗口里面
+        self.is_thread_runing = False#防止两个计算线程同时进行
 
         # 关于gui显示内容的初始化
         self.ui.output_box.setPlainText(Doc.START_SHOW)  # 开启的展示
 
-        with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:#读取设置文件
+        # 读取设置文件
+        with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:
             try:
                 self.ui.save_check.setChecked(setting_file['save_check'])  # 根据数据设置选项状态
             except Exception:
                 setting_file['save_check'] = self.ui.save_check.isChecked()
-
-            # try:
-            #     self.ui.save_location_input_box (setting_file['save_location'])  # 根据数据设置选项状态
-            # except Exception:
-            #     setting_file['save_location'] = self.ui.save_location_input_box
-
             try:
                 self.ui.output_optimization_check.setChecked(setting_file['output_optimization'])  # 根据数据设置选项状态
             except Exception:
@@ -124,9 +108,6 @@ class Application(QMainWindow):  # 主类
                 setting_file['output_lock_maximums'] = True
                 self.ui.output_lock_maximums_check.setChecked(True)
 
-    def __init__ui(self):
-        pass
-
     def band(self):
         # self.ui.___ACTION___.triggered.connect(___FUNCTION___)
         # self.ui.___BUTTON___.clicked.connect(___FUNCTION___)
@@ -137,22 +118,19 @@ class Application(QMainWindow):  # 主类
         #my_signal.setProgressBar.connect(self.set_progress_bar)
 
         #my_signal.setResult.connect(self.set_result)
-        main_window_signal.appendOutPutBox.connect(self.appendOutPut)
+        def appendOutPut(msg: str):
+            self.ui.output_box.appendPlainText(msg)
 
-        main_window_signal.setOutPutBox.connect(self.setOutPut)
+        def clearOutPut():
+            self.ui.output_box.clear()
 
-        main_window_signal.clearOutPutBox.connect(self.clearOutPut)
+        def setOutPut(msg: str):
+            self.ui.output_box.setPlainText(msg)
+        main_window_signal.appendOutPutBox.connect(appendOutPut)
 
+        main_window_signal.setOutPutBox.connect(setOutPut)
 
-
-    def appendOutPut(self, msg:str):
-        self.ui.output_box.appendPlainText(msg)
-
-    def clearOutPut(self):
-        self.ui.output_box.clear()
-
-    def setOutPut(self, msg:str):
-        self.ui.output_box.setPlainText(msg)
+        main_window_signal.clearOutPutBox.connect(clearOutPut)
 
     def init_plugin_singerfile(self):
         self.plugin_files_name_py_nopy = self.plugin_files_name_py[:]
@@ -183,6 +161,7 @@ class Application(QMainWindow):  # 主类
             except Exception as e:
                 print(e)
 
+    #读取指定目录下插件 #需重构
     def readPlugin(self,path):
         for root, dir, file in os.walk(path):
             self.plugin_files_name.append(file)
@@ -196,7 +175,7 @@ class Application(QMainWindow):  # 主类
                 if '__init__.py' in file:
                     self.plugin_files_name_folder.append(str(root).split("\\")[2])
 
-
+    #初始化计算，绑定计算按钮，启动计算线程
     def startEvent(self, event):
         # self.input_box_s_input - 储存输入框的内容
         # self.time_before_calculate,self.time_after_calculate - 临时储存时间，计录 计算时间
@@ -249,11 +228,11 @@ class Application(QMainWindow):  # 主类
             self.input_box_s_input = int(self.ui.input_box.toPlainText())  # 取得输入框的数字
 
         #以上是计算前工作
-        calculate_thread=threading.Thread(target=self.startCalculate)
+        calculate_thread=threading.Thread(target=self.startCalculate)#启动计算线程
         calculate_thread.start()
 
 
-
+    #计算线程
     def startCalculate(self):
         if not self.is_thread_runing:
             try:
@@ -399,6 +378,7 @@ class Application(QMainWindow):  # 主类
 
         self.time_after_calculate = time.perf_counter()  # 储存结束时间
 
+    #快读，低占用读取文件
     def quickTraverseFile(self,file,chunk_size=8192):
         for chunk in iter(partial(file.read,chunk_size), ''):#用readline的话，读到换行符就会直接停止读取，不会读取到8192B，会增加读取次数
             yield chunk
@@ -453,6 +433,7 @@ by {self.author}
 
 {self.output_end}""")
 
+    #菜单栏触发函数
     def menuBar(self,triggeres):
         def showAbout():  # 菜单栏 关于作者
             self.ui.output_box.setPlainText(Doc.START_SHOW)
@@ -488,7 +469,8 @@ by {self.author}
                     "检查更新": cheak_update}
         jump_map[triggeres.text()]()
 
-    def saveCheckEvent(self, event):  # 保存选项（那个√）事件
+    # 当触发保存选项（那个√）事件
+    def saveCheckEvent(self, event):
         with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:  # 读取设置文件
             setting_file['save_check'] = self.ui.save_check.isChecked()
         if self.ui.test_check.isChecked():
@@ -496,6 +478,7 @@ by {self.author}
         else:
             pass
 
+    # 当触发测试选项
     def testCheckEvent(self,event):#test开就不报存
         with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:  # 读取设置文件
             if self.ui.save_check.isChecked():
@@ -504,6 +487,7 @@ by {self.author}
             else:
                 pass
 
+    # 当触发优化输出选项
     def outputOptimizationCheckEvent(self,event):
         with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:  # 读取设置文件
             if self.ui.output_optimization_check.isChecked():
@@ -513,6 +497,7 @@ by {self.author}
                 setting_file['output_lock_maximums'] = False
             setting_file['output_optimization'] = self.ui.output_optimization_check.isChecked()
 
+    # 当触发锁内框输出上限选项
     def outputLockMaximumsCheckEvent(self, event):#锁上限开，就要开优化
         with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:  # 读取设置文件
             if self.ui.output_lock_maximums_check.isChecked():
@@ -522,9 +507,7 @@ by {self.author}
             else:
                 setting_file['output_lock_maximums'] = self.ui.output_lock_maximums_check.isChecked()#False
 
-    # def __del__(self):
-    #     pass
-
+    # 搜索框
     def search_text(self,event): # 搜索框按回车之后的事件
         self.search_keyword = event.GetString()
         print(self.can_choose_number)
@@ -557,32 +540,9 @@ by {self.author}
         self.ui.choices_list_box.Append(self.can_choose_number)
         return
 
-"""
-各种量的命名规范
-hello_world 变量全部小写，使用下划线连接
-helloWorld 函数(def)和方法使用小驼峰式命名法，首单词字母小写，后面单词字母大写
-HelloWorld 类名(Class)、文件名(Xswl.txt)使用帕斯卡命名规则(大驼峰式命名法,每一个单词的首字母都采用大写字母)。
-HELLO_WORLD 常量(NEVER_GIVE_UP)全部大写，使用下划线连接单词
-numba vx jax感觉两个差不多
-"""
 if __name__ == '__main__':
-    # app=wx.PySimpleApp()
-    # app = wx.App()
-    # # wx.App(False)
-    # mainWindow = Application()
-    # mainWindow.Show(True)
-    # app.MainLoop()  # 正常_必备_主事件循环
-
-    # import qdarkstyle
-
     app = QApplication([])  # 启动一个应用
     window = Application()  # 实例化主窗口
-
-    # app.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='PySide6'))
-    #app.setStyle(QStyleFactory.create("Fusion"))  # fusion风格
-
-    #from qt_material import apply_stylesheet  # https://github.com/UN-GCPDS/qt-material
-    #apply_stylesheet(app, theme='light_blue.xml')
 
     window.show()  # 展示主窗口
     app.exec()  # 避免程序执行到这一行后直接退出
