@@ -2,7 +2,6 @@ import datetime
 import os
 import shelve
 import time
-import wx
 import threading
 import sys
 import importlib
