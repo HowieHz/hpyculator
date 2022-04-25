@@ -199,7 +199,7 @@ class Application(QMainWindow):
             self.ui.output_box.setPlainText("\n\n" +
                          """
 不选要算什么我咋知道要算啥子嘞
-                         
+
 请在左侧选择运算核心
           ↓
 ← ← ←""")
