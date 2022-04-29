@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>SettingWindow</class>
+ <widget class="QMainWindow" name="SettingWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1015</width>
-    <height>877</height>
+    <width>640</width>
+    <height>480</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>640</width>
+    <height>480</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>640</width>
+    <height>480</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>hpycacular</string>
+   <string>MainWindow</string>
   </property>
   <property name="styleSheet">
    <string notr="true">/*
@@ -79,7 +91,8 @@ QPushButton{
 	border-width: 1px;
 	border-radius: 5px;
 	color: rgb(0,0,0);
-	padding: 2px;
+	font: 16pt &quot;Microsoft YaHei UI&quot;;
+	padding: 10px;
 	background-color: rgb(255,255,255);
 }
 QPushButton::default{
@@ -91,7 +104,8 @@ QPushButton::default{
 	border-width: 1px;
 	border-radius: 5px;
 	color: rgb(0,0,0);
-	padding: 2px;
+	font: 16pt &quot;Microsoft YaHei UI&quot;;
+	padding: 10px;
 	background-color: rgb(255,255,255);
 }
 QPushButton:hover{
@@ -574,415 +588,137 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    background: none;
 }</string>
   </property>
-  <widget class="QWidget" name="central_widget">
-   <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="0">
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QPlainTextEdit" name="search_box">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-          <horstretch>2</horstretch>
-          <verstretch>1</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>250</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>55</height>
-         </size>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="lineWidth">
-         <number>1</number>
-        </property>
-        <property name="plainText">
-         <string>输入字符自动进行搜索</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" rowspan="14">
-       <widget class="QListWidget" name="choices_list_box">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-          <horstretch>2</horstretch>
-          <verstretch>7</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>250</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <item>
-         <property name="text">
-          <string>清空搜索框就可以显示所有的插件了</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QPushButton" name="start_button">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-            <horstretch>3</horstretch>
-            <verstretch>1</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>计算</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="save_check">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-            <horstretch>1</horstretch>
-            <verstretch>1</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>保存输出到文件</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="test_check">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-            <horstretch>1</horstretch>
-            <verstretch>1</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>测试模式</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="output_optimization_check">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-            <horstretch>1</horstretch>
-            <verstretch>1</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>内框输出性能优化</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="output_lock_maximums_check">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-            <horstretch>1</horstretch>
-            <verstretch>1</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>内框输出上限</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="0" column="1" rowspan="3">
-       <widget class="QPlainTextEdit" name="input_box">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>5</horstretch>
-          <verstretch>2</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1" rowspan="11">
-       <widget class="QPlainTextEdit" name="output_box">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>5</horstretch>
-          <verstretch>5</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-   </layout>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>20</y>
+      <width>101</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>更纱黑体 UI SC</family>
+      <pointsize>20</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>设置</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="output_save_location">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>80</y>
+      <width>341</width>
+      <height>81</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>90</y>
+      <width>161</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>等距更纱黑体 Slab SC</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>保存输出文件的位置</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="save_setting_button">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>410</y>
+      <width>201</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei UI</family>
+      <pointsize>16</pointsize>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>保存</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="cancel_setting_button">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>410</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei UI</family>
+      <pointsize>16</pointsize>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>取消修改</string>
+    </property>
+   </widget>
   </widget>
-  <widget class="QMenuBar" name="menu_bar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1015</width>
-     <height>19</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="about__menu">
-    <property name="title">
-     <string>|---关于---|</string>
-    </property>
-    <addaction name="cheak_update"/>
-    <addaction name="show_todo"/>
-    <addaction name="show_about"/>
-    <addaction name="separator"/>
-    <addaction name="show_update_log"/>
-   </widget>
-   <widget class="QMenu" name="reset_menu">
-    <property name="title">
-     <string>|---重置---|</string>
-    </property>
-    <addaction name="reset_save_location"/>
-   </widget>
-   <widget class="QMenu" name="stop_menu">
-    <property name="title">
-     <string>|---终止---|</string>
-    </property>
-    <addaction name="stop_compute"/>
-    <addaction name="stop_app"/>
-   </widget>
-   <widget class="QMenu" name="setting_menu">
-    <property name="title">
-     <string>|---设置---|</string>
-    </property>
-    <addaction name="action"/>
-   </widget>
-   <addaction name="reset_menu"/>
-   <addaction name="setting_menu"/>
-   <addaction name="stop_menu"/>
-   <addaction name="about__menu"/>
-  </widget>
-  <widget class="QStatusBar" name="status_bar"/>
-  <action name="cheak_update">
-   <property name="text">
-    <string>更新日志</string>
-   </property>
-  </action>
-  <action name="show_todo">
-   <property name="text">
-    <string>更新展望</string>
-   </property>
-  </action>
-  <action name="show_about">
-   <property name="text">
-    <string>开屏介绍</string>
-   </property>
-  </action>
-  <action name="show_update_log">
-   <property name="text">
-    <string>检查更新</string>
-   </property>
-  </action>
-  <action name="reset_save_location">
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
-   <property name="checked">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>重置保存路径</string>
-   </property>
-  </action>
-  <action name="stop_compute">
-   <property name="text">
-    <string>终止当前运算</string>
-   </property>
-  </action>
-  <action name="stop_app">
-   <property name="text">
-    <string>退出程序</string>
-   </property>
-  </action>
-  <action name="action">
-   <property name="text">
-    <string>设置</string>
-   </property>
-  </action>
  </widget>
- <tabstops>
-  <tabstop>search_box</tabstop>
-  <tabstop>start_button</tabstop>
-  <tabstop>test_check</tabstop>
-  <tabstop>output_optimization_check</tabstop>
-  <tabstop>output_lock_maximums_check</tabstop>
- </tabstops>
  <resources/>
  <connections>
   <connection>
-   <sender>start_button</sender>
+   <sender>save_setting_button</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>startEvent()</slot>
+   <receiver>SettingWindow</receiver>
+   <slot>save_setting()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>571</x>
-     <y>239</y>
+     <x>427</x>
+     <y>430</y>
     </hint>
     <hint type="destinationlabel">
-     <x>615</x>
-     <y>297</y>
+     <x>416</x>
+     <y>353</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>save_check</sender>
+   <sender>cancel_setting_button</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>saveCheckEvent()</slot>
+   <receiver>SettingWindow</receiver>
+   <slot>cancel_setting()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>683</x>
-     <y>238</y>
+     <x>550</x>
+     <y>422</y>
     </hint>
     <hint type="destinationlabel">
-     <x>754</x>
-     <y>297</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>test_check</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>testCheckEvent()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>779</x>
-     <y>238</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>827</x>
-     <y>294</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>output_optimization_check</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>outputOptimizationCheckEvent()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>903</x>
-     <y>238</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>914</x>
-     <y>296</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>output_lock_maximums_check</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>outputLockMaximumsCheckEvent()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1003</x>
-     <y>238</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>922</x>
-     <y>295</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>choices_list_box</sender>
-   <signal>itemClicked(QListWidgetItem*)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>chooseNumberEvent()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>265</x>
-     <y>502</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>465</x>
-     <y>633</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>menu_bar</sender>
-   <signal>triggered(QAction*)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>menuBar()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>61</x>
-     <y>11</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>76</x>
-     <y>28</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>search_box</sender>
-   <signal>textChanged()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>search_text()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>164</x>
-     <y>68</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>227</x>
-     <y>86</y>
+     <x>522</x>
+     <y>352</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
-  <slot>chooseNumberEvent()</slot>
-  <slot>showAbout()</slot>
-  <slot>showTODO()</slot>
-  <slot>showDONE()</slot>
-  <slot>saveCheckEvent()</slot>
-  <slot>testCheckEvent()</slot>
-  <slot>outputOptimizationCheckEvent()</slot>
-  <slot>outputLockMaximumsCheckEvent()</slot>
-  <slot>quit_event()</slot>
-  <slot>stop_compute()</slot>
-  <slot>cheak_update()</slot>
-  <slot>reset_save_location()</slot>
-  <slot>search_text()</slot>
-  <slot>search_cancel()</slot>
-  <slot>startEvent()</slot>
-  <slot>menuBar()</slot>
+  <slot>save_setting()</slot>
+  <slot>cancel_setting()</slot>
  </slots>
 </ui>

@@ -19,6 +19,8 @@ from PySide6.QtWidgets import QApplication, QMainWindow
 # PySide6-uic demo.ui -o ui_demo.py
 # from ui_demo import Ui_Demo
 
+from SettingWindow import SettingApplication
+
 from ui.MainWindow import Ui_MainWindow
 from ui.Signal import main_window_signal
 
@@ -26,7 +28,7 @@ from ui.Signal import main_window_signal
 class Application(QMainWindow):
     # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
     def __init__(self):
-        # setting_file - 配置文件ShelfFile(\皓式程序设置\hpyculator_setting)
+        # setting_file - 配置文件ShelfFile对象
 
         super().__init__()
         self.ui = Ui_MainWindow()  # UI类的实例化()
@@ -37,19 +39,54 @@ class Application(QMainWindow):
 
         self.setWindowTitle("各类数组计算程序%s-Howie皓子制作" % Version.VERSION)#设置标题
 
+        # 初始化设置目录
+        self.SETTING_DIR_PATH = str(os.path.join(os.getcwd(), 'Setting'))
+        print(f'SETTING_DIR:{self.SETTING_DIR_PATH}')
+        self.SETTING_FILE_PATH = str(os.path.join(self.SETTING_DIR_PATH, 'hpyculator_setting'))
+
+        # 读取设置文件
+        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
+            try:
+                self.ui.save_check.setChecked(setting_file['save_check'])  # 根据数据设置选项状态
+            except Exception:
+                setting_file['save_check'] = self.ui.save_check.isChecked()
+            try:
+                self.ui.output_optimization_check.setChecked(setting_file['output_optimization'])  # 根据数据设置选项状态
+            except Exception:
+                setting_file['output_optimization'] = True
+                self.ui.output_optimization_check.setChecked(True)
+            try:
+                self.ui.output_lock_maximums_check.setChecked(setting_file['output_lock_maximums'])  # 根据数据设置选项状态
+            except Exception:
+                setting_file['output_lock_maximums'] = True
+                self.ui.output_lock_maximums_check.setChecked(True)
+
+            # 初始化文件输出目录
+            try:
+                self.OUTPUT_DIR_PATH = setting_file['save_location']
+            except Exception:
+                self.OUTPUT_DIR_PATH = str(os.path.join(os.getcwd(), 'Output'))
+                setting_file['save_location'] = self.OUTPUT_DIR_PATH
+            print(f'OUTPUT_DIR:{self.OUTPUT_DIR_PATH}')
+
+        # 初始化目录
+        self.PLUGIN_DIR_PATH=str(os.path.join(os.getcwd(),'Plugin'))
+
+        print(f'PLUGIN_DIR:{self.PLUGIN_DIR_PATH}')
+
         #检查文件夹是否存在
-        if os.path.exists(os.path.abspath(r'.\皓式程序设置')):
+        if os.path.exists(self.SETTING_DIR_PATH):
             pass
         else:
-            os.makedirs(os.path.abspath(r'.\皓式程序设置'))
-        if os.path.exists(os.path.abspath(r'.\皓式程序输出')):
+            os.makedirs(self.SETTING_DIR_PATH)
+        if os.path.exists(self.OUTPUT_DIR_PATH):
             pass
         else:
-            os.makedirs(os.path.abspath(r'.\皓式程序输出'))
-        if os.path.exists(os.path.abspath(r'.\Plugin')):
+            os.makedirs(self.OUTPUT_DIR_PATH)
+        if os.path.exists(self.PLUGIN_DIR_PATH):
             pass
         else:
-            os.makedirs(os.path.abspath(r'.\Plugin'))
+            os.makedirs(self.PLUGIN_DIR_PATH)
 
 
 
@@ -59,7 +96,7 @@ class Application(QMainWindow):
         self.can_choose_number = []#选择列表，储存着所有的选项名
         self.plugin_files_name_py=[]#储存着
         self.plugin_filename_option_name_map = {}#选项名和实际文件名的映射表
-        self.readPlugin(r'.\Plugin')#读
+        self.readPlugin(self.PLUGIN_DIR_PATH)#读
 
         # 从所有读取的文件中挑选出.py为后缀的文件
         try:
@@ -89,23 +126,6 @@ class Application(QMainWindow):
 
         # 关于gui显示内容的初始化
         self.ui.output_box.setPlainText(Doc.START_SHOW)  # 开启的展示
-
-        # 读取设置文件
-        with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:
-            try:
-                self.ui.save_check.setChecked(setting_file['save_check'])  # 根据数据设置选项状态
-            except Exception:
-                setting_file['save_check'] = self.ui.save_check.isChecked()
-            try:
-                self.ui.output_optimization_check.setChecked(setting_file['output_optimization'])  # 根据数据设置选项状态
-            except Exception:
-                setting_file['output_optimization'] = True
-                self.ui.output_optimization_check.setChecked(True)
-            try:
-                self.ui.output_lock_maximums_check.setChecked(setting_file['output_lock_maximums'])  # 根据数据设置选项状态
-            except Exception:
-                setting_file['output_lock_maximums'] = True
-                self.ui.output_lock_maximums_check.setChecked(True)
 
     def band(self):
         # self.ui.___ACTION___.triggered.connect(___FUNCTION___)
@@ -149,6 +169,7 @@ class Application(QMainWindow):
                 print(e)
 
     def init_plugin_folder(self):
+        print(f"self.plugin_files_name_folder{self.plugin_files_name_folder}")
         for name in self.plugin_files_name_folder:
             exec(f"self.{name}=importlib.import_module('.{name}.__init__', package='Plugin')")
             # self.i = importlib.import_module('.' + str(name), package='Plugin')  # 相对导入
@@ -164,24 +185,26 @@ class Application(QMainWindow):
     def readPlugin(self,path):
         for root, dir, file in os.walk(path):
             self.plugin_files_name.append(file)
-            #print("root:"+str(root))
-            #print("root[:11]"+str(root)[:11])
-            #print("root[,]"+str(str(root).split("\\")))
-            #print("dir:"+str(dir))
-            #print("file:"+str(file))
-            #print("------")
-            if str(root)[:9]=='.\\Plugin\\':
+            # print("root:"+str(root))
+            # print("root[:11]"+str(root)[:11])
+            # print("root[:9]" + str(root)[:9])
+            # print("root[,]"+str(str(root).split("\\")))
+            # print("dir:"+str(dir))
+            # print("file:"+str(file))
+            # print("------")
+            root_list=str(root).split("\\")
+            #print(root_list)
+            if root_list[-2]=='Plugin':
+                #root[,]['C:', 'Users', 'Howie-MacBookPro', 'Documents', 'ProgramDevelopment', 'hpyculator', 'src', 'Plugin', 'Prime_Palindromes_fix']
                 if '__init__.py' in file:
-                    self.plugin_files_name_folder.append(str(root).split("\\")[2])
+                    self.plugin_files_name_folder.append(root_list[-1])
 
     #初始化计算，绑定计算按钮，启动计算线程
-    def startEvent(self, event):
+    def startEvent(self):
         # self.input_box_s_input - 储存输入框的内容
         # self.time_before_calculate,self.time_after_calculate - 临时储存时间，计录 计算时间
         # self.result_process  - 储存计算结果 （用于for循环,就是个i
         # self.result_last  - 储存计算结果
-        # with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:  # 读取设置文件
-        #     setting_file['save_location'] = str(self.save_location_input_box.GetValue())
 
         if str(self.ui.input_box.toPlainText()) == "update_log":  # update_log检测
             self.ui.output_box.setPlainText(Doc.UPDATE_LOG)
@@ -247,7 +270,7 @@ class Application(QMainWindow):
                         # 以下是计算后工作
                         main_window_signal.clearOutPutBox.emit()  # 清空输出框
                         main_window_signal.appendOutPutBox.emit(f"\n本次计算+保存花费了{self.time_after_calculate - self.time_before_calculate:.6f}秒\n")  # 输出本次计算时间
-                        main_window_signal.appendOutPutBox.emit("\n计算结果已保存在" + os.path.abspath(".\\皓式程序输出\\") + self.name_text_file + ".txt")
+                        main_window_signal.appendOutPutBox.emit("\n计算结果已保存在 " + os.path.join(self.OUTPUT_DIR_PATH,f"{self.name_text_file}.txt"))
                         main_window_signal.appendOutPutBox.emit("\n")
                     else:  # 选择不保存才输出结果
                         if self.ui.output_optimization_check.isChecked():
@@ -308,7 +331,9 @@ class Application(QMainWindow):
             self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') +'  '+ self.save_name + str(self.input_box_s_input) + self.quantifier
 
         #save = open(os.path.join(os.path.abspath(self.save_location_input_box.GetValue()),self.name_text_file + ".txt"), "w", encoding="utf-8")
-        save = open(os.path.join(os.path.abspath(".\\皓式程序输出\\"), self.name_text_file + ".txt"), "w",encoding="utf-8")
+        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
+            self.OUTPUT_DIR_PATH = setting_file['save_location']
+        save = open(os.path.join(self.OUTPUT_DIR_PATH,f"{self.name_text_file}.txt"), "w",encoding="utf-8")
         self.time_before_calculate = time.perf_counter()  # 储存开始时间
 
         try:
@@ -443,34 +468,44 @@ by {self.author}
         def showDONE():  # 菜单栏 更新日志
             self.ui.output_box.setPlainText(Doc.UPDATE_LOG)
 
-        def quit_event():  # 菜单栏退出事件
+        def quitEvent():  # 菜单栏退出事件
             self.close()
             # sys.exit(0)
 
-        def stop_compute():
+        def stopCompute():
             sys.exit(0)
 
-        def cheak_update():
+        def cheakUpdate():
             webbrowser.open("https://github.com/HowieHz/hpyculator/releases")
 
-        def reset_save_location(self):
+        def resetSaveLocation():
             # self.ui.save_location_input_box.SetValue(os.path.abspath(".\\皓式程序输出\\"))
-            with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:  # 读取设置文件
-                setting_file['save_location'] = str(os.path.abspath(".\\皓式程序输出\\"))
+            with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+                setting_file['save_location'] = os.path.join(os.getcwd(),'Output')
+
+        def openSettingWindow():
+            #global setting_window
+            # add_server_window = AddServerApplication()  # 这里就成功覆盖旧实例了
+            self.setting_window = SettingApplication()
+            self.setting_window.show()
+            #print("ab")
+            # 读取设置文件
+            return
 
         #print(q.text() + 'is triggeres')
-        jump_map = {"终止当前运算": stop_compute,
-                    "退出程序": quit_event,
-                    "重置保存路径": reset_save_location,
+        jump_map = {"终止当前运算": stopCompute,
+                    "退出程序": quitEvent,
+                    "重置保存路径": resetSaveLocation,
                     "更新日志": showDONE,
                     "更新展望": showTODO,
                     "开屏介绍": showAbout,
-                    "检查更新": cheak_update}
+                    "检查更新": cheakUpdate,
+                    "设置": openSettingWindow}
         jump_map[triggeres.text()]()
 
     # 当触发保存选项（那个√）事件
-    def saveCheckEvent(self, event):
-        with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:  # 读取设置文件
+    def saveCheckEvent(self):
+        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
             setting_file['save_check'] = self.ui.save_check.isChecked()
         if self.ui.test_check.isChecked():
             self.ui.test_check.setChecked(False)
@@ -478,8 +513,8 @@ by {self.author}
             pass
 
     # 当触发测试选项
-    def testCheckEvent(self,event):#test开就不报存
-        with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:  # 读取设置文件
+    def testCheckEvent(self):#test开就不报存
+        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
             if self.ui.save_check.isChecked():
                 self.ui.save_check.setChecked(False)
                 setting_file['save_check'] = False
@@ -487,8 +522,8 @@ by {self.author}
                 pass
 
     # 当触发优化输出选项
-    def outputOptimizationCheckEvent(self,event):
-        with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:  # 读取设置文件
+    def outputOptimizationCheckEvent(self):
+        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
             if self.ui.output_optimization_check.isChecked():
                 pass
             else:
@@ -497,8 +532,8 @@ by {self.author}
             setting_file['output_optimization'] = self.ui.output_optimization_check.isChecked()
 
     # 当触发锁内框输出上限选项
-    def outputLockMaximumsCheckEvent(self, event):#锁上限开，就要开优化
-        with shelve.open(os.path.abspath(r'.\皓式程序设置\hpyculator_setting'), writeback=True) as setting_file:  # 读取设置文件
+    def outputLockMaximumsCheckEvent(self):#锁上限开，就要开优化
+        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
             if self.ui.output_lock_maximums_check.isChecked():
                 self.ui.output_optimization_check.setChecked(True)
                 setting_file['output_optimization'] = True
@@ -507,11 +542,14 @@ by {self.author}
                 setting_file['output_lock_maximums'] = self.ui.output_lock_maximums_check.isChecked()#False
 
     # 搜索框
-    def search_text(self,event): # 搜索框按回车之后的事件
-        self.search_keyword = event.GetString()
+    def search_text(self): # 搜索框字符修改后触发的事件
+        self.search_keyword = self.ui.search_box.toPlainText()
         print(self.can_choose_number)
-        self.ui.search_box.ShowCancelButton(True)
+        #self.ui.search_box.ShowCancelButton(True)
 
+        if self.search_keyword=="":
+            self.search_cancel()
+            return
 
         try:#清空选择栏
             # for i in range(len(self.can_choose_number)):
@@ -524,19 +562,19 @@ by {self.author}
             if i.find(self.search_keyword)==-1:#字符串方法，没找到指定子串就-1
                 continue
             else:
-                self.ui.choices_list_box.Append(i)
+                #self.ui.choices_list_box.Append(i)
+                self.ui.choices_list_box.addItem(i)
 
         return
 
-    def search_cancel(self,event):#取消搜索结果，显示全部插件
-        self.ui.search_box.ShowCancelButton(False)
+    def search_cancel(self):#取消搜索结果，显示全部插件
+        #self.ui.search_box.ShowCancelButton(False)
 
         try:
-            for i in range(len(self.can_choose_number)):
-                self.ui.choices_list_box.Delete(0)
+            self.ui.choices_list_box.clear()
         except Exception:
             pass
-        self.ui.choices_list_box.Append(self.can_choose_number)
+        self.ui.choices_list_box.addItems(self.can_choose_number)
         return
 
 if __name__ == '__main__':
