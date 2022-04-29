@@ -39,10 +39,18 @@ class Application(QMainWindow):
 
         self.setWindowTitle("各类数组计算程序%s-Howie皓子制作" % Version.VERSION)#设置标题
 
+
         # 初始化设置目录
         self.SETTING_DIR_PATH = str(os.path.join(os.getcwd(), 'Setting'))
         print(f'SETTING_DIR:{self.SETTING_DIR_PATH}')
+        # 初始化设置文件位置
         self.SETTING_FILE_PATH = str(os.path.join(self.SETTING_DIR_PATH, 'hpyculator_setting'))
+
+        # 检查存放设置文件的文件夹是否存在
+        if os.path.exists(self.SETTING_DIR_PATH):
+            pass
+        else:
+            os.makedirs(self.SETTING_DIR_PATH)
 
         # 读取设置文件
         with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
@@ -69,20 +77,17 @@ class Application(QMainWindow):
                 setting_file['save_location'] = self.OUTPUT_DIR_PATH
             print(f'OUTPUT_DIR:{self.OUTPUT_DIR_PATH}')
 
-        # 初始化目录
-        self.PLUGIN_DIR_PATH=str(os.path.join(os.getcwd(),'Plugin'))
-
-        print(f'PLUGIN_DIR:{self.PLUGIN_DIR_PATH}')
-
-        #检查文件夹是否存在
-        if os.path.exists(self.SETTING_DIR_PATH):
-            pass
-        else:
-            os.makedirs(self.SETTING_DIR_PATH)
+        # 检查输出文件夹是否存在
         if os.path.exists(self.OUTPUT_DIR_PATH):
             pass
         else:
             os.makedirs(self.OUTPUT_DIR_PATH)
+
+        # 初始化模块目录
+        self.PLUGIN_DIR_PATH=str(os.path.join(os.getcwd(),'Plugin'))
+        print(f'PLUGIN_DIR:{self.PLUGIN_DIR_PATH}')
+
+        # 检查模块文件夹是否存在
         if os.path.exists(self.PLUGIN_DIR_PATH):
             pass
         else:
