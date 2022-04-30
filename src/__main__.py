@@ -6,7 +6,7 @@ import threading
 import sys
 import importlib
 import webbrowser
-import hpyculator
+import hpyculator as hpyc
 import tempfile
 from functools import partial#偏函数真好用
 import pyperclip
@@ -280,17 +280,14 @@ class Application(QMainWindow):
 
 如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）""")
             return
-
-        if self.input_mode == 'string':
-            self.input_box_s_input = self.ui.input_box.toPlainText()  # 取得输入框的数字
-        elif self.input_mode == 'float':
+        if self.input_mode == hpyc.STRING:
+            self.input_box_s_input = str(self.ui.input_box.toPlainText())  # 取得输入框的数字
+        elif self.input_mode == hpyc.FLOAT:
             self.input_box_s_input = float(self.ui.input_box.toPlainText())  # 取得输入框的数字
-        elif self.input_mode == 'num':
+        elif self.input_mode == hpyc.NUM:
             self.input_box_s_input = int(self.ui.input_box.toPlainText())  # 取得输入框的数字
-        elif self.input_mode == '0':
-            self.input_box_s_input = self.ui.input_box.toPlainText()  # 取得输入框的数字
-        elif self.input_mode == '1':
-            self.input_box_s_input = int(self.ui.input_box.toPlainText())  # 取得输入框的数字
+        else:
+            self.input_box_s_input = 0#缺省
 
         #以上是计算前工作
         calculate_thread=threading.Thread(target=self.startCalculate)#启动计算线程
@@ -339,20 +336,20 @@ class Application(QMainWindow):
 
         self.time_before_calculate = time.perf_counter()  # 储存开始时间
 
-        if self.output_mode == '0':
+        if self.return_mode == hpyc.RETURN_ONCE:
             exec(f"self.result = str(self.{self.Selection}.main(self.input_box_s_input))")
             main_window_signal.setOutPutBox.emit(str(self.result) + "\n")  # 结果为str，直接输出
-        elif self.output_mode == '2': # 算一行输出一行，但是没有换行
-            main_window_signal.clearOutPutBox.emit()  # 清空输出框
-            exec(f"self.result=self.{self.Selection}.main(self.input_box_s_input)")
-            for result_process in self.result:  # 计算
-                main_window_signal.appendOutPutBox.emit(str(result_process))  # 算一行输出一行
-        elif self.output_mode == '1': # 算一行输出一行
+        elif self.return_mode == hpyc.RETURN_LIST: # 算一行输出一行
             main_window_signal.clearOutPutBox.emit()  # 清空输出框
             exec(f"self.result=self.{self.Selection}.main(self.input_box_s_input)")
             for result_process in self.result:  # 计算 啊，定义就在上一行，hoyc你是看不到吗？
                 main_window_signal.appendOutPutBox.emit(str(result_process) + "\\n")  # 算一行输出一行
-        elif self.output_mode == '4':
+        elif self.return_mode == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE: # 算一行输出一行，但是没有换行
+            main_window_signal.clearOutPutBox.emit()  # 清空输出框
+            exec(f"self.result=self.{self.Selection}.main(self.input_box_s_input)")
+            for result_process in self.result:  # 计算
+                main_window_signal.appendOutPutBox.emit(str(result_process))  # 算一行输出一行
+        elif self.return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
             main_window_signal.clearOutPutBox.emit() # 清空输出框
             exec(f"self.{self.Selection}.main(self.input_box_s_input,self,'output')")
         else:
@@ -367,31 +364,30 @@ class Application(QMainWindow):
 
         now = datetime.datetime.now()  # 保存当前时间，用于文件名
 
-        if self.save_mode == '1':
+        if self.use_quantifier == hpyc.ON:
+            self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') + '  ' + self.save_name + str(self.input_box_s_input) + self.quantifier
+        else:
             self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') + '  ' + str(self.input_box_s_input).replace('.',
                                                                                                                  '_') + "的" + self.save_name
-        else:
-            self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') +'  '+ self.save_name + str(self.input_box_s_input) + self.quantifier
 
-        #save = open(os.path.join(os.path.abspath(self.save_location_input_box.GetValue()),self.name_text_file + ".txt"), "w", encoding="utf-8")
         save = open(os.path.join(self.OUTPUT_DIR_PATH,f"{self.name_text_file}.txt"), "w",encoding="utf-8")
         self.time_before_calculate = time.perf_counter()  # 储存开始时间
 
         try:
-            if self.output_mode == '0':  # 分布输出和一次输出
+            if self.return_mode == hpyc.RETURN_ONCE:  # 分布输出和一次输出
                 exec(f"self.result = self.{self.Selection}.main(self.input_box_s_input)")
                 save.write(str(self.result) + "\n")
-            elif self.output_mode == '2':  # 算一行输出一行，但是没有换行
-                exec(f"self.result=self.{self.Selection}.main(self.input_box_s_input)")
-                for result_process in self.result:  # 计算
-                    save.write(str(result_process))
-                    save.flush()  # 算出来就存进去
-            elif self.output_mode == '1':  # 算一行输出一行，但是没有换行
+            elif self.return_mode == hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
                 exec(f"self.result=self.{self.Selection}.main(self.input_box_s_input)")
                 for result_process in self.result:  # 计算
                     save.write(str(result_process) + "\\n")
                     save.flush()  # 算出来就存进去
-            elif self.output_mode == '4':
+            elif self.return_mode == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
+                exec(f"self.result=self.{self.Selection}.main(self.input_box_s_input)")
+                for result_process in self.result:  # 计算
+                    save.write(str(result_process))
+                    save.flush()  # 算出来就存进去
+            elif self.return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
                 exec(f"self.{self.Selection}.main(self.input_box_s_input,save,'save')")
             else:
                 exec(f"self.{self.Selection}.main_save(self.input_box_s_input,save)")
@@ -411,20 +407,20 @@ class Application(QMainWindow):
             self.time_before_calculate = time.perf_counter()  # 储存开始时间
 
             try:
-                if self.output_mode == '0':  # 分布输出和一次输出
+                if self.return_mode == hpyc.RETURN_ONCE:  # 分布输出和一次输出
                     exec(f"self.result = self.{self.Selection}.main(self.input_box_s_input)")
                     save.write(str(self.result) + "\n")
-                elif self.output_mode == '2':  # 算一行输出一行，但是没有换行
-                    exec(f"self.result=self.{self.Selection}.main(self.input_box_s_input")
-                    for result_process in self.result:  # 计算
-                        save.write(str(result_process))
-                        save.flush()  # 算出来就存进去
-                elif self.output_mode == '1':  # 算一行输出一行，但是没有换行
+                elif self.return_mode == hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
                     exec(f"self.result=self.{self.Selection}.main(self.input_box_s_input")
                     for result_process in self.result:  # 计算
                         save.write(str(result_process) + "\\n")
                         save.flush()  # 算出来就存进去
-                elif self.output_mode == '4':
+                elif self.return_mode == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
+                    exec(f"self.result=self.{self.Selection}.main(self.input_box_s_input")
+                    for result_process in self.result:  # 计算
+                        save.write(str(result_process))
+                        save.flush()  # 算出来就存进去
+                elif self.return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
                     exec(f"self.{self.Selection}.main(self.input_box_s_input,save,'save')")
                 else:
                     exec(f"self.{self.Selection}.main_save(self.input_box_s_input,save)")
@@ -452,7 +448,7 @@ class Application(QMainWindow):
         self.is_thread_runing = True
 
         try:
-            if self.output_mode == '4':
+            if self.return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
                 main_window_signal.clearOutPutBox.emit() # 清空输出框
 
                 self.time_before_calculate = time.perf_counter()  # 储存开始时间
@@ -476,16 +472,16 @@ class Application(QMainWindow):
         logging.debug(f'选中的选项名{item.text()}')
         self.Selection = self.plugin_filename_option_name_map[item.text()]
 
-        # self.required_parameters = ['input_mode','output_mode','save_name','output_name','save_mode','version']
+        # self.required_parameters = ['input_mode','return_mode','save_name','output_name','use_quantifier','version']
         # self.optional_parameters=['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol']
-        # self.parameters_list = ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol','input_mode','output_mode','save_name','output_name','save_mode','version']
+        # self.parameters_list = ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol','input_mode','return_mode','save_name','output_name','use_quantifier','version']
         # self.required_parameters.extend(self.optional_parameters)
-        for option_name in ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol', 'input_mode','output_mode', 'save_name', 'output_name', 'save_mode', 'version']:
+        for option_name in ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol', 'input_mode','return_mode', 'save_name', 'output_name', 'use_quantifier', 'version']:
             try:
-                exec(f"self.{option_name}=str(self.{self.Selection}.PLUGIN_METADATA['{option_name}'])")
+                exec(f"self.{option_name}=self.{self.Selection}.PLUGIN_METADATA['{option_name}']")
             except Exception:
-                exec(f"self.{option_name}=''")
-        if self.fullwidth_symbol == '1':
+                exec(f"self.{option_name}={hpyc.OFF}")
+        if self.fullwidth_symbol == hpyc.ON:
             self.help = self.help.replace(",", "，").replace(".", "。").replace("'", "‘").replace('"', '”').replace('(','（').replace(')', '）')
         self.ui.output_box.setPlainText(f"""\
 {self.output_start}

@@ -1,7 +1,7 @@
 import hpyculator as hpyc
 
 PLUGIN_METADATA = {
-    'input_mode': '0',  # 输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)
+    'input_mode': hpyc.STRING,  # 输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)
     # self.input_box_amount=1 #输入框数量
     'id': 'test9_fix',  # ID,插件标识符
     'option_name': "tset⑨_fixV1.0.2 by HowieHz",  # 选项名-在选择算法列表中
@@ -17,8 +17,8 @@ PLUGIN_METADATA = {
     不满一个的⑨就会被uuz吃掉
 """,
     'output_end': "",
-    'output_mode': '3',
-    'save_mode': '1'
+    'return_mode': hpyc.NO_RETURN,
+    'use_quantifier' : hpyc.ON
 }
 
 def main(input,self):#调用时传入两个参数，第一个参数是输入，第二个参数是程序的主类，要作为输出函数的的第一个参数\

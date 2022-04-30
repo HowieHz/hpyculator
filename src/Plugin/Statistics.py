@@ -1,5 +1,6 @@
+import hpyculator as hpyc
 PLUGIN_METADATA = {
-    'input_mode' : '0',
+    'input_mode' : hpyc.STRING,
     'id' : 'Statistics',
     'option_name' : "平均数,众数,中位数,方差,标准差V1.1.0 by HowieHz",
     'version' : 'V1.1.0',
@@ -20,9 +21,9 @@ PLUGIN_METADATA = {
 
     'output_end' : "",
 
-    'output_mode' : '0',
-    'save_mode' : '1' ,
-    "fullwidth_symbol" : '1'
+    'return_mode' : hpyc.RETURN_ONCE,
+    'use_quantifier' : hpyc.ON ,
+    "fullwidth_symbol" : hpyc.OFF
 }
 
 def main(num):

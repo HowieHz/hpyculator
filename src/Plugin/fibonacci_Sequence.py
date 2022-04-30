@@ -1,7 +1,7 @@
 import hpyculator as hpyc
 
 PLUGIN_METADATA = {
-    'input_mode' : '1',
+    'input_mode' : hpyc.FLOAT,
     'id' : 'fibonacci_Sequence',
     'option_name' : "斐波那契数列V1.0.1 by HowieHz",
     'version' : 'V1.0.1',
@@ -18,10 +18,10 @@ PLUGIN_METADATA = {
 
     'output_end' : "",
 
-    'output_mode' : '4',
-    'save_mode' : '0' ,
+    'return_mode' : hpyc.NO_RETURN_SINGLE_FUNCTION,
+    'use_quantifier' : hpyc.OFF,
 
-    "fullwidth_symbol" : '1'
+    "fullwidth_symbol" : hpyc.ON
 }
 
 def main(num,self,do_what):#返回一个列表

@@ -7,12 +7,12 @@
 
     文件夹插件调用 ``文件夹名\__init_.py``\内的 ``main``\函数和 ``main_save``\函数
 
-    （注：当 ``output_mode``\为4，只调用 ``main``\函数）
+    （注：当 ``return_mode``\为NO_RETURN_SINGLE_FUNCTION，只调用 ``main``\函数）
 
-当 ``output_mode``\为0，1，2
+当 ``return_mode``\为RETURN_……
 -----------------------------------
 
-根据 ``input_mode``\参数，将用户输入处理成 ``float``\或者 ``str``\
+根据 ``input_mode``\参数，将用户输入处理后传入main函数
 
     调用插件的 ``main``\函数，
 
@@ -24,10 +24,10 @@
             #插件主体
             return 你要输出的东西
 
-当 ``output_mode``\为3
+当 ``return_mode``\为NO_RETURN
 -----------------------------------
 
-根据 ``input_mode``\参数，将用户输入处理成float或者str
+根据 ``input_mode``\参数，将用户输入处理成目标形式
 
 当用户选择不保存（内屏输出）
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -77,10 +77,10 @@
             #插件主体
             return
 
-当 ``output_mode``\为4
+当 ``return_mode``\为NO_RETURN_SINGLE_FUNCTION
 -----------------------------------
 
-根据 ``input_mode``\参数，将用户输入处理成 ``float``\或者 ``str``\
+根据 ``input_mode``\参数，将用户输入处理成目标形式
 
 当用户选择不保存（内屏输出）
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -9,7 +9,7 @@
 
 `二.从0创建文件夹插件`_
 
-`三.从示例开始 <Start.html#id6>`_
+`三.从示例开始 <Start.html#id6>`_(推荐)
 
 一.从0创建单文件插件
 ----------------------------
@@ -18,37 +18,19 @@
 
 2.文件开头写 `元数据 <Metadata.html>`_
 
-3.根据 ``output_mode``\，进行不同的开发（这几种模式的不同，详情请见 `output_mode参数讲解 <Metadata.html#output-mode>`_\）
+3.根据 ``return_mode``\，进行不同的开发（这几种模式的不同，详情请见 `return_mode参数讲解 <Metadata.html#return-mode>`_\）
 
-    a.当 ``output_mode``\为0-2时，写一个 ``main``\函数，这个函数的 ``return``\值会作为输出值和保存值，详情请见 `插件事件 当output_mode为0,1,2 <Events.html#output-mode0-1-2>`_
+    a.当 ``return_mode``\为RETURN_……时，写一个 ``main``\函数，这个函数的 ``return``\值会作为输出值和保存值，详情请见 `插件事件 当return_mode为0,1,2 <Events.html#output-mode0-1-2>`_(修订者注，超链接需重定向)
 
-    b.当 ``output_mode``\为3时，
-
-        将以下代码，复制到你的插件文件里(以下函数的用法 详情请见 `函数 <API/contents.html#id1>`__ 一节)
-
-                .. code-block:: python
-
-                    def write(file,anything,end="\n"):
-                        file.write(str(anything)+end)
-                        file.flush()
-
-                    def write_without_flush(file,anything,end="\n"):
-                        file.write(str(anything)+end)
-
-                    def flush(file):
-                        file.flush()
-
-                    def output(self,anything,end="\n"):
-                        self.output.AppendText(str(anything)+end)
-
+    b.当 ``return_mode``\为NO_RETURN时，
 
         然后写 ``main``\函数用于计算并且输入到内框， ``main_save``\函数用于计算并保存
 
-        详情请见 `插件事件 当 output_mode为3 <Events.html#output-mode3>`_
+        详情请见 `插件事件 当 return_mode为3 <Events.html#output-mode3>`_(修订者注，超链接需重定向)
 
-    c.当 ``output_mode``\为4时，
+    c.当 ``return_mode``\为NO_RETURN_SINGLE_FUNCTION时，
 
-        和数值为3的时候的步骤一样，但是会多传入一个参数说明是否保存，详情请见 `插件事件 当 output_mode为4 <Events.html#output-mode4>`_
+        和数值为3的时候的步骤一样，但是会多传入一个参数说明是否保存，详情请见 `插件事件 当 return_mode为4 <Events.html#output-mode4>`_(修订者注，超链接需重定向)
 
 
 二.从0创建文件夹插件

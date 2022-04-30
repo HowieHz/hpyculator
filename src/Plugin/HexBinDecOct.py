@@ -1,7 +1,7 @@
 import hpyculator as hpyc
 
 PLUGIN_METADATA = {
-    'input_mode': '0',  # 输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)
+    'input_mode': hpyc.STRING,
     'id': 'HexBinDecOct',  # ID，插件标识符，需要和文件名一致
     'option_name': "进制转换v1.0.0 by HowieHz",  # 选项名-在选择算法列表中
     'version': 'v1.0.0',  # 版本号
@@ -26,9 +26,9 @@ PLUGIN_METADATA = {
                     """,
     'output_end': "",
 
-    'output_mode': '4',
-    'save_mode': '1',
-    "fullwidth_symbol": '0'
+    'return_mode': hpyc.NO_RETURN_SINGLE_FUNCTION,
+    'use_quantifier': hpyc.ON,
+    "fullwidth_symbol": hpyc.OFF
 }
 
 

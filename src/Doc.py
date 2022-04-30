@@ -59,6 +59,10 @@ Howie皓子制作
 悄悄说:在输入栏输入update_log之后点击运算就可以看更新日志了""" % Version.VERSION)
 
 UPDATE_LOG = """更新日志:
+20220430
+v1.4.0-a
+修改了api，所有插件更进api，文档更新
+
 20220429
 v1.3.3
 debug

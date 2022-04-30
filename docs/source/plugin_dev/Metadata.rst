@@ -12,37 +12,35 @@
 .. code-block:: python
 
     PLUGIN_METADATA = {
-        'input_mode' : '{}',#输入模式，string为传入字符串,num为传入int,float为传入float(传入的作为main函数的开始计算值)
-        'id' : '[文件名]',#ID，插件标识符，需要和文件名一致
-        'option_name' : "[算法名][版本号(推荐语义化版本)] by [作者名]",#选项名-在选择算法列表中
-        'version' : '[版本号(推荐语义化版本)]',#版本号
+    'input_mode' : hpyc.STRING,#输入模式，STRING为传入字符串,NUM为传入int,FLOAT为传入float(传入的作为main函数的开始计算值)
+    'id' : '[文件名]',#ID，插件标识符，需要和文件名一致
+    'option_name' : "[算法名][版本号(推荐语义化版本)] by [作者名]",#选项名-在选择算法列表中
+    'version' : '[版本号(推荐语义化版本)]',#版本号
 
-        'save_name' : "{}",#文件保存项目名-在输出
-        'quantifier' : "{}",#文件保存量词-在输入后面(可选)
+    'save_name' : "{}",#文件保存项目名-在输出
+    'quantifier' : "{}",#文件保存量词-在输入后面(可选)
 
-        'output_start' : "",#输出头(可选)
-        'output_name' : "{算法名}", #选择此项后输出的名字
-        'author' : "{作者名}",#作者(可选)
-        'help' : """
-            {帮助内容}
-                    """,#帮助和说明(可选)
-        'output_end' : "",#输出小尾巴(可选)
+    'output_start' : "",#输出头(可选)
+    'output_name' : "{算法名}", #选择此项后输出的名字
+    'author' : "{作者名}",#作者(可选)
+    'help' : """
+        {帮助内容}
+                """,#帮助和说明(可选)
+    'output_end' : "",#输出小尾巴(可选)
 
-        'output_mode' : '3',
-        # 具体说明和区别请看“output_mode参数讲解”一节
-        # 调用类main的return形式，
-        # 0为返回一次（适用于return字符串等情况），
-        # 1为返回多次（适用于return列表等情况），
-        # 2为返回多次（适用于return列表等情况，和1相似，但是每次输出不换行）,
-        # （推荐）3无return返回值，要求插件作者放置保存和输出（性能最好，推荐使用，默认值）（要求插件作者自己写好保存和返回，计算调用main函数，
-        #         保存调用main_save函数），
-        # （推荐）4和三类似，但是只会调用main，且会传入第三个参数，第三个参数为'save'时表示为要输出到内屏，第三个参数为'output'时表示要保存
-        'save_mode' : '0' ,#保存名的形式，0为 时间+算法名+输入+量词  1为 时间+输入+“的”+算法名
-                                        #如果是1，则self.quantifier无效化
-        "fullwidth_symbol" : '0' #懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
-        }
-
-注：数字的那些参数（比如 ``output_mode`` ）写int类型或者str类型都可以
+    'return_mode' : hpyc.NO_RETURN,
+    # 具体说明和区别请看“return_mode参数讲解”一节
+    # 调用类main的return形式，
+    # hpyc.RETURN_ONCE为返回一次（适用于return字符串等情况），
+    # hpyc.RETURN_LIST为将返回的数据迭代输出（适用于return列表等情况），
+    # hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE为将返回的数据迭代输出（适用于return列表等情况，和hpyc.RETURN_LIST相似，但是每次输出不换行）,
+    # （推荐）hpyc.NO_RETURN无return返回值，要求插件作者放置保存和输出（性能最好，推荐使用，默认值）（要求插件作者自己写好保存和返回，计算调用main函数，
+    #         保存调用main_save函数），
+    # （推荐）hpyc.NO_RETURN_SINGLE_FUNCTION和三类似，但是只会调用main，且会传入第三个参数，第三个参数为'save'时表示为要输出到内屏，第三个参数为'output'时表示要保存
+    'use_quantifier' : hpyc.OFF ,#保存名的形式，OFF为 时间+算法名+输入+量词  ON为 时间+输入+“的”+算法名
+                                    #如果是ON，则quantifier无效化
+    "fullwidth_symbol" : hpyc.OFF #懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
+    }
 
 参数会影响什么
 ----------------------------------------------------------------------------
@@ -65,16 +63,16 @@
 
     """内置文本框在选择保存后的输出
         本次计算花费了*秒
-        在经过output_mode对应形式处理之后的输出（用户选择不保存时输出）
+        结果输出（用户选择不保存时输出）
         保存计算结果至文件中···（用户选择保存时输出）
         计算结果已保存在 保存文件名的完整路径（用户选择保存时输出）
 
     """
 
     """保存文件名
-        save_mode为0
+        use_quantifier为ON
             时间 + save_name + 输入 + quantifier .txt
-        save_mode为1
+        use_quantifier为OFF
             时间 + 输入 + "的" +save_name .txt
 
         """
@@ -85,18 +83,18 @@
         """
 
 
-``output_mode`` 参数讲解
+``return_mode`` 参数讲解
 ----------------------------------------------------------------------------
-
-    （以下的方案1，方案2指代的是 ``output_mode`` 参数取值1和2的情况，以此类推）
-
-    ``output_mode``\=0，1，2可以看one系列内置插件（部分one插件用的是 ``output_mode``\=3的方案）
-
-    ``output_mode``\=3，4的可以看fix和n系列插件
+    import hpyculator as hpyc
+    方案0  -> hpyc.RETURN_ONCE
+    方案1  -> hpyc.RETURN_LIST
+    方案2  -> hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE
+    方案3  -> hpyc.NO_RETURN
+    方案4  -> hpyc.NO_RETURN_SINGLE_FUNCTION
 
     关于这几个mode的来源----一个小故事
 
-        (1) 0方案和1方案是最初的方案
+        (1) 方案0和方案1是最初的方案
 
             由主程序控制读写和内屏输出，这两个方案的区别是，
 
