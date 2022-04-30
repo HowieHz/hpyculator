@@ -15,8 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QPushButton,
-    QSizePolicy, QTextEdit, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QDialog, QLabel,
+    QPushButton, QSizePolicy, QTextEdit, QWidget)
 
 class Ui_SettingWindow(object):
     def setupUi(self, SettingWindow):
@@ -607,9 +607,7 @@ class Ui_SettingWindow(object):
 "QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\n"
 "   background: none;\n"
 "}")
-        self.centralwidget = QWidget(SettingWindow)
-        self.centralwidget.setObjectName(u"centralwidget")
-        self.label = QLabel(self.centralwidget)
+        self.label = QLabel(SettingWindow)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(30, 20, 101, 51))
         font = QFont()
@@ -617,43 +615,145 @@ class Ui_SettingWindow(object):
         font.setPointSize(20)
         font.setBold(True)
         self.label.setFont(font)
-        self.output_save_location = QTextEdit(self.centralwidget)
-        self.output_save_location.setObjectName(u"output_save_location")
-        self.output_save_location.setGeometry(QRect(230, 80, 341, 81))
-        self.label_2 = QLabel(self.centralwidget)
+        self.label_2 = QLabel(SettingWindow)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setGeometry(QRect(50, 90, 161, 61))
         font1 = QFont()
         font1.setFamilies([u"\u7b49\u8ddd\u66f4\u7eb1\u9ed1\u4f53 Slab SC"])
         font1.setPointSize(12)
         self.label_2.setFont(font1)
-        self.save_setting_button = QPushButton(self.centralwidget)
-        self.save_setting_button.setObjectName(u"save_setting_button")
-        self.save_setting_button.setGeometry(QRect(280, 410, 201, 41))
+        self.cancel_setting_button = QPushButton(SettingWindow)
+        self.cancel_setting_button.setObjectName(u"cancel_setting_button")
+        self.cancel_setting_button.setGeometry(QRect(490, 410, 111, 41))
         font2 = QFont()
         font2.setFamilies([u"Microsoft YaHei UI"])
         font2.setPointSize(16)
         font2.setBold(False)
         font2.setItalic(False)
-        self.save_setting_button.setFont(font2)
-        self.cancel_setting_button = QPushButton(self.centralwidget)
-        self.cancel_setting_button.setObjectName(u"cancel_setting_button")
-        self.cancel_setting_button.setGeometry(QRect(490, 410, 111, 41))
         self.cancel_setting_button.setFont(font2)
-        SettingWindow.setCentralWidget(self.centralwidget)
+        self.save_setting_button = QPushButton(SettingWindow)
+        self.save_setting_button.setObjectName(u"save_setting_button")
+        self.save_setting_button.setGeometry(QRect(280, 410, 201, 41))
+        self.save_setting_button.setFont(font2)
+        self.output_save_location = QTextEdit(SettingWindow)
+        self.output_save_location.setObjectName(u"output_save_location")
+        self.output_save_location.setGeometry(QRect(230, 80, 341, 81))
+        self.save_setting_check = QCheckBox(SettingWindow)
+        self.save_setting_check.setObjectName(u"save_setting_check")
+        self.save_setting_check.setGeometry(QRect(230, 210, 121, 21))
+        font3 = QFont()
+        font3.setFamilies([u"\u66f4\u7eb1\u9ed1\u4f53 SC"])
+        font3.setPointSize(12)
+        self.save_setting_check.setFont(font3)
+        self.save_setting_check.setStyleSheet(u"QCheckBox {\n"
+"	color: #000000;\n"
+"	padding: 2px;\n"
+"}\n"
+"QCheckBox:disabled {\n"
+"	color: #808086;\n"
+"	padding: 2px;\n"
+"}\n"
+"\n"
+"QCheckBox:hover {\n"
+"	border-radius:4px;\n"
+"	border-style:solid;\n"
+"	padding-left: 1px;\n"
+"	padding-right: 1px;\n"
+"	padding-bottom: 1px;\n"
+"	padding-top: 1px;\n"
+"	border-width:1px;\n"
+"	border-color: transparent;\n"
+"}\n"
+"QCheckBox::indicator:checked {\n"
+"\n"
+"	height: 15px;\n"
+"	width: 15px;\n"
+"	border-style:solid;\n"
+"	border-width: 1px;\n"
+"	border-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 rgba(91, 171, 252, 255));\n"
+"	color: #000000;\n"
+"	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 rgba(91, 171, 252, 255));\n"
+"}\n"
+"QCheckBox::indicator:unchecked {\n"
+"\n"
+"	height: 15px;\n"
+"	width: 15px;\n"
+"	border-style:solid;\n"
+"	border-width: 1px;\n"
+"	border-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255"
+                        ", 255), stop:1 rgba(91, 171, 252, 255));\n"
+"	color: #000000;\n"
+"}")
+        self.label_3 = QLabel(SettingWindow)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setGeometry(QRect(50, 190, 161, 61))
+        self.label_3.setFont(font1)
+        self.save_log_check = QCheckBox(SettingWindow)
+        self.save_log_check.setObjectName(u"save_log_check")
+        self.save_log_check.setGeometry(QRect(230, 290, 121, 21))
+        self.save_log_check.setFont(font3)
+        self.save_log_check.setStyleSheet(u"QCheckBox {\n"
+"	color: #000000;\n"
+"	padding: 2px;\n"
+"}\n"
+"QCheckBox:disabled {\n"
+"	color: #808086;\n"
+"	padding: 2px;\n"
+"}\n"
+"\n"
+"QCheckBox:hover {\n"
+"	border-radius:4px;\n"
+"	border-style:solid;\n"
+"	padding-left: 1px;\n"
+"	padding-right: 1px;\n"
+"	padding-bottom: 1px;\n"
+"	padding-top: 1px;\n"
+"	border-width:1px;\n"
+"	border-color: transparent;\n"
+"}\n"
+"QCheckBox::indicator:checked {\n"
+"\n"
+"	height: 15px;\n"
+"	width: 15px;\n"
+"	border-style:solid;\n"
+"	border-width: 1px;\n"
+"	border-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 rgba(91, 171, 252, 255));\n"
+"	color: #000000;\n"
+"	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 rgba(91, 171, 252, 255));\n"
+"}\n"
+"QCheckBox::indicator:unchecked {\n"
+"\n"
+"	height: 15px;\n"
+"	width: 15px;\n"
+"	border-style:solid;\n"
+"	border-width: 1px;\n"
+"	border-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255"
+                        ", 255), stop:1 rgba(91, 171, 252, 255));\n"
+"	color: #000000;\n"
+"}")
+        self.label_4 = QLabel(SettingWindow)
+        self.label_4.setObjectName(u"label_4")
+        self.label_4.setGeometry(QRect(50, 270, 161, 61))
+        self.label_4.setFont(font1)
 
         self.retranslateUi(SettingWindow)
-        self.save_setting_button.clicked.connect(SettingWindow.save_setting)
-        self.cancel_setting_button.clicked.connect(SettingWindow.cancel_setting)
+        self.save_setting_button.clicked.connect(SettingWindow.saveSetting)
+        self.cancel_setting_button.clicked.connect(SettingWindow.cancelSetting)
+        self.save_setting_check.clicked.connect(SettingWindow.saveSettingCheckEvent)
+        self.save_log_check.clicked.connect(SettingWindow.saveLogCheckEvent)
 
         QMetaObject.connectSlotsByName(SettingWindow)
     # setupUi
 
     def retranslateUi(self, SettingWindow):
-        SettingWindow.setWindowTitle(QCoreApplication.translate("SettingWindow", u"MainWindow", None))
+        SettingWindow.setWindowTitle(QCoreApplication.translate("SettingWindow", u"Dialog", None))
         self.label.setText(QCoreApplication.translate("SettingWindow", u"\u8bbe\u7f6e", None))
         self.label_2.setText(QCoreApplication.translate("SettingWindow", u"\u4fdd\u5b58\u8f93\u51fa\u6587\u4ef6\u7684\u4f4d\u7f6e", None))
-        self.save_setting_button.setText(QCoreApplication.translate("SettingWindow", u"\u4fdd\u5b58", None))
         self.cancel_setting_button.setText(QCoreApplication.translate("SettingWindow", u"\u53d6\u6d88\u4fee\u6539", None))
+        self.save_setting_button.setText(QCoreApplication.translate("SettingWindow", u"\u4fdd\u5b58", None))
+        self.save_setting_check.setText("")
+        self.label_3.setText(QCoreApplication.translate("SettingWindow", u"\u662f\u5426\u4fdd\u5b58\u9009\u62e9\u6846\u72b6\u6001", None))
+        self.save_log_check.setText("")
+        self.label_4.setText(QCoreApplication.translate("SettingWindow", u"\u662f\u5426\u5f00\u542f\u65e5\u5fd7\u6587\u4ef6", None))
     # retranslateUi
 

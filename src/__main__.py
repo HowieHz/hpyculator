@@ -21,9 +21,8 @@ if os.path.exists(LOG_FILE_PATH):
     pass
 else:
     os.makedirs(LOG_FILE_PATH)
-logging.basicConfig(filename=os.path.join(LOG_FILE_PATH,'log.txt'),level=logging.DEBUG,format=' %(asctime)s - %(levelname)s - %(message)s')
-#logging.disable(logging.CRITICAL)#禁用日志
-logging.debug('Start of program')
+logging.basicConfig(filename=os.path.join(LOG_FILE_PATH, 'log.txt'), level=logging.DEBUG,format=' %(asctime)s - %(levelname)s - %(message)s')
+#logging.debug('Start of program')
 
 #文档导入
 import Doc
@@ -43,6 +42,35 @@ class Application(QMainWindow):
     # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
     def __init__(self):
         # setting_file - 配置文件ShelfFile对象
+
+        # 初始化设置目录
+        self.SETTING_DIR_PATH = str(os.path.join(os.getcwd(), 'Setting'))
+        #logging.debug(f'设置文件保存位置:{self.SETTING_DIR_PATH}')
+        # 初始化设置文件位置
+        self.SETTING_FILE_PATH = str(os.path.join(self.SETTING_DIR_PATH, 'hpyculator_setting'))
+
+        # 检查存放设置文件的文件夹是否存在
+        if os.path.exists(self.SETTING_DIR_PATH):
+            pass
+        else:
+            os.makedirs(self.SETTING_DIR_PATH)
+
+        #读取配置文件-是否保存日志
+        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
+            try:
+                self.save_log = setting_file['save_log']  # 是否保存设置
+                if self.save_log:
+                    print("日志初始化完成")
+                else:
+                    #print("禁用日志")
+                    logging.disable(logging.CRITICAL)  # 禁用日志
+            except Exception as e:
+                #print(f"读取save_log时发生错误:{e}")
+                #logging.debug(f"读取save_log时发生错误:{e}")
+                setting_file['save_log'] = False  # 默认不保存日志
+                self.save_log = False
+                logging.disable(logging.CRITICAL)  # 禁用日志
+
         logging.debug('主类初始化')
         super().__init__()
         self.ui = Ui_MainWindow()  # UI类的实例化()
@@ -53,34 +81,32 @@ class Application(QMainWindow):
 
         self.setWindowTitle("各类数组计算程序%s-Howie皓子制作" % Version.VERSION)#设置标题
 
-
-        # 初始化设置目录
-        self.SETTING_DIR_PATH = str(os.path.join(os.getcwd(), 'Setting'))
-        logging.debug(f'设置文件保存位置:{self.SETTING_DIR_PATH}')
-        # 初始化设置文件位置
-        self.SETTING_FILE_PATH = str(os.path.join(self.SETTING_DIR_PATH, 'hpyculator_setting'))
-
-        # 检查存放设置文件的文件夹是否存在
-        if os.path.exists(self.SETTING_DIR_PATH):
-            pass
-        else:
-            os.makedirs(self.SETTING_DIR_PATH)
-
-        # 读取设置文件
+        # 读取设置文件-按钮状态和输出目录
         with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
             try:
-                self.ui.save_check.setChecked(setting_file['save_check'])  # 根据数据设置选项状态
-            except Exception:
-                setting_file['save_check'] = self.ui.save_check.isChecked()
-            try:
-                self.ui.output_optimization_check.setChecked(setting_file['output_optimization'])  # 根据数据设置选项状态
-            except Exception:
-                setting_file['output_optimization'] = True
+                self.save_settings=setting_file['save_settings']  # 是否保存设置
+            except Exception as e:
+                logging.debug(f"读取save_settings时发生错误:{e}")
+                setting_file['save_settings'] = True#默认保存选项状态
+                self.save_settings = True
+
+            if self.save_settings:# 当保存check状态
+                try:
+                    self.ui.save_check.setChecked(setting_file['save_check'])  # 根据数据设置选项状态
+                except Exception:
+                    setting_file['save_check'] = self.ui.save_check.isChecked()
+                try:
+                    self.ui.output_optimization_check.setChecked(setting_file['output_optimization'])  # 根据数据设置选项状态
+                except Exception:
+                    setting_file['output_optimization'] = True
+                    self.ui.output_optimization_check.setChecked(True)
+                try:
+                    self.ui.output_lock_maximums_check.setChecked(setting_file['output_lock_maximums'])  # 根据数据设置选项状态
+                except Exception:
+                    setting_file['output_lock_maximums'] = True
+                    self.ui.output_lock_maximums_check.setChecked(True)
+            else:# 当不保存check状态
                 self.ui.output_optimization_check.setChecked(True)
-            try:
-                self.ui.output_lock_maximums_check.setChecked(setting_file['output_lock_maximums'])  # 根据数据设置选项状态
-            except Exception:
-                setting_file['output_lock_maximums'] = True
                 self.ui.output_lock_maximums_check.setChecked(True)
 
             # 初始化文件输出目录
@@ -348,8 +374,6 @@ class Application(QMainWindow):
             self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') +'  '+ self.save_name + str(self.input_box_s_input) + self.quantifier
 
         #save = open(os.path.join(os.path.abspath(self.save_location_input_box.GetValue()),self.name_text_file + ".txt"), "w", encoding="utf-8")
-        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
-            self.OUTPUT_DIR_PATH = setting_file['save_location']
         save = open(os.path.join(self.OUTPUT_DIR_PATH,f"{self.name_text_file}.txt"), "w",encoding="utf-8")
         self.time_before_calculate = time.perf_counter()  # 储存开始时间
 
@@ -500,9 +524,16 @@ by {self.author}
                 setting_file['save_location'] = os.path.join(os.getcwd(),'Output')
 
         def openSettingWindow():
-            self.setting_window = SettingApplication()
-            self.setting_window.show()
-            # 读取设置文件
+            self.setting_window = SettingApplication()# 绑定子窗口
+            self.setting_window.exec()
+            with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+                self.OUTPUT_DIR_PATH = setting_file['save_location']
+                self.save_settings = setting_file['save_settings']
+                self.save_log = setting_file['save_log']
+                if self.save_log:
+                    pass
+                else:
+                    logging.disable(logging.CRITICAL)  # 禁用日志
             return
 
         logging.debug(triggeres.text() + 'is triggeres')
@@ -518,8 +549,9 @@ by {self.author}
 
     # 当触发保存选项（那个√）事件
     def saveCheckEvent(self):
-        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-            setting_file['save_check'] = self.ui.save_check.isChecked()
+        if self.save_settings:  # 保存check设置
+            with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+                setting_file['save_check'] = self.ui.save_check.isChecked()
         if self.ui.test_check.isChecked():
             self.ui.test_check.setChecked(False)
         else:
@@ -527,32 +559,39 @@ by {self.author}
 
     # 当触发测试选项
     def testCheckEvent(self):#test开就不报存
-        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-            if self.ui.save_check.isChecked():
-                self.ui.save_check.setChecked(False)
-                setting_file['save_check'] = False
-            else:
-                pass
+        if self.ui.save_check.isChecked():
+            self.ui.save_check.setChecked(False)
+            if self.save_settings:  # 保存check设置
+                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+                    setting_file['save_check'] = False
+        else:
+            pass
 
     # 当触发优化输出选项
     def outputOptimizationCheckEvent(self):
-        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-            if self.ui.output_optimization_check.isChecked():
-                pass
-            else:
-                self.ui.output_lock_maximums_check.setChecked(False)
-                setting_file['output_lock_maximums'] = False
-            setting_file['output_optimization'] = self.ui.output_optimization_check.isChecked()
+        if self.ui.output_optimization_check.isChecked():
+            if self.save_settings:  # 保存check设置
+                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+                    setting_file['output_optimization'] = self.ui.output_optimization_check.isChecked()
+        else:
+            self.ui.output_lock_maximums_check.setChecked(False)
+            if self.save_settings:  # 保存check设置
+                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+                    setting_file['output_lock_maximums'] = False
+                    setting_file['output_optimization'] = self.ui.output_optimization_check.isChecked()
 
     # 当触发锁内框输出上限选项
     def outputLockMaximumsCheckEvent(self):#锁上限开，就要开优化
-        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-            if self.ui.output_lock_maximums_check.isChecked():
-                self.ui.output_optimization_check.setChecked(True)
-                setting_file['output_optimization'] = True
-                setting_file['output_lock_maximums'] = self.ui.output_lock_maximums_check.isChecked()#True
-            else:
-                setting_file['output_lock_maximums'] = self.ui.output_lock_maximums_check.isChecked()#False
+        if self.ui.output_lock_maximums_check.isChecked():
+            self.ui.output_optimization_check.setChecked(True)
+            if self.save_settings:  # 保存check设置
+                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+                    setting_file['output_optimization'] = True
+                    setting_file['output_lock_maximums'] = self.ui.output_lock_maximums_check.isChecked()#True
+        else:
+            if self.save_settings:  # 保存check设置
+                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+                    setting_file['output_lock_maximums'] = self.ui.output_lock_maximums_check.isChecked()#False
 
     # 搜索框
     def search_text(self): # 搜索框字符修改后触发的事件
