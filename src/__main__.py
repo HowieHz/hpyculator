@@ -11,6 +11,9 @@ import tempfile
 from functools import partial#偏函数真好用
 #import jpype
 #import pprint
+import logging
+logging.basicConfig(level=logging.DEBUG,format=' %(asctime)s - %(levelname)s - %(message)s')
+logging.debug('Start of program')
 
 import Doc
 import Version
@@ -29,7 +32,7 @@ class Application(QMainWindow):
     # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
     def __init__(self):
         # setting_file - 配置文件ShelfFile对象
-
+        logging.debug('init Application class')
         super().__init__()
         self.ui = Ui_MainWindow()  # UI类的实例化()
         self.ui.setupUi(self)
@@ -42,7 +45,7 @@ class Application(QMainWindow):
 
         # 初始化设置目录
         self.SETTING_DIR_PATH = str(os.path.join(os.getcwd(), 'Setting'))
-        print(f'SETTING_DIR:{self.SETTING_DIR_PATH}')
+        logging.debug(f'SETTING_DIR:{self.SETTING_DIR_PATH}')
         # 初始化设置文件位置
         self.SETTING_FILE_PATH = str(os.path.join(self.SETTING_DIR_PATH, 'hpyculator_setting'))
 
@@ -75,7 +78,7 @@ class Application(QMainWindow):
             except Exception:
                 self.OUTPUT_DIR_PATH = str(os.path.join(os.getcwd(), 'Output'))
                 setting_file['save_location'] = self.OUTPUT_DIR_PATH
-            print(f'OUTPUT_DIR:{self.OUTPUT_DIR_PATH}')
+            logging.debug(f'OUTPUT_DIR:{self.OUTPUT_DIR_PATH}')
 
         # 检查输出文件夹是否存在
         if os.path.exists(self.OUTPUT_DIR_PATH):
@@ -85,7 +88,7 @@ class Application(QMainWindow):
 
         # 初始化模块目录
         self.PLUGIN_DIR_PATH=str(os.path.join(os.getcwd(),'Plugin'))
-        print(f'PLUGIN_DIR:{self.PLUGIN_DIR_PATH}')
+        logging.debug(f'PLUGIN_DIR:{self.PLUGIN_DIR_PATH}')
 
         # 检查模块文件夹是否存在
         if os.path.exists(self.PLUGIN_DIR_PATH):
@@ -117,12 +120,12 @@ class Application(QMainWindow):
         try:
             self.init_plugin_singerfile()#导入单文件插件
         except Exception as e:
-            print(e)
+            logging.debug(f'init_plugin_singerfile outside Exception:{e}')
 
         try:
             self.init_plugin_folder()#导入文件插件
         except Exception as e:
-            print(e)
+            logging.debug(f'init_plugin_folder outside Exception:{e}')
 
 
         self.ui.choices_list_box.addItems(self.can_choose_number)#选项名添加到ui上
@@ -160,8 +163,8 @@ class Application(QMainWindow):
         self.plugin_files_name_py_nopy = self.plugin_files_name_py[:]
         for index,value in enumerate(self.plugin_files_name_py_nopy):  # 去掉.py后缀
             self.plugin_files_name_py_nopy[index] = value[:-3]
-        #pprint.pprint("去掉.py后缀的文件名")
-        #pprint.pprint(self.plugin_files_name_py_nopy)
+        logging.debug("去掉.py后缀的文件名")
+        logging.debug(self.plugin_files_name_py_nopy)
         for name in self.plugin_files_name_py_nopy:
             exec(f"self.{name}=importlib.import_module('.{name}', package='Plugin')")
             # self.i = importlib.import_module('.' + str(name), package='Plugin')  # 相对导入
@@ -171,10 +174,10 @@ class Application(QMainWindow):
                 exec(
                     f"self.plugin_filename_option_name_map[self.{name}.PLUGIN_METADATA['option_name']]=self.{name}.PLUGIN_METADATA['id']")
             except Exception as e:
-                print(e)
+                logging.debug(f'init_plugin_singerfile inside Exception:{e}')
 
     def init_plugin_folder(self):
-        print(f"self.plugin_files_name_folder{self.plugin_files_name_folder}")
+        logging.debug(f"self.plugin_files_name_folder:{self.plugin_files_name_folder}")
         for name in self.plugin_files_name_folder:
             exec(f"self.{name}=importlib.import_module('.{name}.__init__', package='Plugin')")
             # self.i = importlib.import_module('.' + str(name), package='Plugin')  # 相对导入
@@ -184,7 +187,7 @@ class Application(QMainWindow):
                 exec(
                     f"self.plugin_filename_option_name_map[self.{name}.PLUGIN_METADATA['option_name']]=self.{name}.PLUGIN_METADATA['id']")
             except Exception as e:
-                print(e)
+                logging.debug(f'init_plugin_folder inside Exception:{e}')
 
     #读取指定目录下插件 #需重构
     def readPlugin(self,path):
@@ -222,7 +225,6 @@ class Application(QMainWindow):
             #main_window_signal.appendOutPutBox.emit("当前计算线程已停止")
             #self.is_thread_runing = False
             #return
-        #print(self.list_box.GetSelection())#选择位置输出
         if self.ui.choices_list_box.currentItem() is None:  # 是否选择检测
             self.ui.output_box.setPlainText("\n\n" +
                          """
@@ -436,8 +438,8 @@ class Application(QMainWindow):
             main_window_signal.setOutPutBox.emit("发生错误，请检查输入格式，以及插件是否有test模式")
 
     def chooseNumberEvent(self,item):  # 选择算法事件
-        # print(self.ui.choices_list_box.currentItem().text())
-        # print(item.text())
+        #logging.debug(f'选中的选项名{self.ui.choices_list_box.currentItem().text()}')
+        logging.debug(f'选中的选项名{item.text()}')
         self.Selection = self.plugin_filename_option_name_map[item.text()]
 
         # self.required_parameters = ['input_mode','output_mode','save_name','output_name','save_mode','version']
@@ -484,20 +486,16 @@ by {self.author}
             webbrowser.open("https://github.com/HowieHz/hpyculator/releases")
 
         def resetSaveLocation():
-            # self.ui.save_location_input_box.SetValue(os.path.abspath(".\\皓式程序输出\\"))
             with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
                 setting_file['save_location'] = os.path.join(os.getcwd(),'Output')
 
         def openSettingWindow():
-            #global setting_window
-            # add_server_window = AddServerApplication()  # 这里就成功覆盖旧实例了
             self.setting_window = SettingApplication()
             self.setting_window.show()
-            #print("ab")
             # 读取设置文件
             return
 
-        #print(q.text() + 'is triggeres')
+        logging.debug(triggeres.text() + 'is triggeres')
         jump_map = {"终止当前运算": stopCompute,
                     "退出程序": quitEvent,
                     "重置保存路径": resetSaveLocation,
@@ -549,16 +547,13 @@ by {self.author}
     # 搜索框
     def search_text(self): # 搜索框字符修改后触发的事件
         self.search_keyword = self.ui.search_box.toPlainText()
-        print(self.can_choose_number)
-        #self.ui.search_box.ShowCancelButton(True)
+        logging.debug(f"search_keyword:{self.search_keyword}")
 
         if self.search_keyword=="":
             self.search_cancel()
             return
 
         try:#清空选择栏
-            # for i in range(len(self.can_choose_number)):
-            #     self.ui.choices_list_box.Delete(0)
             self.ui.choices_list_box.clear()
         except Exception:
             pass
@@ -567,14 +562,11 @@ by {self.author}
             if i.find(self.search_keyword)==-1:#字符串方法，没找到指定子串就-1
                 continue
             else:
-                #self.ui.choices_list_box.Append(i)
                 self.ui.choices_list_box.addItem(i)
 
         return
 
     def search_cancel(self):#取消搜索结果，显示全部插件
-        #self.ui.search_box.ShowCancelButton(False)
-
         try:
             self.ui.choices_list_box.clear()
         except Exception:
