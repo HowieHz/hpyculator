@@ -9,19 +9,30 @@ import webbrowser
 import hpyculator
 import tempfile
 from functools import partial#偏函数真好用
+import pyperclip
 #import jpype
 #import pprint
+
+#日志导入
 import logging
-logging.basicConfig(level=logging.DEBUG,format=' %(asctime)s - %(levelname)s - %(message)s')
+# 检查存放日志文件的文件夹是否存在
+LOG_FILE_PATH=os.path.join(os.getcwd(), 'Log')
+if os.path.exists(LOG_FILE_PATH):
+    pass
+else:
+    os.makedirs(LOG_FILE_PATH)
+logging.basicConfig(filename=os.path.join(LOG_FILE_PATH,'log.txt'),level=logging.DEBUG,format=' %(asctime)s - %(levelname)s - %(message)s')
+#logging.disable(logging.CRITICAL)#禁用日志
 logging.debug('Start of program')
 
+#文档导入
 import Doc
 import Version
 
+#pyside6导入
 from PySide6.QtWidgets import QApplication, QMainWindow
 # PySide6-uic demo.ui -o ui_demo.py
 # from ui_demo import Ui_Demo
-
 from SettingWindow import SettingApplication
 
 from ui.MainWindow import Ui_MainWindow
