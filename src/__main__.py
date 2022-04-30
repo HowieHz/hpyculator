@@ -32,7 +32,7 @@ class Application(QMainWindow):
     # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
     def __init__(self):
         # setting_file - 配置文件ShelfFile对象
-        logging.debug('init Application class')
+        logging.debug('主类初始化')
         super().__init__()
         self.ui = Ui_MainWindow()  # UI类的实例化()
         self.ui.setupUi(self)
@@ -45,7 +45,7 @@ class Application(QMainWindow):
 
         # 初始化设置目录
         self.SETTING_DIR_PATH = str(os.path.join(os.getcwd(), 'Setting'))
-        logging.debug(f'SETTING_DIR:{self.SETTING_DIR_PATH}')
+        logging.debug(f'设置文件保存位置:{self.SETTING_DIR_PATH}')
         # 初始化设置文件位置
         self.SETTING_FILE_PATH = str(os.path.join(self.SETTING_DIR_PATH, 'hpyculator_setting'))
 
@@ -78,7 +78,7 @@ class Application(QMainWindow):
             except Exception:
                 self.OUTPUT_DIR_PATH = str(os.path.join(os.getcwd(), 'Output'))
                 setting_file['save_location'] = self.OUTPUT_DIR_PATH
-            logging.debug(f'OUTPUT_DIR:{self.OUTPUT_DIR_PATH}')
+            logging.debug(f'输出文件保存位置:{self.OUTPUT_DIR_PATH}')
 
         # 检查输出文件夹是否存在
         if os.path.exists(self.OUTPUT_DIR_PATH):
@@ -88,7 +88,7 @@ class Application(QMainWindow):
 
         # 初始化模块目录
         self.PLUGIN_DIR_PATH=str(os.path.join(os.getcwd(),'Plugin'))
-        logging.debug(f'PLUGIN_DIR:{self.PLUGIN_DIR_PATH}')
+        logging.debug(f'插件保存位置:{self.PLUGIN_DIR_PATH}')
 
         # 检查模块文件夹是否存在
         if os.path.exists(self.PLUGIN_DIR_PATH):
@@ -163,8 +163,7 @@ class Application(QMainWindow):
         self.plugin_files_name_py_nopy = self.plugin_files_name_py[:]
         for index,value in enumerate(self.plugin_files_name_py_nopy):  # 去掉.py后缀
             self.plugin_files_name_py_nopy[index] = value[:-3]
-        logging.debug("去掉.py后缀的文件名")
-        logging.debug(self.plugin_files_name_py_nopy)
+        logging.debug(f"去掉.py后缀的文件名 {self.plugin_files_name_py_nopy}")
         for name in self.plugin_files_name_py_nopy:
             exec(f"self.{name}=importlib.import_module('.{name}', package='Plugin')")
             # self.i = importlib.import_module('.' + str(name), package='Plugin')  # 相对导入
@@ -177,7 +176,7 @@ class Application(QMainWindow):
                 logging.debug(f'init_plugin_singerfile inside Exception:{e}')
 
     def init_plugin_folder(self):
-        logging.debug(f"self.plugin_files_name_folder:{self.plugin_files_name_folder}")
+        logging.debug(f"读取到的文件夹插件:{self.plugin_files_name_folder}")
         for name in self.plugin_files_name_folder:
             exec(f"self.{name}=importlib.import_module('.{name}.__init__', package='Plugin')")
             # self.i = importlib.import_module('.' + str(name), package='Plugin')  # 相对导入
