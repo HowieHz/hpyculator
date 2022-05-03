@@ -3,7 +3,7 @@ import hpyculator as hpyc
 PLUGIN_METADATA = {
     'input_mode': hpyc.STRING,  # 输入模式
     'id': 'A_Plus_B',  # ID,插件标识符,需要和文件名一致（必须）
-    'option_name': "A+B_Problem V1.1.0 by HowieHz",  # 选项名-在选择算法列表中（必须）
+    'option_name': "高精度整数加法 V1.1.0 by HowieHz",  # 选项名-在选择算法列表中（必须）
     'version': 'V1.1.0',  # 版本号（必须）
 
     'save_name': "",  # 文件保存项目名-在输出（必须）
@@ -17,7 +17,6 @@ PLUGIN_METADATA = {
     整数A,整数B
 
     例：1,2
-    注：AB要求在int类型数据结构范围内
 
 输出格式
     N

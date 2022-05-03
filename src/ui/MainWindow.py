@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1015, 877)
+        MainWindow.resize(1085, 844)
         MainWindow.setStyleSheet(u"/*\n"
 "Aqua Style Sheet for QT Applications\n"
 "Author: Jaime A. Quiroga P.\n"
@@ -637,8 +637,11 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(self.search_box.sizePolicy().hasHeightForWidth())
         self.search_box.setSizePolicy(sizePolicy)
-        self.search_box.setMinimumSize(QSize(250, 0))
+        self.search_box.setMinimumSize(QSize(270, 0))
         self.search_box.setMaximumSize(QSize(16777215, 55))
+        font = QFont()
+        font.setPointSize(12)
+        self.search_box.setFont(font)
         self.search_box.setLayoutDirection(Qt.LeftToRight)
         self.search_box.setFrameShape(QFrame.StyledPanel)
         self.search_box.setLineWidth(1)
@@ -646,15 +649,15 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.search_box, 0, 0, 1, 1)
 
         self.choices_list_box = QListWidget(self.central_widget)
-        QListWidgetItem(self.choices_list_box)
         self.choices_list_box.setObjectName(u"choices_list_box")
         sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
         sizePolicy1.setHorizontalStretch(2)
         sizePolicy1.setVerticalStretch(7)
         sizePolicy1.setHeightForWidth(self.choices_list_box.sizePolicy().hasHeightForWidth())
         self.choices_list_box.setSizePolicy(sizePolicy1)
-        self.choices_list_box.setMinimumSize(QSize(250, 0))
+        self.choices_list_box.setMinimumSize(QSize(270, 0))
         self.choices_list_box.setMaximumSize(QSize(16777215, 16777215))
+        self.choices_list_box.setFont(font)
 
         self.gridLayout.addWidget(self.choices_list_box, 1, 0, 14, 1)
 
@@ -668,6 +671,7 @@ class Ui_MainWindow(object):
         sizePolicy2.setHeightForWidth(self.start_button.sizePolicy().hasHeightForWidth())
         self.start_button.setSizePolicy(sizePolicy2)
         self.start_button.setMinimumSize(QSize(100, 0))
+        self.start_button.setFont(font)
 
         self.horizontalLayout.addWidget(self.start_button)
 
@@ -678,6 +682,9 @@ class Ui_MainWindow(object):
         sizePolicy3.setVerticalStretch(1)
         sizePolicy3.setHeightForWidth(self.save_check.sizePolicy().hasHeightForWidth())
         self.save_check.setSizePolicy(sizePolicy3)
+        font1 = QFont()
+        font1.setPointSize(11)
+        self.save_check.setFont(font1)
 
         self.horizontalLayout.addWidget(self.save_check)
 
@@ -685,6 +692,7 @@ class Ui_MainWindow(object):
         self.test_check.setObjectName(u"test_check")
         sizePolicy3.setHeightForWidth(self.test_check.sizePolicy().hasHeightForWidth())
         self.test_check.setSizePolicy(sizePolicy3)
+        self.test_check.setFont(font1)
 
         self.horizontalLayout.addWidget(self.test_check)
 
@@ -692,6 +700,7 @@ class Ui_MainWindow(object):
         self.output_optimization_check.setObjectName(u"output_optimization_check")
         sizePolicy3.setHeightForWidth(self.output_optimization_check.sizePolicy().hasHeightForWidth())
         self.output_optimization_check.setSizePolicy(sizePolicy3)
+        self.output_optimization_check.setFont(font1)
 
         self.horizontalLayout.addWidget(self.output_optimization_check)
 
@@ -699,6 +708,7 @@ class Ui_MainWindow(object):
         self.output_lock_maximums_check.setObjectName(u"output_lock_maximums_check")
         sizePolicy3.setHeightForWidth(self.output_lock_maximums_check.sizePolicy().hasHeightForWidth())
         self.output_lock_maximums_check.setSizePolicy(sizePolicy3)
+        self.output_lock_maximums_check.setFont(font1)
 
         self.horizontalLayout.addWidget(self.output_lock_maximums_check)
 
@@ -712,6 +722,7 @@ class Ui_MainWindow(object):
         sizePolicy4.setVerticalStretch(2)
         sizePolicy4.setHeightForWidth(self.input_box.sizePolicy().hasHeightForWidth())
         self.input_box.setSizePolicy(sizePolicy4)
+        self.input_box.setFont(font)
 
         self.gridLayout.addWidget(self.input_box, 0, 1, 3, 1)
 
@@ -722,6 +733,7 @@ class Ui_MainWindow(object):
         sizePolicy5.setVerticalStretch(5)
         sizePolicy5.setHeightForWidth(self.output_box.sizePolicy().hasHeightForWidth())
         self.output_box.setSizePolicy(sizePolicy5)
+        self.output_box.setFont(font)
 
         self.gridLayout.addWidget(self.output_box, 4, 1, 11, 1)
 
@@ -731,7 +743,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.central_widget)
         self.menu_bar = QMenuBar(MainWindow)
         self.menu_bar.setObjectName(u"menu_bar")
-        self.menu_bar.setGeometry(QRect(0, 0, 1015, 19))
+        self.menu_bar.setGeometry(QRect(0, 0, 1085, 19))
         self.about__menu = QMenu(self.menu_bar)
         self.about__menu.setObjectName(u"about__menu")
         self.reset_menu = QMenu(self.menu_bar)
@@ -786,14 +798,8 @@ class Ui_MainWindow(object):
         self.stop_compute.setText(QCoreApplication.translate("MainWindow", u"\u7ec8\u6b62\u5f53\u524d\u8fd0\u7b97", None))
         self.stop_app.setText(QCoreApplication.translate("MainWindow", u"\u9000\u51fa\u7a0b\u5e8f", None))
         self.action.setText(QCoreApplication.translate("MainWindow", u"\u8bbe\u7f6e", None))
-        self.search_box.setPlainText(QCoreApplication.translate("MainWindow", u"\u8f93\u5165\u5b57\u7b26\u81ea\u52a8\u8fdb\u884c\u641c\u7d22", None))
-
-        __sortingEnabled = self.choices_list_box.isSortingEnabled()
-        self.choices_list_box.setSortingEnabled(False)
-        ___qlistwidgetitem = self.choices_list_box.item(0)
-        ___qlistwidgetitem.setText(QCoreApplication.translate("MainWindow", u"\u6e05\u7a7a\u641c\u7d22\u6846\u5c31\u53ef\u4ee5\u663e\u793a\u6240\u6709\u7684\u63d2\u4ef6\u4e86", None));
-        self.choices_list_box.setSortingEnabled(__sortingEnabled)
-
+        self.search_box.setPlainText(QCoreApplication.translate("MainWindow", u"\u8f93\u5165\u5b57\u7b26\u81ea\u52a8\u8fdb\u884c\u641c\u7d22\n"
+"\u6e05\u7a7a\u641c\u7d22\u6846\u663e\u793a\u5168\u90e8\u63d2\u4ef6", None))
         self.start_button.setText(QCoreApplication.translate("MainWindow", u"\u8ba1\u7b97", None))
         self.save_check.setText(QCoreApplication.translate("MainWindow", u"\u4fdd\u5b58\u8f93\u51fa\u5230\u6587\u4ef6", None))
         self.test_check.setText(QCoreApplication.translate("MainWindow", u"\u6d4b\u8bd5\u6a21\u5f0f", None))

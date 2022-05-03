@@ -46,13 +46,13 @@
         "fullwidth_symbol" : hpyc.OFF #懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
         }
         
-    def main(input,self):#输出到框体内
+    def main(data,self):#输出到框体内
         pass
         
-    def main_save(input,file):#保存到文件
+    def main_save(data,file):#保存到文件
         pass
 
-    #def main_test(input,file):#测试函数，无需输出和保存,如果不写这个函数请注释掉
+    #def main_test(data,file):#测试函数，无需输出和保存,如果不写这个函数请注释掉
         #pass
             
 

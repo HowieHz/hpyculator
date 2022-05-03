@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1015</width>
-    <height>877</height>
+    <width>1085</width>
+    <height>844</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -588,7 +588,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         </property>
         <property name="minimumSize">
          <size>
-          <width>250</width>
+          <width>270</width>
           <height>0</height>
          </size>
         </property>
@@ -597,6 +597,11 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
           <width>16777215</width>
           <height>55</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LeftToRight</enum>
@@ -608,7 +613,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
          <number>1</number>
         </property>
         <property name="plainText">
-         <string>输入字符自动进行搜索</string>
+         <string>输入字符自动进行搜索
+清空搜索框显示全部插件</string>
         </property>
        </widget>
       </item>
@@ -622,7 +628,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
         </property>
         <property name="minimumSize">
          <size>
-          <width>250</width>
+          <width>270</width>
           <height>0</height>
          </size>
         </property>
@@ -632,11 +638,11 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
           <height>16777215</height>
          </size>
         </property>
-        <item>
-         <property name="text">
-          <string>清空搜索框就可以显示所有的插件了</string>
-         </property>
-        </item>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
        </widget>
       </item>
       <item row="3" column="1">
@@ -655,6 +661,11 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
             <height>0</height>
            </size>
           </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
           <property name="text">
            <string>计算</string>
           </property>
@@ -667,6 +678,11 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
             <horstretch>1</horstretch>
             <verstretch>1</verstretch>
            </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
           </property>
           <property name="text">
            <string>保存输出到文件</string>
@@ -681,6 +697,11 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
             <verstretch>1</verstretch>
            </sizepolicy>
           </property>
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
           <property name="text">
            <string>测试模式</string>
           </property>
@@ -694,6 +715,11 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
             <verstretch>1</verstretch>
            </sizepolicy>
           </property>
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
           <property name="text">
            <string>内框输出性能优化</string>
           </property>
@@ -706,6 +732,11 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
             <horstretch>1</horstretch>
             <verstretch>1</verstretch>
            </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
           </property>
           <property name="text">
            <string>内框输出上限</string>
@@ -722,6 +753,11 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
           <verstretch>2</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
        </widget>
       </item>
       <item row="4" column="1" rowspan="11">
@@ -731,6 +767,11 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
           <horstretch>5</horstretch>
           <verstretch>5</verstretch>
          </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
         </property>
        </widget>
       </item>
@@ -743,7 +784,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1015</width>
+     <width>1085</width>
      <height>19</height>
     </rect>
    </property>
