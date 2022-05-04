@@ -66,24 +66,25 @@ def main(data, self):  # 输出到框体内
     else:  # len(integer_a)<len(integer_b):
         fractional_a = fractional_a.ljust(len(fractional_b), "0")
 
-    carry_num=0#需要进位的数字
-    answer=""
+    carry_num = 0  # 需要进位的数字
+    answer = ""
     new_point = len(integer_a)
     a = (integer_a + fractional_a)[::-1]  # 用[::-1]倒转，现在左边低位，右边高位
     b = (integer_b + fractional_b)[::-1]
-    for digital_a,digital_b in zip(a,b):
-        digital_answer=int(digital_a)+int(digital_b)
-        answer+=str(digital_answer+carry_num)
-        carry_num=0#进位清零
-        if digital_answer>=10:
-            carry_num=1#进位
-    answer=answer[::-1]
-    if len(answer)==new_point:
+    for digital_a, digital_b in zip(a, b):
+        digital_answer = int(digital_a) + int(digital_b)
+        answer += str(digital_answer + carry_num)
+        carry_num = 0  # 进位清零
+        if digital_answer >= 10:
+            carry_num = 1  # 进位
+    answer = answer[::-1]
+    if len(answer) == new_point:
         pass
     else:
-        answer=answer[:new_point]+"."+answer[new_point:]
+        answer = answer[:new_point] + "." + answer[new_point:]
 
-    hpyc.output(self,answer)
+    hpyc.output(self, answer)
+
 
 def main_save(data, file):  # 保存到文件
     pass

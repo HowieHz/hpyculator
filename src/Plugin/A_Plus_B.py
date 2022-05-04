@@ -30,20 +30,23 @@ PLUGIN_METADATA = {
     "fullwidth_symbol": hpyc.OFF
 }
 
-def main(input:str,self) -> None:
-    a,b=input.split(",")
+
+def main(input: str, self) -> None:
+    a, b = input.split(",")
     a = int(a)
     b = int(b)
-    hpyc.output(self,a+b)
+    hpyc.output(self, a + b)
 
-def main_save(input:str,filename) -> None:
-    a, b = input.split(",")
-    a=int(a)
-    b=int(b)
-    hpyc.write(filename,a+b)
 
-def main_test(input:str,self) -> int:
+def main_save(input: str, filename) -> None:
     a, b = input.split(",")
-    a=int(a)
-    b=int(b)
-    return a+b
+    a = int(a)
+    b = int(b)
+    hpyc.write(filename, a + b)
+
+
+def main_test(input: str, self) -> int:
+    a, b = input.split(",")
+    a = int(a)
+    b = int(b)
+    return a + b

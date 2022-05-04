@@ -47,7 +47,7 @@ PLUGIN_METADATA = {
 }
 
 
-def main(input:str):
+def main(input: str):
     try:
         a, b, c = input.split(",")
     except Exception as e:
@@ -69,7 +69,7 @@ def main(input:str):
             list[i] = str(q) + "." + str(w) + "." + str(e)
         return list
 
-    a,b=input.split(",")
+    a, b = input.split(",")
     aq, aw, ae = map(int, a.split("."))
     bq, bw, be = map(int, b.split("."))
     if aq == bq:

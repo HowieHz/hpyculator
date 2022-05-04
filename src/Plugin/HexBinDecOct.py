@@ -32,28 +32,28 @@ PLUGIN_METADATA = {
 }
 
 
-def main(input:str, self,todo):  # 输出到框体内
+def main(input: str, self, todo):  # 输出到框体内
     try:
-        num,b=input.split(',')
+        num, b = input.split(',')
     except Exception:
-        num=input
-        b="10"
+        num = input
+        b = "10"
     if b == "2":
-        num=int(num,2)
+        num = int(num, 2)
     elif b == "8":
-        num=int(num,8)
+        num = int(num, 8)
     elif b == "10":
-        num=int(num)
+        num = int(num)
     elif b == "16":
-        num=int(num,16)
+        num = int(num, 16)
     else:
-        hpyc.output(self,"目前不支持该进制的输入\n\n*做信息题是吧，自己算")
+        hpyc.output(self, "目前不支持该进制的输入\n\n*做信息题是吧，自己算")
         return
-    if todo=="output":
-        hpyc.output(self,"二进制："+str(bin(num))[2:])
-        hpyc.output(self,"八进制：" + str(oct(num))[2:])
-        hpyc.output(self,"十进制：" + str(num))
-        hpyc.output(self,"十六进制：" + str(hex(num))[2:].upper())
+    if todo == "output":
+        hpyc.output(self, "二进制：" + str(bin(num))[2:])
+        hpyc.output(self, "八进制：" + str(oct(num))[2:])
+        hpyc.output(self, "十进制：" + str(num))
+        hpyc.output(self, "十六进制：" + str(hex(num))[2:].upper())
     elif todo == "save":
         hpyc.write_without_flush(self, "二进制：" + str(bin(num))[2:])
         hpyc.write_without_flush(self, "八进制：" + str(oct(num))[2:])

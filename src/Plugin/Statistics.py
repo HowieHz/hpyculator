@@ -1,17 +1,18 @@
 import hpyculator as hpyc
+
 PLUGIN_METADATA = {
-    'input_mode' : hpyc.STRING,
-    'id' : 'Statistics',
-    'option_name' : "平均数,众数,中位数,方差,标准差V1.1.0 by HowieHz",
-    'version' : 'V1.1.0',
+    'input_mode': hpyc.STRING,
+    'id': 'Statistics',
+    'option_name': "平均数,众数,中位数,方差,标准差V1.1.0 by HowieHz",
+    'version': 'V1.1.0',
 
-    'save_name' : "平均数,众数,中位数,方差,标准差",
-    'quantifier' : "",
+    'save_name': "平均数,众数,中位数,方差,标准差",
+    'quantifier': "",
 
-    'output_start' : "",
-    'output_name' : "平均数,众数,中位数,方差,标准差计算",
-    'author' : "HowieHz",
-    'help' : """
+    'output_start': "",
+    'output_name': "平均数,众数,中位数,方差,标准差计算",
+    'author': "HowieHz",
+    'help': """
     输入若干个数字，以此来计算这些数字的 平均数,众数,中位数,方差,标准差
     
     输入格式:
@@ -19,12 +20,13 @@ PLUGIN_METADATA = {
     （用半角逗号隔开的实数）
 """,
 
-    'output_end' : "",
+    'output_end': "",
 
-    'return_mode' : hpyc.RETURN_ONCE,
-    'use_quantifier' : hpyc.ON ,
-    "fullwidth_symbol" : hpyc.OFF
+    'return_mode': hpyc.RETURN_ONCE,
+    'use_quantifier': hpyc.ON,
+    "fullwidth_symbol": hpyc.OFF
 }
+
 
 def main(num):
     num = str(num).split(",")  # 过滤输入框的数字并且将结果储存

@@ -132,7 +132,7 @@ class Application(QMainWindow):
 
         self.ui.choices_list_box.addItems(self.can_choose_number)  # 选项名添加到ui上
 
-        self.is_thread_runing = False  # 防止两个计算线程同时进行
+        self.is_thread_running = False  # 防止两个计算线程同时进行
 
         # 关于gui显示内容的初始化
         self.ui.output_box.setPlainText(Doc.START_SHOW)  # 开启的展示
@@ -174,11 +174,11 @@ class Application(QMainWindow):
             return
         # if str(self.ui.input_box.toPlainText()) == "停止":  # u停止检测
         # main_window_signal.appendOutPutBox.emit("当前计算线程已停止")
-        # self.is_thread_runing = False
+        # self.is_thread_running = False
         # return
         # if str(self.ui.input_box.toPlainText()) == "stop":  # stop检测
         # main_window_signal.appendOutPutBox.emit("当前计算线程已停止")
-        # self.is_thread_runing = False
+        # self.is_thread_running = False
         # return
         if self.ui.choices_list_box.currentItem() is None:  # 是否选择检测
             self.ui.output_box.setPlainText("\n\n" +
@@ -214,7 +214,7 @@ class Application(QMainWindow):
 
     # 计算线程
     def startCalculate(self):
-        if not self.is_thread_runing:
+        if not self.is_thread_running:
             try:
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
                 main_window_signal.setOutPutBox.emit("计算程序正在运行中，所需时间较长，请耐心等待")
@@ -250,12 +250,12 @@ class Application(QMainWindow):
                 main_window_signal.setOutPutBox.emit(str(e))
                 main_window_signal.appendOutPutBox.emit("\n\n插件发生错误，请检查输入格式")
 
-            self.is_thread_runing = False
+            self.is_thread_running = False
         else:
             main_window_signal.appendOutPutBox.emit("\n运算程序正在进行中，请勿反复点击计算按钮！\n")  # 清空输出框
 
     def whatNeedCalculate(self):
-        self.is_thread_runing = True
+        self.is_thread_running = True
 
         self.time_before_calculate = time.perf_counter()  # 储存开始时间
 
@@ -265,7 +265,7 @@ class Application(QMainWindow):
         elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST:  # 算一行输出一行
             main_window_signal.clearOutPutBox.emit()  # 清空输出框
             self.result = self.loaded_plugin[self.Selection].main(self.input_box_s_input)
-            for result_process in self.result:  # 计算 啊，定义就在上一行，hoyc你是看不到吗？
+            for result_process in self.result:
                 main_window_signal.appendOutPutBox.emit(str(result_process) + "\\n")  # 算一行输出一行
         elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
             main_window_signal.clearOutPutBox.emit()  # 清空输出框
@@ -283,7 +283,7 @@ class Application(QMainWindow):
     def whatNeedCalculateWithSave(self):  # 选择检测+计算
         # self.name_text_file - 储存保存到哪个文件里
         # now - 保存datetime类型的当前时间
-        self.is_thread_runing = True
+        self.is_thread_running = True
 
         now = datetime.datetime.now()  # 保存当前时间，用于文件名
 
@@ -324,7 +324,7 @@ class Application(QMainWindow):
     def whatNeedCalculateWithOutputOptimization(self):
         # self.name_text_file - 储存保存到哪个文件里
         # now - 保存datetime类型的当前时间
-        self.is_thread_runing = True
+        self.is_thread_running = True
 
         now = datetime.datetime.now()  # 保存当前时间，用于文件名
 
@@ -370,7 +370,7 @@ class Application(QMainWindow):
             yield chunk
 
     def whatNeedCalculateWithTest(self):
-        self.is_thread_runing = True
+        self.is_thread_running = True
 
         try:
             if self.plugin_attribute["return_mode"] == hpyc.NO_RETURN_SINGLE_FUNCTION:
@@ -442,7 +442,7 @@ by {self.plugin_attribute["author"]}
         def stopCompute():
             sys.exit(0)
 
-        def cheakUpdate():
+        def checkUpdate():
             webbrowser.open("https://github.com/HowieHz/hpyculator/releases")
 
         def resetSaveLocation():
@@ -470,7 +470,7 @@ by {self.plugin_attribute["author"]}
                     "更新日志": showDONE,
                     "更新展望": showTODO,
                     "开屏介绍": showAbout,
-                    "检查更新": cheakUpdate,
+                    "检查更新": checkUpdate,
                     "设置": openSettingWindow}
         jump_map[triggers[0].text()]()
 

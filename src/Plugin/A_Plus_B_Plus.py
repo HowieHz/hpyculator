@@ -36,8 +36,11 @@ PLUGIN_METADATA = {
 }
 
 
-def main(data:str, self):  # 输出到框体内
-    #print(data)
+def main(data: str, self):  # 输出到框体内
+    """
+
+    :type data: str
+    """
     a, b = data.split(",")
     point_a = a.find(".")  # 获得a的小数点的索引
     if point_a == -1:
@@ -70,36 +73,35 @@ def main(data:str, self):  # 输出到框体内
     list_a = list(integer_a + fractional_a)[::-1]  # 用[::-1]倒转，现在左边低位，右边高位
     list_b = list(integer_b + fractional_b)[::-1]
 
-    #各位相加
-    list_answer=[]
-    for digital_a,digital_b in zip(list_a,list_b):
-        list_answer.append(int(digital_a)+int(digital_b))
+    # 各位相加
+    list_answer = []
+    for digital_a, digital_b in zip(list_a, list_b):
+        list_answer.append(int(digital_a) + int(digital_b))
 
-    #进位
-    for index,digital_answer in enumerate(list_answer):
-        if digital_answer>=10:
-            list_answer[index]-=10
+    # 进位
+    for index, digital_answer in enumerate(list_answer):
+        if digital_answer >= 10:
+            list_answer[index] -= 10
             try:
-                list_answer[index+1]+1
+                list_answer[index + 1] + 1
             except IndexError:
                 list_answer.append(1)
 
-    #倒置加点输出
-    list_answer.reverse()#(用.reverse方法倒转更好读一点)
-    if new_point!=len(list_answer):
-        list_answer.insert(new_point,".")
-    list_answer=map(str,list_answer)#把每项的数字转换成字符串
-    answer="".join(list_answer)
-    hpyc.output(self,answer)
-
-
+    # 倒置加点输出
+    list_answer.reverse()  # (用.reverse方法倒转更好读一点)
+    if new_point != len(list_answer):
+        list_answer.insert(new_point, ".")
+    list_answer = map(str, list_answer)  # 把每项的数字转换成字符串
+    answer = "".join(list_answer)
+    hpyc.output(self, answer)
 
 
 def main_save(data, file):  # 保存到文件
     pass
 
+
 # def main_test(data,file):#测试函数，无需输出和保存,如果不写这个函数请注释掉
 # pass
 
 if __name__ == "__main__":
-    main("123333333333.3122222222222222222222222222222222,123333333333.3122222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222","1")
+    main("123333333333.3122222222222222222222222222222222,123333333333.3122222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222", "1")

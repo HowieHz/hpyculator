@@ -7,11 +7,11 @@ TODO = """
 #todo 11.可以读取文件作为输入
 #todo 15.美化 1.背景图
 #todo 16.复制到剪贴板"""
-#todo 8.可以分享脚本的平台（qq群也不错） 17.Github actions
-#todo 10.上线网页版
-#todo 11.可以读取文件作为输入
-#todo 15.美化 1.背景图
-#todo 16.复制到剪贴板
+# todo 8.可以分享脚本的平台（qq群也不错） 17.Github actions
+# todo 10.上线网页版
+# todo 11.可以读取文件作为输入
+# todo 15.美化 1.背景图
+# todo 16.复制到剪贴板
 
 
 """
@@ -22,7 +22,6 @@ HelloWorld 类名(Class)、文件名(Xswl.txt)使用帕斯卡命名规则(大驼
 HELLO_WORLD 常量(NEVER_GIVE_UP)全部大写，使用下划线连接单词
 numba vx jax感觉两个差不多
 """
-
 
 """
 版本号更新约定（x为更新的版本号）:

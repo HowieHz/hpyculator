@@ -18,10 +18,11 @@ PLUGIN_METADATA = {
 """,
     'output_end': "",
     'return_mode': hpyc.NO_RETURN,
-    'use_quantifier' : hpyc.ON
+    'use_quantifier': hpyc.ON
 }
 
-def main(input,self):#调用时传入两个参数，第一个参数是输入，第二个参数是程序的主类，要作为输出函数的的第一个参数\
+
+def main(input, self):  # 调用时传入两个参数，第一个参数是输入，第二个参数是程序的主类，要作为输出函数的的第一个参数\
     hpyc.output(self, "勾个输出优化吧，谢谢")
     return
     """num = input
@@ -38,18 +39,19 @@ def main(input,self):#调用时传入两个参数，第一个参数是输入，�
     hpyc.output(self, need_write)
     return"""
 
-def main_save(input,file):#返回一个字符串，第一个参数是输入，第二个参数是需要被保存的文件流，要作为保存函数的第一个参数
-    num =input
+
+def main_save(input, file):  # 返回一个字符串，第一个参数是输入，第二个参数是需要被保存的文件流，要作为保存函数的第一个参数
+    num = input
     num = int(num)
-    need_write=""
-    need_write_len=0
+    need_write = ""
+    need_write_len = 0
     for i in range(num):
-        need_write+="⑨\n"
-        need_write_len+=1
+        need_write += "⑨\n"
+        need_write_len += 1
         if need_write_len >= 100000000:
             hpyc.write_without_flush(file, need_write)
             hpyc.flush(file)
-            need_write=""
-            need_write_len=0
+            need_write = ""
+            need_write_len = 0
     hpyc.write(file, need_write)
     return
