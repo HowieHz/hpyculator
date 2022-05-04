@@ -886,8 +886,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    <slot>startEvent()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>571</x>
-     <y>239</y>
+     <x>581</x>
+     <y>236</y>
     </hint>
     <hint type="destinationlabel">
      <x>615</x>
@@ -902,8 +902,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    <slot>saveCheckEvent()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>683</x>
-     <y>238</y>
+     <x>714</x>
+     <y>234</y>
     </hint>
     <hint type="destinationlabel">
      <x>754</x>
@@ -918,8 +918,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    <slot>testCheckEvent()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>779</x>
-     <y>238</y>
+     <x>807</x>
+     <y>234</y>
     </hint>
     <hint type="destinationlabel">
      <x>827</x>
@@ -934,8 +934,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    <slot>outputOptimizationCheckEvent()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>903</x>
-     <y>238</y>
+     <x>955</x>
+     <y>234</y>
     </hint>
     <hint type="destinationlabel">
      <x>914</x>
@@ -950,8 +950,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    <slot>outputLockMaximumsCheckEvent()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1003</x>
-     <y>238</y>
+     <x>1073</x>
+     <y>234</y>
     </hint>
     <hint type="destinationlabel">
      <x>922</x>
@@ -979,7 +979,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    <sender>menu_bar</sender>
    <signal>triggered(QAction*)</signal>
    <receiver>MainWindow</receiver>
-   <slot>menuBar()</slot>
+   <slot>menuBar(QAction*)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>61</x>
@@ -1024,6 +1024,6 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
   <slot>search_text()</slot>
   <slot>search_cancel()</slot>
   <slot>startEvent()</slot>
-  <slot>menuBar()</slot>
+  <slot>menuBar(QAction*)</slot>
  </slots>
 </ui>
