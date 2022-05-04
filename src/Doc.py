@@ -1,12 +1,15 @@
 import Version
 
-TODO = """empty"""
-#todo 更新展望(咕咕咕):
-#todo 2.可自定义文件保存的文件名格式
+TODO = """
+更新展望(咕咕咕):
 #todo 8.可以分享脚本的平台（qq群也不错） 17.Github actions
 #todo 10.上线网页版
 #todo 11.可以读取文件作为输入
-#todo 14.设置页面
+#todo 15.美化 1.背景图
+#todo 16.复制到剪贴板"""
+#todo 8.可以分享脚本的平台（qq群也不错） 17.Github actions
+#todo 10.上线网页版
+#todo 11.可以读取文件作为输入
 #todo 15.美化 1.背景图
 #todo 16.复制到剪贴板
 
@@ -59,6 +62,16 @@ Howie皓子制作
 悄悄说:在输入栏输入update_log之后点击运算就可以看更新日志了""" % Version.VERSION)
 
 UPDATE_LOG = """更新日志:
+20220504
+1.4.0-c
+干掉exec，解决命名空间污染
+性能优化
+
+20220503
+1.4.0-b
+ui调整
+示例调整
+
 20220430
 v1.4.0-a
 修改了api，所有插件更进api，文档更新
