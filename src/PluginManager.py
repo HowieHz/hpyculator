@@ -4,9 +4,7 @@ import importlib
 from typing import List, Dict
 
 logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - %(message)s')
-
-
-# logging.disable(logging.CRITICAL)  # 禁用日志
+logging.disable(logging.CRITICAL)  # 禁用日志
 
 class Manager:
     def __init__(self):
