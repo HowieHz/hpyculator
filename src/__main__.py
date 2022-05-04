@@ -9,7 +9,7 @@ import webbrowser
 import hpyculator as hpyc
 import tempfile
 from functools import partial#偏函数真好用
-import pyperclip
+#import pyperclip
 #import jpype
 #import pprint
 
@@ -21,7 +21,8 @@ if os.path.exists(LOG_FILE_PATH):
     pass
 else:
     os.makedirs(LOG_FILE_PATH)
-logging.basicConfig(filename=os.path.join(LOG_FILE_PATH, 'log.txt'), level=logging.DEBUG,format=' %(asctime)s - %(levelname)s - %(message)s')
+#logging.basicConfig(filename=os.path.join(LOG_FILE_PATH, 'log.txt'), level=logging.DEBUG,format=' %(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.DEBUG,format=' %(asctime)s - %(levelname)s - %(message)s')
 #logging.debug('Start of program')
 
 #文档导入
@@ -42,6 +43,9 @@ class Application(QMainWindow):
     # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
     def __init__(self):
         # setting_file - 配置文件ShelfFile对象
+
+        #存放加载好的插件 ID-读取的插件
+        self.loaded_plugin={}
 
         # 初始化设置目录
         self.SETTING_DIR_PATH = str(os.path.join(os.getcwd(), 'Setting'))
@@ -202,26 +206,24 @@ class Application(QMainWindow):
             self.plugin_files_name_py_nopy[index] = value[:-3]
         logging.debug(f"去掉.py后缀的文件名 {self.plugin_files_name_py_nopy}")
         for name in self.plugin_files_name_py_nopy:
-            exec(f"self.{name}=importlib.import_module('.{name}', package='Plugin')")
+            self.loaded_plugin[name]=importlib.import_module(f'.{name}', package='Plugin')
             # self.i = importlib.import_module('.' + str(name), package='Plugin')  # 相对导入
+            logging.debug(name)
             try:
-                exec(
-                    f"self.can_choose_number.append(self.{name}.PLUGIN_METADATA['option_name'])")  # 读取模块元数据，添加gui选项
-                exec(
-                    f"self.plugin_filename_option_name_map[self.{name}.PLUGIN_METADATA['option_name']]=self.{name}.PLUGIN_METADATA['id']")
+                self.can_choose_number.append(self.loaded_plugin[name].PLUGIN_METADATA['option_name'])  # 读取模块元数据，添加gui选项
+                self.plugin_filename_option_name_map[self.loaded_plugin[name].PLUGIN_METADATA['option_name']]=self.loaded_plugin[name].PLUGIN_METADATA['id']
             except Exception as e:
                 logging.debug(f'init_plugin_singerfile inside Exception:{e}')
 
     def init_plugin_folder(self):
         logging.debug(f"读取到的文件夹插件:{self.plugin_files_name_folder}")
         for name in self.plugin_files_name_folder:
-            exec(f"self.{name}=importlib.import_module('.{name}.__init__', package='Plugin')")
+            self.loaded_plugin[name]=importlib.import_module(f'.{name}.__init__', package='Plugin')
             # self.i = importlib.import_module('.' + str(name), package='Plugin')  # 相对导入
+            logging.debug(name)
             try:
-                exec(
-                    f"self.can_choose_number.append(self.{name}.PLUGIN_METADATA['option_name'])")  # 读取模块元数据，添加gui选项
-                exec(
-                    f"self.plugin_filename_option_name_map[self.{name}.PLUGIN_METADATA['option_name']]=self.{name}.PLUGIN_METADATA['id']")
+                self.can_choose_number.append(self.loaded_plugin[name].PLUGIN_METADATA['option_name'])  # 读取模块元数据，添加gui选项
+                self.plugin_filename_option_name_map[self.loaded_plugin[name].PLUGIN_METADATA['option_name']]=self.loaded_plugin[name].PLUGIN_METADATA['id']
             except Exception as e:
                 logging.debug(f'init_plugin_folder inside Exception:{e}')
 
@@ -280,11 +282,11 @@ class Application(QMainWindow):
 
 如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）""")
             return
-        if self.input_mode == hpyc.STRING:
+        if self.plugin_attribute["input_mode"] == hpyc.STRING:
             self.input_box_s_input = str(self.ui.input_box.toPlainText())  # 取得输入框的数字
-        elif self.input_mode == hpyc.FLOAT:
+        elif self.plugin_attribute["input_mode"] == hpyc.FLOAT:
             self.input_box_s_input = float(self.ui.input_box.toPlainText())  # 取得输入框的数字
-        elif self.input_mode == hpyc.NUM:
+        elif self.plugin_attribute["input_mode"] == hpyc.NUM:
             self.input_box_s_input = int(self.ui.input_box.toPlainText())  # 取得输入框的数字
         else:
             self.input_box_s_input = 0#缺省
@@ -336,25 +338,25 @@ class Application(QMainWindow):
 
         self.time_before_calculate = time.perf_counter()  # 储存开始时间
 
-        if self.return_mode == hpyc.RETURN_ONCE:
-            exec(f"self.result = str(self.{self.Selection}.main(self.input_box_s_input))")
+        if self.plugin_attribute["return_mode"] == hpyc.RETURN_ONCE:
+            self.result = str(self.loaded_plugin[self.Selection].main(self.input_box_s_input))
             main_window_signal.setOutPutBox.emit(str(self.result) + "\n")  # 结果为str，直接输出
-        elif self.return_mode == hpyc.RETURN_LIST: # 算一行输出一行
+        elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST: # 算一行输出一行
             main_window_signal.clearOutPutBox.emit()  # 清空输出框
-            exec(f"self.result=self.{self.Selection}.main(self.input_box_s_input)")
+            self.result=self.loaded_plugin[self.Selection].main(self.input_box_s_input)
             for result_process in self.result:  # 计算 啊，定义就在上一行，hoyc你是看不到吗？
                 main_window_signal.appendOutPutBox.emit(str(result_process) + "\\n")  # 算一行输出一行
-        elif self.return_mode == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE: # 算一行输出一行，但是没有换行
+        elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE: # 算一行输出一行，但是没有换行
             main_window_signal.clearOutPutBox.emit()  # 清空输出框
-            exec(f"self.result=self.{self.Selection}.main(self.input_box_s_input)")
+            self.result=self.loaded_plugin[self.Selection].main(self.input_box_s_input)
             for result_process in self.result:  # 计算
                 main_window_signal.appendOutPutBox.emit(str(result_process))  # 算一行输出一行
-        elif self.return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
+        elif self.plugin_attribute["return_mode"] == hpyc.NO_RETURN_SINGLE_FUNCTION:
             main_window_signal.clearOutPutBox.emit() # 清空输出框
-            exec(f"self.{self.Selection}.main(self.input_box_s_input,self,'output')")
+            self.loaded_plugin[self.Selection].main(self.input_box_s_input,self,'output')
         else:
             main_window_signal.clearOutPutBox.emit() # 清空输出框
-            exec(f"self.{self.Selection}.main(self.input_box_s_input,self)")
+            self.loaded_plugin[self.Selection].main(self.input_box_s_input,self)
         self.time_after_calculate = time.perf_counter()  # 储存结束时间
 
     def whatNeedCalculateWithSave(self):  # 选择检测+计算
@@ -364,33 +366,33 @@ class Application(QMainWindow):
 
         now = datetime.datetime.now()  # 保存当前时间，用于文件名
 
-        if self.use_quantifier == hpyc.ON:
-            self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') + '  ' + self.save_name + str(self.input_box_s_input) + self.quantifier
+        if self.plugin_attribute["use_quantifier"] == hpyc.ON:
+            self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') + '  ' + self.plugin_attribute["save_name"] + str(self.input_box_s_input) + self.plugin_attribute["quantifier"]
         else:
             self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') + '  ' + str(self.input_box_s_input).replace('.',
-                                                                                                                 '_') + "的" + self.save_name
+                                                                                                                 '_') + "的" + self.plugin_attribute["save_name"]
 
         save = open(os.path.join(self.OUTPUT_DIR_PATH,f"{self.name_text_file}.txt"), "w",encoding="utf-8")
         self.time_before_calculate = time.perf_counter()  # 储存开始时间
 
         try:
-            if self.return_mode == hpyc.RETURN_ONCE:  # 分布输出和一次输出
-                exec(f"self.result = self.{self.Selection}.main(self.input_box_s_input)")
+            if self.plugin_attribute["return_mode"] == hpyc.RETURN_ONCE:  # 分布输出和一次输出
+                self.result = self.loaded_plugin[self.Selection].main(self.input_box_s_input)
                 save.write(str(self.result) + "\n")
-            elif self.return_mode == hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
-                exec(f"self.result=self.{self.Selection}.main(self.input_box_s_input)")
+            elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
+                self.result=self.loaded_plugin[self.Selection].main(self.input_box_s_input)
                 for result_process in self.result:  # 计算
                     save.write(str(result_process) + "\\n")
                     save.flush()  # 算出来就存进去
-            elif self.return_mode == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
-                exec(f"self.result=self.{self.Selection}.main(self.input_box_s_input)")
+            elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
+                self.result=self.loaded_plugin[self.Selection].main(self.input_box_s_input)
                 for result_process in self.result:  # 计算
                     save.write(str(result_process))
                     save.flush()  # 算出来就存进去
-            elif self.return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                exec(f"self.{self.Selection}.main(self.input_box_s_input,save,'save')")
+            elif self.plugin_attribute["return_mode"] == hpyc.NO_RETURN_SINGLE_FUNCTION:
+                self.loaded_plugin[self.Selection].main(self.input_box_s_input,save,'save')
             else:
-                exec(f"self.{self.Selection}.main_save(self.input_box_s_input,save)")
+                self.loaded_plugin[self.Selection].main_save(self.input_box_s_input,save)
         finally:
             save.close()
 
@@ -407,23 +409,23 @@ class Application(QMainWindow):
             self.time_before_calculate = time.perf_counter()  # 储存开始时间
 
             try:
-                if self.return_mode == hpyc.RETURN_ONCE:  # 分布输出和一次输出
-                    exec(f"self.result = self.{self.Selection}.main(self.input_box_s_input)")
+                if self.plugin_attribute["return_mode"] == hpyc.RETURN_ONCE:  # 分布输出和一次输出
+                    self.result = self.loaded_plugin[self.Selection].main(self.input_box_s_input)
                     save.write(str(self.result) + "\n")
-                elif self.return_mode == hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
-                    exec(f"self.result=self.{self.Selection}.main(self.input_box_s_input")
+                elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
+                    self.result=self.loaded_plugin[self.Selection].main(self.input_box_s_input)
                     for result_process in self.result:  # 计算
                         save.write(str(result_process) + "\\n")
                         save.flush()  # 算出来就存进去
-                elif self.return_mode == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
-                    exec(f"self.result=self.{self.Selection}.main(self.input_box_s_input")
+                elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
+                    self.result=self.loaded_plugin[self.Selection].main(self.input_box_s_input)
                     for result_process in self.result:  # 计算
                         save.write(str(result_process))
                         save.flush()  # 算出来就存进去
-                elif self.return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                    exec(f"self.{self.Selection}.main(self.input_box_s_input,save,'save')")
+                elif self.plugin_attribute["return_mode"] == hpyc.NO_RETURN_SINGLE_FUNCTION:
+                    self.loaded_plugin[self.Selection].main(self.input_box_s_input,save,'save')
                 else:
-                    exec(f"self.{self.Selection}.main_save(self.input_box_s_input,save)")
+                    self.loaded_plugin[self.Selection].main_save(self.input_box_s_input,save)
             finally:
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
                 save.seek(0)# 将文件指针移到开始处，准备读取文件
@@ -448,11 +450,11 @@ class Application(QMainWindow):
         self.is_thread_runing = True
 
         try:
-            if self.return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
+            if self.plugin_attribute["return_mode"] == hpyc.NO_RETURN_SINGLE_FUNCTION:
                 main_window_signal.clearOutPutBox.emit() # 清空输出框
 
                 self.time_before_calculate = time.perf_counter()  # 储存开始时间
-                exec(f"self.{self.Selection}.main(self.input_box_s_input,self,'test')")
+                self.loaded_plugin[self.Selection].main(self.input_box_s_input,self,'test')
                 self.time_after_calculate = time.perf_counter()  # 储存结束时间
                 if self.ui.output_box.toPlainText() != "":
                     main_window_signal.clearOutPutBox.emit() # 清空输出框
@@ -461,7 +463,7 @@ class Application(QMainWindow):
                 main_window_signal.clearOutPutBox.emit() # 清空输出框
 
                 self.time_before_calculate = time.perf_counter()  # 储存开始时间
-                exec(f"self.{self.Selection}.main_test(self.input_box_s_input,self)")
+                self.loaded_plugin[self.Selection].main_test(self.input_box_s_input,self)
                 self.time_after_calculate = time.perf_counter()  # 储存结束时间
         except Exception:
             self.time_after_calculate = time.perf_counter()  # 储存结束时间
@@ -470,7 +472,8 @@ class Application(QMainWindow):
     def chooseNumberEvent(self,item):  # 选择算法事件
         #logging.debug(f'选中的选项名{self.ui.choices_list_box.currentItem().text()}')
         logging.debug(f'选中的选项名{item.text()}')
-        self.Selection = self.plugin_filename_option_name_map[item.text()]
+        self.Selection = str(self.plugin_filename_option_name_map[item.text()])
+        self.plugin_attribute={}#读取的属性
 
         # self.required_parameters = ['input_mode','return_mode','save_name','output_name','use_quantifier','version']
         # self.optional_parameters=['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol']
@@ -478,21 +481,23 @@ class Application(QMainWindow):
         # self.required_parameters.extend(self.optional_parameters)
         for option_name in ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol', 'input_mode','return_mode', 'save_name', 'output_name', 'use_quantifier', 'version']:
             try:
-                exec(f"self.{option_name}=self.{self.Selection}.PLUGIN_METADATA['{option_name}']")
-            except Exception:
-                exec(f"self.{option_name}={hpyc.OFF}")
-        if self.fullwidth_symbol == hpyc.ON:
-            self.help = self.help.replace(",", "，").replace(".", "。").replace("'", "‘").replace('"', '”').replace('(','（').replace(')', '）')
+                logging.debug(f'load {option_name}')
+                self.plugin_attribute[option_name]=self.loaded_plugin[self.Selection].PLUGIN_METADATA[option_name]
+            except Exception as e:
+                logging.debug(str(e))
+                self.plugin_attribute[option_name]=hpyc.OFF
+        if self.plugin_attribute["fullwidth_symbol"] == hpyc.ON:
+            self.plugin_attribute["help"] = self.plugin_attribute["help"].replace(",", "，").replace(".", "。").replace("'", "‘").replace('"', '”').replace('(','（').replace(')', '）')
         self.ui.output_box.setPlainText(f"""\
-{self.output_start}
-{self.output_name} {self.version}
-by {self.author}
+{self.plugin_attribute["output_start"]}
+{self.plugin_attribute["output_name"]} {self.plugin_attribute["version"]}
+by {self.plugin_attribute["author"]}
 
 
 使用提示
-{self.help}
+{self.plugin_attribute["help"]}
 
-{self.output_end}""")
+{self.plugin_attribute["output_end"]}""")
 
     #菜单栏触发函数
     def menuBar(self,triggeres):
@@ -532,6 +537,7 @@ by {self.author}
                     logging.disable(logging.CRITICAL)  # 禁用日志
             return
 
+        logging.debug(triggeres)
         logging.debug(triggeres.text() + 'is triggeres')
         jump_map = {"终止当前运算": stopCompute,
                     "退出程序": quitEvent,
