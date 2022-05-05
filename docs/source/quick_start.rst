@@ -56,11 +56,7 @@ hpyculator 在 `pypi <https://pypi.org/project/hpyculator>`__ 中可用。它可
 开发者（程序）
 ---------------------
 
-代码在src文件内，
-
-目前__main__.py是项目入口，Doc.py是一堆常量，Version.py是全局版本号，MainWin.py是基于wxpython所编写的窗口
-
-__main__.py内的Application类继承MainWin的MainWindow类，然后重写对应窗口控件的方法
+目前__main__.py是项目入口，Doc.py是一堆常量，Version.py是全局版本号
 
 读取插件的流程
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -85,12 +81,10 @@ startEvent判断是否有选择计算核心，输入框是否有输入
 startCalculate根据选项，
 分别调用
 
-whatNeedCalculateWithTest当用户勾选测试
-
 whatNeedCalculateWithSave当用户选择保存
 
 whatNeedCalculateWithOutputOptimization当用户勾选输出优化，原理是创建临时文件，写入再读取输出
 
-whatNeedCalculate当用户不勾选保存，不勾选测试，不勾选输出优化
+whatNeedCalculate当用户不勾选保存，不勾选输出优化
 
 优先级：测试>保存>输出优化>优化

@@ -32,7 +32,7 @@ PLUGIN_METADATA = {
 }
 
 
-def main(input: str, self, todo):  # 输出到框体内
+def on_calculate(input: str, self, todo):  # 输出到框体内
     try:
         num, b = input.split(',')
     except Exception:
@@ -59,8 +59,6 @@ def main(input: str, self, todo):  # 输出到框体内
         hpyc.write_without_flush(self, "八进制：" + str(oct(num))[2:])
         hpyc.write_without_flush(self, "十进制：" + str(num))
         hpyc.write_without_flush(self, "十六进制：" + str(hex(num))[2:].upper())
-    elif todo == "test":
-        pass
     else:
         pass
     return

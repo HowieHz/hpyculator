@@ -25,7 +25,7 @@ PLUGIN_METADATA = {
 }
 
 
-def main(num, self, do_what):  # 返回一个列表
+def on_calculate(num, self, do_what):  # 返回一个列表
     if do_what == "output":
         if num == 0:
             hpyc.output(self, "")

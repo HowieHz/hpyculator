@@ -23,8 +23,8 @@ HELLO_WORLD 常量(NEVER_GIVE_UP)全部大写，使用下划线连接单词
 numba jax感觉两个差不多都用不了
 """
 
-START_SHOW = ("""皓式可编程计算器hpyculator%s
-Howie皓子制作
+START_SHOW = ("""皓式可编程计算器 hpyculator %s
+HowieHz制作
 
 首先选择你要计算的东西
 然后在上方输入框输入你要计算的项数（行数）
@@ -52,14 +52,15 @@ Howie皓子制作
 悄悄说:在输入栏输入update_log之后点击运算就可以看更新日志了""" % Version.VERSION)
 
 UPDATE_LOG = """更新日志:
-20220430-20220504
+20220430-20220505
 1.4.0
 移出插件读取部分
 干掉exec，解决命名空间污染
 性能优化
 ui调整
 示例调整
-修改了api，所有插件更进api，文档更新
+修改了api和插件事件，文档更新
+移除test模式
 
 20220429
 v1.3.3

@@ -46,8 +46,8 @@ HowieHz构建了插件化的部分
     """
 
 
-def main(inp, self, todo):
-    a, b = inp.split(",")
+def on_calculate(data, self, todo):
+    a, b = data.split(",")
     jar_path = str(os.path.abspath(__file__))[:-11] + "A+Bproj.jar"
     jvm_path = jpype.getDefaultJVMPath()
     if not jpype.isJVMStarted():
@@ -60,13 +60,3 @@ def main(inp, self, todo):
         jpype.shutdownJVM()
     except:
         pass
-
-
-def main_test(inp, self):
-    a, b = inp.split(",")
-    jar_path = str(os.path.abspath(__file__))[:-11] + "A+Bproj.jar"
-    jvm_path = jpype.getDefaultJVMPath()
-    if not jpype.isJVMStarted():
-        jpype.startJVM(jvm_path, '-ea', "-Djava.class.path=%s" % jar_path, convertStrings=False)
-    return jpype.JClass('com.shacha.Main').main(a, b)
-    jpype.shutdownJVM()

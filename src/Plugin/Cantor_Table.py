@@ -42,7 +42,7 @@ PLUGIN_METADATA = {
 }
 
 
-def main(n, self, do_what):
+def on_calculate(n, self, do_what):
     if do_what == "output":
         a = 1
         b = 1

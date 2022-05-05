@@ -31,7 +31,7 @@ PLUGIN_METADATA = {
 }
 
 
-def main(num: str, self, do_what):  # 返回一个列表
+def on_calculate(num: str, self, do_what):  # 返回一个列表
     try:
         a, b, c = num.split(",")
     except:

@@ -1,12 +1,12 @@
-VERSION = "22w19a-a.1"  # todo 发布的时候改版本号
+VERSION = "22w19a-a.2"  # todo 发布的时候改版本号
 
 """
-稳定版目标开发版本 1.4.0
+下一个稳定版版本 1.4.0
 下一个预览版版本 1.4.0-epsilon
-目前周结算 22w19
-开发大版本迭代 22w19a
-目前小版迭代 22w19a-a
-目前提交迭代 22w19a-a.1
+下一个周结算 22w20
+下一个开发大版本迭代 22w19b
+下一个目前小版迭代 22w19a-b
+下一个提交迭代 22w19a-a.3
 """
 
 """
@@ -27,4 +27,30 @@ VERSION = "22w19a-a.1"  # todo 发布的时候改版本号
 
 正式版  开发大版本迭代  开发小版本迭代   开发小版本迭代   开发提交迭代   开发提交迭代    开发小版本迭代   开发大版本迭代  正式预览版       正式预览版             正式版
 v1.0.0 22w18a        22w18a-a      22w18a-b       22w18a-b.1   22w18a-b.2    22w18a-c       22w18b       v1.1.0-alpha   v1.1.0-alpha.1        v1.1.0
+
+geek=[
+    'Alpha',
+    'Beta',
+    'Gamma',
+    'Delta',
+    'Epsilon',
+    'Zeta',
+    'Nu',
+    'Xi',
+    'Omicron',
+    'Pi',
+    'Rho',
+    'Sigma',
+    'Eta',
+    'Theta',
+    'Iota',
+    'Kappa',
+    'Lambada',
+    'Mu',
+    'Tau',
+    'Upsilon',
+    'Phi',
+    'Chi',
+    'Psi',
+    'Omega']
 """

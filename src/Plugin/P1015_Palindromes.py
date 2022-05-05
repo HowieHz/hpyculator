@@ -54,7 +54,7 @@ PLUGIN_METADATA = {
 }
 
 
-def main(input: str, self):  # 输出到框体内
+def on_calculate(input: str, self):  # 输出到框体内
     o, p = input.strip().split(",")
     a = int(o.strip())  # a是多少进制
     b_list = list(map(lambda x: int(x, a), list(p.strip())))
@@ -86,7 +86,7 @@ def ishw(list):
         return False
 
 
-def main_save(input: str, save):
+def on_calculate_with_save(input: str, save):
     o, p = input.strip().split(",")
     a = int(o.strip())  # a是多少进制
     b_list = list(map(lambda x: int(x, a), list(p.strip())))

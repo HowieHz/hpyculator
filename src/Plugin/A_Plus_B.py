@@ -31,22 +31,15 @@ PLUGIN_METADATA = {
 }
 
 
-def main(input: str, self) -> None:
+def on_calculate(input: str, self) -> None:
     a, b = input.split(",")
     a = int(a)
     b = int(b)
     hpyc.output(self, a + b)
 
 
-def main_save(input: str, filename) -> None:
+def on_calculate_with_save(input: str, filename) -> None:
     a, b = input.split(",")
     a = int(a)
     b = int(b)
     hpyc.write(filename, a + b)
-
-
-def main_test(input: str, self) -> int:
-    a, b = input.split(",")
-    a = int(a)
-    b = int(b)
-    return a + b

@@ -47,7 +47,7 @@ PLUGIN_METADATA = {
 }
 
 
-def main(input: str):
+def on_calculate(input: str):
     try:
         a, b, c = input.split(",")
     except Exception as e:

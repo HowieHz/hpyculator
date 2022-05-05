@@ -690,24 +690,6 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="test_check">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-            <horstretch>1</horstretch>
-            <verstretch>1</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>11</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>测试模式</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QCheckBox" name="output_optimization_check">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -873,7 +855,6 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
  <tabstops>
   <tabstop>search_box</tabstop>
   <tabstop>start_button</tabstop>
-  <tabstop>test_check</tabstop>
   <tabstop>output_optimization_check</tabstop>
   <tabstop>output_lock_maximums_check</tabstop>
  </tabstops>
@@ -912,29 +893,13 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    </hints>
   </connection>
   <connection>
-   <sender>test_check</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>testCheckEvent()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>807</x>
-     <y>234</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>827</x>
-     <y>294</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>output_optimization_check</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
    <slot>outputOptimizationCheckEvent()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>955</x>
+     <x>950</x>
      <y>234</y>
     </hint>
     <hint type="destinationlabel">
@@ -1014,7 +979,6 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
   <slot>showTODO()</slot>
   <slot>showDONE()</slot>
   <slot>saveCheckEvent()</slot>
-  <slot>testCheckEvent()</slot>
   <slot>outputOptimizationCheckEvent()</slot>
   <slot>outputLockMaximumsCheckEvent()</slot>
   <slot>quit_event()</slot>

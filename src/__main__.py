@@ -83,7 +83,7 @@ class Application(QMainWindow):
 
         self.main_window_signal = main_window_signal  # 更方便的使用自定义事件
 
-        self.setWindowTitle("各类数组计算程序%s-Howie皓子制作" % Version.VERSION)  # 设置标题
+        self.setWindowTitle("hpyculator %s -HowieHz制作" % Version.VERSION)  # 设置标题
 
         # 读取设置文件-按钮状态和输出目录
         with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
@@ -222,24 +222,24 @@ class Application(QMainWindow):
             time_before_calculate = time.perf_counter()  # 储存开始时间
 
             if self.plugin_attribute["return_mode"] == hpyc.RETURN_ONCE:
-                self.result = str(self.loaded_plugin[self.Selection].main(self.input_box_s_input))
+                self.result = str(self.loaded_plugin[self.Selection].on_calculate(self.input_box_s_input))
                 main_window_signal.setOutPutBox.emit(str(self.result) + "\n")  # 结果为str，直接输出
             elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST:  # 算一行输出一行
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                self.result = self.loaded_plugin[self.Selection].main(self.input_box_s_input)
+                self.result = self.loaded_plugin[self.Selection].on_calculate(self.input_box_s_input)
                 for result_process in self.result:
                     main_window_signal.appendOutPutBox.emit(str(result_process) + "\\n")  # 算一行输出一行
             elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                self.result = self.loaded_plugin[self.Selection].main(self.input_box_s_input)
+                self.result = self.loaded_plugin[self.Selection].on_calculate(self.input_box_s_input)
                 for result_process in self.result:  # 计算
                     main_window_signal.appendOutPutBox.emit(str(result_process))  # 算一行输出一行
             elif self.plugin_attribute["return_mode"] == hpyc.NO_RETURN_SINGLE_FUNCTION:
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                self.loaded_plugin[self.Selection].main(self.input_box_s_input, self, 'output')
+                self.loaded_plugin[self.Selection].on_calculate(self.input_box_s_input, self, 'output')
             else:
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                self.loaded_plugin[self.Selection].main(self.input_box_s_input, self)
+                self.loaded_plugin[self.Selection].on_calculate(self.input_box_s_input, self)
             time_spent = time.perf_counter()-time_before_calculate  # 储存结束时间
 
         def whatNeedCalculateWithSave():  # 选择检测+计算
@@ -258,29 +258,29 @@ class Application(QMainWindow):
                                                                                                                      '_') + "的" + \
                                       self.plugin_attribute["save_name"]
 
-            save = open(os.path.join(self.OUTPUT_DIR_PATH, f"{self.name_text_file}.txt"), "w", encoding="utf-8")
+            filestream = open(os.path.join(self.OUTPUT_DIR_PATH, f"{self.name_text_file}.txt"), "w", encoding="utf-8")
             time_before_calculate = time.perf_counter()  # 储存开始时间
 
             try:
                 if self.plugin_attribute["return_mode"] == hpyc.RETURN_ONCE:  # 分布输出和一次输出
-                    self.result = self.loaded_plugin[self.Selection].main(self.input_box_s_input)
-                    save.write(str(self.result) + "\n")
+                    self.result = self.loaded_plugin[self.Selection].on_calculate(self.input_box_s_input)
+                    filestream.write(str(self.result) + "\n")
                 elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
-                    self.result = self.loaded_plugin[self.Selection].main(self.input_box_s_input)
+                    self.result = self.loaded_plugin[self.Selection].on_calculate(self.input_box_s_input)
                     for result_process in self.result:  # 计算
-                        save.write(str(result_process) + "\\n")
-                        save.flush()  # 算出来就存进去
+                        filestream.write(str(result_process) + "\\n")
+                        filestream.flush()  # 算出来就存进去
                 elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
-                    self.result = self.loaded_plugin[self.Selection].main(self.input_box_s_input)
+                    self.result = self.loaded_plugin[self.Selection].on_calculate(self.input_box_s_input)
                     for result_process in self.result:  # 计算
-                        save.write(str(result_process))
-                        save.flush()  # 算出来就存进去
+                        filestream.write(str(result_process))
+                        filestream.flush()  # 算出来就存进去
                 elif self.plugin_attribute["return_mode"] == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                    self.loaded_plugin[self.Selection].main(self.input_box_s_input, save, 'save')
+                    self.loaded_plugin[self.Selection].on_calculate(self.input_box_s_input, filestream, 'save')
                 else:
-                    self.loaded_plugin[self.Selection].main_save(self.input_box_s_input, save)
+                    self.loaded_plugin[self.Selection].on_calculate_with_save(self.input_box_s_input, filestream)
             finally:
-                save.close()
+                filestream.close()
 
             time_spent = time.perf_counter()-time_before_calculate  # 储存结束时间
 
@@ -292,38 +292,38 @@ class Application(QMainWindow):
 
             now = datetime.datetime.now()  # 保存当前时间，用于文件名
 
-            with tempfile.TemporaryFile('w+t', encoding='utf-8', errors='ignore') as save:
+            with tempfile.TemporaryFile('w+t', encoding='utf-8', errors='ignore') as filestream:
                 time_before_calculate = time.perf_counter()  # 储存开始时间
 
                 try:
                     if self.plugin_attribute["return_mode"] == hpyc.RETURN_ONCE:  # 分布输出和一次输出
-                        self.result = self.loaded_plugin[self.Selection].main(self.input_box_s_input)
-                        save.write(str(self.result) + "\n")
+                        self.result = self.loaded_plugin[self.Selection].on_calculate(self.input_box_s_input)
+                        filestream.write(str(self.result) + "\n")
                     elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
-                        self.result = self.loaded_plugin[self.Selection].main(self.input_box_s_input)
+                        self.result = self.loaded_plugin[self.Selection].on_calculate(self.input_box_s_input)
                         for result_process in self.result:  # 计算
-                            save.write(str(result_process) + "\\n")
-                            save.flush()  # 算出来就存进去
+                            filestream.write(str(result_process) + "\\n")
+                            filestream.flush()  # 算出来就存进去
                     elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
-                        self.result = self.loaded_plugin[self.Selection].main(self.input_box_s_input)
+                        self.result = self.loaded_plugin[self.Selection].on_calculate(self.input_box_s_input)
                         for result_process in self.result:  # 计算
-                            save.write(str(result_process))
-                            save.flush()  # 算出来就存进去
+                            filestream.write(str(result_process))
+                            filestream.flush()  # 算出来就存进去
                     elif self.plugin_attribute["return_mode"] == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                        self.loaded_plugin[self.Selection].main(self.input_box_s_input, save, 'save')
+                        self.loaded_plugin[self.Selection].on_calculate(self.input_box_s_input, filestream, 'save')
                     else:
-                        self.loaded_plugin[self.Selection].main_save(self.input_box_s_input, save)
+                        self.loaded_plugin[self.Selection].on_calculate_with_save(self.input_box_s_input, filestream)
                 finally:
                     main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                    save.seek(0)  # 将文件指针移到开始处，准备读取文件
+                    filestream.seek(0)  # 将文件指针移到开始处，准备读取文件
                     if self.ui.output_lock_maximums_check.isChecked():
-                        for times, line in enumerate(quickTraverseFile(save)):
+                        for times, line in enumerate(quickTraverseFile(filestream)):
                             main_window_signal.appendOutPutBox.emit(line)
                             if times >= 128:
                                 main_window_signal.appendOutPutBox.emit("\n\n输出上限：检测到输出数据过大，请使用保存到文件防止卡死")
                                 break
                     else:
-                        for line in quickTraverseFile(save):
+                        for line in quickTraverseFile(filestream):
                             main_window_signal.appendOutPutBox.emit(line)
 
             time_spent = time.perf_counter()-time_before_calculate  # 储存结束时间
@@ -333,61 +333,31 @@ class Application(QMainWindow):
             for chunk in iter(partial(file.read, chunk_size), ''):  # 用readline的话，读到换行符就会直接停止读取，不会读取到8192B，会增加读取次数
                 yield chunk
 
-        def whatNeedCalculateWithTest():
-            nonlocal time_spent
-            self.is_thread_running = True
-
-            try:
-                if self.plugin_attribute["return_mode"] == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                    main_window_signal.clearOutPutBox.emit()  # 清空输出框
-
-                    time_before_calculate = time.perf_counter()  # 储存开始时间
-                    self.loaded_plugin[self.Selection].main(self.input_box_s_input, self, 'test')
-                    time_spent = time.perf_counter()-time_before_calculate  # 储存结束时间
-                    if self.ui.output_box.toPlainText() != "":
-                        main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                        main_window_signal.setOutPutBox.emit("发生错误，请检查输入格式，以及插件是否有test模式")
-                else:
-                    main_window_signal.clearOutPutBox.emit()  # 清空输出框
-
-                    time_before_calculate = time.perf_counter()  # 储存开始时间
-                    self.loaded_plugin[self.Selection].main_test(self.input_box_s_input, self)
-                    time_spent = time.perf_counter()-time_before_calculate  # 储存结束时间
-            except Exception:
-                time_spent = 0  # 储存结束时间
-                main_window_signal.setOutPutBox.emit("发生错误，请检查输入格式，以及插件是否有test模式")
-
         if not self.is_thread_running:
             try:
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
                 main_window_signal.setOutPutBox.emit("计算程序正在运行中，所需时间较长，请耐心等待")
-                if self.ui.test_check.isChecked():
-                    whatNeedCalculateWithTest()
+                if self.ui.save_check.isChecked():  # 检测保存按钮的状态判断是否保存
+                    whatNeedCalculateWithSave()
                     # 以下是计算后工作
+                    main_window_signal.clearOutPutBox.emit()  # 清空输出框
                     main_window_signal.appendOutPutBox.emit(
-                        f"\n\n本次测试花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
-                else:
-                    if self.ui.save_check.isChecked():  # 检测保存按钮的状态判断是否保存
-                        whatNeedCalculateWithSave()
+                        f"\n本次计算+保存花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
+                    main_window_signal.appendOutPutBox.emit(
+                        "\n计算结果已保存在 " + os.path.join(self.OUTPUT_DIR_PATH, f"{self.name_text_file}.txt"))
+                    main_window_signal.appendOutPutBox.emit("\n")
+                else:  # 选择不保存才输出结果
+                    if self.ui.output_optimization_check.isChecked():
+                        whatNeedCalculateWithOutputOptimization()
                         # 以下是计算后工作
-                        main_window_signal.clearOutPutBox.emit()  # 清空输出框
                         main_window_signal.appendOutPutBox.emit(
-                            f"\n本次计算+保存花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
+                            f"\n\n本次计算+输出花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
+                        main_window_signal.appendOutPutBox.emit("已启用输出优化")
+                    else:
+                        whatNeedCalculate()
+                        # 以下是计算后工作
                         main_window_signal.appendOutPutBox.emit(
-                            "\n计算结果已保存在 " + os.path.join(self.OUTPUT_DIR_PATH, f"{self.name_text_file}.txt"))
-                        main_window_signal.appendOutPutBox.emit("\n")
-                    else:  # 选择不保存才输出结果
-                        if self.ui.output_optimization_check.isChecked():
-                            whatNeedCalculateWithOutputOptimization()
-                            # 以下是计算后工作
-                            main_window_signal.appendOutPutBox.emit(
-                                f"\n\n本次计算+输出花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
-                            main_window_signal.appendOutPutBox.emit("已启用输出优化")
-                        else:
-                            whatNeedCalculate()
-                            # 以下是计算后工作
-                            main_window_signal.appendOutPutBox.emit(
-                                f"\n\n本次计算+输出花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
+                            f"\n\n本次计算+输出花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
             except Exception as e:
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
                 main_window_signal.setOutPutBox.emit(str(e))
@@ -484,20 +454,6 @@ by {self.plugin_attribute["author"]}
         if self.save_settings:  # 保存check设置
             with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
                 setting_file['save_check'] = self.ui.save_check.isChecked()
-        if self.ui.test_check.isChecked():
-            self.ui.test_check.setChecked(False)
-        else:
-            pass
-
-    # 当触发测试选项
-    def testCheckEvent(self):  # test开就不报存
-        if self.ui.save_check.isChecked():
-            self.ui.save_check.setChecked(False)
-            if self.save_settings:  # 保存check设置
-                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-                    setting_file['save_check'] = False
-        else:
-            pass
 
     # 当触发优化输出选项
     def outputOptimizationCheckEvent(self):

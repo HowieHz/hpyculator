@@ -59,7 +59,7 @@ list = (
     9896989, 9902099, 9907099, 9908099, 9916199, 9918199, 9919199, 9921299, 9923299, 9926299, 9927299, 9931399, 9932399, 9935399, 9938399, 9957599, 9965699, 9978799, 9980899, 9981899, 9989899)
 
 
-def main(inp, self, do_what):
+def on_calculate(inp, self, do_what):
     if inp > 100000000:
         try:
             hpyc.output(self, "我开摆了，这么大的数你还是找其他插件吧")
@@ -71,10 +71,6 @@ def main(inp, self, do_what):
             if i > inp:
                 return
             hpyc.write_without_flush(self, i)
-    elif do_what == "test":
-        for i in list:
-            if i > inp:
-                return
     else:
         for i in list:
             if i > inp:

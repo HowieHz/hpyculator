@@ -1,7 +1,7 @@
 import hpyculator as hpyc
 
 PLUGIN_METADATA = {
-    'input_mode': hpyc.STRING,  # 输入模式，0为传入字符串 1位传入float(传入的作为main函数的开始计算值)（必须）
+    'input_mode': hpyc.STRING,
     'id': 'baseN_plus',  # ID,插件标识符,需要和文件名一致（必须）
     'option_name': "n进制加法v1.2.1 by HowieHz",  # 选项名-在选择算法列表中（必须）
     'version': 'v1.2.1',  # 版本号（必须）
@@ -52,7 +52,7 @@ PLUGIN_METADATA = {
 }
 
 
-def main(input: str, self, todo) -> None:  # 输出到框体内
+def on_calculate(input: str, self, todo) -> None:  # 输出到框体内
     num_rep_to = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_"
     num_rep_from = {
         '0': 0,

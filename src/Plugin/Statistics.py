@@ -28,7 +28,7 @@ PLUGIN_METADATA = {
 }
 
 
-def main(num):
+def on_calculate(num):
     num = str(num).split(",")  # 过滤输入框的数字并且将结果储存
 
     list = []

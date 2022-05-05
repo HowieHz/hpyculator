@@ -35,7 +35,7 @@ PLUGIN_METADATA = {
 }
 
 
-def main(input, self, todo):
+def on_calculate(input, self, todo):
     text, input_mode, output_mode = input.split(",")
     print("text:", text)
     print("input_mode:", input_mode)
