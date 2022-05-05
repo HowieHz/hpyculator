@@ -54,8 +54,8 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(input: str, self):  # 输出到框体内
-    o, p = input.strip().split(",")
+def on_calculate(data: str, self):  # 输出到框体内
+    o, p = data.strip().split(",")
     a = int(o.strip())  # a是多少进制
     b_list = list(map(lambda x: int(x, a), list(p.strip())))
     times = 0
@@ -79,15 +79,15 @@ def on_calculate(input: str, self):  # 输出到框体内
     hpyc.output(self, "Impossible!")
 
 
-def ishw(list):
-    if list == list[::-1]:
+def ishw(list_data: list):
+    if list_data == list_data[::-1]:
         return True
     else:
         return False
 
 
-def on_calculate_with_save(input: str, save):
-    o, p = input.strip().split(",")
+def on_calculate_with_save(data: str, save):
+    o, p = data.strip().split(",")
     a = int(o.strip())  # a是多少进制
     b_list = list(map(lambda x: int(x, a), list(p.strip())))
     times = 0

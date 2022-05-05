@@ -31,36 +31,35 @@ PLUGIN_METADATA = {
 def on_calculate(num):
     num = str(num).split(",")  # 过滤输入框的数字并且将结果储存
 
-    list = []
+    list_data = []
     for i in num:
-        list.append(float(i))
+        list_data.append(float(i))
 
-    list.sort()
-    # sz=("\n采集到的数组:"+str(list)+"\n")
+    list_data.sort()
     allnumbers = 0
-    for i in list:
+    for i in list_data:
         allnumbers = allnumbers + i
 
-    pjs = "该数组的平均数是" + str(allnumbers / len(list))
-    dict = {}
-    for times in list:
-        dict.update({times: list.count(times)})
-    max_timesnumber = max(zip(dict.keys()))
-    max_times = max(zip(dict.values()))
+    pjs = "该数组的平均数是" + str(allnumbers / len(list_data))
+    dict_data = {}
+    for times in list_data:
+        dict_data.update({times: list_data.count(times)})
+    max_timesnumber = max(zip(dict_data.keys()))
+    max_times = max(zip(dict_data.values()))
 
     zj = "该数组的众数是" + str(max_timesnumber)[1:-2] + ",该数出现次数为" + str(max_times)[1:-2]
 
-    if int(len(list) / 2) == len(list) / 2:  # 检验列表长是否为偶数
-        zws = "该数组的中位数是" + str((list[len(list) // 2] + list[len(list) // 2 - 1]) / 2)  # 是偶数
+    if int(len(list_data) / 2) == len(list_data) / 2:  # 检验列表长是否为偶数
+        zws = "该数组的中位数是" + str((list_data[len(list_data) // 2] + list_data[len(list_data) // 2 - 1]) / 2)  # 是偶数
     else:
-        zws = "该数组的中位数是" + str(list[((len(list) + 1) // 2) - 1])  # 不是偶数，去
+        zws = "该数组的中位数是" + str(list_data[((len(list_data) + 1) // 2) - 1])  # 不是偶数，去
 
     fcall = 0
-    for i2 in list:
-        fcall = fcall + (abs(i2 - allnumbers / len(list)) ** 2)
-    fc = "该数组的方差是" + str(fcall / len(list))
+    for i2 in list_data:
+        fcall = fcall + (abs(i2 - allnumbers / len(list_data)) ** 2)
+    fc = "该数组的方差是" + str(fcall / len(list_data))
 
-    bzc = "该数组的标准差是" + str(int(fcall / len(list)) ** 0.5)
+    bzc = "该数组的标准差是" + str(int(fcall / len(list_data)) ** 0.5)
 
     last = pjs + "\n" + zj + "\n" + zws + "\n" + fc + "\n" + bzc
 

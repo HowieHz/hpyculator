@@ -47,29 +47,29 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(input: str):
+def on_calculate(data: str):
     try:
-        a, b, c = input.split(",")
+        a, b, c = data.split(",")
     except Exception as e:
         c = ""
-        a, b = input.split(",")
+        a, b = data.split(",")
     if c == "wdnmd":
-        list = []
+        list_data = []
         aq, aw, ae = map(str, a.split("."))
         bq, bw, be = map(str, b.split("."))
         a = int(aq + aw + ae)
         b = int(bq + bw + be)
         listc = range(a, b + 1)
         for i in listc:
-            list.append(i)
+            list_data.append(i)
         for i in range(0, len(list)):
-            q = int(list[i]) // 100  # 百位
-            w = int(list[i]) // 10 % 10  # 十位
-            e = int(list[i]) % 10  # 个位
-            list[i] = str(q) + "." + str(w) + "." + str(e)
+            q = int(list_data[i]) // 100  # 百位
+            w = int(list_data[i]) // 10 % 10  # 十位
+            e = int(list_data[i]) % 10  # 个位
+            list_data[i] = str(q) + "." + str(w) + "." + str(e)
         return list
 
-    a, b = input.split(",")
+    a, b = data.split(",")
     aq, aw, ae = map(int, a.split("."))
     bq, bw, be = map(int, b.split("."))
     if aq == bq:

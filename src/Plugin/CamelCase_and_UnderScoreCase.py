@@ -35,8 +35,8 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(input, self, todo):
-    text, input_mode, output_mode = input.split(",")
+def on_calculate(data, self, todo):
+    text, input_mode, output_mode = data.split(",")
     print("text:", text)
     print("input_mode:", input_mode)
     print("output_mode:", output_mode)
@@ -83,7 +83,6 @@ def on_calculate(input, self, todo):
         text_list = str(text).split('_')
     else:
         pass
-    print(text_list)
     text = ""
     if output_mode == "0":
         for i in text_list:

@@ -24,7 +24,7 @@ PLUGIN_METADATA = {
     "fullwidth_symbol": hpyc.ON  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
 }
 
-list = (
+answer_list = (
     0, 2, 3, 5, 7, 11, 101, 131, 151, 181, 191, 313, 353, 373, 383, 727, 757, 787, 797, 919, 929, 10301, 10501, 10601, 11311, 11411, 12421, 12721, 12821, 13331, 13831, 13931, 14341, 14741, 15451, 15551, 16061, 16361, 16561, 16661, 17471,
     17971,
     18181, 18481, 19391, 19891, 19991, 30103, 30203, 30403, 30703, 30803, 31013, 31513, 32323, 32423, 33533, 34543, 34843, 35053, 35153, 35353, 35753, 36263, 36563, 37273, 37573, 38083, 38183, 38783, 39293, 70207, 70507, 70607, 71317,
@@ -67,12 +67,12 @@ def on_calculate(inp, self, do_what):
             hpyc.write_without_flush(self, "我开摆了，这么大的数你还是找其他插件吧")
         return
     if do_what == "save":
-        for i in list:
+        for i in answer_list:
             if i > inp:
                 return
             hpyc.write_without_flush(self, i)
     else:
-        for i in list:
+        for i in answer_list:
             if i > inp:
                 return
             hpyc.output(self, i)

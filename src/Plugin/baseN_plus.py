@@ -52,7 +52,7 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(input: str, self, todo) -> None:  # 输出到框体内
+def on_calculate(data: str, self, todo) -> None:  # 输出到框体内
     num_rep_to = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_"
     num_rep_from = {
         '0': 0,
@@ -119,7 +119,7 @@ def on_calculate(input: str, self, todo) -> None:  # 输出到框体内
         'Z': 61,
         '-': 62,
         '_': 63, }
-    a, b, c = input.strip().split(",")
+    a, b, c = data.strip().split(",")
     n = int(c.strip())  # n是多少进制
 
     if n > 36:  # 小于36的直接int，大于36小于64的解析

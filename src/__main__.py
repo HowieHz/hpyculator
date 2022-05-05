@@ -244,19 +244,8 @@ class Application(QMainWindow):
 
         def whatNeedCalculateWithSave():  # 选择检测+计算
             # self.name_text_file - 储存保存到哪个文件里
-            # now - 保存datetime类型的当前时间
             nonlocal time_spent
             self.is_thread_running = True
-
-            now = datetime.datetime.now()  # 保存当前时间，用于文件名
-
-            if self.plugin_attribute["use_quantifier"] == hpyc.ON:
-                self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') + '  ' + self.plugin_attribute["save_name"] + str(
-                    self.input_box_s_input) + self.plugin_attribute["quantifier"]
-            else:
-                self.name_text_file = now.strftime('%Y_%m_%d %H_%M_%S') + '  ' + str(self.input_box_s_input).replace('.',
-                                                                                                                     '_') + "的" + \
-                                      self.plugin_attribute["save_name"]
 
             filestream = open(os.path.join(self.OUTPUT_DIR_PATH, f"{self.name_text_file}.txt"), "w", encoding="utf-8")
             time_before_calculate = time.perf_counter()  # 储存开始时间
@@ -285,12 +274,8 @@ class Application(QMainWindow):
             time_spent = time.perf_counter()-time_before_calculate  # 储存结束时间
 
         def whatNeedCalculateWithOutputOptimization():
-            # self.name_text_file - 储存保存到哪个文件里
-            # now - 保存datetime类型的当前时间
             nonlocal time_spent
             self.is_thread_running = True
-
-            now = datetime.datetime.now()  # 保存当前时间，用于文件名
 
             with tempfile.TemporaryFile('w+t', encoding='utf-8', errors='ignore') as filestream:
                 time_before_calculate = time.perf_counter()  # 储存开始时间
@@ -338,6 +323,11 @@ class Application(QMainWindow):
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
                 main_window_signal.setOutPutBox.emit("计算程序正在运行中，所需时间较长，请耐心等待")
                 if self.ui.save_check.isChecked():  # 检测保存按钮的状态判断是否保存
+                    if self.plugin_attribute["use_quantifier"] == hpyc.ON:
+                        self.name_text_file = datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S') + '  ' + self.plugin_attribute["save_name"] + str(
+                            self.input_box_s_input) + self.plugin_attribute["quantifier"]
+                    else:
+                        self.name_text_file = datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S') + '  ' + str(self.input_box_s_input).replace('.','_') + "的" + self.plugin_attribute["save_name"]
                     whatNeedCalculateWithSave()
                     # 以下是计算后工作
                     main_window_signal.clearOutPutBox.emit()  # 清空输出框

@@ -32,11 +32,11 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(input: str, self, todo):  # 输出到框体内
+def on_calculate(data: str, self, todo):  # 输出到框体内
     try:
-        num, b = input.split(',')
+        num, b = data.split(',')
     except Exception:
-        num = input
+        num = data
         b = "10"
     if b == "2":
         num = int(num, 2)
