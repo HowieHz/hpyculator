@@ -1,4 +1,4 @@
-import Version
+from . import Version  # 版本号导入
 
 TODO = """
 更新展望(咕咕咕):

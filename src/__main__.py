@@ -9,14 +9,17 @@ import webbrowser
 import hpyculator as hpyc
 import tempfile
 from functools import partial  # 偏函数真好用
-# from typing import Optional, Union, Any, Set, List, Tuple, Dict
+from typing import Dict
 # import pyperclip
 # import jpype
 # import pprint
 
-import Doc  # 文档导入
-import Version  # 版本号导入
+
+# sys.path.append(".")
+from Doc import Doc  # 文档导入
+from Doc import Version  # 版本号导入
 from PluginManager import Manager  # 插件管理
+# print(sys.path)
 
 # pyside6导入
 from PySide6.QtWidgets import QApplication, QMainWindow
@@ -44,7 +47,8 @@ class Application(QMainWindow):
         # setting_file - 配置文件ShelfFile对象
 
         # 存放加载好的插件 ID-读取的插件
-        self.loaded_plugin: dict[str] = {}
+        self.loaded_plugin: Dict[str] = {}
+        # self.plugin_filename_option_name_map: Dict[str, str] = {}  # 选项名和实际文件名的映射表
         self.PluginManager: Manager = Manager()  # 加载插件管理器
 
         # 初始化设置目录
@@ -89,24 +93,23 @@ class Application(QMainWindow):
         with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
             try:
                 self.save_settings = setting_file['save_settings']  # 是否保存设置
-            except Exception as e:
-                logging.debug(f"读取save_settings时发生错误:{e}")
+            except KeyError:
                 setting_file['save_settings'] = True  # 默认保存选项状态
                 self.save_settings = True
 
             if self.save_settings:  # 当保存check状态
                 try:
                     self.ui.save_check.setChecked(setting_file['save_check'])  # 根据数据设置选项状态
-                except Exception:
+                except KeyError:
                     setting_file['save_check'] = self.ui.save_check.isChecked()
                 try:
                     self.ui.output_optimization_check.setChecked(setting_file['output_optimization'])  # 根据数据设置选项状态
-                except Exception:
+                except KeyError:
                     setting_file['output_optimization'] = True
                     self.ui.output_optimization_check.setChecked(True)
                 try:
                     self.ui.output_lock_maximums_check.setChecked(setting_file['output_lock_maximums'])  # 根据数据设置选项状态
-                except Exception:
+                except KeyError:
                     setting_file['output_lock_maximums'] = True
                     self.ui.output_lock_maximums_check.setChecked(True)
             else:  # 当不保存check状态
@@ -116,7 +119,7 @@ class Application(QMainWindow):
             # 初始化文件输出目录
             try:
                 self.OUTPUT_DIR_PATH = setting_file['save_location']
-            except Exception:
+            except KeyError:
                 self.OUTPUT_DIR_PATH = str(os.path.join(os.getcwd(), 'Output'))
                 setting_file['save_location'] = self.OUTPUT_DIR_PATH
             logging.debug(f'输出文件保存位置:{self.OUTPUT_DIR_PATH}')
@@ -136,6 +139,9 @@ class Application(QMainWindow):
 
         # 关于gui显示内容的初始化
         self.ui.output_box.setPlainText(Doc.START_SHOW)  # 开启的展示
+        self.ui.search_box.setPlaceholderText("输入字符自动进行搜索\n清空搜索框显示全部插件")  # 灰色背景提示字符
+        self.ui.search_box.clear()
+        self.ui.input_box.setFocus()
 
     def band(self):
         # self.ui.___ACTION___.triggered.connect(___FUNCTION___)
@@ -480,10 +486,7 @@ by {self.plugin_attribute["author"]}
             self.search_cancel()
             return
 
-        try:  # 清空选择栏
-            self.ui.choices_list_box.clear()
-        except Exception:
-            pass
+        self.ui.choices_list_box.clear()  # 清空选择栏
 
         for i in self.can_choose_number:  # 选出符合要求的
             if i.find(self.search_keyword) == -1:  # 字符串方法，没找到指定子串就-1
@@ -494,10 +497,7 @@ by {self.plugin_attribute["author"]}
         return
 
     def search_cancel(self):  # 取消搜索结果，显示全部插件
-        try:
-            self.ui.choices_list_box.clear()
-        except Exception:
-            pass
+        self.ui.choices_list_box.clear()
         self.ui.choices_list_box.addItems(self.can_choose_number)
         return
 

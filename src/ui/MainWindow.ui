@@ -155,6 +155,7 @@ QProgressBar::chunk {
 	border-radius: 10px;
 }
 QMenuBar {
+	font: 10pt &quot;Microsoft YaHei UI&quot;;
 	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(207, 209, 207, 255), stop:1 rgba(230, 229, 230, 255));
 }
 QMenuBar::item {
@@ -613,8 +614,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
          <number>1</number>
         </property>
         <property name="plainText">
-         <string>输入字符自动进行搜索
-清空搜索框显示全部插件</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -767,7 +767,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
      <x>0</x>
      <y>0</y>
      <width>1085</width>
-     <height>19</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="about__menu">

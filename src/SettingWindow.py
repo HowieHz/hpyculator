@@ -13,7 +13,7 @@ from ui.SettingWindow import Ui_SettingWindow
 
 from ui.Signal import setting_window_signal
 
-from Version import VERSION
+from Doc.Version import VERSION  # 版本号导入
 
 
 class SettingApplication(QDialog):
