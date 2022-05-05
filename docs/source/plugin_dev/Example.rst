@@ -5,15 +5,15 @@
 
 使用时请替换掉{}的内容,以下是对三个示例的使用方法
 
-Example1:当``return_mode``为
+Example1:当``return_mode`` 为
 RETURN_ONCE,
 RETURN_LIST,
 RETURN_LIST_OUTPUT_IN_ONE_LINE,
 需要完成 ``on_calculate`` 函数
 
-Example2:当``return_mode``,NO_RETURN为完成 ``on_calculate`` 和 ``on_calculate_with_save`` 函数
+Example2:当``return_mode`` ,NO_RETURN为完成 ``on_calculate`` 和 ``on_calculate_with_save`` 函数
 
-Example3:当``return_mode``,NO_RETURN_SINGLE_FUNCTION,的时候只需要完成 ``on_calculate`` 函数
+Example3:当``return_mode`` ,NO_RETURN_SINGLE_FUNCTION,的时候只需要完成 ``on_calculate`` 函数
 
 
 Example1

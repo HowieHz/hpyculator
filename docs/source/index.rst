@@ -14,8 +14,8 @@
     快速上手<quick_start>
     插件开发<plugin_dev/index>
     关于<about>
+    更新日志<update_log>
     特别鸣谢<credits>
-    特别鸣谢<update_log>
 
 
 索引和搜索

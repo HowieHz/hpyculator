@@ -5,7 +5,7 @@
 
 如果要开发，可以复制这一段，放在插件文件开头，然后进行修改
 
-请替换掉[]的部分
+请替换掉{}的部分
 
 具体说明和区别请看 `参数会影响什么`_ 一节
 
@@ -85,10 +85,15 @@
 ``return_mode`` 参数讲解
 ----------------------------------------------------------------------------
     import hpyculator as hpyc
+
     方案0  -> hpyc.RETURN_ONCE
+
     方案1  -> hpyc.RETURN_LIST
+
     方案2  -> hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE
+
     方案3  -> hpyc.NO_RETURN
+
     方案4  -> hpyc.NO_RETURN_SINGLE_FUNCTION
 
     关于这几个mode的来源----一个小故事

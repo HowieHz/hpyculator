@@ -20,17 +20,17 @@
 
 3.根据 ``return_mode``\，进行不同的开发（这几种模式的不同，详情请见 `return_mode参数讲解 <Metadata.html#return-mode>`_\）
 
-    a.当 ``return_mode``\为RETURN_……时，写一个 ``on_calculate``\函数，这个函数的 ``return``\值会作为输出值和保存值，详情请见 `插件事件 当return_mode为0,1,2 <Events.html#output-mode0-1-2>`_(修订者注，超链接需重定向)
+    a.当 ``return_mode``\为RETURN_……时，写一个 ``on_calculate``\函数，这个函数的 ``return``\值会作为输出值和保存值，详情请见 `插件事件 return_mode为RETURN_…… <Events.html#return-modereturn>`_ (修订者注，超链接需重定向)
 
     b.当 ``return_mode``\为NO_RETURN时，
 
         然后写 ``on_calculate``\函数用于计算并且输入到内框， ``on_calculate_with_save``\函数用于计算并保存
 
-        详情请见 `插件事件 当 return_mode为3 <Events.html#output-mode3>`_(修订者注，超链接需重定向)
+        详情请见 `插件事件 当 return_mode为NO_RETURN <Events.html#return-modeno-return>`_ (修订者注，超链接需重定向)
 
     c.当 ``return_mode``\为NO_RETURN_SINGLE_FUNCTION时，
 
-        写 ``on_calculate``\函数用于计算，但是会多传入一个参数说明是否保存，详情请见 `插件事件 当 return_mode为4 <Events.html#output-mode4>`_(修订者注，超链接需重定向)
+        写 ``on_calculate``\函数用于计算，但是会多传入一个参数说明是否保存，详情请见 `插件事件 当 return_mode为4 <Events.html#return-modeno-return-single-function>`_ (修订者注，超链接需重定向)
 
 
 二.从0创建文件夹插件
