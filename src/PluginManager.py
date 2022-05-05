@@ -6,6 +6,7 @@ from typing import List, Dict
 logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - %(message)s')
 logging.disable(logging.CRITICAL)  # 禁用日志
 
+
 class Manager:
     def __init__(self):
         # 初始化模块目录
@@ -27,6 +28,12 @@ class Manager:
         self.loaded_plugin: Dict[str] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
 
     def init_plugin_singer_file(self, plugin_files_name_py):
+        """
+        导入指定单文件插件
+        :param plugin_files_name_py: 插件文件名列表，如[1.py,2.py,3.py]
+        :return: None
+        """
+
         def remove_file_suffix(file_name: str):
             return file_name.split(".")[0]
 
@@ -45,6 +52,11 @@ class Manager:
                 logging.debug(f'init_plugin_singer_file inside Exception:{e}')
 
     def init_plugin_folder(self, plugin_files_name):
+        """
+        导入指定文件夹插件
+        :param plugin_files_name: 文件夹插件名列表，如["a","b","c"]
+        :return: None
+        """
         logging.debug(f"读取到的文件夹插件:{plugin_files_name}")
         for name in plugin_files_name:
             self.loaded_plugin[name] = importlib.import_module(f'.{name}.__init__', package='Plugin')
@@ -58,17 +70,24 @@ class Manager:
             except Exception as e:
                 logging.debug(f'init_plugin_folder inside Exception:{e}')
 
-    # 读取指定目录下插件 # 需重构
     def readPlugin(self, path):
-        for root, dir, file in os.walk(path):
+        """
+        读取指定目录下插件需重构
+        :param path: 指定的目录 绝对路径
+        :return: None
+        """
+        for root, _dir, file in os.walk(path):
             self.plugin_files_and_folder_name.append(file)
             root_list = str(root).split("\\")
             if root_list[-2] == 'Plugin':
                 if '__init__.py' in file:
                     self.plugin_files_name_folder.append(root_list[-1])
 
-    # 导入插件
     def init_plugin(self):
+        """
+        导入插件
+        :return: 读取到的插件的option_name字段列表,插件的option_name字段和id字段的键值对,插件的id字段和加载的插件对象的键值对
+        """
         self.readPlugin(self.PLUGIN_DIR_PATH)  # 读目录获取文件名
 
         try:  # 从所有读取的文件中挑选出.py为后缀的文件
@@ -90,5 +109,4 @@ class Manager:
         except Exception as e:
             logging.debug(f'init_plugin_folder outside Exception:{e}')
 
-        # print(self.can_choose_number)
         return self.can_choose_number, self.plugin_filename_option_name_map, self.loaded_plugin

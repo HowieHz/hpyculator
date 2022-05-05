@@ -14,7 +14,6 @@ from typing import Dict
 # import jpype
 # import pprint
 
-
 # sys.path.append(".")
 from Doc import Doc  # 文档导入
 from Doc import Version  # 版本号导入
@@ -40,13 +39,16 @@ else:
 logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - %(message)s')
 
 
-# 主类
 class Application(QMainWindow):
-    # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
     def __init__(self):
+        """
+        主程序类
+        """
+        # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
+
         # setting_file - 配置文件ShelfFile对象
 
-        # 存放加载好的插件 ID-读取的插件
+        # 存放加载完毕的插件 ID-读取的插件
         self.loaded_plugin: Dict[str] = {}
         # self.plugin_filename_option_name_map: Dict[str, str] = {}  # 选项名和实际文件名的映射表
         self.PluginManager: Manager = Manager()  # 加载插件管理器
@@ -85,7 +87,7 @@ class Application(QMainWindow):
         self.ui.setupUi(self)
         self.band()  # 信号和槽的绑定
 
-        self.main_window_signal = main_window_signal  # 更方便的使用自定义事件
+        self.main_window_signal = main_window_signal  # 更方便地使用自定义事件
 
         self.setWindowTitle("hpyculator %s -HowieHz制作" % Version.VERSION)  # 设置标题
 
@@ -168,8 +170,12 @@ class Application(QMainWindow):
 
         main_window_signal.clearOutPutBox.connect(clearOutPut)
 
-    # 初始化计算，绑定计算按钮，启动计算线程
     def startEvent(self):
+        """
+        初始化计算，绑定计算按钮，启动计算线程
+
+        :return: None
+        """
         # self.input_box_s_input - 储存输入框的内容
         # time_before_calculate - 临时储存时间，计录 计算时间
         # self.result_process  - 储存计算结果 （用于for循环,就是个i
@@ -194,7 +200,7 @@ class Application(QMainWindow):
 请在左侧选择运算核心
           ↓
 ← ← ←""")
-            return
+            return None
         if self.ui.input_box.toPlainText() == "":  # 是否输入检测
             self.ui.output_box.setPlainText("""                                                  ↑
                                                   ↑上面的就是输入框了
@@ -204,7 +210,7 @@ class Application(QMainWindow):
 请在上面的框输入需要被处理的数据
 
 如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）""")
-            return
+            return None
         if self.plugin_attribute["input_mode"] == hpyc.STRING:
             self.input_box_s_input = str(self.ui.input_box.toPlainText())  # 取得输入框的数字
         elif self.plugin_attribute["input_mode"] == hpyc.FLOAT:
@@ -217,10 +223,16 @@ class Application(QMainWindow):
         # 以上是计算前工作
         calculate_thread = threading.Thread(target=self.startCalculate)  # 启动计算线程
         calculate_thread.start()
+        return None
 
-    # 计算线程
     def startCalculate(self):
-        time_spent=None
+        """
+        计算线程
+
+        :return: None
+        """
+        time_spent = None
+
         def whatNeedCalculate():
             nonlocal time_spent
             self.is_thread_running = True
@@ -246,7 +258,7 @@ class Application(QMainWindow):
             else:
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
                 self.loaded_plugin[self.Selection].on_calculate(self.input_box_s_input, self)
-            time_spent = time.perf_counter()-time_before_calculate  # 储存结束时间
+            time_spent = time.perf_counter() - time_before_calculate  # 储存结束时间
 
         def whatNeedCalculateWithSave():  # 选择检测+计算
             # self.name_text_file - 储存保存到哪个文件里
@@ -277,7 +289,7 @@ class Application(QMainWindow):
             finally:
                 filestream.close()
 
-            time_spent = time.perf_counter()-time_before_calculate  # 储存结束时间
+            time_spent = time.perf_counter() - time_before_calculate  # 储存结束时间
 
         def whatNeedCalculateWithOutputOptimization():
             nonlocal time_spent
@@ -317,7 +329,7 @@ class Application(QMainWindow):
                         for line in quickTraverseFile(filestream):
                             main_window_signal.appendOutPutBox.emit(line)
 
-            time_spent = time.perf_counter()-time_before_calculate  # 储存结束时间
+            time_spent = time.perf_counter() - time_before_calculate  # 储存结束时间
 
         # 快读，低占用读取文件
         def quickTraverseFile(file, chunk_size=8192):
@@ -333,7 +345,7 @@ class Application(QMainWindow):
                         self.name_text_file = datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S') + '  ' + self.plugin_attribute["save_name"] + str(
                             self.input_box_s_input) + self.plugin_attribute["quantifier"]
                     else:
-                        self.name_text_file = datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S') + '  ' + str(self.input_box_s_input).replace('.','_') + "的" + self.plugin_attribute["save_name"]
+                        self.name_text_file = datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S') + '  ' + str(self.input_box_s_input).replace('.', '_') + "的" + self.plugin_attribute["save_name"]
                     whatNeedCalculateWithSave()
                     # 以下是计算后工作
                     main_window_signal.clearOutPutBox.emit()  # 清空输出框
@@ -363,7 +375,13 @@ class Application(QMainWindow):
         else:
             main_window_signal.appendOutPutBox.emit("\n运算程序正在进行中，请勿反复点击计算按钮！\n")  # 清空输出框
 
-    def chooseNumberEvent(self, item):  # 选择算法事件
+    def chooseNumberEvent(self, item):
+        """
+        左侧选择算法之后触发的函数 选择算法事件
+
+        :param item:
+        :return: None
+        """
         # logging.debug(f'选中的选项名{self.ui.choices_list_box.currentItem().text()}')
         logging.debug(f'选中的选项名{item.text()}')
         self.Selection = str(self.plugin_filename_option_name_map[item.text()])
@@ -395,8 +413,13 @@ by {self.plugin_attribute["author"]}
 
 {self.plugin_attribute["output_end"]}""")
 
-    # 菜单栏触发函数
     def menuBar(self, *triggers):
+        """
+        菜单栏触发函数
+        :param triggers:
+        :return:
+        """
+
         def showAbout():  # 菜单栏 关于作者
             self.ui.output_box.setPlainText(Doc.START_SHOW)
 
@@ -445,14 +468,22 @@ by {self.plugin_attribute["author"]}
                     "设置": openSettingWindow}
         jump_map[triggers[0].text()]()
 
-    # 当触发保存选项（那个√）事件
     def saveCheckEvent(self):
+        """
+        当触发保存选项（那个√）事件
+
+        :return: None
+        """
         if self.save_settings:  # 保存check设置
             with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
                 setting_file['save_check'] = self.ui.save_check.isChecked()
 
-    # 当触发优化输出选项
     def outputOptimizationCheckEvent(self):
+        """
+        当触发优化输出选项
+
+        :return: None
+        """
         if self.ui.output_optimization_check.isChecked():
             if self.save_settings:  # 保存check设置
                 with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
@@ -464,8 +495,12 @@ by {self.plugin_attribute["author"]}
                     setting_file['output_lock_maximums'] = False
                     setting_file['output_optimization'] = self.ui.output_optimization_check.isChecked()
 
-    # 当触发锁内框输出上限选项
-    def outputLockMaximumsCheckEvent(self):  # 锁上限开，就要开优化
+    def outputLockMaximumsCheckEvent(self):
+        """
+        当触发锁内框输出上限选项，开启锁上限需要同时开启输出优化
+
+        :return: None
+        """
         if self.ui.output_lock_maximums_check.isChecked():
             self.ui.output_optimization_check.setChecked(True)
             if self.save_settings:  # 保存check设置
@@ -477,14 +512,18 @@ by {self.plugin_attribute["author"]}
                 with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
                     setting_file['output_lock_maximums'] = self.ui.output_lock_maximums_check.isChecked()  # False
 
-    # 搜索框
-    def search_text(self):  # 搜索框字符修改后触发的事件
+    def search_text(self):
+        """
+        搜索框字符修改后触发的事件
+
+        :return: None
+        """
         self.search_keyword = self.ui.search_box.toPlainText()
         logging.debug(f"search_keyword:{self.search_keyword}")
 
         if self.search_keyword == "":
             self.search_cancel()
-            return
+            return None
 
         self.ui.choices_list_box.clear()  # 清空选择栏
 
@@ -493,13 +532,17 @@ by {self.plugin_attribute["author"]}
                 continue
             else:
                 self.ui.choices_list_box.addItem(i)
+        return None
 
-        return
+    def search_cancel(self):
+        """
+        取消搜索结果，显示全部插件
 
-    def search_cancel(self):  # 取消搜索结果，显示全部插件
+        :return: None
+        """
         self.ui.choices_list_box.clear()
         self.ui.choices_list_box.addItems(self.can_choose_number)
-        return
+        return None
 
 
 if __name__ == '__main__':
