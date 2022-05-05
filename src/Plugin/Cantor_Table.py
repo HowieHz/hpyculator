@@ -41,12 +41,13 @@ PLUGIN_METADATA = {
     "fullwidth_symbol": hpyc.ON  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
 }
 
-def main(n,self,do_what):
+
+def on_calculate(n, self, do_what):
     if do_what == "output":
         a = 1
         b = 1
         if n >= 1:
-            hpyc.output(self,"1/1")
+            hpyc.output(self, "1/1")
         for i in range(1, n):
             if a == 1:
                 if b % 2 == 0:
@@ -94,59 +95,59 @@ def main(n,self,do_what):
     else:
         a = 1
         b = 1
-        len = 0
+        buffer_len = 0
         if n >= 1:
-            hpyc.write_without_flush(self,"1/1")
+            hpyc.write_without_flush(self, "1/1")
         for i in range(1, n):
-            if len >= 5000000:
-                hpyc.flush()
+            if buffer_len >= 5000000:
+                hpyc.flush(self)
             if a == 1:
                 if b % 2 == 0:
                     b -= 1
                     a += 1
                     hpyc.write_without_flush(self, str(a) + "/" + str(b))
-                    len+=1
+                    buffer_len += 1
                     continue
                 else:
                     b += 1
                     hpyc.write_without_flush(self, str(a) + "/" + str(b))
-                    len += 1
+                    buffer_len += 1
                     continue
             if b == 1:
                 if a % 2 == 0:
                     a += 1
                     hpyc.write_without_flush(self, str(a) + "/" + str(b))
-                    len += 1
+                    buffer_len += 1
                     continue
                 else:
                     a -= 1
                     b += 1
                     hpyc.write_without_flush(self, str(a) + "/" + str(b))
-                    len += 1
+                    buffer_len += 1
                     continue
             if a % 2 == 0:
                 if b % 2 == 0:
                     a -= 1
                     b += 1
                     hpyc.write_without_flush(self, str(a) + "/" + str(b))
-                    len += 1
+                    buffer_len += 1
                     continue
                 else:
                     a += 1
                     b -= 1
                     hpyc.write_without_flush(self, str(a) + "/" + str(b))
-                    len += 1
+                    buffer_len += 1
                     continue
             else:
                 if b % 2 == 0:  # 向xia
                     a += 1
                     b -= 1
                     hpyc.write_without_flush(self, str(a) + "/" + str(b))
-                    len += 1
+                    buffer_len += 1
                     continue
                 else:
                     a -= 1
                     b += 1
                     hpyc.write_without_flush(self, str(a) + "/" + str(b))
-                    len += 1
+                    buffer_len += 1
                     continue

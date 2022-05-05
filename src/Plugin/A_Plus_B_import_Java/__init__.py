@@ -45,46 +45,17 @@ HowieHz构建了插件化的部分
     如此地址无jdk17，请传入第三个参数（用逗号分隔），第三个参数为\jdk-17.0.2\bin\server\jvm.dll的绝对地址
     """
 
-def main(input,self,todo):
-    # try:
-    # a,b,c=input.split(",")
-    # except:
-    # input += r",C:\\Program Files\\Java\\jdk-17.0.2\\bin\\server\\jvm.dll"
-    # a, b, c = input.split(",")
-    a, b = input.split(",")
+
+def on_calculate(data, self, todo):
+    a, b = data.split(",")
     jar_path = str(os.path.abspath(__file__))[:-11] + "A+Bproj.jar"
-    # jvm_path=c
     jvm_path = jpype.getDefaultJVMPath()
     if not jpype.isJVMStarted():
         jpype.startJVM(jvm_path, '-ea', "-Djava.class.path=%s" % jar_path, convertStrings=False)
-    # javaClass = jpype.JClass('com.shacha.Main')
-    # javaInstance = javaClass()
-    if todo=="output":
+    if todo == "output":
         hpyc.output(self, jpype.JClass('com.shacha.Main').main(a, b))
     else:
         hpyc.write(self, jpype.JClass('com.shacha.Main').main(a, b))
-    # return javaInstance.main(a, b)
-    try:
-        jpype.shutdownJVM()
-    except:
-        pass
-
-def main_test(input,self):
-    # try:
-    # a,b,c=input.split(",")
-    # except:
-    # input += r",C:\\Program Files\\Java\\jdk-17.0.2\\bin\\server\\jvm.dll"
-    # a, b, c = input.split(",")
-    a, b = input.split(",")
-    jar_path = str(os.path.abspath(__file__))[:-11] + "A+Bproj.jar"
-    # jvm_path=c
-    jvm_path = jpype.getDefaultJVMPath()
-    if not jpype.isJVMStarted():
-        jpype.startJVM(jvm_path, '-ea', "-Djava.class.path=%s" % jar_path, convertStrings=False)
-    # javaClass = jpype.JClass('com.shacha.Main')
-    # javaInstance = javaClass()
-    return (jpype.JClass('com.shacha.Main').main(a, b))
-    # return javaInstance.main(a, b)
     try:
         jpype.shutdownJVM()
     except:

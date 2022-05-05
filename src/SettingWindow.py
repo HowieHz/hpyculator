@@ -1,11 +1,5 @@
-# import json
-# import time
-# import webbrowser
-# import os
 import shelve
 import os
-# import importlib
-# import pyperclip
 
 from PySide6.QtWidgets import QMessageBox, QDialog
 
@@ -13,7 +7,7 @@ from ui.SettingWindow import Ui_SettingWindow
 
 from ui.Signal import setting_window_signal
 
-from Version import VERSION
+from Doc.Version import VERSION  # 版本号导入
 
 
 class SettingApplication(QDialog):
@@ -29,7 +23,6 @@ class SettingApplication(QDialog):
 
         # 初始化设置目录
         self.SETTING_DIR_PATH = str(os.path.join(os.getcwd(), 'Setting'))
-        # print(f'SETTING_DIR:{self.SETTING_DIR_PATH}')
         self.SETTING_FILE_PATH = str(os.path.join(self.SETTING_DIR_PATH, 'hpyculator_setting'))
 
         with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件

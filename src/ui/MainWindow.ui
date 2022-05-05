@@ -155,6 +155,7 @@ QProgressBar::chunk {
 	border-radius: 10px;
 }
 QMenuBar {
+	font: 10pt &quot;Microsoft YaHei UI&quot;;
 	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(207, 209, 207, 255), stop:1 rgba(230, 229, 230, 255));
 }
 QMenuBar::item {
@@ -613,8 +614,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
          <number>1</number>
         </property>
         <property name="plainText">
-         <string>输入字符自动进行搜索
-清空搜索框显示全部插件</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -686,24 +686,6 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
           </property>
           <property name="text">
            <string>保存输出到文件</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="test_check">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-            <horstretch>1</horstretch>
-            <verstretch>1</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>11</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>测试模式</string>
           </property>
          </widget>
         </item>
@@ -785,7 +767,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
      <x>0</x>
      <y>0</y>
      <width>1085</width>
-     <height>19</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="about__menu">
@@ -873,7 +855,6 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
  <tabstops>
   <tabstop>search_box</tabstop>
   <tabstop>start_button</tabstop>
-  <tabstop>test_check</tabstop>
   <tabstop>output_optimization_check</tabstop>
   <tabstop>output_lock_maximums_check</tabstop>
  </tabstops>
@@ -912,29 +893,13 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    </hints>
   </connection>
   <connection>
-   <sender>test_check</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>testCheckEvent()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>807</x>
-     <y>234</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>827</x>
-     <y>294</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>output_optimization_check</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
    <slot>outputOptimizationCheckEvent()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>955</x>
+     <x>950</x>
      <y>234</y>
     </hint>
     <hint type="destinationlabel">
@@ -1014,7 +979,6 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
   <slot>showTODO()</slot>
   <slot>showDONE()</slot>
   <slot>saveCheckEvent()</slot>
-  <slot>testCheckEvent()</slot>
   <slot>outputOptimizationCheckEvent()</slot>
   <slot>outputLockMaximumsCheckEvent()</slot>
   <slot>quit_event()</slot>

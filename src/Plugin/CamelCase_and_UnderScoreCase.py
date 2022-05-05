@@ -34,32 +34,16 @@ PLUGIN_METADATA = {
     "fullwidth_symbol": hpyc.OFF  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
 }
 
-def main(input,self,todo):
-    text,input_mode,output_mode=input.split(",")
-    print("text:",text)
+
+def on_calculate(data, self, todo):
+    text, input_mode, output_mode = data.split(",")
+    print("text:", text)
     print("input_mode:", input_mode)
     print("output_mode:", output_mode)
     if input_mode == "0":
-        text_list=str(text).split('_')
+        text_list = str(text).split('_')
         print(text_list)
-    elif input_mode =="1":
-        text_list_single=[]
-        text_uppercase_index = []
-        text_list=[]
-        for i in text:
-            text_list_single.append(i)
-        for index in range(0,len(text_list_single)):
-            if "A"<= text_list_single[index] <="Z":
-                text_uppercase_index.append(index)
-        text_uppercase_index.append(len(text_list_single))
-        before_uppercase_index = 0
-        for uppercase_index in text_uppercase_index:
-            word=""
-            for single in text_list_single[before_uppercase_index:uppercase_index]:
-                word+=single
-            text_list.append(word)
-            before_uppercase_index=uppercase_index
-    elif input_mode =="2":
+    elif input_mode == "1":
         text_list_single = []
         text_uppercase_index = []
         text_list = []
@@ -76,32 +60,48 @@ def main(input,self,todo):
                 word += single
             text_list.append(word)
             before_uppercase_index = uppercase_index
-        if text_list[0]=="":
-            text_list=text_list[1:]
+    elif input_mode == "2":
+        text_list_single = []
+        text_uppercase_index = []
+        text_list = []
+        for i in text:
+            text_list_single.append(i)
+        for index in range(0, len(text_list_single)):
+            if "A" <= text_list_single[index] <= "Z":
+                text_uppercase_index.append(index)
+        text_uppercase_index.append(len(text_list_single))
+        before_uppercase_index = 0
+        for uppercase_index in text_uppercase_index:
+            word = ""
+            for single in text_list_single[before_uppercase_index:uppercase_index]:
+                word += single
+            text_list.append(word)
+            before_uppercase_index = uppercase_index
+        if text_list[0] == "":
+            text_list = text_list[1:]
     elif input_mode == "3":
         text_list = str(text).split('_')
     else:
         pass
-    print(text_list)
-    text=""
+    text = ""
     if output_mode == "0":
         for i in text_list:
-            text+=(i.lower()+"_")
-        text=text[:-1]
+            text += (i.lower() + "_")
+        text = text[:-1]
     elif output_mode == "1":
-        text+=text_list[0].lower()
+        text += text_list[0].lower()
         for i in text_list[1:]:
-            text+=i.capitalize()
+            text += i.capitalize()
     elif output_mode == "2":
         for i in text_list:
-            text+=i.capitalize()
+            text += i.capitalize()
     elif output_mode == "3":
         for i in text_list:
-            text+=(i.upper()+"_")
+            text += (i.upper() + "_")
         text = text[:-1]
     else:
         pass
-    if todo=="output":
-        hpyc.output(self,text)
+    if todo == "output":
+        hpyc.output(self, text)
     else:
-        hpyc.write(self,text)
+        hpyc.write(self, text)

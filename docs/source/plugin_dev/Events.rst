@@ -3,24 +3,24 @@
 
     开始计算之后，会创建一个新线程分给插件
 
-    单文件插件调用 ``文件名.py``\内的 ``main``\函数和 ``main_save``\函数
+    单文件插件调用 ``文件名.py``\内的 ``on_calculate``\函数和 ``on_calculate_with_save``\函数
 
-    文件夹插件调用 ``文件夹名\__init_.py``\内的 ``main``\函数和 ``main_save``\函数
+    文件夹插件调用 ``文件夹名\__init_.py``\内的 ``on_calculate``\函数和 `on_calculate_with_save``\函数
 
-    （注：当 ``return_mode``\为NO_RETURN_SINGLE_FUNCTION，只调用 ``main``\函数）
+    （注：当 ``return_mode``\为NO_RETURN_SINGLE_FUNCTION，只调用 ``on_calculate``\函数）
 
 当 ``return_mode``\为RETURN_……
 -----------------------------------
 
-根据 ``input_mode``\参数，将用户输入处理后传入main函数
+根据 ``input_mode``\参数，将用户输入处理后传入on_calculate函数
 
-    调用插件的 ``main``\函数，
+    调用插件的 ``on_calculate``\函数，
 
         传入的第一个参数且为唯一一个参数是用户的输入值
 
     .. code-block:: python
 
-        def main(input)
+        def on_calculate(input)
             #插件主体
             return 你要输出的东西
 
@@ -32,7 +32,7 @@
 当用户选择不保存（内屏输出）
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-调用插件的 ``main``\函数，
+调用插件的 ``on_calculate``\函数，
 
     传入的第一个参数是用户的输入值，
 
@@ -40,14 +40,14 @@
 
 .. code-block:: python
 
-    def main(input,self)
+    def on_calculate(input,self)
         #插件主体，需要输出到内屏的时候使用下面的语句
         output(self,"你要输出的东西")
 
 当用户选择保存
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-调用插件的 ``main_save``\函数，
+调用插件的 ``on_calculate_with_save``\函数，
 
     传入的第一个参数是用户的输入值，
 
@@ -55,27 +55,12 @@
 
 .. code-block:: python
 
-    def main_save(input,file)
+    def on_calculate_with_save(input,file)
         #插件主体，需要保存的时候使用下面的语句
         write(file,"你要保存的东西")
         #或者
         write_without_flush(file,"你要保存的东西")
         #记得配合flush(file)使用，不然就和方案1没啥区别了
-
-当用户选择测试
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-调用插件的 ``main_test``\函数，
-
-    传入的第一个参数且为唯一一个参数是用户的输入值
-
-    第二个参数是指代主程序的主类（测试的话不输出不保存没啥用）
-
-    .. code-block:: python
-
-        def main_test(input)
-            #插件主体
-            return
 
 当 ``return_mode``\为NO_RETURN_SINGLE_FUNCTION
 -----------------------------------
@@ -85,7 +70,7 @@
 当用户选择不保存（内屏输出）
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-调用插件的 ``main``\函数，
+调用插件的 ``on_calculate``\函数，
 
     传入的第一个参数是用户的输入值，
 
@@ -96,21 +81,10 @@
 当用户选择保存
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-调用插件的 ``main``\函数，
+调用插件的 ``on_calculate``\函数，
 
     传入的第一个参数是用户的输入值，
 
     第二个参数是指代文件流（打开的文件）（请将第二个参数作为 `write <API.html#write>`__\或者 `write_without_flush <API.html#write-without-flush>`__\的第一个参数）
 
     第三个参数传入的是 ``'save'``
-
-当用户选择测试
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-调用插件的 ``main``\函数，
-
-    传入的第一个参数是用户的输入值，
-
-    第二个参数是指代主程序的主类（测试的话不输出不保存没啥用）
-
-    第三个参数传入的是 ``'test'``

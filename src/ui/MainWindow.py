@@ -174,6 +174,7 @@ class Ui_MainWindow(object):
 "	border-radius: 10px;\n"
 "}\n"
 "QMenuBar {\n"
+"	font: 10pt \"Microsoft YaHei UI\";\n"
 "	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(207, 209, 207, 255), stop:1 rgba(230, 229, 230, 255));\n"
 "}\n"
 "QMenuBar::item {\n"
@@ -191,9 +192,9 @@ class Ui_MainWindow(object):
 "	border-style: solid;\n"
 "	border-top-color: transparent;\n"
 "	border-right-color: transparent;\n"
-"	border-left-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 rgba(91, 171, 252, 255));\n"
-"	border-bot"
-                        "tom-color: transparent;\n"
+"	border-left-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 r"
+                        "gba(91, 171, 252, 255));\n"
+"	border-bottom-color: transparent;\n"
 "	border-left-width: 2px;\n"
 "	color: #000000;\n"
 "	padding-left:15px;\n"
@@ -231,9 +232,9 @@ class Ui_MainWindow(object):
 "	border-right-width:0px;\n"
 "	border-top-width:1px;\n"
 "	border-bottom-width:1px;\n"
-"	border-top-color: rgb(209,209,209);\n"
-"	border-left-color: qlinear"
-                        "gradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(209, 209, 209, 209), stop:1 rgba(229, 229, 229, 229));\n"
+"	border-top-color: rgb(209,2"
+                        "09,209);\n"
+"	border-left-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(209, 209, 209, 209), stop:1 rgba(229, 229, 229, 229));\n"
 "	border-bottom-color: rgb(229,229,229);\n"
 "	border-top-left-radius: 4px;\n"
 "	border-bottom-left-radius: 4px;\n"
@@ -251,10 +252,10 @@ class Ui_MainWindow(object):
 "	border-bottom-color: rgb(229,229,229);\n"
 "	border-top-right-radius: 4px;\n"
 "	border-bottom-right-radius: 4px;\n"
-"	color: #000000;\n"
+"	color: #0"
+                        "00000;\n"
 "	padding: 3px;\n"
-"	margin-le"
-                        "ft:0px;\n"
+"	margin-left:0px;\n"
 "	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(247, 247, 247, 255), stop:1 rgba(255, 255, 255, 255));\n"
 "}\n"
 "QTabBar::tab {\n"
@@ -275,8 +276,8 @@ class Ui_MainWindow(object):
 "  	border-left-width:1px;\n"
 "	border-right-color: transparent;\n"
 "	border-top-color: rgb(209,209,209);\n"
-"	border-left-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2"
-                        ":0, stop:0 rgba(209, 209, 209, 209), stop:1 rgba(229, 229, 229, 229));\n"
+"	border-left-color: qlineargradi"
+                        "ent(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(209, 209, 209, 209), stop:1 rgba(229, 229, 229, 229));\n"
 "	border-bottom-color: rgb(229,229,229);\n"
 "	color: #FFFFFF;\n"
 "	padding: 3px;\n"
@@ -296,11 +297,11 @@ class Ui_MainWindow(object):
 "	color: #FFFFFF;\n"
 "	padding: 3px;\n"
 "	margin-left:0px;\n"
-"	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 rgba(91, 171, 252, 255));\n"
+"	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 rgba(91, "
+                        "171, 252, 255));\n"
 "}\n"
 "\n"
-"QCheckBo"
-                        "x {\n"
+"QCheckBox {\n"
 "	color: #000000;\n"
 "	padding: 2px;\n"
 "}\n"
@@ -335,8 +336,8 @@ class Ui_MainWindow(object):
 "	width: 10px;\n"
 "	border-style:solid;\n"
 "	border-width: 1px;\n"
-"	border-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), "
-                        "stop:1 rgba(91, 171, 252, 255));\n"
+"	border-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0."
+                        "5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 rgba(91, 171, 252, 255));\n"
 "	color: #000000;\n"
 "}\n"
 "QRadioButton {\n"
@@ -366,10 +367,10 @@ class Ui_MainWindow(object):
 "QStatusBar {\n"
 "	color:#027f7f;\n"
 "}\n"
-"QSpinBox {\n"
+"QSpinB"
+                        "ox {\n"
 "	border-style: solid;\n"
-"	bord"
-                        "er-width: 1px;\n"
+"	border-width: 1px;\n"
 "	border-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 rgba(91, 171, 252, 255));\n"
 "}\n"
 "QDoubleSpinBox {\n"
@@ -390,11 +391,11 @@ class Ui_MainWindow(object):
 "QDateEdit {\n"
 "	border-style: solid;\n"
 "	border-width: 1px;\n"
-"	border-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 rgba(91, 171, 252, 255));\n"
+"	border-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 rgba"
+                        "(91, 171, 252, 255));\n"
 "}\n"
 "\n"
-"QTo"
-                        "olBox {\n"
+"QToolBox {\n"
 "	color: #a9b7c6;\n"
 "	background-color:#000000;\n"
 "}\n"
@@ -428,10 +429,10 @@ class Ui_MainWindow(object):
 "	border-radius: 7px;\n"
 "}\n"
 "QSlider::handle:vertical {\n"
-"	background: rgb(253,253,253);\n"
+"	background: rgb(25"
+                        "3,253,253);\n"
 "	border-style: solid;\n"
-""
-                        "	border-width: 1px;\n"
+"	border-width: 1px;\n"
 "	border-color: rgb(207,207,207);\n"
 "	height: 12px;\n"
 "	margin: 0 -5px;\n"
@@ -461,10 +462,10 @@ class Ui_MainWindow(object):
 "}\n"
 "QScrollBar::handle:horizontal {\n"
 "	background: rgb(253,253,253);\n"
-"	border-style: solid;\n"
+"	bord"
+                        "er-style: solid;\n"
 "	border-width: 1px;\n"
-""
-                        "	border-color: rgb(207,207,207);\n"
+"	border-color: rgb(207,207,207);\n"
 "	border-radius: 7px;\n"
 "	min-width: 25px;\n"
 "}\n"
@@ -498,11 +499,11 @@ class Ui_MainWindow(object):
 "   border-bottom-right-radius: 7px;\n"
 "   background: rgba(34, 142, 255, 255);\n"
 "   width: 20px;\n"
-"   subcontrol-position: right;\n"
+"   subcontrol-position: rig"
+                        "ht;\n"
 "   subcontrol-origin: margin;\n"
 "}\n"
-""
-                        "QScrollBar::add-line:horizontal:pressed {\n"
+"QScrollBar::add-line:horizontal:pressed {\n"
 "   border: 2px transparent grey;\n"
 "   border-top-right-radius: 7px;\n"
 "   border-bottom-right-radius: 7px;\n"
@@ -531,10 +532,10 @@ class Ui_MainWindow(object):
 "}\n"
 "QScrollBar::sub-line:horizontal {\n"
 "   border: 2px transparent grey;\n"
-"   border-top-left-radius: 7px;\n"
+"   border-top-left-radi"
+                        "us: 7px;\n"
 "   border-bottom-left-radius: 7px;\n"
-""
-                        "   background: rgba(34, 142, 255, 255);\n"
+"   background: rgba(34, 142, 255, 255);\n"
 "   width: 20px;\n"
 "   subcontrol-position: left;\n"
 "   subcontrol-origin: margin;\n"
@@ -564,10 +565,10 @@ class Ui_MainWindow(object):
 "   background: rgb(181,181,181);\n"
 "   height: 20px;\n"
 "   subcontrol-position: top;\n"
-"   subcontrol-origin: margin;\n"
+"   subcontrol-ori"
+                        "gin: margin;\n"
 "}\n"
-"QScrollBar::left-arrow:horizo"
-                        "ntal {\n"
+"QScrollBar::left-arrow:horizontal {\n"
 "   border: 1px transparent grey;\n"
 "   border-top-left-radius: 3px;\n"
 "   border-bottom-left-radius: 3px;\n"
@@ -602,8 +603,8 @@ class Ui_MainWindow(object):
 "QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {\n"
 "   background: none;\n"
 "}\n"
-"QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical "
-                        "{\n"
+"QScrollBa"
+                        "r::add-page:vertical, QScrollBar::sub-page:vertical {\n"
 "   background: none;\n"
 "}")
         self.cheak_update = QAction(MainWindow)
@@ -688,14 +689,6 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addWidget(self.save_check)
 
-        self.test_check = QCheckBox(self.central_widget)
-        self.test_check.setObjectName(u"test_check")
-        sizePolicy3.setHeightForWidth(self.test_check.sizePolicy().hasHeightForWidth())
-        self.test_check.setSizePolicy(sizePolicy3)
-        self.test_check.setFont(font1)
-
-        self.horizontalLayout.addWidget(self.test_check)
-
         self.output_optimization_check = QCheckBox(self.central_widget)
         self.output_optimization_check.setObjectName(u"output_optimization_check")
         sizePolicy3.setHeightForWidth(self.output_optimization_check.sizePolicy().hasHeightForWidth())
@@ -743,7 +736,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.central_widget)
         self.menu_bar = QMenuBar(MainWindow)
         self.menu_bar.setObjectName(u"menu_bar")
-        self.menu_bar.setGeometry(QRect(0, 0, 1085, 19))
+        self.menu_bar.setGeometry(QRect(0, 0, 1085, 20))
         self.about__menu = QMenu(self.menu_bar)
         self.about__menu.setObjectName(u"about__menu")
         self.reset_menu = QMenu(self.menu_bar)
@@ -757,8 +750,7 @@ class Ui_MainWindow(object):
         self.status_bar.setObjectName(u"status_bar")
         MainWindow.setStatusBar(self.status_bar)
         QWidget.setTabOrder(self.search_box, self.start_button)
-        QWidget.setTabOrder(self.start_button, self.test_check)
-        QWidget.setTabOrder(self.test_check, self.output_optimization_check)
+        QWidget.setTabOrder(self.start_button, self.output_optimization_check)
         QWidget.setTabOrder(self.output_optimization_check, self.output_lock_maximums_check)
 
         self.menu_bar.addAction(self.reset_menu.menuAction())
@@ -778,7 +770,6 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.start_button.clicked.connect(MainWindow.startEvent)
         self.save_check.clicked.connect(MainWindow.saveCheckEvent)
-        self.test_check.clicked.connect(MainWindow.testCheckEvent)
         self.output_optimization_check.clicked.connect(MainWindow.outputOptimizationCheckEvent)
         self.output_lock_maximums_check.clicked.connect(MainWindow.outputLockMaximumsCheckEvent)
         self.choices_list_box.itemClicked.connect(MainWindow.chooseNumberEvent)
@@ -798,11 +789,9 @@ class Ui_MainWindow(object):
         self.stop_compute.setText(QCoreApplication.translate("MainWindow", u"\u7ec8\u6b62\u5f53\u524d\u8fd0\u7b97", None))
         self.stop_app.setText(QCoreApplication.translate("MainWindow", u"\u9000\u51fa\u7a0b\u5e8f", None))
         self.action.setText(QCoreApplication.translate("MainWindow", u"\u8bbe\u7f6e", None))
-        self.search_box.setPlainText(QCoreApplication.translate("MainWindow", u"\u8f93\u5165\u5b57\u7b26\u81ea\u52a8\u8fdb\u884c\u641c\u7d22\n"
-"\u6e05\u7a7a\u641c\u7d22\u6846\u663e\u793a\u5168\u90e8\u63d2\u4ef6", None))
+        self.search_box.setPlainText("")
         self.start_button.setText(QCoreApplication.translate("MainWindow", u"\u8ba1\u7b97", None))
         self.save_check.setText(QCoreApplication.translate("MainWindow", u"\u4fdd\u5b58\u8f93\u51fa\u5230\u6587\u4ef6", None))
-        self.test_check.setText(QCoreApplication.translate("MainWindow", u"\u6d4b\u8bd5\u6a21\u5f0f", None))
         self.output_optimization_check.setText(QCoreApplication.translate("MainWindow", u"\u5185\u6846\u8f93\u51fa\u6027\u80fd\u4f18\u5316", None))
         self.output_lock_maximums_check.setText(QCoreApplication.translate("MainWindow", u"\u5185\u6846\u8f93\u51fa\u4e0a\u9650", None))
         self.about__menu.setTitle(QCoreApplication.translate("MainWindow", u"|---\u5173\u4e8e---|", None))

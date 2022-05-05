@@ -30,20 +30,16 @@ PLUGIN_METADATA = {
     "fullwidth_symbol": hpyc.OFF
 }
 
-def main(input:str,self) -> None:
-    a,b=input.split(",")
+
+def on_calculate(data: str, self) -> None:
+    a, b = data.split(",")
     a = int(a)
     b = int(b)
-    hpyc.output(self,a+b)
+    hpyc.output(self, a + b)
 
-def main_save(input:str,filename) -> None:
-    a, b = input.split(",")
-    a=int(a)
-    b=int(b)
-    hpyc.write(filename,a+b)
 
-def main_test(input:str,self) -> int:
-    a, b = input.split(",")
-    a=int(a)
-    b=int(b)
-    return a+b
+def on_calculate_with_save(data: str, filename) -> None:
+    a, b = data.split(",")
+    a = int(a)
+    b = int(b)
+    hpyc.write(filename, a + b)
