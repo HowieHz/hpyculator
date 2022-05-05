@@ -8,13 +8,14 @@
 .. image:: images/ico.ico
 
 .. toctree::
-   :maxdepth: 2
-   :caption: 目录
+    :maxdepth: 2
+    :caption: 目录
 
-   快速上手<quick_start>
-   插件开发<plugin_dev/index>
-   关于<about>
-   特别鸣谢<credits>
+    快速上手<quick_start>
+    插件开发<plugin_dev/index>
+    关于<about>
+    特别鸣谢<credits>
+    特别鸣谢<update_log>
 
 
 索引和搜索
