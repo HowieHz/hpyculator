@@ -17,6 +17,7 @@ from typing import Dict
 # sys.path.append(".")
 from Doc import Doc  # 文档导入
 from Doc import Version  # 版本号导入
+
 from PluginManager import Manager  # 插件管理
 # print(sys.path)
 
@@ -42,7 +43,7 @@ logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - 
 class Application(QMainWindow):
     def __init__(self):
         """
-        主程序类
+        主窗口程序类
         """
         # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
 
