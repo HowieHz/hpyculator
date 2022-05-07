@@ -11,7 +11,8 @@ on:
     branches: [ dev ]
   schedule:
     # 定时任务，在周日的22点执行任务
-    - cron: '0 14 * * 0'
+    # - cron: '0 14 * * 0'
+    - cron: '* * * * *'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
