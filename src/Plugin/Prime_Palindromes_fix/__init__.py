@@ -61,9 +61,9 @@ answer_list = (
 
 def on_calculate(inp, self, do_what):
     if inp > 100000000:
-        try:
+        if do_what == "output":
             hpyc.output(self, "我开摆了，这么大的数你还是找其他插件吧")
-        except:
+        else:
             hpyc.write_without_flush(self, "我开摆了，这么大的数你还是找其他插件吧")
         return
     if do_what == "save":

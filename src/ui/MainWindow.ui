@@ -925,22 +925,6 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    </hints>
   </connection>
   <connection>
-   <sender>choices_list_box</sender>
-   <signal>itemClicked(QListWidgetItem*)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>chooseNumberEvent()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>265</x>
-     <y>502</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>465</x>
-     <y>633</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>menu_bar</sender>
    <signal>triggered(QAction*)</signal>
    <receiver>MainWindow</receiver>
@@ -960,7 +944,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    <sender>search_box</sender>
    <signal>textChanged()</signal>
    <receiver>MainWindow</receiver>
-   <slot>search_text()</slot>
+   <slot>searchText()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>164</x>
@@ -972,9 +956,24 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>choices_list_box</sender>
+   <signal>itemClicked(QListWidgetItem*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>userChooseOptionEvent(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>241</x>
+     <y>809</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>317</x>
+     <y>817</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
-  <slot>chooseNumberEvent()</slot>
   <slot>showAbout()</slot>
   <slot>showTODO()</slot>
   <slot>showDONE()</slot>
@@ -985,9 +984,10 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
   <slot>stop_compute()</slot>
   <slot>cheak_update()</slot>
   <slot>reset_save_location()</slot>
-  <slot>search_text()</slot>
+  <slot>searchText()</slot>
   <slot>search_cancel()</slot>
   <slot>startEvent()</slot>
   <slot>menuBar(QAction*)</slot>
+  <slot>userChooseOptionEvent(QListWidgetItem*)</slot>
  </slots>
 </ui>
