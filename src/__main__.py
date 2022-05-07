@@ -9,23 +9,20 @@ import webbrowser
 import hpyculator as hpyc
 import tempfile
 from functools import partial  # 偏函数真好用
-from typing import Dict, Optional, Callable, Iterator
+from typing import Iterator
 # import pyperclip
 # import jpype
 # import pprint
 
 import Doc  # 文档导入
 
-from PluginManager import Manager  # 插件管理
-
-# pyside6导入
+# pyside6 ui signal导入
 from PySide6.QtWidgets import QApplication, QMainWindow
 from SettingWindow import SettingApplication
 from ui.MainWindow import Ui_MainWindow
 from ui.Signal import main_window_signal
 
 import logging  # 日志导入
-
 
 def pathCheck():
     """
@@ -66,28 +63,10 @@ def logCheck(setting_file_path):
 
     :return: None
     """
+    import LogManager  # 日志管理 初始化
     # 检查存放日志文件的文件夹是否存在
-    LOG_FILE_PATH = os.path.join(os.getcwd(), 'Log')
-    if os.path.exists(LOG_FILE_PATH):
-        pass
-    else:
-        os.makedirs(LOG_FILE_PATH)
-    logging.basicConfig(filename=os.path.join(LOG_FILE_PATH, 'log.txt'),
-                        filemode="w",
-                        level=logging.DEBUG,
-                        format=' %(asctime)s - %(levelname)s - %(message)s')
-
-    # 读取配置文件-是否保存日志
-    with shelve.open(setting_file_path, writeback=True) as setting_file:
-        try:
-            if setting_file['save_log']:  # 是否保存日志
-                print("日志初始化完成")
-            else:
-                logging.disable(logging.CRITICAL)  # 禁用日志
-        except Exception as e:
-            logging.debug(f"读取save_log时发生错误:{e}")
-            setting_file['save_log'] = False  # 默认不保存日志
-            logging.disable(logging.CRITICAL)  # 禁用日志
+    LM = LogManager.LogManager(setting_file_path)
+    LM.checkIsEnableLog()
     return None
 
 def pluginCheak():
@@ -96,12 +75,14 @@ def pluginCheak():
 
     :return: plugin_filename_option_name_map, loaded_plugin
     """
-    loaded_plugin: Optional[Dict[str, Callable]] = None  # 存放加载完毕的插件 ID-读取的插件
-    plugin_filename_option_name_map: Optional[Dict[str, str]] = None  # 选项名和实际文件名的映射表
-    selection_list: Optional[list[str]] = None  # 存放选项名列表
+    import PluginManager  # 插件管理
 
-    PluginManager: Manager = Manager()  # 加载插件管理器
-    plugin_filename_option_name_map, loaded_plugin = PluginManager.init_plugin()  # 加载插件
+    # loaded_plugin: Optional[Dict[str, Callable]] = None  # 存放加载完毕的插件 ID-读取的插件
+    # plugin_filename_option_name_map: Optional[Dict[str, str]] = None  # 选项名和实际文件名的映射表
+    # selection_list: Optional[list[str]] = None  # 存放选项名列表
+
+    PM = PluginManager.PluginManager()  # 加载插件管理器
+    plugin_filename_option_name_map, loaded_plugin = PM.init_plugin()  # 加载插件
     return plugin_filename_option_name_map, loaded_plugin
 
 
@@ -190,7 +171,7 @@ class Application(QMainWindow):
 
         main_window_signal.clearOutPutBox.connect(clearOutPut)
 
-    def startEvent(self):
+    def startEvent(self) -> None:
         """
         初始化计算，绑定计算按钮，启动计算线程
 

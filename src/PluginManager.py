@@ -3,11 +3,7 @@ import logging
 import importlib
 from typing import List, Dict
 
-logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - %(message)s')
-logging.disable(logging.CRITICAL)  # 禁用日志
-
-
-class Manager:
+class PluginManager:
     def __init__(self):
         # 初始化模块目录
         self.PLUGIN_DIR_PATH = str(os.path.join(os.getcwd(), 'Plugin'))
