@@ -6,9 +6,9 @@ name: Auto merge dev branch bot
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ dev ]
+    branches: [ main ]
   pull_request:
-    branches: [ dev ]
+    branches: [ main ]
   schedule:
     # 定时任务，在周日的22点执行任务
     - cron: '0 14 * * 0'
