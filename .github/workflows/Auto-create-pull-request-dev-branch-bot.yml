@@ -6,9 +6,9 @@ name: Auto merge dev branch bot
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [ dev ]
   pull_request:
-    branches: [ main ]
+    branches: [ dev ]
   schedule:
     # 定时任务，在周日的22点执行任务
     - cron: '0 14 * * 0'
@@ -33,10 +33,10 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Start!
-      
+
       # Make changes to pull request here
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          branch: dev
+          branch: main
           delete-branch: false

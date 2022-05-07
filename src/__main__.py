@@ -380,21 +380,8 @@ class Application(QMainWindow):
         self.user_selection = str(self.plugin_filename_option_name_map[item.text()])
         self.plugin_attribute = {}  # 读取的属性
 
-        # self.required_parameters = ['input_mode','return_mode','save_name','output_name','use_quantifier','version']
-        # self.optional_parameters=['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol']
-        # self.parameters_list = ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol','input_mode','return_mode','save_name','output_name','use_quantifier','version']
-        # self.required_parameters.extend(self.optional_parameters)
-        for option_name in ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol',
-                            'input_mode', 'return_mode', 'save_name', 'output_name', 'use_quantifier', 'version']:
-            try:
-                logging.debug(f'load {option_name}')
-                self.plugin_attribute[option_name] = self.loaded_plugin[self.user_selection].PLUGIN_METADATA[option_name]
-            except Exception as e:
-                logging.debug(str(e))
-                self.plugin_attribute[option_name] = hpyc.OFF
-        if self.plugin_attribute["fullwidth_symbol"] == hpyc.ON:
-            self.plugin_attribute["help"] = self.plugin_attribute["help"].replace(",", "，").replace(".", "。").replace(
-                "'", "‘").replace('"', '”').replace('(', '（').replace(')', '）')
+        self.plugin_attribute = self.loadPluginAttribute(self.loaded_plugin, self.user_selection)
+
         self.ui.output_box.setPlainText(f"""\
 {self.plugin_attribute["output_start"]}
 {self.plugin_attribute["output_name"]} {self.plugin_attribute["version"]}
@@ -405,6 +392,34 @@ by {self.plugin_attribute["author"]}
 {self.plugin_attribute["help"]}
 
 {self.plugin_attribute["output_end"]}""")
+
+    def loadPluginAttribute(self,
+                            loaded_plugin,
+                            user_selection):
+        """
+        读取插件属性
+
+        :return: plugin_attribute
+        """
+        plugin_attribute={}  #读取好的属性放在这里
+
+        # self.required_parameters = ['input_mode','return_mode','save_name','output_name','use_quantifier','version']
+        # self.optional_parameters=['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol']
+        # self.parameters_list = ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol','input_mode','return_mode','save_name','output_name','use_quantifier','version']
+        # self.required_parameters.extend(self.optional_parameters)
+        for option_name in ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol',
+                            'input_mode', 'return_mode', 'save_name', 'output_name', 'use_quantifier', 'version']:
+            try:
+                logging.debug(f'load {option_name}')
+                plugin_attribute[option_name] = loaded_plugin[user_selection].PLUGIN_METADATA[option_name]
+            except Exception as e:
+                logging.debug(str(e))
+                plugin_attribute[option_name] = hpyc.OFF
+        if plugin_attribute["fullwidth_symbol"] == hpyc.ON:
+            plugin_attribute["help"] = plugin_attribute["help"].replace(",", "，").replace(".", "。").replace(
+                "'", "‘").replace('"', '”').replace('(', '（').replace(')', '）')
+
+        return plugin_attribute
 
     def menuBar(self, *triggers):
         """
