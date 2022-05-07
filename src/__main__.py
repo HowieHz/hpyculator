@@ -409,6 +409,7 @@ by {self.plugin_attribute["author"]}
     def menuBar(self, *triggers):
         """
         菜单栏触发函数
+
         :param triggers:
         :return:
         """
