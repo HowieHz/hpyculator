@@ -196,20 +196,20 @@ class Application(QMainWindow):
 
 如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）""")
             return None
-        if self.plugin_attribute["input_mode"] == hpyc.STRING:
+
+        plugin_attribute_input_mode = self.plugin_attribute["input_mode"]
+        if plugin_attribute_input_mode == hpyc.STRING:
             inputbox_data = str(self.ui.input_box.toPlainText())  # 取得输入框的数字
-        elif self.plugin_attribute["input_mode"] == hpyc.FLOAT:
+        elif plugin_attribute_input_mode == hpyc.FLOAT:
             inputbox_data = float(self.ui.input_box.toPlainText())  # 取得输入框的数字
-        elif self.plugin_attribute["input_mode"] == hpyc.NUM:
+        elif plugin_attribute_input_mode == hpyc.NUM:
             inputbox_data = int(self.ui.input_box.toPlainText())  # 取得输入框的数字
         else:
             inputbox_data = 0  # 缺省
 
         # 以上是计算前工作
 
-        if self.is_thread_running:
-            main_window_signal.appendOutPutBox.emit("\n运算程序正在进行中，请勿反复点击计算按钮！\n")  # 清空输出框
-        else:
+        if not self.is_thread_running:  # 防止同时运行两个进程
             calculate_thread = threading.Thread(target=self.startCalculate, args=(inputbox_data,))  # 启动计算线程
             calculate_thread.start()
             self.is_thread_running = True
