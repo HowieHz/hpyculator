@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Auto merge dev branch bot
+name: Auto sync to main branch bot
 
 # Controls when the workflow will run
 on:
@@ -39,9 +39,10 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
+          base: dev
           branch: main
           delete-branch: false
-          title: 'sync dev'
+          title: 'sync to main'
           body: |
             Update report
             - Updated with *today's* date
