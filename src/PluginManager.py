@@ -3,6 +3,7 @@ import logging
 import importlib
 from typing import List, Dict
 
+
 class PluginManager:
     def __init__(self):
         # 初始化模块目录

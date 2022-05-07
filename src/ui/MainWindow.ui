@@ -960,7 +960,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    <sender>search_box</sender>
    <signal>textChanged()</signal>
    <receiver>MainWindow</receiver>
-   <slot>search_text()</slot>
+   <slot>searchText()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>164</x>
@@ -985,7 +985,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
   <slot>stop_compute()</slot>
   <slot>cheak_update()</slot>
   <slot>reset_save_location()</slot>
-  <slot>search_text()</slot>
+  <slot>searchText()</slot>
   <slot>search_cancel()</slot>
   <slot>startEvent()</slot>
   <slot>menuBar(QAction*)</slot>

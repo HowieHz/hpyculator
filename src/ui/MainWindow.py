@@ -774,7 +774,7 @@ class Ui_MainWindow(object):
         self.output_lock_maximums_check.clicked.connect(MainWindow.outputLockMaximumsCheckEvent)
         self.choices_list_box.itemClicked.connect(MainWindow.chooseNumberEvent)
         self.menu_bar.triggered.connect(MainWindow.menuBar)
-        self.search_box.textChanged.connect(MainWindow.search_text)
+        self.search_box.textChanged.connect(MainWindow.searchText)
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
