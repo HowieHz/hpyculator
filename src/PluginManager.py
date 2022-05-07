@@ -3,11 +3,7 @@ import logging
 import importlib
 from typing import List, Dict
 
-logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - %(message)s')
-logging.disable(logging.CRITICAL)  # 禁用日志
-
-
-class Manager:
+class PluginManager:
     def __init__(self):
         # 初始化模块目录
         self.PLUGIN_DIR_PATH = str(os.path.join(os.getcwd(), 'Plugin'))
@@ -22,7 +18,7 @@ class Manager:
         # 载入模块
         self.plugin_files_and_folder_name: List[list] = []  # Plugin目录下读取到的文件夹和文件
         self.plugin_files_name_folder: List[str] = []  # Plugin目录下读取到的有__init__.py的文件夹
-        self.can_choose_number: List[str] = []  # 选择列表，储存着所有的选项名
+        # self.can_choose_number: List[str] = []  # 选择列表，储存着所有的选项名 #plugin_filename_option_name_map的键
         self.plugin_files_name_py: list[str] = []  # 储存着Plugin目录下的文件名
         self.plugin_filename_option_name_map: Dict[str, str] = {}  # 选项名和实际文件名的映射表
         self.loaded_plugin: Dict[str] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
@@ -44,8 +40,8 @@ class Manager:
             # self.i = importlib.import_module('.' + str(name), package='Plugin')  # 相对导入
             logging.debug(name)
             try:
-                self.can_choose_number.append(
-                    self.loaded_plugin[name].PLUGIN_METADATA['option_name'])  # 读取模块元数据，添加gui选项
+                # self.can_choose_number.append(
+                #     self.loaded_plugin[name].PLUGIN_METADATA['option_name'])  # 读取模块元数据，添加gui选项
                 self.plugin_filename_option_name_map[self.loaded_plugin[name].PLUGIN_METADATA['option_name']] = \
                     self.loaded_plugin[name].PLUGIN_METADATA['id']
             except Exception as e:
@@ -63,8 +59,8 @@ class Manager:
             # self.i = importlib.import_module('.' + str(name), package='Plugin')  # 相对导入
             logging.debug(name)
             try:
-                self.can_choose_number.append(
-                    self.loaded_plugin[name].PLUGIN_METADATA['option_name'])  # 读取模块元数据，添加gui选项
+                # self.can_choose_number.append(
+                #     self.loaded_plugin[name].PLUGIN_METADATA['option_name'])  # 读取模块元数据，添加gui选项
                 self.plugin_filename_option_name_map[self.loaded_plugin[name].PLUGIN_METADATA['option_name']] = \
                     self.loaded_plugin[name].PLUGIN_METADATA['id']
             except Exception as e:
@@ -109,4 +105,4 @@ class Manager:
         except Exception as e:
             logging.debug(f'init_plugin_folder outside Exception:{e}')
 
-        return self.can_choose_number, self.plugin_filename_option_name_map, self.loaded_plugin
+        return self.plugin_filename_option_name_map, self.loaded_plugin

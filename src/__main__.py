@@ -9,87 +9,108 @@ import webbrowser
 import hpyculator as hpyc
 import tempfile
 from functools import partial  # 偏函数真好用
-from typing import Dict
+from typing import Iterator
 # import pyperclip
 # import jpype
 # import pprint
 
-# sys.path.append(".")
-from Doc import Doc  # 文档导入
-from Doc import Version  # 版本号导入
-from PluginManager import Manager  # 插件管理
-# print(sys.path)
+import Doc  # 文档导入
 
-# pyside6导入
+# pyside6 ui signal导入
 from PySide6.QtWidgets import QApplication, QMainWindow
 from SettingWindow import SettingApplication
 from ui.MainWindow import Ui_MainWindow
 from ui.Signal import main_window_signal
 
-# 日志导入
-import logging
+import logging  # 日志导入
 
-# 检查存放日志文件的文件夹是否存在
-LOG_FILE_PATH = os.path.join(os.getcwd(), 'Log')
-if os.path.exists(LOG_FILE_PATH):
-    pass
-else:
-    os.makedirs(LOG_FILE_PATH)
-# logging.basicConfig(filename=os.path.join(LOG_FILE_PATH, 'log.txt'), level=logging.DEBUG,format=' %(asctime)s - %(levelname)s - %(message)s')
-logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - %(message)s')
+def pathCheck():
+    """
+    路径检查
+
+    :return: setting_file_path, output_dir_path
+    """
+
+    setting_dir_path = str(os.path.join(os.getcwd(), 'Setting'))  # 初始化设置目录
+    setting_file_path = str(os.path.join(setting_dir_path, 'hpyculator_setting'))  # 初始化设置文件位置
+
+    # 检查存放设置文件的文件夹是否存在
+    if not os.path.exists(setting_dir_path):
+        os.makedirs(setting_dir_path)  # 刚建的文件夹就不用考虑是否要读取设置了
+    else:
+
+        with shelve.open(setting_file_path, writeback=True) as setting_file:
+            # 从设置文件读取输出目录
+            try:
+                output_dir_path = setting_file['save_location']
+            except KeyError:
+                output_dir_path = str(os.path.join(os.getcwd(), 'Output'))
+                setting_file['save_location'] = output_dir_path
+            logging.debug(f'输出文件保存位置:{output_dir_path}')
+
+    # 检查输出文件夹是否存在
+    if os.path.exists(output_dir_path):
+        pass
+    else:
+        os.makedirs(output_dir_path)
+
+    return setting_file_path, output_dir_path
+
+
+def logCheck(setting_file_path):
+    """
+    日志检查
+
+    :return: None
+    """
+    import LogManager  # 日志管理 初始化
+    # 检查存放日志文件的文件夹是否存在
+    LM = LogManager.LogManager(setting_file_path)
+    LM.checkIsEnableLog()
+    return None
+
+def pluginCheak():
+    """
+    加载插件
+
+    :return: plugin_filename_option_name_map, loaded_plugin
+    """
+    import PluginManager  # 插件管理
+
+    # loaded_plugin: Optional[Dict[str, Callable]] = None  # 存放加载完毕的插件 ID-读取的插件
+    # plugin_filename_option_name_map: Optional[Dict[str, str]] = None  # 选项名和实际文件名的映射表
+    # selection_list: Optional[list[str]] = None  # 存放选项名列表
+
+    PM = PluginManager.PluginManager()  # 加载插件管理器
+    plugin_filename_option_name_map, loaded_plugin = PM.init_plugin()  # 加载插件
+    return plugin_filename_option_name_map, loaded_plugin
 
 
 class Application(QMainWindow):
-    def __init__(self):
+    def __init__(self,
+                 setting_file_path,
+                 output_dir_path,
+                 plugin_filename_option_name_map,
+                 loaded_plugin):
         """
-        主程序类
+        主窗口程序类
         """
         # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
-
-        # setting_file - 配置文件ShelfFile对象
-
-        # 存放加载完毕的插件 ID-读取的插件
-        self.loaded_plugin: Dict[str] = {}
-        # self.plugin_filename_option_name_map: Dict[str, str] = {}  # 选项名和实际文件名的映射表
-        self.PluginManager: Manager = Manager()  # 加载插件管理器
-
-        # 初始化设置目录
-        self.SETTING_DIR_PATH = str(os.path.join(os.getcwd(), 'Setting'))
-        # logging.debug(f'设置文件保存位置:{self.SETTING_DIR_PATH}')
-        # 初始化设置文件位置
-        self.SETTING_FILE_PATH = str(os.path.join(self.SETTING_DIR_PATH, 'hpyculator_setting'))
-
-        # 检查存放设置文件的文件夹是否存在
-        if os.path.exists(self.SETTING_DIR_PATH):
-            pass
-        else:
-            os.makedirs(self.SETTING_DIR_PATH)
-
-        # 读取配置文件-是否保存日志
-        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
-            try:
-                self.save_log = setting_file['save_log']  # 是否保存设置
-                if self.save_log:
-                    print("日志初始化完成")
-                else:
-                    # print("禁用日志")
-                    logging.disable(logging.CRITICAL)  # 禁用日志
-            except Exception as e:
-                # print(f"读取save_log时发生错误:{e}")
-                logging.debug(f"读取save_log时发生错误:{e}")
-                setting_file['save_log'] = False  # 默认不保存日志
-                self.save_log = False
-                logging.disable(logging.CRITICAL)  # 禁用日志
+        self.SETTING_FILE_PATH = setting_file_path
+        self.OUTPUT_DIR_PATH = output_dir_path
+        self.plugin_filename_option_name_map = plugin_filename_option_name_map  # 选项名映射id（文件或文件夹名）
+        self.selection_list = plugin_filename_option_name_map.keys()  # 选项名列表
+        self.loaded_plugin = loaded_plugin  # id映射插件对象
 
         logging.debug('主类初始化')
         super().__init__()
         self.ui = Ui_MainWindow()  # UI类的实例化()
         self.ui.setupUi(self)
-        self.band()  # 信号和槽的绑定
+        self.bindSignalWithSlots()  # 信号和槽的绑定
 
         self.main_window_signal = main_window_signal  # 更方便地使用自定义事件
 
-        self.setWindowTitle("hpyculator %s -HowieHz制作" % Version.VERSION)  # 设置标题
+        self.setWindowTitle("hpyculator %s -HowieHz制作" % Doc.VERSION)  # 设置标题
 
         # 读取设置文件-按钮状态和输出目录
         with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
@@ -118,42 +139,22 @@ class Application(QMainWindow):
                 self.ui.output_optimization_check.setChecked(True)
                 self.ui.output_lock_maximums_check.setChecked(True)
 
-            # 初始化文件输出目录
-            try:
-                self.OUTPUT_DIR_PATH = setting_file['save_location']
-            except KeyError:
-                self.OUTPUT_DIR_PATH = str(os.path.join(os.getcwd(), 'Output'))
-                setting_file['save_location'] = self.OUTPUT_DIR_PATH
-            logging.debug(f'输出文件保存位置:{self.OUTPUT_DIR_PATH}')
-
-        # 检查输出文件夹是否存在
-        if os.path.exists(self.OUTPUT_DIR_PATH):
-            pass
-        else:
-            os.makedirs(self.OUTPUT_DIR_PATH)
-
-        # 加载插件
-        self.can_choose_number, self.plugin_filename_option_name_map, self.loaded_plugin = self.PluginManager.init_plugin()
-
-        self.ui.choices_list_box.addItems(self.can_choose_number)  # 选项名添加到ui上
-
-        self.is_thread_running = False  # 防止两个计算线程同时进行
+        self.is_thread_running: bool = False  # 防止反复启动计算线程
 
         # 关于gui显示内容的初始化
+        self.ui.choices_list_box.addItems(self.plugin_filename_option_name_map.keys())  # 选项名添加到ui上
         self.ui.output_box.setPlainText(Doc.START_SHOW)  # 开启的展示
         self.ui.search_box.setPlaceholderText("输入字符自动进行搜索\n清空搜索框显示全部插件")  # 灰色背景提示字符
-        self.ui.search_box.clear()
-        self.ui.input_box.setFocus()
+        self.ui.search_box.clear()  # 不清空不显示灰色背景
+        self.ui.input_box.setFocus()  # 设置焦点
 
-    def band(self):
+    def bindSignalWithSlots(self):
         # self.ui.___ACTION___.triggered.connect(___FUNCTION___)
         # self.ui.___BUTTON___.clicked.connect(___FUNCTION___)
         # self.ui.___COMBO_BOX___.currentIndexChanged.connect(___FUNCTION___)
         # self.ui.___SPIN_BOX___.valueChanged.connect(___FUNCTION___)
         # 自定义信号.属性名.connect(___FUNCTION___)
-
         # my_signal.setProgressBar.connect(self.set_progress_bar)
-
         # my_signal.setResult.connect(self.set_result)
         def appendOutPut(msg: str):
             self.ui.output_box.appendPlainText(msg)
@@ -170,7 +171,7 @@ class Application(QMainWindow):
 
         main_window_signal.clearOutPutBox.connect(clearOutPut)
 
-    def startEvent(self):
+    def startEvent(self) -> None:
         """
         初始化计算，绑定计算按钮，启动计算线程
 
@@ -184,14 +185,6 @@ class Application(QMainWindow):
         if str(self.ui.input_box.toPlainText()) == "update_log":  # update_log检测
             self.ui.output_box.setPlainText(Doc.UPDATE_LOG)
             return
-        # if str(self.ui.input_box.toPlainText()) == "停止":  # u停止检测
-        # main_window_signal.appendOutPutBox.emit("当前计算线程已停止")
-        # self.is_thread_running = False
-        # return
-        # if str(self.ui.input_box.toPlainText()) == "stop":  # stop检测
-        # main_window_signal.appendOutPutBox.emit("当前计算线程已停止")
-        # self.is_thread_running = False
-        # return
         if self.ui.choices_list_box.currentItem() is None:  # 是否选择检测
             self.ui.output_box.setPlainText("\n\n" +
                                             """
@@ -221,8 +214,13 @@ class Application(QMainWindow):
             self.input_box_s_input = 0  # 缺省
 
         # 以上是计算前工作
-        calculate_thread = threading.Thread(target=self.startCalculate)  # 启动计算线程
-        calculate_thread.start()
+
+        if self.is_thread_running:
+            main_window_signal.appendOutPutBox.emit("\n运算程序正在进行中，请勿反复点击计算按钮！\n")  # 清空输出框
+        else:
+            calculate_thread = threading.Thread(target=self.startCalculate)  # 启动计算线程
+            calculate_thread.start()
+            self.is_thread_running = True
         return None
 
     def startCalculate(self):
@@ -235,7 +233,6 @@ class Application(QMainWindow):
 
         def whatNeedCalculate():
             nonlocal time_spent
-            self.is_thread_running = True
 
             time_before_calculate = time.perf_counter()  # 储存开始时间
 
@@ -263,7 +260,6 @@ class Application(QMainWindow):
         def whatNeedCalculateWithSave():  # 选择检测+计算
             # self.name_text_file - 储存保存到哪个文件里
             nonlocal time_spent
-            self.is_thread_running = True
 
             filestream = open(os.path.join(self.OUTPUT_DIR_PATH, f"{self.name_text_file}.txt"), "w", encoding="utf-8")
             time_before_calculate = time.perf_counter()  # 储存开始时间
@@ -293,7 +289,6 @@ class Application(QMainWindow):
 
         def whatNeedCalculateWithOutputOptimization():
             nonlocal time_spent
-            self.is_thread_running = True
 
             with tempfile.TemporaryFile('w+t', encoding='utf-8', errors='ignore') as filestream:
                 time_before_calculate = time.perf_counter()  # 储存开始时间
@@ -332,48 +327,45 @@ class Application(QMainWindow):
             time_spent = time.perf_counter() - time_before_calculate  # 储存结束时间
 
         # 快读，低占用读取文件
-        def quickTraverseFile(file, chunk_size=8192):
+        def quickTraverseFile(file, chunk_size=8192) -> Iterator:
             for chunk in iter(partial(file.read, chunk_size), ''):  # 用readline的话，读到换行符就会直接停止读取，不会读取到8192B，会增加读取次数
                 yield chunk
 
-        if not self.is_thread_running:
-            try:
+        try:
+            main_window_signal.clearOutPutBox.emit()  # 清空输出框
+            main_window_signal.setOutPutBox.emit("计算程序正在运行中，所需时间较长，请耐心等待")
+            if self.ui.save_check.isChecked():  # 检测保存按钮的状态判断是否保存
+                if self.plugin_attribute["use_quantifier"] == hpyc.ON:
+                    self.name_text_file = datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S') + '  ' + self.plugin_attribute["save_name"] + str(
+                        self.input_box_s_input) + self.plugin_attribute["quantifier"]
+                else:
+                    self.name_text_file = datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S') + '  ' + str(self.input_box_s_input).replace('.', '_') + "的" + self.plugin_attribute["save_name"]
+                whatNeedCalculateWithSave()
+                # 以下是计算后工作
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                main_window_signal.setOutPutBox.emit("计算程序正在运行中，所需时间较长，请耐心等待")
-                if self.ui.save_check.isChecked():  # 检测保存按钮的状态判断是否保存
-                    if self.plugin_attribute["use_quantifier"] == hpyc.ON:
-                        self.name_text_file = datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S') + '  ' + self.plugin_attribute["save_name"] + str(
-                            self.input_box_s_input) + self.plugin_attribute["quantifier"]
-                    else:
-                        self.name_text_file = datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S') + '  ' + str(self.input_box_s_input).replace('.', '_') + "的" + self.plugin_attribute["save_name"]
-                    whatNeedCalculateWithSave()
+                main_window_signal.appendOutPutBox.emit(
+                    f"\n本次计算+保存花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
+                main_window_signal.appendOutPutBox.emit(
+                    "\n计算结果已保存在 " + os.path.join(self.OUTPUT_DIR_PATH, f"{self.name_text_file}.txt"))
+                main_window_signal.appendOutPutBox.emit("\n")
+            else:  # 选择不保存才输出结果
+                if self.ui.output_optimization_check.isChecked():
+                    whatNeedCalculateWithOutputOptimization()
                     # 以下是计算后工作
-                    main_window_signal.clearOutPutBox.emit()  # 清空输出框
                     main_window_signal.appendOutPutBox.emit(
-                        f"\n本次计算+保存花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
+                        f"\n\n本次计算+输出花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
+                    main_window_signal.appendOutPutBox.emit("已启用输出优化")
+                else:
+                    whatNeedCalculate()
+                    # 以下是计算后工作
                     main_window_signal.appendOutPutBox.emit(
-                        "\n计算结果已保存在 " + os.path.join(self.OUTPUT_DIR_PATH, f"{self.name_text_file}.txt"))
-                    main_window_signal.appendOutPutBox.emit("\n")
-                else:  # 选择不保存才输出结果
-                    if self.ui.output_optimization_check.isChecked():
-                        whatNeedCalculateWithOutputOptimization()
-                        # 以下是计算后工作
-                        main_window_signal.appendOutPutBox.emit(
-                            f"\n\n本次计算+输出花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
-                        main_window_signal.appendOutPutBox.emit("已启用输出优化")
-                    else:
-                        whatNeedCalculate()
-                        # 以下是计算后工作
-                        main_window_signal.appendOutPutBox.emit(
-                            f"\n\n本次计算+输出花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
-            except Exception as e:
-                main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                main_window_signal.setOutPutBox.emit(str(e))
-                main_window_signal.appendOutPutBox.emit("\n\n插件发生错误，请检查输入格式")
+                        f"\n\n本次计算+输出花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
+        except Exception as e:
+            main_window_signal.clearOutPutBox.emit()  # 清空输出框
+            main_window_signal.setOutPutBox.emit(str(e))
+            main_window_signal.appendOutPutBox.emit("\n\n插件发生错误，请检查输入格式")
 
-            self.is_thread_running = False
-        else:
-            main_window_signal.appendOutPutBox.emit("\n运算程序正在进行中，请勿反复点击计算按钮！\n")  # 清空输出框
+        self.is_thread_running = False
 
     def chooseNumberEvent(self, item):
         """
@@ -449,11 +441,6 @@ by {self.plugin_attribute["author"]}
             with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
                 self.OUTPUT_DIR_PATH = setting_file['save_location']
                 self.save_settings = setting_file['save_settings']
-                self.save_log = setting_file['save_log']
-                if self.save_log:
-                    pass
-                else:
-                    logging.disable(logging.CRITICAL)  # 禁用日志
             return
 
         logging.debug(triggers)
@@ -518,17 +505,17 @@ by {self.plugin_attribute["author"]}
 
         :return: None
         """
-        self.search_keyword = self.ui.search_box.toPlainText()
-        logging.debug(f"search_keyword:{self.search_keyword}")
+        search_keyword = self.ui.search_box.toPlainText()
+        logging.debug(f"search_keyword:{search_keyword}")
 
-        if self.search_keyword == "":
+        if search_keyword == "":
             self.search_cancel()
             return None
 
         self.ui.choices_list_box.clear()  # 清空选择栏
 
-        for i in self.can_choose_number:  # 选出符合要求的
-            if i.find(self.search_keyword) == -1:  # 字符串方法，没找到指定子串就-1
+        for i in self.selection_list:  # 选出符合要求的
+            if i.find(search_keyword) == -1:  # 字符串方法，没找到指定子串就-1
                 continue
             else:
                 self.ui.choices_list_box.addItem(i)
@@ -541,13 +528,17 @@ by {self.plugin_attribute["author"]}
         :return: None
         """
         self.ui.choices_list_box.clear()
-        self.ui.choices_list_box.addItems(self.can_choose_number)
+        self.ui.choices_list_box.addItems(self.selection_list)
         return None
 
 
 if __name__ == '__main__':
+    SETTING_FILE_PATH, OUTPUT_DIR_PATH = pathCheck()  # 路径检查
+    logCheck(SETTING_FILE_PATH)  # 日志检查
+    plugin_filename_option_name_map, loaded_plugin=pluginCheak()  # 插件加载
+
     app = QApplication([])  # 启动一个应用
-    window = Application()  # 实例化主窗口
+    window = Application(SETTING_FILE_PATH, OUTPUT_DIR_PATH, plugin_filename_option_name_map, loaded_plugin)  # 实例化主窗口
 
     window.show()  # 展示主窗口
     app.exec()  # 避免程序执行到这一行后直接退出
