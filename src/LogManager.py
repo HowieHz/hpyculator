@@ -2,8 +2,9 @@ import logging  # 日志导入
 import shelve
 import os
 
-class LogManager():
-    def __init__(self,setting_file_path):
+
+class LogManager:
+    def __init__(self, setting_file_path):
         self.setting_file_path = setting_file_path
 
         # 检查存放日志文件的文件夹是否存在
@@ -19,6 +20,7 @@ class LogManager():
                             format=' %(asctime)s - %(levelname)s - %(message)s')
 
         # TODO 修复日志不可用，日志现在只有把basicConfig放到main里面才能用
+
     def checkIsEnableLog(self):
         """
         日志检查
@@ -26,7 +28,7 @@ class LogManager():
         :return: None
         """
 
-        setting_file_path=self.setting_file_path
+        setting_file_path = self.setting_file_path
 
         # 读取配置文件-是否保存日志
         with shelve.open(setting_file_path, writeback=True) as setting_file:

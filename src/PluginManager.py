@@ -1,6 +1,7 @@
 import os
 import logging
 import importlib
+import hpyculator as hpyc
 from typing import List, Dict
 
 
@@ -106,4 +107,38 @@ class PluginManager:
         except Exception as e:
             logging.debug(f'init_plugin_folder outside Exception:{e}')
 
+        # loaded_plugin: Optional[Dict[str, Callable]] = None  # 存放加载完毕的插件 ID-读取的插件
+        # plugin_filename_option_name_map: Optional[Dict[str, str]] = None  # 选项名和实际文件名的映射表
+        # selection_list: Optional[list[str]] = None  # 存放选项名列表
+
         return self.plugin_filename_option_name_map, self.loaded_plugin
+
+    @staticmethod
+    def loadPluginAttribute(loaded_plugin,
+                            user_selection):
+        """
+        读取插件属性
+
+        :param loaded_plugin:
+        :param user_selection:
+        :return:
+        """
+        plugin_attribute = {}  # 读取好的属性放在这里
+
+        # self.required_parameters = ['input_mode','return_mode','save_name','output_name','use_quantifier','version']
+        # self.optional_parameters=['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol']
+        # self.parameters_list = ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol','input_mode','return_mode','save_name','output_name','use_quantifier','version']
+        # self.required_parameters.extend(self.optional_parameters)
+        for option_name in ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol',
+                            'input_mode', 'return_mode', 'save_name', 'output_name', 'use_quantifier', 'version']:
+            try:
+                logging.debug(f'load {option_name}')
+                plugin_attribute[option_name] = loaded_plugin[user_selection].PLUGIN_METADATA[option_name]
+            except Exception as e:
+                logging.debug(str(e))
+                plugin_attribute[option_name] = hpyc.OFF
+        if plugin_attribute["fullwidth_symbol"] == hpyc.ON:
+            plugin_attribute["help"] = plugin_attribute["help"].replace(",", "，").replace(".", "。").replace(
+                "'", "‘").replace('"', '”').replace('(', '（').replace(')', '）')
+
+        return plugin_attribute

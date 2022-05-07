@@ -16,13 +16,16 @@ from typing import Iterator
 
 import Doc  # 文档导入
 
+import logging  # 日志导入
+from LogManager import LogManager  # 日志管理 初始化
+
+from PluginManager import PluginManager  # 插件管理
+
 # pyside6 ui signal导入
 from PySide6.QtWidgets import QApplication, QMainWindow
 from SettingWindow import SettingApplication
 from ui.MainWindow import Ui_MainWindow
 from ui.Signal import main_window_signal
-
-import logging  # 日志导入
 
 
 def pathCheck():
@@ -37,22 +40,19 @@ def pathCheck():
 
     # 检查存放设置文件的文件夹是否存在
     if not os.path.exists(setting_dir_path):
-        os.makedirs(setting_dir_path)  # 刚建的文件夹就不用考虑是否要读取设置了
-    else:
+        os.makedirs(setting_dir_path)
 
-        with shelve.open(setting_file_path, writeback=True) as setting_file:
-            # 从设置文件读取输出目录
-            try:
-                output_dir_path = setting_file['save_location']
-            except KeyError:
-                output_dir_path = str(os.path.join(os.getcwd(), 'Output'))
-                setting_file['save_location'] = output_dir_path
-            logging.debug(f'输出文件保存位置:{output_dir_path}')
+    with shelve.open(setting_file_path, writeback=True) as setting_file:
+        # 从设置文件读取输出目录
+        try:
+            output_dir_path = setting_file['save_location']
+        except KeyError:
+            output_dir_path = str(os.path.join(os.getcwd(), 'Output'))
+            setting_file['save_location'] = output_dir_path
+        logging.debug(f'输出文件保存位置:{output_dir_path}')
 
     # 检查输出文件夹是否存在
-    if os.path.exists(output_dir_path):
-        pass
-    else:
+    if not os.path.exists(output_dir_path):
         os.makedirs(output_dir_path)
 
     return setting_file_path, output_dir_path
@@ -64,10 +64,8 @@ def logCheck(setting_file_path):
 
     :return: None
     """
-    import LogManager  # 日志管理 初始化
     # 检查存放日志文件的文件夹是否存在
-    LM = LogManager.LogManager(setting_file_path)
-    LM.checkIsEnableLog()
+    LogManager(setting_file_path).checkIsEnableLog()
     return None
 
 
@@ -77,14 +75,7 @@ def pluginCheak():
 
     :return: plugin_filename_option_name_map, loaded_plugin
     """
-    import PluginManager  # 插件管理
-
-    # loaded_plugin: Optional[Dict[str, Callable]] = None  # 存放加载完毕的插件 ID-读取的插件
-    # plugin_filename_option_name_map: Optional[Dict[str, str]] = None  # 选项名和实际文件名的映射表
-    # selection_list: Optional[list[str]] = None  # 存放选项名列表
-
-    PM = PluginManager.PluginManager()  # 加载插件管理器
-    return PM.init_plugin()  # 加载插件
+    return PluginManager().init_plugin()  # 加载插件
 
 
 class Application(QMainWindow):
@@ -106,7 +97,7 @@ class Application(QMainWindow):
         logging.debug('主类初始化')
         super().__init__()
         self.ui = Ui_MainWindow()  # UI类的实例化()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self)  # ui初始化
         self.bindSignalWithSlots()  # 信号和槽的绑定
 
         self.main_window_signal = main_window_signal  # 更方便地使用自定义事件
@@ -206,112 +197,128 @@ class Application(QMainWindow):
 如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）""")
             return None
         if self.plugin_attribute["input_mode"] == hpyc.STRING:
-            self.inputbox_data = str(self.ui.input_box.toPlainText())  # 取得输入框的数字
+            inputbox_data = str(self.ui.input_box.toPlainText())  # 取得输入框的数字
         elif self.plugin_attribute["input_mode"] == hpyc.FLOAT:
-            self.inputbox_data = float(self.ui.input_box.toPlainText())  # 取得输入框的数字
+            inputbox_data = float(self.ui.input_box.toPlainText())  # 取得输入框的数字
         elif self.plugin_attribute["input_mode"] == hpyc.NUM:
-            self.inputbox_data = int(self.ui.input_box.toPlainText())  # 取得输入框的数字
+            inputbox_data = int(self.ui.input_box.toPlainText())  # 取得输入框的数字
         else:
-            self.inputbox_data = 0  # 缺省
+            inputbox_data = 0  # 缺省
 
         # 以上是计算前工作
 
         if self.is_thread_running:
             main_window_signal.appendOutPutBox.emit("\n运算程序正在进行中，请勿反复点击计算按钮！\n")  # 清空输出框
         else:
-            calculate_thread = threading.Thread(target=self.startCalculate)  # 启动计算线程
+            calculate_thread = threading.Thread(target=self.startCalculate, args=(inputbox_data,))  # 启动计算线程
             calculate_thread.start()
             self.is_thread_running = True
         return None
 
-    def startCalculate(self):
+    def startCalculate(self, inputbox_data):
         """
         计算线程
 
-        :return: None
+        :param inputbox_data:
+        :return:
         """
-        time_spent = None
 
-        def whatNeedCalculate():
-            nonlocal time_spent
+        def whatNeedCalculate(inputbox_data):
+            """
+            基础的计算模式
+
+            :param inputbox_data:
+            :return: time_spent
+            """
 
             time_before_calculate = time.perf_counter()  # 储存开始时间
 
             if self.plugin_attribute["return_mode"] == hpyc.RETURN_ONCE:
-                self.result = str(self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data))
+                self.result = str(self.loaded_plugin[self.user_selection].on_calculate(inputbox_data))
                 main_window_signal.setOutPutBox.emit(str(self.result) + "\n")  # 结果为str，直接输出
             elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST:  # 算一行输出一行
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                self.result = self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data)
+                self.result = self.loaded_plugin[self.user_selection].on_calculate(inputbox_data)
                 for result_process in self.result:
                     main_window_signal.appendOutPutBox.emit(str(result_process) + "\\n")  # 算一行输出一行
             elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                self.result = self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data)
+                self.result = self.loaded_plugin[self.user_selection].on_calculate(inputbox_data)
                 for result_process in self.result:  # 计算
                     main_window_signal.appendOutPutBox.emit(str(result_process))  # 算一行输出一行
             elif self.plugin_attribute["return_mode"] == hpyc.NO_RETURN_SINGLE_FUNCTION:
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data, self, 'output')
+                self.loaded_plugin[self.user_selection].on_calculate(inputbox_data, self, 'output')
             else:
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data, self)
-            time_spent = time.perf_counter() - time_before_calculate  # 储存结束时间
+                self.loaded_plugin[self.user_selection].on_calculate(inputbox_data, self)
+            return time.perf_counter() - time_before_calculate  # 储存结束时间
 
-        def whatNeedCalculateWithSave(filename):  # 选择检测+计算
+        def whatNeedCalculateWithSave(inputbox_data, filename):
+            """
+            计算+保存模式
+
+            :param inputbox_data:
+            :param filename:
+            :return: time_spent
+            """
             # filename - 储存保存到哪个文件里
-            nonlocal time_spent
 
             filestream = open(os.path.join(self.OUTPUT_DIR_PATH, f"{filename}.txt"), "w", encoding="utf-8")
             time_before_calculate = time.perf_counter()  # 储存开始时间
 
             try:
                 if self.plugin_attribute["return_mode"] == hpyc.RETURN_ONCE:  # 分布输出和一次输出
-                    self.result = self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data)
+                    self.result = self.loaded_plugin[self.user_selection].on_calculate(inputbox_data)
                     filestream.write(str(self.result) + "\n")
                 elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
-                    self.result = self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data)
+                    self.result = self.loaded_plugin[self.user_selection].on_calculate(inputbox_data)
                     for result_process in self.result:  # 计算
                         filestream.write(str(result_process) + "\\n")
                         filestream.flush()  # 算出来就存进去
                 elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
-                    self.result = self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data)
+                    self.result = self.loaded_plugin[self.user_selection].on_calculate(inputbox_data)
                     for result_process in self.result:  # 计算
                         filestream.write(str(result_process))
                         filestream.flush()  # 算出来就存进去
                 elif self.plugin_attribute["return_mode"] == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                    self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data, filestream, 'save')
+                    self.loaded_plugin[self.user_selection].on_calculate(inputbox_data, filestream, 'save')
                 else:
-                    self.loaded_plugin[self.user_selection].on_calculate_with_save(self.inputbox_data, filestream)
+                    self.loaded_plugin[self.user_selection].on_calculate_with_save(inputbox_data, filestream)
             finally:
                 filestream.close()
 
-            time_spent = time.perf_counter() - time_before_calculate  # 储存结束时间
+            return time.perf_counter() - time_before_calculate  # 储存结束时间
 
-        def whatNeedCalculateWithOutputOptimization():
-            nonlocal time_spent
+        def whatNeedCalculateWithOutputOptimization(inputbox_data):
+            """
+            计算+输出优化（先把结果存临时文件，再读取输出）
+
+            :param inputbox_data:
+            :return: time_spent
+            """
 
             with tempfile.TemporaryFile('w+t', encoding='utf-8', errors='ignore') as filestream:
                 time_before_calculate = time.perf_counter()  # 储存开始时间
 
                 try:
                     if self.plugin_attribute["return_mode"] == hpyc.RETURN_ONCE:  # 分布输出和一次输出
-                        self.result = self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data)
+                        self.result = self.loaded_plugin[self.user_selection].on_calculate(inputbox_data)
                         filestream.write(str(self.result) + "\n")
                     elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
-                        self.result = self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data)
+                        self.result = self.loaded_plugin[self.user_selection].on_calculate(inputbox_data)
                         for result_process in self.result:  # 计算
                             filestream.write(str(result_process) + "\\n")
                             filestream.flush()  # 算出来就存进去
                     elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
-                        self.result = self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data)
+                        self.result = self.loaded_plugin[self.user_selection].on_calculate(inputbox_data)
                         for result_process in self.result:  # 计算
                             filestream.write(str(result_process))
                             filestream.flush()  # 算出来就存进去
                     elif self.plugin_attribute["return_mode"] == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                        self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data, filestream, 'save')
+                        self.loaded_plugin[self.user_selection].on_calculate(inputbox_data, filestream, 'save')
                     else:
-                        self.loaded_plugin[self.user_selection].on_calculate_with_save(self.inputbox_data, filestream)
+                        self.loaded_plugin[self.user_selection].on_calculate_with_save(inputbox_data, filestream)
                 finally:
                     main_window_signal.clearOutPutBox.emit()  # 清空输出框
                     filestream.seek(0)  # 将文件指针移到开始处，准备读取文件
@@ -325,7 +332,7 @@ class Application(QMainWindow):
                         for line in quickTraverseFile(filestream):
                             main_window_signal.appendOutPutBox.emit(line)
 
-            time_spent = time.perf_counter() - time_before_calculate  # 储存结束时间
+            return time.perf_counter() - time_before_calculate  # 储存结束时间
 
         # 快读，低占用读取文件
         def quickTraverseFile(file, chunk_size=8192) -> Iterator:
@@ -333,36 +340,33 @@ class Application(QMainWindow):
                 yield chunk
 
         try:
-            main_window_signal.clearOutPutBox.emit()  # 清空输出框
             main_window_signal.setOutPutBox.emit("计算程序正在运行中，所需时间较长，请耐心等待")
             if self.ui.save_check.isChecked():  # 检测保存按钮的状态判断是否保存
                 if self.plugin_attribute["use_quantifier"] == hpyc.ON:
                     filename = datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S') + '  ' + self.plugin_attribute["save_name"] + str(
-                        self.inputbox_data) + self.plugin_attribute["quantifier"]
+                        inputbox_data) + self.plugin_attribute["quantifier"]
                 else:
-                    filename = datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S') + '  ' + str(self.inputbox_data).replace('.', '_') + "的" + self.plugin_attribute["save_name"]
-                whatNeedCalculateWithSave(filename)
+                    filename = datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S') + '  ' + str(inputbox_data).replace('.', '_') + "的" + self.plugin_attribute["save_name"]
+                time_spent = whatNeedCalculateWithSave(inputbox_data, filename)
                 # 以下是计算后工作
-                main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                main_window_signal.appendOutPutBox.emit(
-                    f"\n本次计算+保存花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
-                main_window_signal.appendOutPutBox.emit(
-                    "\n计算结果已保存在 " + os.path.join(self.OUTPUT_DIR_PATH, f"{filename}.txt"))
-                main_window_signal.appendOutPutBox.emit("\n")
+                main_window_signal.setOutPutBox.emit(f"""
+本次计算+保存花费了{time_spent:.6f}秒
+
+计算结果已保存在 {os.path.join(self.OUTPUT_DIR_PATH, filename + '.txt')} """)  # 输出本次计算时间
             else:  # 选择不保存才输出结果
                 if self.ui.output_optimization_check.isChecked():
-                    whatNeedCalculateWithOutputOptimization()
+                    time_spent = whatNeedCalculateWithOutputOptimization(inputbox_data)
                     # 以下是计算后工作
-                    main_window_signal.appendOutPutBox.emit(
-                        f"\n\n本次计算+输出花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
-                    main_window_signal.appendOutPutBox.emit("已启用输出优化")
+                    main_window_signal.appendOutPutBox.emit(f"""
+本次计算+输出花费了{time_spent:.6f}秒
+
+已启用输出优化""")  # 输出本次计算时间
                 else:
-                    whatNeedCalculate()
+                    time_spent = whatNeedCalculate(inputbox_data)
                     # 以下是计算后工作
                     main_window_signal.appendOutPutBox.emit(
                         f"\n\n本次计算+输出花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
         except Exception as e:
-            main_window_signal.clearOutPutBox.emit()  # 清空输出框
             main_window_signal.setOutPutBox.emit(str(e))
             main_window_signal.appendOutPutBox.emit("\n\n插件发生错误，请检查输入格式")
 
@@ -380,7 +384,7 @@ class Application(QMainWindow):
         self.user_selection = str(self.plugin_filename_option_name_map[item.text()])
         self.plugin_attribute = {}  # 读取的属性
 
-        self.plugin_attribute = self.loadPluginAttribute(self.loaded_plugin, self.user_selection)
+        self.plugin_attribute = PluginManager.loadPluginAttribute(self.loaded_plugin, self.user_selection)
 
         self.ui.output_box.setPlainText(f"""\
 {self.plugin_attribute["output_start"]}
@@ -392,34 +396,6 @@ by {self.plugin_attribute["author"]}
 {self.plugin_attribute["help"]}
 
 {self.plugin_attribute["output_end"]}""")
-
-    def loadPluginAttribute(self,
-                            loaded_plugin,
-                            user_selection):
-        """
-        读取插件属性
-
-        :return: plugin_attribute
-        """
-        plugin_attribute={}  #读取好的属性放在这里
-
-        # self.required_parameters = ['input_mode','return_mode','save_name','output_name','use_quantifier','version']
-        # self.optional_parameters=['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol']
-        # self.parameters_list = ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol','input_mode','return_mode','save_name','output_name','use_quantifier','version']
-        # self.required_parameters.extend(self.optional_parameters)
-        for option_name in ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol',
-                            'input_mode', 'return_mode', 'save_name', 'output_name', 'use_quantifier', 'version']:
-            try:
-                logging.debug(f'load {option_name}')
-                plugin_attribute[option_name] = loaded_plugin[user_selection].PLUGIN_METADATA[option_name]
-            except Exception as e:
-                logging.debug(str(e))
-                plugin_attribute[option_name] = hpyc.OFF
-        if plugin_attribute["fullwidth_symbol"] == hpyc.ON:
-            plugin_attribute["help"] = plugin_attribute["help"].replace(",", "，").replace(".", "。").replace(
-                "'", "‘").replace('"', '”').replace('(', '（').replace(')', '）')
-
-        return plugin_attribute
 
     def menuBar(self, *triggers):
         """
