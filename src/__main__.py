@@ -238,24 +238,24 @@ class Application(QMainWindow):
             time_before_calculate = time.perf_counter()  # 储存开始时间
 
             if self.plugin_attribute["return_mode"] == hpyc.RETURN_ONCE:
-                self.result = str(self.loaded_plugin[self.selection].on_calculate(self.inputbox_data))
+                self.result = str(self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data))
                 main_window_signal.setOutPutBox.emit(str(self.result) + "\n")  # 结果为str，直接输出
             elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST:  # 算一行输出一行
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                self.result = self.loaded_plugin[self.selection].on_calculate(self.inputbox_data)
+                self.result = self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data)
                 for result_process in self.result:
                     main_window_signal.appendOutPutBox.emit(str(result_process) + "\\n")  # 算一行输出一行
             elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                self.result = self.loaded_plugin[self.selection].on_calculate(self.inputbox_data)
+                self.result = self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data)
                 for result_process in self.result:  # 计算
                     main_window_signal.appendOutPutBox.emit(str(result_process))  # 算一行输出一行
             elif self.plugin_attribute["return_mode"] == hpyc.NO_RETURN_SINGLE_FUNCTION:
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                self.loaded_plugin[self.selection].on_calculate(self.inputbox_data, self, 'output')
+                self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data, self, 'output')
             else:
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                self.loaded_plugin[self.selection].on_calculate(self.inputbox_data, self)
+                self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data, self)
             time_spent = time.perf_counter() - time_before_calculate  # 储存结束时间
 
         def whatNeedCalculateWithSave(filename):  # 选择检测+计算
@@ -267,22 +267,22 @@ class Application(QMainWindow):
 
             try:
                 if self.plugin_attribute["return_mode"] == hpyc.RETURN_ONCE:  # 分布输出和一次输出
-                    self.result = self.loaded_plugin[self.selection].on_calculate(self.inputbox_data)
+                    self.result = self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data)
                     filestream.write(str(self.result) + "\n")
                 elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
-                    self.result = self.loaded_plugin[self.selection].on_calculate(self.inputbox_data)
+                    self.result = self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data)
                     for result_process in self.result:  # 计算
                         filestream.write(str(result_process) + "\\n")
                         filestream.flush()  # 算出来就存进去
                 elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
-                    self.result = self.loaded_plugin[self.selection].on_calculate(self.inputbox_data)
+                    self.result = self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data)
                     for result_process in self.result:  # 计算
                         filestream.write(str(result_process))
                         filestream.flush()  # 算出来就存进去
                 elif self.plugin_attribute["return_mode"] == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                    self.loaded_plugin[self.selection].on_calculate(self.inputbox_data, filestream, 'save')
+                    self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data, filestream, 'save')
                 else:
-                    self.loaded_plugin[self.selection].on_calculate_with_save(self.inputbox_data, filestream)
+                    self.loaded_plugin[self.user_selection].on_calculate_with_save(self.inputbox_data, filestream)
             finally:
                 filestream.close()
 
@@ -296,22 +296,22 @@ class Application(QMainWindow):
 
                 try:
                     if self.plugin_attribute["return_mode"] == hpyc.RETURN_ONCE:  # 分布输出和一次输出
-                        self.result = self.loaded_plugin[self.selection].on_calculate(self.inputbox_data)
+                        self.result = self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data)
                         filestream.write(str(self.result) + "\n")
                     elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
-                        self.result = self.loaded_plugin[self.selection].on_calculate(self.inputbox_data)
+                        self.result = self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data)
                         for result_process in self.result:  # 计算
                             filestream.write(str(result_process) + "\\n")
                             filestream.flush()  # 算出来就存进去
                     elif self.plugin_attribute["return_mode"] == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
-                        self.result = self.loaded_plugin[self.selection].on_calculate(self.inputbox_data)
+                        self.result = self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data)
                         for result_process in self.result:  # 计算
                             filestream.write(str(result_process))
                             filestream.flush()  # 算出来就存进去
                     elif self.plugin_attribute["return_mode"] == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                        self.loaded_plugin[self.selection].on_calculate(self.inputbox_data, filestream, 'save')
+                        self.loaded_plugin[self.user_selection].on_calculate(self.inputbox_data, filestream, 'save')
                     else:
-                        self.loaded_plugin[self.selection].on_calculate_with_save(self.inputbox_data, filestream)
+                        self.loaded_plugin[self.user_selection].on_calculate_with_save(self.inputbox_data, filestream)
                 finally:
                     main_window_signal.clearOutPutBox.emit()  # 清空输出框
                     filestream.seek(0)  # 将文件指针移到开始处，准备读取文件
@@ -368,7 +368,7 @@ class Application(QMainWindow):
 
         self.is_thread_running = False
 
-    def chooseNumberEvent(self, item):
+    def userChooseOptionEvent(self, item):
         """
         左侧选择算法之后触发的函数 选择算法事件
 
@@ -377,7 +377,7 @@ class Application(QMainWindow):
         """
         # logging.debug(f'选中的选项名{self.ui.choices_list_box.currentItem().text()}')
         logging.debug(f'选中的选项名{item.text()}')
-        self.selection = str(self.plugin_filename_option_name_map[item.text()])
+        self.user_selection = str(self.plugin_filename_option_name_map[item.text()])
         self.plugin_attribute = {}  # 读取的属性
 
         # self.required_parameters = ['input_mode','return_mode','save_name','output_name','use_quantifier','version']
@@ -388,7 +388,7 @@ class Application(QMainWindow):
                             'input_mode', 'return_mode', 'save_name', 'output_name', 'use_quantifier', 'version']:
             try:
                 logging.debug(f'load {option_name}')
-                self.plugin_attribute[option_name] = self.loaded_plugin[self.selection].PLUGIN_METADATA[option_name]
+                self.plugin_attribute[option_name] = self.loaded_plugin[self.user_selection].PLUGIN_METADATA[option_name]
             except Exception as e:
                 logging.debug(str(e))
                 self.plugin_attribute[option_name] = hpyc.OFF
@@ -534,12 +534,12 @@ by {self.plugin_attribute["author"]}
 
 
 if __name__ == '__main__':
-    SETTING_FILE_PATH, OUTPUT_DIR_PATH = pathCheck()  # 路径检查
-    logCheck(SETTING_FILE_PATH)  # 日志检查
-    plugin_filename_option_name_map, loaded_plugin = pluginCheak()  # 插件加载
+    GLOBAL_SETTING_FILE_PATH, GLOBAL_OUTPUT_DIR_PATH = pathCheck()  # 路径检查
+    logCheck(GLOBAL_SETTING_FILE_PATH)  # 日志检查
+    global_plugin_filename_option_name_map, global_loaded_plugin = pluginCheak()  # 插件加载
 
     app = QApplication([])  # 启动一个应用
-    window = Application(SETTING_FILE_PATH, OUTPUT_DIR_PATH, plugin_filename_option_name_map, loaded_plugin)  # 实例化主窗口
+    window = Application(GLOBAL_SETTING_FILE_PATH, GLOBAL_OUTPUT_DIR_PATH, global_plugin_filename_option_name_map, global_loaded_plugin)  # 实例化主窗口
 
     window.show()  # 展示主窗口
     app.exec()  # 避免程序执行到这一行后直接退出
