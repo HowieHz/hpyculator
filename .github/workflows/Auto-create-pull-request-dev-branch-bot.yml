@@ -38,5 +38,5 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          branch: main
+          branch: dev
           delete-branch: false
