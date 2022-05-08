@@ -32,7 +32,7 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(data: str, self, todo):  # 输出到框体内
+def on_calculate(data: str, todo , file):  # 输出到框体内
     try:
         num, b = data.split(',')
     except Exception:
@@ -47,18 +47,18 @@ def on_calculate(data: str, self, todo):  # 输出到框体内
     elif b == "16":
         num = int(num, 16)
     else:
-        hpyc.output(self, "目前不支持该进制的输入\n\n*做信息题是吧，自己算")
+        hpyc.output("目前不支持该进制的输入\n\n*做信息题是吧，自己算")
         return
     if todo == "output":
-        hpyc.output(self, "二进制：" + str(bin(num))[2:])
-        hpyc.output(self, "八进制：" + str(oct(num))[2:])
-        hpyc.output(self, "十进制：" + str(num))
-        hpyc.output(self, "十六进制：" + str(hex(num))[2:].upper())
+        hpyc.output("二进制：" + str(bin(num))[2:])
+        hpyc.output("八进制：" + str(oct(num))[2:])
+        hpyc.output("十进制：" + str(num))
+        hpyc.output("十六进制：" + str(hex(num))[2:].upper())
     elif todo == "save":
-        hpyc.write_without_flush(self, "二进制：" + str(bin(num))[2:])
-        hpyc.write_without_flush(self, "八进制：" + str(oct(num))[2:])
-        hpyc.write_without_flush(self, "十进制：" + str(num))
-        hpyc.write_without_flush(self, "十六进制：" + str(hex(num))[2:].upper())
+        hpyc.write_without_flush(file, "二进制：" + str(bin(num))[2:])
+        hpyc.write_without_flush(file, "八进制：" + str(oct(num))[2:])
+        hpyc.write_without_flush(file, "十进制：" + str(num))
+        hpyc.write_without_flush(file, "十六进制：" + str(hex(num))[2:].upper())
     else:
         pass
     return

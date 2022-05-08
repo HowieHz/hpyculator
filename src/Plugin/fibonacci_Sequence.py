@@ -25,15 +25,15 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(num, self, do_what):  # 返回一个列表
+def on_calculate(num, do_what, file):  # 返回一个列表
     if do_what == "output":
         if num == 0:
-            hpyc.output(self, "")
+            hpyc.output("")
         if num == 1:
-            hpyc.output(self, "1")
+            hpyc.output("1")
         if num >= 2:
-            hpyc.output(self, "1")
-            hpyc.output(self, "1")
+            hpyc.output("1")
+            hpyc.output("1")
         fs1 = 1
         fs2 = 1
         n = 2
@@ -41,16 +41,16 @@ def on_calculate(num, self, do_what):  # 返回一个列表
             fs3 = fs1
             fs1 += fs2
             fs2 = fs3
-            hpyc.output(self, fs1)
+            hpyc.output(fs1)
             n += 1
     else:
         if num == 0:
-            hpyc.write(self, "")
+            hpyc.write(file, "")
         if num == 1:
-            hpyc.write(self, "1")
+            hpyc.write(file, "1")
         if num >= 2:
-            hpyc.write(self, "1")
-            hpyc.write(self, "1")
+            hpyc.write(file, "1")
+            hpyc.write(file, "1")
         fs1 = 1
         fs2 = 1
         n = 2
@@ -58,5 +58,5 @@ def on_calculate(num, self, do_what):  # 返回一个列表
             fs3 = fs1
             fs1 += fs2
             fs2 = fs3
-            hpyc.write(self, fs1)
+            hpyc.write(file, fs1)
             n += 1

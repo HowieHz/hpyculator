@@ -23,14 +23,14 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(num, self):  # 返回一个列表
+def on_calculate(num):  # 返回一个列表
     if num == 0:
         return []
     l1 = [[1]]
     for _ in range(0, num - 1):
         l1.append(list(map(lambda x, y: x + y, [0] + l1[-1], l1[-1] + [0])))
     for i in l1:
-        hpyc.output(self, i)
+        hpyc.output(i)
 
 
 def on_calculate_with_save(num, file):  # 返回一个列表

@@ -31,11 +31,11 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(num: str, self, do_what):  # 返回一个列表
+def on_calculate(num: str, do_what,file ):  # 返回一个列表
     try:
         a, b, c = num.split(",")
     except:
-        hpyc.output(self, "请按格式输入！！！")
+        hpyc.output("请按格式输入！！！")
         return
     a = int(a)
     b = int(b)
@@ -43,6 +43,6 @@ def on_calculate(num: str, self, do_what):  # 返回一个列表
     p = (a + b + c) / 2
     s = (p * (p - a) * (p - b) * (p - c)) ** 0.5
     if do_what == "output":
-        hpyc.output(self, "以" + str(a) + "," + str(b) + "," + str(c) + "为边长的三角形的面积是:\n" + str(s))
+        hpyc.output("以" + str(a) + "," + str(b) + "," + str(c) + "为边长的三角形的面积是:\n" + str(s))
     if do_what == "save":
-        hpyc.write(self, str(s))
+        hpyc.write(file, str(s))

@@ -22,8 +22,8 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(data, self):  # 调用时传入两个参数，第一个参数是输入，第二个参数是程序的主类，要作为输出函数的的第一个参数\
-    hpyc.output(self, "勾个输出优化吧，谢谢")
+def on_calculate(data):  # 调用时传入两个参数，第一个参数是输入，第二个参数是程序的主类，要作为输出函数的的第一个参数\
+    hpyc.output("勾个输出优化吧，谢谢")
     return
 
 

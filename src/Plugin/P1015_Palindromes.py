@@ -54,7 +54,7 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(data: str, self):  # 输出到框体内
+def on_calculate(data: str):  # 输出到框体内
     o, p = data.strip().split(",")
     a = int(o.strip())  # a是多少进制
     b_list = list(map(lambda x: int(x, a), list(p.strip())))
@@ -63,7 +63,7 @@ def on_calculate(data: str, self):  # 输出到框体内
     b_list.reverse()  # 左边是个位，右边是高位
     for _ in range(0, 30):
         if ishw(b_list):
-            hpyc.output(self, "STEP=" + str(times))
+            hpyc.output("STEP=" + str(times))
             return
         times += 1
         for i in range(0, len(b_list)):
@@ -76,7 +76,7 @@ def on_calculate(data: str, self):  # 输出到框体内
                     b_list.append("1")
         c_list = b_list[:]
         c_list.reverse()
-    hpyc.output(self, "Impossible!")
+    hpyc.output("Impossible!")
 
 
 def ishw(list_data: list):

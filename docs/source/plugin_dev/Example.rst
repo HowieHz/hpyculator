@@ -52,7 +52,7 @@ Example1
         "fullwidth_symbol" : hpyc.OFF #懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
         }
 
-    def on_calculate(data,self):
+    def on_calculate(data):
         pass
 
 
@@ -92,7 +92,7 @@ Example2
         "fullwidth_symbol" : hpyc.OFF #懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
         }
         
-    def on_calculate(data,self):#输出到框体内
+    def on_calculate(data):#输出到框体内
         pass
         
     def on_calculate_with_save(data,file):#保存到文件
@@ -135,7 +135,7 @@ Example3
         "fullwidth_symbol" : hpyc.OFF #懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
         }
 
-    def on_calculate(data,self,do_what):
+    def on_calculate(data,do_what,file_stream):
         pass
 
 以下.py文件均代指 `内置插件 <https://github.com/HowieHz/hpyculator/tree/main/Plugin>`_

@@ -121,9 +121,9 @@ class PluginManager:
 
         :param loaded_plugin:
         :param user_selection:
-        :return:
+        :return: plugin_attributes
         """
-        plugin_attribute = {}  # 读取好的属性放在这里
+        plugin_attributes = {}  # 读取好的属性放在这里
 
         # self.required_parameters = ['input_mode','return_mode','save_name','output_name','use_quantifier','version']
         # self.optional_parameters=['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol']
@@ -133,12 +133,12 @@ class PluginManager:
                             'input_mode', 'return_mode', 'save_name', 'output_name', 'use_quantifier', 'version']:
             try:
                 logging.debug(f'load {option_name}')
-                plugin_attribute[option_name] = loaded_plugin[user_selection].PLUGIN_METADATA[option_name]
+                plugin_attributes[option_name] = loaded_plugin[user_selection].PLUGIN_METADATA[option_name]
             except Exception as e:
                 logging.debug(str(e))
-                plugin_attribute[option_name] = hpyc.OFF
-        if plugin_attribute["fullwidth_symbol"] == hpyc.ON:
-            plugin_attribute["help"] = plugin_attribute["help"].replace(",", "，").replace(".", "。").replace(
+                plugin_attributes[option_name] = hpyc.OFF
+        if plugin_attributes["fullwidth_symbol"] == hpyc.ON:
+            plugin_attributes["help"] = plugin_attributes["help"].replace(",", "，").replace(".", "。").replace(
                 "'", "‘").replace('"', '”').replace('(', '（').replace(')', '）')
 
-        return plugin_attribute
+        return plugin_attributes

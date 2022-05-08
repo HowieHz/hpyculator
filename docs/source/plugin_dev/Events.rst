@@ -34,15 +34,13 @@
 
 调用插件的 ``on_calculate``\函数，
 
-    传入的第一个参数是用户的输入值，
-
-    第二个参数是指代主程序的主类（请将第二个参数作为 `output <API.html#output>`__\函数的第一个参数）
+    传入的第一个参数为唯一一个参数是用户的输入值
 
 .. code-block:: python
 
-    def on_calculate(input,self)
+    def on_calculate(input)
         #插件主体，需要输出到内屏的时候使用下面的语句
-        output(self,"你要输出的东西")
+        output("你要输出的东西")
 
 当用户选择保存
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -51,7 +49,7 @@
 
     传入的第一个参数是用户的输入值，
 
-    第二个参数是指代文件流（打开的文件）（请将第二个参数作为 `write <API.html#write>`__\函数或者 `write_without_flush <API.html#write-without-flush>`__\函数的第一个参数）
+    传入的第二个参数是指代文件流（打开的文件）（请将第二个参数作为 `write <API.html#write>`__\函数或者 `write_without_flush <API.html#write-without-flush>`__\函数的第一个参数）
 
 .. code-block:: python
 
@@ -74,9 +72,9 @@
 
     传入的第一个参数是用户的输入值，
 
-    第二个参数是指代主程序的主类（请将第二个参数作为 `output <API.html#output>`__\函数的第一个参数）
+    传入的第二个参数是 ``'output'``
 
-    第三个参数传入的是 ``'output'``
+    传入的第三个参数是 None
 
 当用户选择保存
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -85,6 +83,6 @@
 
     传入的第一个参数是用户的输入值，
 
-    第二个参数是指代文件流（打开的文件）（请将第二个参数作为 `write <API.html#write>`__\或者 `write_without_flush <API.html#write-without-flush>`__\的第一个参数）
+    传入的第二个参数是 ``'save'``
 
-    第三个参数传入的是 ``'save'``
+    传入的第三个参数是指代文件流（打开的文件）（请将第二个参数作为 `write <API.html#write>`__\或者 `write_without_flush <API.html#write-without-flush>`__\的第一个参数）

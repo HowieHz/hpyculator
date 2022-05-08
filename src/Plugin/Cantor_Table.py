@@ -42,54 +42,54 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(n, self, do_what):
+def on_calculate(n, do_what, file):
     if do_what == "output":
         a = 1
         b = 1
         if n >= 1:
-            hpyc.output(self, "1/1")
+            hpyc.output("1/1")
         for i in range(1, n):
             if a == 1:
                 if b % 2 == 0:
                     b -= 1
                     a += 1
-                    hpyc.output(self, str(a) + "/" + str(b))
+                    hpyc.output(str(a) + "/" + str(b))
                     continue
                 else:
                     b += 1
-                    hpyc.output(self, str(a) + "/" + str(b))
+                    hpyc.output(str(a) + "/" + str(b))
                     continue
             if b == 1:
                 if a % 2 == 0:
                     a += 1
-                    hpyc.output(self, str(a) + "/" + str(b))
+                    hpyc.output(str(a) + "/" + str(b))
                     continue
                 else:
                     a -= 1
                     b += 1
-                    hpyc.output(self, str(a) + "/" + str(b))
+                    hpyc.output(str(a) + "/" + str(b))
                     continue
             if a % 2 == 0:
                 if b % 2 == 0:
                     a -= 1
                     b += 1
-                    hpyc.output(self, str(a) + "/" + str(b))
+                    hpyc.output(str(a) + "/" + str(b))
                     continue
                 else:
                     a += 1
                     b -= 1
-                    hpyc.output(self, str(a) + "/" + str(b))
+                    hpyc.output(str(a) + "/" + str(b))
                     continue
             else:
                 if b % 2 == 0:  # 向xia
                     a += 1
                     b -= 1
-                    hpyc.output(self, str(a) + "/" + str(b))
+                    hpyc.output(str(a) + "/" + str(b))
                     continue
                 else:
                     a -= 1
                     b += 1
-                    hpyc.output(self, str(a) + "/" + str(b))
+                    hpyc.output(str(a) + "/" + str(b))
                     continue
 
     else:
@@ -97,57 +97,57 @@ def on_calculate(n, self, do_what):
         b = 1
         buffer_len = 0
         if n >= 1:
-            hpyc.write_without_flush(self, "1/1")
+            hpyc.write_without_flush(file, "1/1")
         for i in range(1, n):
             if buffer_len >= 5000000:
-                hpyc.flush(self)
+                hpyc.flush(file)
             if a == 1:
                 if b % 2 == 0:
                     b -= 1
                     a += 1
-                    hpyc.write_without_flush(self, str(a) + "/" + str(b))
+                    hpyc.write_without_flush(file, str(a) + "/" + str(b))
                     buffer_len += 1
                     continue
                 else:
                     b += 1
-                    hpyc.write_without_flush(self, str(a) + "/" + str(b))
+                    hpyc.write_without_flush(file, str(a) + "/" + str(b))
                     buffer_len += 1
                     continue
             if b == 1:
                 if a % 2 == 0:
                     a += 1
-                    hpyc.write_without_flush(self, str(a) + "/" + str(b))
+                    hpyc.write_without_flush(file, str(a) + "/" + str(b))
                     buffer_len += 1
                     continue
                 else:
                     a -= 1
                     b += 1
-                    hpyc.write_without_flush(self, str(a) + "/" + str(b))
+                    hpyc.write_without_flush(file, str(a) + "/" + str(b))
                     buffer_len += 1
                     continue
             if a % 2 == 0:
                 if b % 2 == 0:
                     a -= 1
                     b += 1
-                    hpyc.write_without_flush(self, str(a) + "/" + str(b))
+                    hpyc.write_without_flush(file, str(a) + "/" + str(b))
                     buffer_len += 1
                     continue
                 else:
                     a += 1
                     b -= 1
-                    hpyc.write_without_flush(self, str(a) + "/" + str(b))
+                    hpyc.write_without_flush(file, str(a) + "/" + str(b))
                     buffer_len += 1
                     continue
             else:
                 if b % 2 == 0:  # 向xia
                     a += 1
                     b -= 1
-                    hpyc.write_without_flush(self, str(a) + "/" + str(b))
+                    hpyc.write_without_flush(file, str(a) + "/" + str(b))
                     buffer_len += 1
                     continue
                 else:
                     a -= 1
                     b += 1
-                    hpyc.write_without_flush(self, str(a) + "/" + str(b))
+                    hpyc.write_without_flush(file, str(a) + "/" + str(b))
                     buffer_len += 1
                     continue

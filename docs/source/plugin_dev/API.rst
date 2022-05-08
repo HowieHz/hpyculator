@@ -60,14 +60,12 @@ flush
 output
 -------------------
 
-    第一个参数是代指主类（确切一点是指输出窗口），
+    第一个参数是要输出的东西，
 
-    第二个参数是要输出的东西，
-
-    第三个参数是后缀，默认为换行符
+    第二个参数是后缀，默认为换行符
 
 效果是将指定数据打印在输出窗口上
 
 .. code-block:: python
 
-    def output(self,anything,end="\n"): -> None
+    def output(anything,end="\n"): -> None

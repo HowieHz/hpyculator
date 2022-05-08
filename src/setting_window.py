@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QMessageBox, QDialog
 
 from ui.setting_window import Ui_SettingWindow
 
-from ui.signal import setting_window_signal
+from hpyculator import setting_window_signal
 
 from Doc import VERSION  # 版本号导入
 
