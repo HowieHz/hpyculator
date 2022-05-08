@@ -1,7 +1,7 @@
-from . import Doc
-from . import Version
+from . import doc
+from . import version
 
-TODO = Doc.TODO
-START_SHOW = Doc.START_SHOW
-UPDATE_LOG = Doc.UPDATE_LOG
-VERSION = Version.VERSION
+TODO = doc.TODO
+START_SHOW = doc.START_SHOW
+UPDATE_LOG = doc.UPDATE_LOG
+VERSION = version.VERSION

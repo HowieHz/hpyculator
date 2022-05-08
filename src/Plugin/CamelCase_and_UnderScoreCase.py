@@ -37,9 +37,7 @@ PLUGIN_METADATA = {
 
 def on_calculate(data, self, todo):
     text, input_mode, output_mode = data.split(",")
-    print("text:", text)
-    print("input_mode:", input_mode)
-    print("output_mode:", output_mode)
+    text_list = [] #存放单词组
     if input_mode == "0":
         text_list = str(text).split('_')
         print(text_list)

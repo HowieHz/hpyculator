@@ -1,4 +1,4 @@
-from . import Version  # 版本号导入
+from .version import VERSION  # 版本号导入
 
 TODO = """
 更新展望(咕咕咕):
@@ -16,9 +16,9 @@ TODO = """
 
 """
 各种量的命名规范
-hello_world 变量全部小写，使用下划线连接
+hello_world 变量,文件名(xswl.txt)全部小写，使用下划线连接
 helloWorld 函数(def)和方法使用小驼峰式命名法，首单词字母小写，后面单词字母大写
-HelloWorld 类名(Class)、文件名(Xswl.txt)使用帕斯卡命名规则(大驼峰式命名法,每一个单词的首字母都采用大写字母)。
+HelloWorld 类名(Class)、使用帕斯卡命名规则(大驼峰式命名法,每一个单词的首字母都采用大写字母)。
 HELLO_WORLD 常量(NEVER_GIVE_UP)全部大写，使用下划线连接单词
 numba jax感觉两个差不多都用不了
 """
@@ -49,7 +49,7 @@ HowieHz制作
 
 
 
-悄悄说:在输入栏输入update_log之后点击运算就可以看更新日志了""" % Version.VERSION)
+悄悄说:在输入栏输入update_log之后点击运算就可以看更新日志了""" % VERSION)
 
 UPDATE_LOG = """更新日志:
 20220430-20220505

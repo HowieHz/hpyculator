@@ -3,11 +3,11 @@ import os
 
 from PySide6.QtWidgets import QMessageBox, QDialog
 
-from ui.SettingWindow import Ui_SettingWindow
+from ui.setting_window import Ui_SettingWindow
 
-from ui.Signal import setting_window_signal
+from ui.signal import setting_window_signal
 
-from Doc.Version import VERSION  # 版本号导入
+from Doc import VERSION  # 版本号导入
 
 
 class SettingApplication(QDialog):

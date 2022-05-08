@@ -36,7 +36,6 @@ def on_calculate(num, self, do_what):  # 返回一个列表
             hpyc.output(self, "1")
         fs1 = 1
         fs2 = 1
-        fs3 = 1
         n = 2
         while n < num:
             fs3 = fs1
@@ -54,7 +53,6 @@ def on_calculate(num, self, do_what):  # 返回一个列表
             hpyc.write(self, "1")
         fs1 = 1
         fs2 = 1
-        fs3 = 1
         n = 2
         while n < num:
             fs3 = fs1
