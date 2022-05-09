@@ -16,6 +16,7 @@ from calculate_manager import CalculationThread  # 计算线程
 
 # pyside6 ui signal导入
 from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtGui import QTextCursor
 from setting_window import SettingApplication
 from ui.main_window import Ui_MainWindow
 from hpyculator import main_window_signal
@@ -158,6 +159,12 @@ class Application(QMainWindow):
         def setStartButtonState(State: bool):
             self.ui.start_button.setEnabled(State)
 
+        def setOutPutBoxCursor(where: str):  # 目前只有end
+            cursor = self.ui.output_box.textCursor()
+            cursor.movePosition(QTextCursor.End)
+            #https://doc.qt.io/qtforpython-5/PySide2/QtGui/QTextCursor.html#PySide2.QtGui.PySide2.QtGui.QTextCursor.MoveOperation
+            self.ui.output_box.setTextCursor(cursor)
+
         main_window_signal.appendOutPutBox.connect(appendOutPut)
 
         main_window_signal.setOutPutBox.connect(setOutPut)
@@ -167,6 +174,8 @@ class Application(QMainWindow):
         main_window_signal.setStartButtonText.connect(setStartButtonText)
 
         main_window_signal.setStartButtonState.connect(setStartButtonState)
+
+        main_window_signal.setOutPutBoxCursor.connect(setOutPutBoxCursor)
 
     def startEvent(self) -> None:
         """
@@ -396,8 +405,8 @@ if __name__ == '__main__':
     logCheck(GLOBAL_SETTING_FILE_PATH)  # 日志检查
     global_plugin_option_id_dict = pluginCheck()  # 插件加载
 
-    app = QApplication([])  # 启动一个应用
+    app = QApplication(sys.argv)  # 启动一个应用
     main_window = Application(GLOBAL_SETTING_FILE_PATH, GLOBAL_OUTPUT_DIR_PATH, global_plugin_option_id_dict)  # 实例化主窗口
 
     main_window.show()  # 展示主窗口
-    app.exec()  # 避免程序执行到这一行后直接退出
+    sys.exit(app.exec())  # 避免程序执行到这一行后直接退出

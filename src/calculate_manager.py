@@ -29,7 +29,9 @@ class CalculationThread(Thread):
         :param output_dir_path; 输出目录
         :return:
         """
-        super().__init__()
+        Thread.__init__(self)
+        self.daemon = True #避免后台残留
+
 
         self.inputbox_data = inputbox_data
         self.calculation_mode = calculation_mode
@@ -53,22 +55,18 @@ class CalculationThread(Thread):
 
             if plugin_attribute_return_mode == hpyc.RETURN_ONCE:
                 result = str(calculate_fun(inputbox_data))
-                main_window_signal.setOutPutBox.emit(str(result) + "\n")  # 结果为str，直接输出
+                main_window_signal.appendOutPutBox.emit(str(result) + "\n")  # 结果为str，直接输出
             elif plugin_attribute_return_mode == hpyc.RETURN_LIST:  # 算一行输出一行
-                main_window_signal.clearOutPutBox.emit()  # 清空输出框
                 result = calculate_fun(inputbox_data)
                 for result_process in result:
                     main_window_signal.appendOutPutBox.emit(str(result_process) + "\\n")  # 算一行输出一行
             elif plugin_attribute_return_mode == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
-                main_window_signal.clearOutPutBox.emit()  # 清空输出框
                 result = calculate_fun(inputbox_data)
                 for result_process in result:  # 计算
                     main_window_signal.appendOutPutBox.emit(str(result_process))  # 算一行输出一行
             elif plugin_attribute_return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                main_window_signal.clearOutPutBox.emit()  # 清空输出框
                 calculate_fun(inputbox_data, 'output')
             elif plugin_attribute_return_mode == hpyc.NO_RETURN:
-                main_window_signal.clearOutPutBox.emit()  # 清空输出框
                 calculate_fun(inputbox_data)
             else:
                 pass
@@ -144,7 +142,6 @@ class CalculationThread(Thread):
                     else:
                         pass
                 finally:
-                    main_window_signal.clearOutPutBox.emit()  # 清空输出框
                     filestream.seek(0)  # 将文件指针移到开始处，准备读取文件
                     if limit:
                         for times, line in enumerate(quickTraverseFile(filestream)):
@@ -186,7 +183,8 @@ class CalculationThread(Thread):
 
         # ------------------------------------------
         main_window_signal.setStartButtonText.emit("计算程序正在运行中，请耐心等待")
-        main_window_signal.setStartButtonState.emit(False)
+        main_window_signal.setStartButtonState.emit(False)  # 防止按钮反复触发
+        main_window_signal.clearOutPutBox.emit()  # 清空输出框
         plugin_attribute_return_mode = plugin_attributes["return_mode"]
         try:
             if calculation_mode == "calculate_save":
@@ -199,8 +197,9 @@ class CalculationThread(Thread):
                 calculate_base_mode()
         except Exception as e:
             main_window_signal.setOutPutBox.emit(f"插件运算发生错误：{str(e)}\n\n请检查输入格式")
-        main_window_signal.setStartButtonText.emit("计算")
-        main_window_signal.setStartButtonState.emit(True)
+        main_window_signal.setOutPutBoxCursor.emit("end")  # 光标设到文本框尾部
+        main_window_signal.setStartButtonText.emit("计算")  # 设置按钮字
+        main_window_signal.setStartButtonState.emit(True)  # 启用按钮
 
         self.is_thread_running[0] = False  # 表示进程结束
         return None
