@@ -2,7 +2,7 @@ import os
 import shelve
 import sys
 import webbrowser
-import hpyculator as hpyc
+from hpyculator import hpycore as hpyc
 # import importlib
 # import pyperclip
 # import jpype

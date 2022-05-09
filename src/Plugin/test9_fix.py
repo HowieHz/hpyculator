@@ -1,4 +1,4 @@
-import hpyculator as hpyc
+from hpyculator import hpycore as hpyc
 
 PLUGIN_METADATA = {
     'input_mode': hpyc.STRING,
@@ -28,6 +28,7 @@ def on_calculate(data):  # 调用时传入两个参数，第一个参数是输�
 
 
 def on_calculate_with_save(data):  # 返回一个字符串，第一个参数是输入，第二个参数是需要被保存的文件流，要作为保存函数的第一个参数
+    print(hpyc.getIoInstance())
     num = data
     num = int(num)
     need_write = ""

@@ -11,6 +11,8 @@
 
 .. code-block:: python
 
+    from hpyculator import hpycore as hpyc
+
     PLUGIN_METADATA = {
     'input_mode' : hpyc.STRING,#输入模式，STRING为传入字符串,NUM为传入int,FLOAT为传入float(传入的作为on_calculate函数的开始计算值)
     'id' : '[文件名]',#ID，插件标识符，需要和文件名一致
@@ -84,7 +86,7 @@
 
 ``return_mode`` 参数讲解
 ----------------------------------------------------------------------------
-    import hpyculator as hpyc
+    ``from hpyculator import hpycore as hpyc``
 
     方案0  -> hpyc.RETURN_ONCE
 

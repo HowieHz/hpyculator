@@ -1,12 +1,11 @@
 import datetime
 import time
 from threading import Thread
-import hpyculator as hpyc
 import tempfile
 import os
 from functools import partial  # 偏函数真好用
 from hpyculator import main_window_signal
-from hpyculator import io_instance
+from hpyculator import hpycore as hpyc
 
 from typing import Iterator
 
@@ -99,10 +98,10 @@ class CalculationThread(Thread):
                         filestream.write(str(result_process))
                         filestream.flush()  # 算出来就存进去
                 elif plugin_attribute_return_mode == hpyc.NO_RETURN:
-                    io_instance[0] = filestream
+                    hpyc.setIoInstance(filestream)
                     selected_plugin.on_calculate_with_save(inputbox_data)
                 elif plugin_attribute_return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                    io_instance[0] = filestream
+                    hpyc.setIoInstance(filestream)
                     calculate_fun(inputbox_data, 'save')
                 else:
                     pass
@@ -137,10 +136,10 @@ class CalculationThread(Thread):
                             filestream.write(str(result_process))
                             filestream.flush()  # 算出来就存进去
                     elif plugin_attribute_return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                        io_instance[0] = filestream
+                        hpyc.setIoInstance(filestream)
                         calculate_fun(inputbox_data, 'save')
                     elif plugin_attribute_return_mode == hpyc.NO_RETURN:
-                        io_instance[0] = filestream
+                        hpyc.setIoInstance(filestream)
                         selected_plugin.on_calculate_with_save(inputbox_data)
                     else:
                         pass

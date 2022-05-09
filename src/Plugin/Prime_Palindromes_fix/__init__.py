@@ -1,4 +1,4 @@
-import hpyculator as hpyc
+from hpyculator import hpycore as hpyc
 
 PLUGIN_METADATA = {
     'input_mode': hpyc.FLOAT,
