@@ -37,7 +37,7 @@ HowieHz构建了插件化的部分
     "fullwidth_symbol": hpyc.OFF
 }
 
-"""
+r"""
 改成jdk8构建了，这个懒得再打一遍了，先放在这
     注：
     本插件基于jdk17构建

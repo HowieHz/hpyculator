@@ -34,7 +34,7 @@ PLUGIN_METADATA = {
 def on_calculate(num: str, do_what):  # 返回一个列表
     try:
         a, b, c = num.split(",")
-    except:
+    except ValueError:
         hpyc.output("请按格式输入！！！")
         return
     a = int(a)

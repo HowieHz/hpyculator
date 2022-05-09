@@ -163,9 +163,6 @@ class CalculationThread(Thread):
             for chunk in iter(partial(file.read, chunk_size), ''):  # 用readline的话，读到换行符就会直接停止读取，不会读取到8192B，会增加读取次数
                 yield chunk
 
-        main_window_signal.setOutPutBox.emit("计算程序正在运行中，所需时间较长，请耐心等待")
-        plugin_attribute_return_mode = plugin_attributes["return_mode"]
-
         def calculate_save_mode(output_dir_path):
             if plugin_attributes["use_quantifier"] == hpyc.ON:
                 filename = f"{datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S')} {plugin_attributes['save_name']}{str(inputbox_data)}{plugin_attributes['quantifier']}"
@@ -174,12 +171,12 @@ class CalculationThread(Thread):
             filepath_name = os.path.join(output_dir_path, f"{filename}.txt")
             time_spent = whatNeedCalculateWithSave(filepath_name)
             # 以下是计算后工作
-            main_window_signal.setOutPutBox.emit(f"""\n本次计算+保存花费了{time_spent:.6f}秒\n\n计算结果已保存在 {filepath_name} """)  # 输出本次计算时间
+            main_window_signal.appendOutPutBox.emit(f"""\n\n本次计算+保存花费了{time_spent:.6f}秒\n\n计算结果已保存在 {filepath_name} """)  # 输出本次计算时间
 
         def calculate_o_mode(limit=False):
             time_spent = whatNeedCalculateWithOutputOptimization(limit)
             # 以下是计算后工作
-            main_window_signal.appendOutPutBox.emit(f"""\n本次计算+输出花费了{time_spent:.6f}秒\n\n已启用输出优化""")  # 输出本次计算时间
+            main_window_signal.appendOutPutBox.emit(f"""\n\n本次计算+输出花费了{time_spent:.6f}秒\n\n已启用输出优化""")  # 输出本次计算时间
 
         def calculate_base_mode():
             time_spent = whatNeedCalculate()
@@ -188,6 +185,9 @@ class CalculationThread(Thread):
                 f"\n\n本次计算+输出花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
 
         # ------------------------------------------
+        main_window_signal.setStartButtonText.emit("计算程序正在运行中，请耐心等待")
+        main_window_signal.setStartButtonState.emit(False)
+        plugin_attribute_return_mode = plugin_attributes["return_mode"]
         try:
             if calculation_mode == "calculate_save":
                 calculate_save_mode(self.output_dir_path)
@@ -199,6 +199,8 @@ class CalculationThread(Thread):
                 calculate_base_mode()
         except Exception as e:
             main_window_signal.setOutPutBox.emit(f"插件运算发生错误：{str(e)}\n\n请检查输入格式")
+        main_window_signal.setStartButtonText.emit("计算")
+        main_window_signal.setStartButtonState.emit(True)
 
         self.is_thread_running[0] = False  # 表示进程结束
         return None

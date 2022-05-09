@@ -152,11 +152,21 @@ class Application(QMainWindow):
         def setOutPut(msg: str):
             self.ui.output_box.setPlainText(msg)
 
+        def setStartButtonText(msg: str):
+            self.ui.start_button.setText(msg)
+
+        def setStartButtonState(State: bool):
+            self.ui.start_button.setEnabled(State)
+
         main_window_signal.appendOutPutBox.connect(appendOutPut)
 
         main_window_signal.setOutPutBox.connect(setOutPut)
 
         main_window_signal.clearOutPutBox.connect(clearOutPut)
+
+        main_window_signal.setStartButtonText.connect(setStartButtonText)
+
+        main_window_signal.setStartButtonState.connect(setStartButtonState)
 
     def startEvent(self) -> None:
         """
