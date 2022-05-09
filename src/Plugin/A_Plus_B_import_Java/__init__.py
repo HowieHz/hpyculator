@@ -46,7 +46,7 @@ HowieHz构建了插件化的部分
     """
 
 
-def on_calculate(data, todo, file):
+def on_calculate(data, todo):
     a, b = data.split(",")
     jar_path = str(os.path.abspath(__file__))[:-11] + "A+Bproj.jar"
     jvm_path = jpype.getDefaultJVMPath()
@@ -55,7 +55,7 @@ def on_calculate(data, todo, file):
     if todo == "output":
         hpyc.output(jpype.JClass('com.shacha.Main').main(a, b))
     else:
-        hpyc.write(file, jpype.JClass('com.shacha.Main').main(a, b))
+        hpyc.write(jpype.JClass('com.shacha.Main').main(a, b))
     try:
         jpype.shutdownJVM()
     except:

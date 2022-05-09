@@ -31,7 +31,7 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(num: str, do_what,file ):  # 返回一个列表
+def on_calculate(num: str, do_what):  # 返回一个列表
     try:
         a, b, c = num.split(",")
     except:
@@ -45,4 +45,4 @@ def on_calculate(num: str, do_what,file ):  # 返回一个列表
     if do_what == "output":
         hpyc.output("以" + str(a) + "," + str(b) + "," + str(c) + "为边长的三角形的面积是:\n" + str(s))
     if do_what == "save":
-        hpyc.write(file, str(s))
+        hpyc.write(str(s))

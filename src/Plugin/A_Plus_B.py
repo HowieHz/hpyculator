@@ -38,8 +38,8 @@ def on_calculate(data: str) -> None:
     hpyc.output(a + b)
 
 
-def on_calculate_with_save(data: str, filename) -> None:
+def on_calculate_with_save(data: str) -> None:
     a, b = data.split(",")
     a = int(a)
     b = int(b)
-    hpyc.write(filename, a + b)
+    hpyc.write(a + b)

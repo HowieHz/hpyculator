@@ -35,9 +35,9 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(data, todo, file):
+def on_calculate(data, todo):
     text, input_mode, output_mode = data.split(",")
-    text_list = [] #存放单词组
+    text_list = []  # 存放单词组
     if input_mode == "0":
         text_list = str(text).split('_')
         print(text_list)
@@ -102,4 +102,4 @@ def on_calculate(data, todo, file):
     if todo == "output":
         hpyc.output(text)
     else:
-        hpyc.write(file, text)
+        hpyc.write(text)

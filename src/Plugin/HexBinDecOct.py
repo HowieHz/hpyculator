@@ -32,7 +32,7 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(data: str, todo , file):  # 输出到框体内
+def on_calculate(data: str, todo):  # 输出到框体内
     try:
         num, b = data.split(',')
     except Exception:
@@ -55,10 +55,10 @@ def on_calculate(data: str, todo , file):  # 输出到框体内
         hpyc.output("十进制：" + str(num))
         hpyc.output("十六进制：" + str(hex(num))[2:].upper())
     elif todo == "save":
-        hpyc.write_without_flush(file, "二进制：" + str(bin(num))[2:])
-        hpyc.write_without_flush(file, "八进制：" + str(oct(num))[2:])
-        hpyc.write_without_flush(file, "十进制：" + str(num))
-        hpyc.write_without_flush(file, "十六进制：" + str(hex(num))[2:].upper())
+        hpyc.write_without_flush("二进制：" + str(bin(num))[2:])
+        hpyc.write_without_flush("八进制：" + str(oct(num))[2:])
+        hpyc.write_without_flush("十进制：" + str(num))
+        hpyc.write_without_flush("十六进制：" + str(hex(num))[2:].upper())
     else:
         pass
     return

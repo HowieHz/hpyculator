@@ -86,7 +86,7 @@ def ishw(list_data: list):
         return False
 
 
-def on_calculate_with_save(data: str, save):
+def on_calculate_with_save(data: str):
     o, p = data.strip().split(",")
     a = int(o.strip())  # a是多少进制
     b_list = list(map(lambda x: int(x, a), list(p.strip())))
@@ -95,7 +95,7 @@ def on_calculate_with_save(data: str, save):
     b_list.reverse()  # 左边是个位，右边是高位
     for _ in range(0, 30):
         if ishw(b_list):
-            hpyc.write(save, "STEP=" + str(times))
+            hpyc.write("STEP=" + str(times))
             return
         times += 1
         for i in range(0, len(b_list)):
@@ -108,4 +108,4 @@ def on_calculate_with_save(data: str, save):
                     b_list.append("1")
         c_list = b_list[:]
         c_list.reverse()
-    hpyc.write(save, "Impossible!")
+    hpyc.write("Impossible!")

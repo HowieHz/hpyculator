@@ -6,43 +6,43 @@ import tempfile
 import os
 from functools import partial  # 偏函数真好用
 from hpyculator import main_window_signal
+from hpyculator import io_instance
 
 from typing import Iterator
+
+from instance import instance_plugin_manager
 
 
 class CalculationThread(Thread):
     def __init__(self,
-                inputbox_data,
-                calculation_mode,
-                selected_plugin_attributes,
-                selected_plugin,
-                is_thread_running,
-                OUTPUT_DIR_PATH):
+                 inputbox_data,
+                 calculation_mode,
+                 user_selection_id,
+                 is_thread_running,
+                 output_dir_path):
         """
         计算线程
 
         :param inputbox_data: 经过类型转换处理的用户输入
         :param calculation_mode; 计算模式
-        :param selected_plugin_attributes; 插件属性字典
-        :param selected_plugin; 被选择的插件对象
+        :param user_selection_id; 用户选择的插件的id
         :param is_thread_running; 进程是否在运行
-        :param OUTPUT_DIR_PATH; 输出目录
+        :param output_dir_path; 输出目录
         :return:
         """
         super().__init__()
 
         self.inputbox_data = inputbox_data
         self.calculation_mode = calculation_mode
-        self.plugin_attributes = selected_plugin_attributes
-        self.selected_plugin = selected_plugin
+        self.user_selection_id = user_selection_id
         self.is_thread_running = is_thread_running
-        self.OUTPUT_DIR_PATH = OUTPUT_DIR_PATH
+        self.output_dir_path = output_dir_path
 
     def run(self):
         inputbox_data = self.inputbox_data
         calculation_mode = self.calculation_mode
-        plugin_attributes = self.plugin_attributes
-        selected_plugin = self.selected_plugin
+        plugin_attributes = instance_plugin_manager.getPluginAttribute(self.user_selection_id)  # 插件属性字典
+        selected_plugin = instance_plugin_manager.getPluginInstance(self.user_selection_id)
 
         def whatNeedCalculate():
             """
@@ -67,7 +67,7 @@ class CalculationThread(Thread):
                     main_window_signal.appendOutPutBox.emit(str(result_process))  # 算一行输出一行
             elif plugin_attribute_return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
-                calculate_fun(inputbox_data, 'output', None)
+                calculate_fun(inputbox_data, 'output')
             elif plugin_attribute_return_mode == hpyc.NO_RETURN:
                 main_window_signal.clearOutPutBox.emit()  # 清空输出框
                 calculate_fun(inputbox_data)
@@ -99,9 +99,11 @@ class CalculationThread(Thread):
                         filestream.write(str(result_process))
                         filestream.flush()  # 算出来就存进去
                 elif plugin_attribute_return_mode == hpyc.NO_RETURN:
-                    selected_plugin.on_calculate_with_save(inputbox_data, filestream)
+                    io_instance[0] = filestream
+                    selected_plugin.on_calculate_with_save(inputbox_data)
                 elif plugin_attribute_return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                    calculate_fun(inputbox_data, 'save', filestream)
+                    io_instance[0] = filestream
+                    calculate_fun(inputbox_data, 'save')
                 else:
                     pass
 
@@ -135,9 +137,11 @@ class CalculationThread(Thread):
                             filestream.write(str(result_process))
                             filestream.flush()  # 算出来就存进去
                     elif plugin_attribute_return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                        calculate_fun(inputbox_data, 'save' ,filestream)
+                        io_instance[0] = filestream
+                        calculate_fun(inputbox_data, 'save')
                     elif plugin_attribute_return_mode == hpyc.NO_RETURN:
-                        selected_plugin.on_calculate_with_save(inputbox_data, filestream)
+                        io_instance[0] = filestream
+                        selected_plugin.on_calculate_with_save(inputbox_data)
                     else:
                         pass
                 finally:
@@ -187,7 +191,7 @@ class CalculationThread(Thread):
         # ------------------------------------------
         try:
             if calculation_mode == "calculate_save":
-                calculate_save_mode(self.OUTPUT_DIR_PATH)
+                calculate_save_mode(self.output_dir_path)
             elif calculation_mode == "calculate_o":
                 calculate_o_mode()
             elif calculation_mode == "calculate_o_l":
