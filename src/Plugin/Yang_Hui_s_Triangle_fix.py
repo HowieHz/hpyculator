@@ -33,14 +33,13 @@ def on_calculate(num):  # 返回一个列表
         hpyc.output(i)
 
 
-def on_calculate_with_save(num, file):  # 返回一个列表
+def on_calculate_with_save(num):  # 返回一个列表
     if num == 0:
-        hpyc.write(file, [])
+        hpyc.write([])
     l1 = [[1]]
     for _ in range(0, num - 1):
         l1.append(list(map(lambda x, y: x + y, [0] + l1[-1], l1[-1] + [0])))
     for i in l1:
-        hpyc.write_without_flush(file, i)
-    hpyc.flush(file)
-    l1 = None
+        hpyc.write_without_flush(i)
+    hpyc.flush()
     return

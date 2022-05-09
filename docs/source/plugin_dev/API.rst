@@ -4,11 +4,9 @@
 write
 -------------------
 
-    第一个参数是文件流，
+    第一个参数是要写入的东西，
 
-    第二个参数是要写入的东西，
-
-    第三个参数是后缀，默认为换行符
+    第二个参数可选参数 为输入后缀，默认为换行符
 
 效果是将指定数据写入硬盘
 
@@ -18,17 +16,15 @@ write
 
 .. code-block:: python
 
-    def write(file,anything,end="\n"): -> None
+    def write(anything,end="\n"): -> None
 
 
 write_without_flush
 --------------------------------------
 
-    第一个参数是文件流，
+    第一个参数是要写入的东西，
 
-    第二个参数是要写入的东西，
-
-    第三个参数是后缀，默认为换行符
+    第二个参数可选参数 为输入后缀，默认为换行符
 
 效果是将指定数据写入内存（要将这些数据写入硬盘需要使用 `flush <API.html#flush>`__\函数）
 
@@ -40,13 +36,13 @@ write_without_flush
 
 .. code-block:: python
 
-    def write_without_flush(file,anything,end="\n"): -> None
+    def write_without_flush(anything,end="\n"): -> None
 
 
 flush
 --------------------------------------
 
-    第一个参数是文件流
+    无形参
 
 搭配 `write_without_flush <API.html#write-without-flush>`__\函数使用
 
@@ -54,7 +50,7 @@ flush
 
 .. code-block:: python
 
-    def flush(file): -> None
+    def flush(): -> None
 
 
 output

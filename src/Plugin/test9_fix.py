@@ -27,7 +27,7 @@ def on_calculate(data):  # 调用时传入两个参数，第一个参数是输�
     return
 
 
-def on_calculate_with_save(data, file):  # 返回一个字符串，第一个参数是输入，第二个参数是需要被保存的文件流，要作为保存函数的第一个参数
+def on_calculate_with_save(data):  # 返回一个字符串，第一个参数是输入，第二个参数是需要被保存的文件流，要作为保存函数的第一个参数
     num = data
     num = int(num)
     need_write = ""
@@ -36,9 +36,9 @@ def on_calculate_with_save(data, file):  # 返回一个字符串，第一个参�
         need_write += "⑨\n"
         need_write_len += 1
         if need_write_len >= 100000000:
-            hpyc.write_without_flush(file, need_write)
-            hpyc.flush(file)
+            hpyc.write_without_flush(need_write)
+            hpyc.flush()
             need_write = ""
             need_write_len = 0
-    hpyc.write(file, need_write)
+    hpyc.write(need_write)
     return

@@ -59,18 +59,18 @@ answer_list = (
     9896989, 9902099, 9907099, 9908099, 9916199, 9918199, 9919199, 9921299, 9923299, 9926299, 9927299, 9931399, 9932399, 9935399, 9938399, 9957599, 9965699, 9978799, 9980899, 9981899, 9989899)
 
 
-def on_calculate(inp, do_what,file):
+def on_calculate(inp, do_what):
     if inp > 100000000:
         if do_what == "output":
             hpyc.output("我开摆了，这么大的数你还是找其他插件吧")
         else:
-            hpyc.write_without_flush(file, "我开摆了，这么大的数你还是找其他插件吧")
+            hpyc.write_without_flush("我开摆了，这么大的数你还是找其他插件吧")
         return
     if do_what == "save":
         for i in answer_list:
             if i > inp:
                 return
-            hpyc.write_without_flush(file, i)
+            hpyc.write_without_flush(i)
     else:
         for i in answer_list:
             if i > inp:

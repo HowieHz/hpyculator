@@ -3,7 +3,6 @@ import shelve
 import sys
 import webbrowser
 import hpyculator as hpyc
-from typing import Dict, Union
 # import importlib
 # import pyperclip
 # import jpype
@@ -12,8 +11,8 @@ import Doc  # 文档导入
 
 import logging  # 日志导入
 from log_manager import LogManager  # 日志管理 初始化
-from plugin_manager import PluginManager  # 插件管理
-from calculate_manager import CalculationThread #计算线程
+from instance import instance_plugin_manager  # 插件管理
+from calculate_manager import CalculationThread  # 计算线程
 
 # pyside6 ui signal导入
 from PySide6.QtWidgets import QApplication, QMainWindow
@@ -67,28 +66,26 @@ def pluginCheck():
     """
     加载插件
 
-    :return: plugin_filename_option_name_map, loaded_plugin
+    :return: plugin_option_id_dict, loaded_plugin
     """
-    return PluginManager().init_plugin()  # 加载插件
+    return instance_plugin_manager.initPlugin()  # 加载插件
 
 
 class Application(QMainWindow):
     def __init__(self,
                  setting_file_path,
                  output_dir_path,
-                 plugin_filename_option_name_map,
-                 loaded_plugin):
+                 plugin_option_id_dict):
         """
         主窗口程序类
         """
         # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
         self.SETTING_FILE_PATH = setting_file_path
         self.OUTPUT_DIR_PATH = output_dir_path
-        self.plugin_filename_option_name_map = plugin_filename_option_name_map  # 选项名映射id（文件或文件夹名）
-        self.selection_list = plugin_filename_option_name_map.keys()  # 选项名列表
-        self.loaded_plugin = loaded_plugin  # id映射插件对象
+        self.plugin_option_id_dict = plugin_option_id_dict  # 选项名映射id（文件或文件夹名）
+        self.selection_list = plugin_option_id_dict.keys()  # 选项名列表
+        # self.loaded_plugin = loaded_plugin  # id映射插件对象
 
-        self.selected_plugin_attributes: Dict[str, Union[str, int]] = {}  # 读取的属性
         self.user_selection_id: str = ""  # 用户选择的插件的文件名（id)
 
         super().__init__()
@@ -129,10 +126,10 @@ class Application(QMainWindow):
 
         # manager = Manager()
         # self.is_thread_running = manager.Value(bool,False)  # 防止反复启动计算线程
-        self.is_thread_running=[False] # 防止反复启动计算线程
+        self.is_thread_running = [False]  # 防止反复启动计算线程
 
         # 关于gui显示内容的初始化
-        self.ui.choices_list_box.addItems(self.plugin_filename_option_name_map.keys())  # 选项名添加到ui上
+        self.ui.choices_list_box.addItems(self.plugin_option_id_dict.keys())  # 选项名添加到ui上
         self.ui.output_box.setPlainText(Doc.START_SHOW)  # 开启的展示
         self.ui.search_box.setPlaceholderText("输入字符自动进行搜索\n清空搜索框显示全部插件")  # 灰色背景提示字符
         self.ui.search_box.clear()  # 不清空不显示灰色背景
@@ -213,7 +210,7 @@ class Application(QMainWindow):
         else:  # 选择不保存才输出结果
             if self.ui.output_optimization_check.isChecked():
                 if self.ui.output_lock_maximums_check.isChecked():
-                    calculation_mode = "calculate_o_l" #l=limit
+                    calculation_mode = "calculate_o_l"  # l=limit
                 else:
                     calculation_mode = "calculate_o"
             else:
@@ -223,12 +220,11 @@ class Application(QMainWindow):
         if not self.is_thread_running[0]:  # 防止同时运行两个进程
             self.is_thread_running[0] = True
             logging.debug("启动计算线程")
-            calculate_thread=CalculationThread(inputbox_data,
-                                               calculation_mode,
-                                               self.selected_plugin_attributes,
-                                               self.loaded_plugin[self.user_selection_id],
-                                               self.is_thread_running,
-                                               self.OUTPUT_DIR_PATH)  # 启动计算线程
+            calculate_thread = CalculationThread(inputbox_data,
+                                                 calculation_mode,
+                                                 self.user_selection_id,
+                                                 self.is_thread_running,
+                                                 self.OUTPUT_DIR_PATH)  # 启动计算线程
             calculate_thread.start()
         else:
             logging.debug("禁止同时运行多个线程")
@@ -243,19 +239,19 @@ class Application(QMainWindow):
         """
         # logging.debug(f'选中的选项名{self.ui.choices_list_box.currentItem().text()}')
         logging.debug(f'选中的选项名{item.text()}')
-        self.user_selection_id = str(self.plugin_filename_option_name_map[item.text()])  # 转换成文件名
-        self.selected_plugin_attributes = PluginManager.loadPluginAttribute(self.loaded_plugin, self.user_selection_id)
+        self.user_selection_id = str(self.plugin_option_id_dict[item.text()])  # 转换成ID
+        self.selected_plugin_attributes = selected_plugin_attributes = instance_plugin_manager.getPluginAttribute(self.user_selection_id)
 
         self.ui.output_box.setPlainText(f"""\
-{self.selected_plugin_attributes["output_start"]}
-{self.selected_plugin_attributes["output_name"]} {self.selected_plugin_attributes["version"]}
-by {self.selected_plugin_attributes["author"]}
+{selected_plugin_attributes["output_start"]}
+{selected_plugin_attributes["output_name"]} {selected_plugin_attributes["version"]}
+by {selected_plugin_attributes["author"]}
 
 
 使用提示
-{self.selected_plugin_attributes["help"]}
+{selected_plugin_attributes["help"]}
 
-{self.selected_plugin_attributes["output_end"]}""")
+{selected_plugin_attributes["output_end"]}""")
 
     def menuBar(self, *triggers):
         """
@@ -388,10 +384,10 @@ by {self.selected_plugin_attributes["author"]}
 if __name__ == '__main__':
     GLOBAL_SETTING_FILE_PATH, GLOBAL_OUTPUT_DIR_PATH = pathCheck()  # 路径检查
     logCheck(GLOBAL_SETTING_FILE_PATH)  # 日志检查
-    global_plugin_filename_option_name_map, global_loaded_plugin = pluginCheck()  # 插件加载
+    global_plugin_option_id_dict = pluginCheck()  # 插件加载
 
     app = QApplication([])  # 启动一个应用
-    window = Application(GLOBAL_SETTING_FILE_PATH, GLOBAL_OUTPUT_DIR_PATH, global_plugin_filename_option_name_map, global_loaded_plugin)  # 实例化主窗口
+    main_window = Application(GLOBAL_SETTING_FILE_PATH, GLOBAL_OUTPUT_DIR_PATH, global_plugin_option_id_dict)  # 实例化主窗口
 
-    window.show()  # 展示主窗口
+    main_window.show()  # 展示主窗口
     app.exec()  # 避免程序执行到这一行后直接退出

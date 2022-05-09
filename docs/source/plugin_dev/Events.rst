@@ -20,7 +20,7 @@
 
     .. code-block:: python
 
-        def on_calculate(input)
+        def on_calculate(inputdata)
             #插件主体
             return 你要输出的东西
 
@@ -38,7 +38,7 @@
 
 .. code-block:: python
 
-    def on_calculate(input)
+    def on_calculate(inputdata)
         #插件主体，需要输出到内屏的时候使用下面的语句
         output("你要输出的东西")
 
@@ -47,17 +47,15 @@
 
 调用插件的 ``on_calculate_with_save``\函数，
 
-    传入的第一个参数是用户的输入值，
-
-    传入的第二个参数是指代文件流（打开的文件）（请将第二个参数作为 `write <API.html#write>`__\函数或者 `write_without_flush <API.html#write-without-flush>`__\函数的第一个参数）
+    传入的第一个参数是用户的输入值
 
 .. code-block:: python
 
-    def on_calculate_with_save(input,file)
+    def on_calculate_with_save(inputdata)
         #插件主体，需要保存的时候使用下面的语句
-        write(file,"你要保存的东西")
+        write("你要保存的东西")
         #或者
-        write_without_flush(file,"你要保存的东西")
+        write_without_flush("你要保存的东西")
         #记得配合flush(file)使用，不然就和方案1没啥区别了
 
 当 ``return_mode``\为NO_RETURN_SINGLE_FUNCTION
@@ -74,8 +72,6 @@
 
     传入的第二个参数是 ``'output'``
 
-    传入的第三个参数是 None
-
 当用户选择保存
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -84,5 +80,3 @@
     传入的第一个参数是用户的输入值，
 
     传入的第二个参数是 ``'save'``
-
-    传入的第三个参数是指代文件流（打开的文件）（请将第二个参数作为 `write <API.html#write>`__\或者 `write_without_flush <API.html#write-without-flush>`__\的第一个参数）

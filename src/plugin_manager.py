@@ -20,12 +20,12 @@ class PluginManager:
         # 载入模块
         self.plugin_files_and_folder_name: List[list] = []  # Plugin目录下读取到的文件夹和文件
         self.plugin_files_name_folder: List[str] = []  # Plugin目录下读取到的有__init__.py的文件夹
-        # self.can_choose_number: List[str] = []  # 选择列表，储存着所有的选项名 #plugin_filename_option_name_map的键
+        # self.can_choose_number: List[str] = []  # 选择列表，储存着所有的选项名 #plugin_option_id_dict的键
         self.plugin_files_name_py: list[str] = []  # 储存着Plugin目录下的文件名
-        self.plugin_filename_option_name_map: Dict[str, str] = {}  # 选项名和实际文件名的映射表
+        self.plugin_option_id_dict: Dict[str, str] = {}  # 选项名和实际文件名的映射表
         self.loaded_plugin: Dict[str] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
 
-    def init_plugin_singer_file(self, plugin_files_name_py):
+    def __init_plugin_singer_file(self, plugin_files_name_py):
         """
         导入指定单文件插件
         :param plugin_files_name_py: 插件文件名列表，如[1.py,2.py,3.py]
@@ -44,12 +44,12 @@ class PluginManager:
             try:
                 # self.can_choose_number.append(
                 #     self.loaded_plugin[name].PLUGIN_METADATA['option_name'])  # 读取模块元数据，添加gui选项
-                self.plugin_filename_option_name_map[self.loaded_plugin[name].PLUGIN_METADATA['option_name']] = \
+                self.plugin_option_id_dict[self.loaded_plugin[name].PLUGIN_METADATA['option_name']] = \
                     self.loaded_plugin[name].PLUGIN_METADATA['id']
             except Exception as e:
                 logging.debug(f'init_plugin_singer_file inside Exception:{e}')
 
-    def init_plugin_folder(self, plugin_files_name):
+    def __init_plugin_folder(self, plugin_files_name):
         """
         导入指定文件夹插件
         :param plugin_files_name: 文件夹插件名列表，如["a","b","c"]
@@ -63,33 +63,39 @@ class PluginManager:
             try:
                 # self.can_choose_number.append(
                 #     self.loaded_plugin[name].PLUGIN_METADATA['option_name'])  # 读取模块元数据，添加gui选项
-                self.plugin_filename_option_name_map[self.loaded_plugin[name].PLUGIN_METADATA['option_name']] = \
+                self.plugin_option_id_dict[self.loaded_plugin[name].PLUGIN_METADATA['option_name']] = \
                     self.loaded_plugin[name].PLUGIN_METADATA['id']
             except Exception as e:
                 logging.debug(f'init_plugin_folder inside Exception:{e}')
 
-    def readPlugin(self, path):
+    def __readPluginPath(self, path):
         """
         读取指定目录下插件需重构
+
         :param path: 指定的目录 绝对路径
-        :return: None
+        :return: plugin_file_names  单文件插件的文件名,
+        folder_plugin_names  文件夹插件的文件名
         """
+        plugin_file_names = []
+        folder_plugin_names = []
         for root, _dir, file in os.walk(path):
-            self.plugin_files_and_folder_name.append(file)
+            plugin_file_names.append(file)
             root_list = str(root).split("\\")
             if root_list[-2] == 'Plugin':
                 if '__init__.py' in file:
-                    self.plugin_files_name_folder.append(root_list[-1])
+                    folder_plugin_names.append(root_list[-1])
+        return plugin_file_names, folder_plugin_names
 
-    def init_plugin(self):
+    def initPlugin(self):
         """
         导入插件
-        :return: 读取到的插件的option_name字段列表,插件的option_name字段和id字段的键值对,插件的id字段和加载的插件对象的键值对
+
+        :return: [dict]{插件id字段,对应的插件对象}
         """
-        self.readPlugin(self.PLUGIN_DIR_PATH)  # 读目录获取文件名
+        plugin_file_names, folder_plugin_names = self.__readPluginPath(self.PLUGIN_DIR_PATH)  # 读目录获取文件名
 
         try:  # 从所有读取的文件中挑选出.py为后缀的文件
-            for i_list in self.plugin_files_and_folder_name:
+            for i_list in plugin_file_names:
                 if (i_list[0].split("."))[-1] == "py":
                     if not self.plugin_files_name_py:  # 第一遍空列表才写入
                         self.plugin_files_name_py = i_list
@@ -98,30 +104,27 @@ class PluginManager:
             logging.debug("挑选单文件插件名时出现问题" + str(e))
 
         try:
-            self.init_plugin_singer_file(self.plugin_files_name_py)  # 导入单文件插件
+            self.__init_plugin_singer_file(self.plugin_files_name_py)  # 导入单文件插件
         except Exception as e:
             logging.debug(f'init_plugin_singer_file outside Exception:{e}')
 
         try:
-            self.init_plugin_folder(self.plugin_files_name_folder)  # 导入文件插件
+            self.__init_plugin_folder(folder_plugin_names)  # 导入文件插件
         except Exception as e:
             logging.debug(f'init_plugin_folder outside Exception:{e}')
 
         # loaded_plugin: Optional[Dict[str, Callable]] = None  # 存放加载完毕的插件 ID-读取的插件
-        # plugin_filename_option_name_map: Optional[Dict[str, str]] = None  # 选项名和实际文件名的映射表
+        # plugin_option_id_dict: Optional[Dict[str, str]] = None  # 选项名和实际文件名的映射表
         # selection_list: Optional[list[str]] = None  # 存放选项名列表
+        # self.loaded_plugin
+        return self.plugin_option_id_dict
 
-        return self.plugin_filename_option_name_map, self.loaded_plugin
-
-    @staticmethod
-    def loadPluginAttribute(loaded_plugin,
-                            user_selection):
+    def getPluginAttribute(self, user_selection_id):
         """
         读取插件属性
 
-        :param loaded_plugin:
-        :param user_selection:
-        :return: plugin_attributes
+        :param user_selection_id:
+        :return: [list]attributes of plugin
         """
         plugin_attributes = {}  # 读取好的属性放在这里
 
@@ -133,7 +136,7 @@ class PluginManager:
                             'input_mode', 'return_mode', 'save_name', 'output_name', 'use_quantifier', 'version']:
             try:
                 logging.debug(f'load {option_name}')
-                plugin_attributes[option_name] = loaded_plugin[user_selection].PLUGIN_METADATA[option_name]
+                plugin_attributes[option_name] = self.loaded_plugin[user_selection_id].PLUGIN_METADATA[option_name]
             except Exception as e:
                 logging.debug(str(e))
                 plugin_attributes[option_name] = hpyc.OFF
@@ -142,3 +145,12 @@ class PluginManager:
                 "'", "‘").replace('"', '”').replace('(', '（').replace(')', '）')
 
         return plugin_attributes
+
+    def getPluginInstance(self, user_selection_id):
+        """
+        获取插件对象
+
+        :param user_selection_id:
+        :return: A instance of plugin
+        """
+        return self.loaded_plugin[user_selection_id]

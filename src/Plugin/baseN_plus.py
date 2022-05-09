@@ -52,7 +52,7 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(data: str, todo, file) -> None:  # 输出到框体内
+def on_calculate(data: str, todo) -> None:  # 输出到框体内
     num_rep_to = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_"
     num_rep_from = {
         '0': 0,
@@ -164,4 +164,4 @@ def on_calculate(data: str, todo, file) -> None:  # 输出到框体内
     if todo == "output":
         hpyc.output(aw)
     else:
-        hpyc.write(file, aw)
+        hpyc.write(aw)
