@@ -75,6 +75,8 @@
 
 [bilibili@星星上的圣诞树](https://space.bilibili.com/8222978) 在这些日子的精神支持，建议提供和测试帮助。如果没有他的帮助，项目可能要延迟几个月上线
 
+[bilibili@一场梦场空](https://space.bilibili.com/309645422)      协助测试，发现重大bug
+
 [bilibili@珞晟](https://space.bilibili.com/312714981)           精神支持，水群支持
 
 [bilibili@核心電工](https://space.bilibili.com/25325033)        精神支持，水群支持
