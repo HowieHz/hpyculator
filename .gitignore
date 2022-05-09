@@ -8,6 +8,7 @@ Setting/
 Python混合编程支持/
 打包用/
 Log/
+out/
 *.bat
 *.py[cod]
 *$py.class

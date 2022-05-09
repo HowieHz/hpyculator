@@ -1,3 +1,3 @@
 jpype1
-hpyculator>=1.2.0
+hpyculator>=1.4.4
 pyside6
