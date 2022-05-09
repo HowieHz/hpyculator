@@ -1,7 +1,9 @@
-特别鸣谢
+特别鸣谢（排名不分先后）
 ====================================
 
 [bilibili@星星上的圣诞树](https://space.bilibili.com/8222978) 在这些日子的精神支持，建议提供和测试帮助
+
+[bilibili@一场梦场空](https://space.bilibili.com/309645422)      协助测试，发现重大bug
 
 [bilibili@珞晟](https://space.bilibili.com/312714981)           精神支持，水群支持
 
