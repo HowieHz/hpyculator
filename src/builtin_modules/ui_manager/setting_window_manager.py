@@ -4,14 +4,14 @@ import os
 # pyside6
 from PySide6.QtWidgets import QMessageBox, QDialog
 
-from . import Ui_SettingWindow  # 从init导
+from ..ui import Ui_SettingWindow  # 从init导
 from ..document import VERSION  # 版本号导入
 
 # 远程包
 from hpyculator import setting_window_signal
 
 
-class SettingApplication(QDialog):
+class SettingWindowApplication(QDialog):
     def __init__(self):
         super().__init__()
         self.ui = Ui_SettingWindow()  # 实例化ui

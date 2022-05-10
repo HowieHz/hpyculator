@@ -1,3 +1,5 @@
 jpype1
 hpyculator>=1.4.4
 pyside6
+mypy
+pytest

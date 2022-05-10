@@ -1,0 +1,349 @@
+import os
+import shelve
+import sys
+import webbrowser
+from hpyculator import hpycore as hpyc
+
+from .. import document as doc
+
+import logging  # 日志导入
+from ..plugin_manager import instance_plugin_manager  # 插件管理
+from ..calculate_manager import CalculationThread  # 计算线程
+
+# pyside6 ui signal导入
+from PySide6.QtWidgets import QMainWindow
+from PySide6.QtGui import QTextCursor
+from ..ui import Ui_MainWindow
+from hpyculator import main_window_signal
+
+# 窗口管理类（用于管理设置的窗口）
+from . import SettingWindowApplication
+
+
+class MainWindowApplication(QMainWindow):
+    def __init__(self,
+                 setting_file_path,
+                 output_dir_path,
+                 plugin_option_id_dict):
+        """
+        主窗口程序类
+        """
+        # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
+        self.SETTING_FILE_PATH = setting_file_path
+        self.OUTPUT_DIR_PATH = output_dir_path
+        self.plugin_option_id_dict = plugin_option_id_dict  # 选项名映射id（文件或文件夹名）
+        self.selection_list = plugin_option_id_dict.keys()  # 选项名列表
+        # self.loaded_plugin = loaded_plugin  # id映射插件对象
+
+        self.user_selection_id: str = ""  # 用户选择的插件的文件名（id)
+
+        super().__init__()
+        self.ui = Ui_MainWindow()  # UI类的实例化()
+        self.ui.setupUi(self)  # ui初始化
+        self.bindSignalWithSlots()  # 信号和槽的绑定
+
+        self.main_window_signal = main_window_signal  # 更方便地使用自定义事件
+
+        self.setWindowTitle("hpyculator %s -HowieHz制作" % doc.VERSION)  # 设置标题
+
+        # 读取设置文件-按钮状态和输出目录
+        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
+            try:
+                self.is_save_settings = setting_file['is_save_settings']  # 是否保存设置
+            except KeyError:
+                setting_file['is_save_settings'] = False  # 默认不保存按键状态
+                self.is_save_settings = False  # 默认不保存按键状态
+
+            if self.is_save_settings:  # 当保存check状态
+                try:
+                    self.ui.save_check.setChecked(setting_file['save_check'])  # 根据数据设置选项状态
+                except KeyError:
+                    setting_file['save_check'] = self.ui.save_check.isChecked()
+                try:
+                    self.ui.output_optimization_check.setChecked(setting_file['output_optimization'])  # 根据数据设置选项状态
+                except KeyError:
+                    setting_file['output_optimization'] = True
+                    self.ui.output_optimization_check.setChecked(True)
+                try:
+                    self.ui.output_lock_maximums_check.setChecked(setting_file['output_lock_maximums'])  # 根据数据设置选项状态
+                except KeyError:
+                    setting_file['output_lock_maximums'] = True
+                    self.ui.output_lock_maximums_check.setChecked(True)
+            else:  # 当不保存check状态
+                self.ui.output_optimization_check.setChecked(True)
+                self.ui.output_lock_maximums_check.setChecked(True)
+
+        # manager = Manager()
+        # self.is_thread_running = manager.Value(bool,False)  # 防止反复启动计算线程
+        self.is_thread_running = [False]  # 防止反复启动计算线程
+
+        # 关于gui显示内容的初始化
+        self.ui.choices_list_box.addItems(self.plugin_option_id_dict.keys())  # 选项名添加到ui上
+        self.ui.output_box.setPlainText(doc.START_SHOW)  # 开启的展示
+        self.ui.search_box.setPlaceholderText("输入字符自动进行搜索\n清空搜索框显示全部插件")  # 灰色背景提示字符
+        self.ui.search_box.clear()  # 不清空不显示灰色背景
+        self.ui.input_box.setFocus()  # 设置焦点
+
+    def bindSignalWithSlots(self):
+        # self.ui.___ACTION___.triggered.connect(___FUNCTION___)
+        # self.ui.___BUTTON___.clicked.connect(___FUNCTION___)
+        # self.ui.___COMBO_BOX___.currentIndexChanged.connect(___FUNCTION___)
+        # self.ui.___SPIN_BOX___.valueChanged.connect(___FUNCTION___)
+        # 自定义信号.属性名.connect(___FUNCTION___)
+        # my_signal.setProgressBar.connect(self.set_progress_bar)
+        # my_signal.setResult.connect(self.set_result)
+        def appendOutPut(msg: str):
+            self.ui.output_box.appendPlainText(msg)
+
+        def clearOutPut():
+            self.ui.output_box.clear()
+
+        def setOutPut(msg: str):
+            self.ui.output_box.setPlainText(msg)
+
+        def setStartButtonText(msg: str):
+            self.ui.start_button.setText(msg)
+
+        def setStartButtonState(state: bool):
+            self.ui.start_button.setEnabled(state)
+
+        def setOutPutBoxCursor(where: str):  # 目前只有end
+            cursor = self.ui.output_box.textCursor()
+            cursor_state_map = {"end": QTextCursor.End}
+            cursor.movePosition(cursor_state_map[where])
+            # https://doc.qt.io/qtforpython-5/PySide2/QtGui/QTextCursor.html#PySide2.QtGui.PySide2.QtGui.QTextCursor.MoveOperation
+            self.ui.output_box.setTextCursor(cursor)
+
+        main_window_signal.appendOutPutBox.connect(appendOutPut)
+
+        main_window_signal.setOutPutBox.connect(setOutPut)
+
+        main_window_signal.clearOutPutBox.connect(clearOutPut)
+
+        main_window_signal.setStartButtonText.connect(setStartButtonText)
+
+        main_window_signal.setStartButtonState.connect(setStartButtonState)
+
+        main_window_signal.setOutPutBoxCursor.connect(setOutPutBoxCursor)
+
+    def startEvent(self) -> None:
+        """
+        初始化计算，绑定计算按钮，启动计算线程
+
+        :return: None
+        """
+        # self.inputbox_data - 储存输入框的内容
+        # time_before_calculate - 临时储存时间，计录 计算时间
+
+        if str(self.ui.input_box.toPlainText()) == "update_log":  # update_log检测
+            self.ui.output_box.setPlainText(doc.UPDATE_LOG)
+            return
+        if self.ui.choices_list_box.currentItem() is None:  # 是否选择检测
+            self.ui.output_box.setPlainText("\n\n" +
+                                            """
+不选要算什么我咋知道要算啥子嘞
+
+请在左侧选择运算核心
+          ↓
+← ← ←""")
+            return None
+        if self.ui.input_box.toPlainText() == "":  # 是否输入检测
+            self.ui.output_box.setPlainText("""                                                  ↑
+                                                  ↑上面的就是输入框了
+不输要算什么我咋知道要算啥子嘞     ↑
+         → → → → → → → → → →  ↑
+         ↑
+请在上面的框输入需要被处理的数据
+
+如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）""")
+            return None
+
+        plugin_attribute_input_mode = self.selected_plugin_attributes["input_mode"]
+        try:
+            if plugin_attribute_input_mode == hpyc.STRING:
+                inputbox_data = str(self.ui.input_box.toPlainText())  # 取得输入框的数字
+            elif plugin_attribute_input_mode == hpyc.FLOAT:
+                inputbox_data = float(self.ui.input_box.toPlainText())  # 取得输入框的数字
+            elif plugin_attribute_input_mode == hpyc.NUM:
+                inputbox_data = int(self.ui.input_box.toPlainText())  # 取得输入框的数字
+            else:
+                inputbox_data = 0  # 缺省
+        except Exception as e:
+            main_window_signal.setOutPutBox.emit(f"输入转换发生错误:{str(e)}\n\n请检查输入格式")
+            return
+
+        # 决定计算运行模式
+        if self.ui.save_check.isChecked():  # 检测保存按钮的状态判断是否保存
+            calculation_mode = "calculate_save"
+        else:  # 选择不保存才输出结果
+            if self.ui.output_optimization_check.isChecked():
+                if self.ui.output_lock_maximums_check.isChecked():
+                    calculation_mode = "calculate_o_l"  # l=limit
+                else:
+                    calculation_mode = "calculate_o"
+            else:
+                calculation_mode = "calculate"
+
+        # 以上是计算前工作
+        if not self.is_thread_running[0]:  # 防止同时运行两个进程
+            self.is_thread_running[0] = True
+            logging.debug("启动计算线程")
+            calculate_thread = CalculationThread(inputbox_data,
+                                                 calculation_mode,
+                                                 self.user_selection_id,
+                                                 self.is_thread_running,
+                                                 self.OUTPUT_DIR_PATH)  # 启动计算线程
+            calculate_thread.start()
+        else:
+            logging.debug("禁止同时运行多个线程")
+        return None
+
+    def userChooseOptionEvent(self, item):
+        """
+        左侧选择算法之后触发的函数 选择算法事件
+
+        :param item:
+        :return: None
+        """
+        # logging.debug(f'选中的选项名{self.ui.choices_list_box.currentItem().text()}')
+        logging.debug(f'选中的选项名{item.text()}')
+        self.user_selection_id = str(self.plugin_option_id_dict[item.text()])  # 转换成ID
+        self.selected_plugin_attributes = selected_plugin_attributes = instance_plugin_manager.getPluginAttribute(self.user_selection_id)
+
+        self.ui.output_box.setPlainText(f"""\
+{selected_plugin_attributes["output_start"]}
+{selected_plugin_attributes["output_name"]} {selected_plugin_attributes["version"]}
+by {selected_plugin_attributes["author"]}
+
+
+使用提示
+{selected_plugin_attributes["help"]}
+
+{selected_plugin_attributes["output_end"]}""")
+
+    def menuBar(self, *triggers):
+        """
+        菜单栏触发函数
+
+        :param triggers:
+        :return:
+        """
+
+        def showAbout():  # 菜单栏 关于作者
+            self.ui.output_box.setPlainText(doc.START_SHOW)
+
+        def showTODO():  # 菜单栏 更新展望
+            self.ui.output_box.setPlainText(doc.TODO)
+
+        def showDONE():  # 菜单栏 更新日志
+            self.ui.output_box.setPlainText(doc.UPDATE_LOG)
+
+        def quitEvent():  # 菜单栏退出事件
+            self.close()
+            # sys.exit(0)
+
+        def stopCompute():
+            sys.exit(0)
+
+        def checkUpdate():
+            webbrowser.open("https://github.com/HowieHz/hpyculator/releases")
+
+        def resetSaveLocation():
+            with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+                setting_file['save_location'] = os.path.join(os.getcwd(), 'Output')
+
+        def openSettingWindow():
+            self.setting_window = SettingWindowApplication()  # 绑定子窗口
+            self.setting_window.exec()
+            with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+                self.OUTPUT_DIR_PATH = setting_file['save_location']
+                self.is_save_settings = setting_file['is_save_settings']
+            return
+
+        logging.debug(triggers)
+        logging.debug(triggers[0].text() + 'is triggered')
+        jump_map = {"终止当前运算": stopCompute,
+                    "退出程序": quitEvent,
+                    "重置保存路径": resetSaveLocation,
+                    "更新日志": showDONE,
+                    "更新展望": showTODO,
+                    "开屏介绍": showAbout,
+                    "检查更新": checkUpdate,
+                    "设置": openSettingWindow}
+        jump_map[triggers[0].text()]()
+
+    def saveCheckEvent(self):
+        """
+        当触发保存选项（那个√）事件
+
+        :return: None
+        """
+        if self.is_save_settings:  # 保存check设置
+            with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+                setting_file['save_check'] = self.ui.save_check.isChecked()
+
+    def outputOptimizationCheckEvent(self):
+        """
+        当触发优化输出选项
+
+        :return: None
+        """
+        if self.ui.output_optimization_check.isChecked():
+            if self.is_save_settings:  # 保存check设置
+                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+                    setting_file['output_optimization'] = self.ui.output_optimization_check.isChecked()
+        else:
+            self.ui.output_lock_maximums_check.setChecked(False)
+            if self.is_save_settings:  # 保存check设置
+                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+                    setting_file['output_lock_maximums'] = False
+                    setting_file['output_optimization'] = self.ui.output_optimization_check.isChecked()
+
+    def outputLockMaximumsCheckEvent(self):
+        """
+        当触发锁内框输出上限选项，开启锁上限需要同时开启输出优化
+
+        :return: None
+        """
+        if self.ui.output_lock_maximums_check.isChecked():
+            self.ui.output_optimization_check.setChecked(True)
+            if self.is_save_settings:  # 保存check设置
+                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+                    setting_file['output_optimization'] = True
+                    setting_file['output_lock_maximums'] = self.ui.output_lock_maximums_check.isChecked()  # True
+        else:
+            if self.is_save_settings:  # 保存check设置
+                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+                    setting_file['output_lock_maximums'] = self.ui.output_lock_maximums_check.isChecked()  # False
+
+    def searchText(self):
+        """
+        搜索框字符修改后触发的事件
+
+        :return: None
+        """
+        search_keyword = self.ui.search_box.toPlainText()
+        logging.debug(f"search_keyword:{search_keyword}")
+
+        if search_keyword == "":
+            self.searchCancel()
+            return None
+
+        self.ui.choices_list_box.clear()  # 清空选择栏
+
+        for i in self.selection_list:  # 选出符合要求的
+            if i.find(search_keyword) == -1:  # 字符串方法，没找到指定子串就-1
+                continue
+            else:
+                self.ui.choices_list_box.addItem(i)
+        return None
+
+    def searchCancel(self):
+        """
+        取消搜索结果，显示全部插件
+
+        :return: None
+        """
+        self.ui.choices_list_box.clear()
+        self.ui.choices_list_box.addItems(self.selection_list)
+        return None
