@@ -1,0 +1,1 @@
+from .instance import instance_plugin_manager  # 插件管理实例

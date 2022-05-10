@@ -9,7 +9,7 @@ from hpyculator import hpycore as hpyc
 
 from typing import Iterator
 
-from instance import instance_plugin_manager
+from ..plugin_manager import instance_plugin_manager
 
 
 class CalculationThread(Thread):
