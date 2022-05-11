@@ -6,11 +6,13 @@ import os
 from functools import partial  # 偏函数真好用
 from hpyculator import main_window_signal
 from hpyculator import hpycore as hpyc
+# from multiprocessing import Process
 
 from typing import Iterator
 
 from ..plugin_manager import instance_plugin_manager
 
+#TODO 用了多进程之后main_window_signal的实例化效果消失
 
 class CalculationThread(Thread):
     def __init__(self,
@@ -42,6 +44,7 @@ class CalculationThread(Thread):
     def run(self):
         inputbox_data = self.inputbox_data
         calculation_mode = self.calculation_mode
+        # instance_plugin_manager.initPlugin()  # 多进程用
         plugin_attributes = instance_plugin_manager.getPluginAttribute(self.user_selection_id)  # 插件属性字典
         selected_plugin = instance_plugin_manager.getPluginInstance(self.user_selection_id)
 

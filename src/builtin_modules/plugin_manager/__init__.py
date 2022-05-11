@@ -1,1 +1,3 @@
-from .instance import instance_plugin_manager  # 插件管理实例
+from .plugin_manager import PluginManager
+
+instance_plugin_manager = PluginManager()  # main和calculate_manager需要的实例

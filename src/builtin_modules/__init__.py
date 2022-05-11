@@ -19,14 +19,16 @@ from typing import Optional
 
 
 class CreateApp:
-    def __init__(self, multiple: Optional[int] = False):
+    def __init__(self, multiple: Optional[int] = False, test=False):
         """
         创建app
 
         :param multiple: 创建几个实例
         """
         self.multiple = multiple
-        self.app = QApplication(sys.argv)  # 启动一个应用
+        self.test = test
+        if not test:
+            self.app = QApplication(sys.argv)  # 启动一个应用
 
     def run(self):
         GLOBAL_SETTING_FILE_PATH, GLOBAL_OUTPUT_DIR_PATH = self.pathCheck()  # 路径检查
@@ -44,7 +46,10 @@ class CreateApp:
                                                 GLOBAL_OUTPUT_DIR_PATH,
                                                 global_plugin_option_id_dict)  # 实例化主窗口
             main_window.show()  # 展示主窗口
-        sys.exit(self.app.exec())  # 避免程序执行到这一行后直接退出
+        if not self.test:
+            sys.exit(self.app.exec())  # 避免程序执行到这一行后直接退出
+        else:
+            return self.app
 
     @staticmethod
     def pathCheck():

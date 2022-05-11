@@ -19,7 +19,7 @@ class LogManager:
                             level=logging.DEBUG,
                             format=' %(asctime)s - %(levelname)s - %(message)s')
 
-        # TODO 修复日志不可用，日志现在只有把basicConfig放到main里面才能用
+        #TODO 修复日志不可用，日志现在只有把basicConfig放到main里面才能用
 
     def checkIsEnableLog(self):
         """
