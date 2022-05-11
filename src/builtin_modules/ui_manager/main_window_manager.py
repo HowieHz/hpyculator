@@ -33,40 +33,36 @@ class MainWindowApplication(QMainWindow):
         self.OUTPUT_DIR_PATH = output_dir_path
         self.plugin_option_id_dict = plugin_option_id_dict  # 选项名映射id（文件或文件夹名）
         self.selection_list = plugin_option_id_dict.keys()  # 选项名列表
-        # self.loaded_plugin = loaded_plugin  # id映射插件对象
-
         self.user_selection_id: str = ""  # 用户选择的插件的文件名（id)
 
         super().__init__()
         self.ui = Ui_MainWindow()  # UI类的实例化()
         self.ui.setupUi(self)  # ui初始化
         self.bindSignalWithSlots()  # 信号和槽的绑定
-
         self.main_window_signal = main_window_signal  # 更方便地使用自定义事件
-
         self.setWindowTitle("hpyculator %s -HowieHz制作" % doc.VERSION)  # 设置标题
 
-        # 读取设置文件-按钮状态和输出目录
+        # 读取设置文件-按钮状态和输出目录  有键就读键，没这个键就初始化
         with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
-            try:
+            if 'is_save_settings' in setting_file:
                 self.is_save_settings = setting_file['is_save_settings']  # 是否保存设置
-            except KeyError:
+            else:
                 setting_file['is_save_settings'] = False  # 默认不保存按键状态
                 self.is_save_settings = False  # 默认不保存按键状态
 
             if self.is_save_settings:  # 当保存check状态
-                try:
+                if 'save_check' in setting_file:
                     self.ui.save_check.setChecked(setting_file['save_check'])  # 根据数据设置选项状态
-                except KeyError:
+                else:
                     setting_file['save_check'] = self.ui.save_check.isChecked()
-                try:
+                if 'output_optimization' in setting_file:
                     self.ui.output_optimization_check.setChecked(setting_file['output_optimization'])  # 根据数据设置选项状态
-                except KeyError:
+                else:
                     setting_file['output_optimization'] = True
                     self.ui.output_optimization_check.setChecked(True)
-                try:
+                if 'output_lock_maximums' in setting_file:
                     self.ui.output_lock_maximums_check.setChecked(setting_file['output_lock_maximums'])  # 根据数据设置选项状态
-                except KeyError:
+                else:
                     setting_file['output_lock_maximums'] = True
                     self.ui.output_lock_maximums_check.setChecked(True)
             else:  # 当不保存check状态
@@ -114,16 +110,12 @@ class MainWindowApplication(QMainWindow):
             # https://doc.qt.io/qtforpython-5/PySide2/QtGui/QTextCursor.html#PySide2.QtGui.PySide2.QtGui.QTextCursor.MoveOperation
             self.ui.output_box.setTextCursor(cursor)
 
+        # 自定义信号绑定函数
         main_window_signal.appendOutPutBox.connect(appendOutPut)
-
         main_window_signal.setOutPutBox.connect(setOutPut)
-
         main_window_signal.clearOutPutBox.connect(clearOutPut)
-
         main_window_signal.setStartButtonText.connect(setStartButtonText)
-
         main_window_signal.setStartButtonState.connect(setStartButtonState)
-
         main_window_signal.setOutPutBoxCursor.connect(setOutPutBoxCursor)
 
     def startEvent(self) -> None:
@@ -139,8 +131,7 @@ class MainWindowApplication(QMainWindow):
             self.ui.output_box.setPlainText(doc.UPDATE_LOG)
             return
         if self.ui.choices_list_box.currentItem() is None:  # 是否选择检测
-            self.ui.output_box.setPlainText("\n\n" +
-                                            """
+            self.ui.output_box.setPlainText("""\n\n
 不选要算什么我咋知道要算啥子嘞
 
 请在左侧选择运算核心

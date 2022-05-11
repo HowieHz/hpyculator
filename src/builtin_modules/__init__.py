@@ -49,7 +49,7 @@ class CreateApp:
         if not self.test:
             sys.exit(self.app.exec())  # 避免程序执行到这一行后直接退出
         else:
-            return self.app
+            return main_window
 
     @staticmethod
     def pathCheck():
@@ -68,9 +68,9 @@ class CreateApp:
 
         with shelve.open(setting_file_path, writeback=True) as setting_file:
             # 从设置文件读取输出目录
-            try:
+            if 'save_location' in setting_file:
                 output_dir_path = setting_file['save_location']
-            except KeyError:
+            else:
                 output_dir_path = str(os.path.join(os.getcwd(), 'Output'))
                 setting_file['save_location'] = output_dir_path
             logging.debug(f'输出文件保存位置:{output_dir_path}')

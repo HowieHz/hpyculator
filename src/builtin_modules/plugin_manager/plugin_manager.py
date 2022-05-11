@@ -94,14 +94,11 @@ class PluginManager:
         """
         plugin_file_names, folder_plugin_names = self.__readPluginPath(self.PLUGIN_DIR_PATH)  # 读目录获取文件名
 
-        try:  # 从所有读取的文件中挑选出.py为后缀的文件
-            for i_list in plugin_file_names:
-                if (i_list[0].split("."))[-1] == "py":
-                    if not self.plugin_files_name_py:  # 第一遍空列表才写入
-                        self.plugin_files_name_py = i_list
-        # 这行bug很多，小心
-        except Exception as e:
-            logging.debug("挑选单文件插件名时出现问题" + str(e))
+        # 从所有读取的文件中挑选出.py为后缀的文件
+        for i_list in plugin_file_names:
+            if (i_list[0].split("."))[-1] == "py":
+                if not self.plugin_files_name_py:  # 第一遍空列表才写入
+                    self.plugin_files_name_py = i_list
 
         try:
             self.__init_plugin_singer_file(self.plugin_files_name_py)  # 导入单文件插件
@@ -128,17 +125,12 @@ class PluginManager:
         """
         plugin_attributes = {}  # 读取好的属性放在这里
 
-        # self.required_parameters = ['input_mode','return_mode','save_name','output_name','use_quantifier','version']
-        # self.optional_parameters=['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol']
-        # self.parameters_list = ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol','input_mode','return_mode','save_name','output_name','use_quantifier','version']
-        # self.required_parameters.extend(self.optional_parameters)
+        PLUGIN_METADATA = self.loaded_plugin[user_selection_id].PLUGIN_METADATA  # PLUGIN_METADATA暂时储存着插件的元数据
         for option_name in ['output_start', 'quantifier', 'author', 'help', 'output_end', 'fullwidth_symbol',
                             'input_mode', 'return_mode', 'save_name', 'output_name', 'use_quantifier', 'version']:
-            try:
-                logging.debug(f'load {option_name}')
-                plugin_attributes[option_name] = self.loaded_plugin[user_selection_id].PLUGIN_METADATA[option_name]
-            except Exception as e:
-                logging.debug(str(e))
+            if option_name in PLUGIN_METADATA:
+                plugin_attributes[option_name] = PLUGIN_METADATA[option_name]
+            else:
                 plugin_attributes[option_name] = hpyc.OFF
         if plugin_attributes["fullwidth_symbol"] == hpyc.ON:
             plugin_attributes["help"] = plugin_attributes["help"].replace(",", "，").replace(".", "。").replace(

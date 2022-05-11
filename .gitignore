@@ -9,6 +9,8 @@ Python混合编程支持/
 打包用/
 Log/
 out/
+report/
+*.ps1
 *.bat
 *.py[cod]
 *$py.class

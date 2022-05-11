@@ -9,9 +9,7 @@ class LogManager:
 
         # 检查存放日志文件的文件夹是否存在
         LOG_FILE_PATH = os.path.join(os.getcwd(), 'Log')
-        if os.path.exists(LOG_FILE_PATH):
-            pass
-        else:
+        if not os.path.exists(LOG_FILE_PATH):
             os.makedirs(LOG_FILE_PATH)
 
         logging.basicConfig(filename=os.path.join(LOG_FILE_PATH, 'log.txt'),
@@ -32,13 +30,12 @@ class LogManager:
 
         # 读取配置文件-是否保存日志
         with shelve.open(setting_file_path, writeback=True) as setting_file:
-            try:
+            if 'save_log' in setting_file:
                 if setting_file['save_log']:  # 是否保存日志
                     print("日志初始化完成")
                 else:
                     logging.disable(logging.CRITICAL)  # 禁用日志
-            except Exception as e:
-                logging.debug(f"读取save_log时发生错误:{e}")
+            else:
                 setting_file['save_log'] = False  # 默认不保存日志
                 logging.disable(logging.CRITICAL)  # 禁用日志
         return None
