@@ -29,13 +29,13 @@
 
 ### 用户
 
-1.从github的[releases](https://github.com/HowieHz/hpyculator/releases)下载最新版本.zip
+1.从github的[releases](https://github.com/HowieHz/hpyculator/releases)下载最新版本
 
 2.解压，双击目录下的__main__.exe
 
 3.去[插件市场](https://github.com/HowieHz/hpyculatorPluginCatalogue)下点插件就能愉快的使用了
 
-（程序内置插件）
+（程序内置插件，可直接使用）
 
 
 ### 开发者（开发插件）
@@ -48,7 +48,7 @@
 
 从github项目src文件夹获取源码
 
-前往 [文档](https://hpyculator.readthedocs.io/zh_CN/latest/quick_start.html#id9) 查看简单流程
+前往 [文档](https://hpyculator.readthedocs.io/zh_CN/latest/quick_start.html#id9) 查看简单部署流程
 
 ## 插件
 
