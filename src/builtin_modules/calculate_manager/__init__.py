@@ -1,1 +1,1 @@
-from .calculate_manager import CalculationThread
+from .calculate_manager import CalculationManager

@@ -8,7 +8,7 @@ from .. import document as doc
 
 import logging  # 日志导入
 from ..plugin_manager import instance_plugin_manager  # 插件管理
-from ..calculate_manager import CalculationThread  # 计算线程
+from ..calculate_manager import CalculationManager  # 计算管理
 
 # pyside6 ui signal导入
 from PySide6.QtWidgets import QMainWindow
@@ -27,6 +27,10 @@ class MainWindowApplication(QMainWindow):
                  plugin_option_id_dict):
         """
         主窗口程序类
+
+        :param setting_file_path: 用于修改设置 设置文件路径
+        :param output_dir_path:  用于输出结果 输出路径
+        :param plugin_option_id_dict:  用于添加左侧选项
         """
         # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
         self.SETTING_FILE_PATH = setting_file_path
@@ -42,32 +46,27 @@ class MainWindowApplication(QMainWindow):
         self.main_window_signal = main_window_signal  # 更方便地使用自定义事件
         self.setWindowTitle("hpyculator %s -HowieHz制作" % doc.VERSION)  # 设置标题
 
-        # 读取设置文件-按钮状态和输出目录  有键就读键，没这个键就初始化
+        # 读取设置文件-按钮状态和输出目录  check控件初始化
         with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
             if 'is_save_settings' in setting_file:
                 self.is_save_settings = setting_file['is_save_settings']  # 是否保存设置
+                if self.is_save_settings:  # 当保存check状态
+                    for sequence in [('save_check', False, self.ui.save_check),  # 键名 初始化状态 对应check控件
+                                     ('output_optimization', True, self.ui.output_optimization_check),
+                                     ('output_lock_maximums', True, self.ui.output_lock_maximums_check)]:
+                        if sequence[0] in setting_file:
+                            sequence[2].setChecked(setting_file[sequence[0]])  # 根据数据设置选项状态
+                        else:
+                            setting_file[sequence[0]] = sequence[1]  # 初始化设置文件中对应的项
+                            sequence[2].setChecked(sequence[1])  # 初始化控件
+                else:  # 当不保存check状态
+                    for sequence in [('save_check', False, self.ui.save_check),  # 键名 初始化状态 对应check控件
+                                     ('output_optimization', True, self.ui.output_optimization_check),
+                                     ('output_lock_maximums', True, self.ui.output_lock_maximums_check)]:
+                        sequence[2].setChecked(sequence[1])  #初始化控件
             else:
                 setting_file['is_save_settings'] = False  # 默认不保存按键状态
                 self.is_save_settings = False  # 默认不保存按键状态
-
-            if self.is_save_settings:  # 当保存check状态
-                if 'save_check' in setting_file:
-                    self.ui.save_check.setChecked(setting_file['save_check'])  # 根据数据设置选项状态
-                else:
-                    setting_file['save_check'] = self.ui.save_check.isChecked()
-                if 'output_optimization' in setting_file:
-                    self.ui.output_optimization_check.setChecked(setting_file['output_optimization'])  # 根据数据设置选项状态
-                else:
-                    setting_file['output_optimization'] = True
-                    self.ui.output_optimization_check.setChecked(True)
-                if 'output_lock_maximums' in setting_file:
-                    self.ui.output_lock_maximums_check.setChecked(setting_file['output_lock_maximums'])  # 根据数据设置选项状态
-                else:
-                    setting_file['output_lock_maximums'] = True
-                    self.ui.output_lock_maximums_check.setChecked(True)
-            else:  # 当不保存check状态
-                self.ui.output_optimization_check.setChecked(True)
-                self.ui.output_lock_maximums_check.setChecked(True)
 
         # manager = Manager()
         # self.is_thread_running = manager.Value(bool,False)  # 防止反复启动计算线程
@@ -120,13 +119,12 @@ class MainWindowApplication(QMainWindow):
 
     def startEvent(self) -> None:
         """
-        初始化计算，绑定计算按钮，启动计算线程
+        输入检查，启动计算线程
 
         :return: None
         """
-        # self.inputbox_data - 储存输入框的内容
-        # time_before_calculate - 临时储存时间，计录 计算时间
 
+        # 输入检查
         if str(self.ui.input_box.toPlainText()) == "update_log":  # update_log检测
             self.ui.output_box.setPlainText(doc.UPDATE_LOG)
             return
@@ -149,20 +147,6 @@ class MainWindowApplication(QMainWindow):
 如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）""")
             return None
 
-        plugin_attribute_input_mode = self.selected_plugin_attributes["input_mode"]
-        try:
-            if plugin_attribute_input_mode == hpyc.STRING:
-                inputbox_data = str(self.ui.input_box.toPlainText())  # 取得输入框的数字
-            elif plugin_attribute_input_mode == hpyc.FLOAT:
-                inputbox_data = float(self.ui.input_box.toPlainText())  # 取得输入框的数字
-            elif plugin_attribute_input_mode == hpyc.NUM:
-                inputbox_data = int(self.ui.input_box.toPlainText())  # 取得输入框的数字
-            else:
-                inputbox_data = 0  # 缺省
-        except Exception as e:
-            main_window_signal.setOutPutBox.emit(f"输入转换发生错误:{str(e)}\n\n请检查输入格式")
-            return
-
         # 决定计算运行模式
         if self.ui.save_check.isChecked():  # 检测保存按钮的状态判断是否保存
             calculation_mode = "calculate_save"
@@ -176,17 +160,13 @@ class MainWindowApplication(QMainWindow):
                 calculation_mode = "calculate"
 
         # 以上是计算前工作
-        if not self.is_thread_running[0]:  # 防止同时运行两个进程
-            self.is_thread_running[0] = True
-            logging.debug("启动计算线程")
-            calculate_thread = CalculationThread(inputbox_data,
-                                                 calculation_mode,
-                                                 self.user_selection_id,
-                                                 self.is_thread_running,
-                                                 self.OUTPUT_DIR_PATH)  # 启动计算线程
-            calculate_thread.start()
-        else:
-            logging.debug("禁止同时运行多个线程")
+        logging.debug("启动计算")
+        calculate_manager = CalculationManager()
+        calculate_manager.start(self.ui.input_box.toPlainText(),  # 取得输入框的数据
+                                self.selected_plugin_attributes["input_mode"],
+                                calculation_mode,
+                                self.user_selection_id,
+                                self.OUTPUT_DIR_PATH)  # 启动计算
         return None
 
     def userChooseOptionEvent(self, item):

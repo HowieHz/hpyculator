@@ -6,20 +6,73 @@ import os
 from functools import partial  # 偏函数真好用
 from hpyculator import main_window_signal
 from hpyculator import hpycore as hpyc
+from typing import Any
 # from multiprocessing import Process
 
 from typing import Iterator
 
 from ..plugin_manager import instance_plugin_manager
 
-#TODO 用了多进程之后main_window_signal的实例化效果消失
+
+# TODO 用了多进程之后main_window_signal的实例化效果消失
+
+class CalculationManager:
+    def __init__(self):
+        pass
+
+    def start(self,
+              inputbox_data,
+              plugin_attribute_input_mode,
+              calculation_mode,
+              user_selection_id,
+              output_dir_path):
+        """
+        启动计算线程
+
+        :param inputbox_data; 未经处理的用户输入
+        :param plugin_attribute_input_mode; 需要转换的模式
+        :param calculation_mode; 计算模式
+        :param user_selection_id; 用户选择的插件的id
+        :param output_dir_path; 输出目录
+        :return:
+        """
+        # 输入转换
+        inputbox_data = self.typeConversion(plugin_attribute_input_mode, inputbox_data)
+        if inputbox_data is None:  # 转换发生错误
+            return
+
+        # 覆盖旧实例
+        self.calculate_thread = CalculationThread(inputbox_data,
+                                                  calculation_mode,
+                                                  user_selection_id,
+                                                  output_dir_path)
+
+        # 启动新实例
+        self.calculate_thread.start()
+        return None
+
+    @staticmethod
+    def typeConversion(type: str = hpyc.STRING, data: Any = ""):
+        try:
+            if type == hpyc.STRING:
+                data = str(data)
+            elif type == hpyc.FLOAT:
+                data = float(data)
+            elif type == hpyc.NUM:
+                data = int(data)
+            else:
+                pass  # 缺省
+        except Exception as e:
+            main_window_signal.setOutPutBox.emit(f"输入转换发生错误:{str(e)}\n\n请检查输入格式")
+            return None
+        return data
+
 
 class CalculationThread(Thread):
     def __init__(self,
                  inputbox_data,
                  calculation_mode,
                  user_selection_id,
-                 is_thread_running,
                  output_dir_path):
         """
         计算线程
@@ -27,18 +80,15 @@ class CalculationThread(Thread):
         :param inputbox_data: 经过类型转换处理的用户输入
         :param calculation_mode; 计算模式
         :param user_selection_id; 用户选择的插件的id
-        :param is_thread_running; 进程是否在运行
         :param output_dir_path; 输出目录
         :return:
         """
         Thread.__init__(self)
-        self.daemon = True #避免后台残留
-
+        self.daemon = True  # 避免后台残留
 
         self.inputbox_data = inputbox_data
         self.calculation_mode = calculation_mode
         self.user_selection_id = user_selection_id
-        self.is_thread_running = is_thread_running
         self.output_dir_path = output_dir_path
 
     def run(self):
@@ -203,6 +253,4 @@ class CalculationThread(Thread):
         main_window_signal.setOutPutBoxCursor.emit("end")  # 光标设到文本框尾部
         main_window_signal.setStartButtonText.emit("计算")  # 设置按钮字
         main_window_signal.setStartButtonState.emit(True)  # 启用按钮
-
-        self.is_thread_running[0] = False  # 表示进程结束
         return None

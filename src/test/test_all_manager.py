@@ -15,11 +15,9 @@ from PySide6.QtWidgets import QApplication
 class TestAllManager:
     @pytest.mark.run(order=1)
     def test_init(self):
-        # app = QApplication(sys.argv)
-        # sys.exit(instance_app.run().exec())  # 避免程序执行到这一行后直接退出
-        # 路径返回测试
-        instance_app = CreateApp(test=True)
         self.app = QApplication(sys.argv)  # 启动一个应用
+        # 路径返回测试
+        instance_app = CreateApp()
 
         setting_file_path, output_dir_path = instance_app.pathCheck()
         assert setting_file_path, output_dir_path == \
@@ -64,3 +62,5 @@ class TestAllManager:
         instance_app.logCheck(setting_file_path)  # 日志检查
 
         assert os.path.exists(log_dir_path) is True  # 日志目录路径创建测试
+
+    # TODO 计算模块测试 log模块测试 插件模块加载测试 插件模块调用测试 初始化测试 ui管理测试

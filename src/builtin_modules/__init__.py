@@ -8,9 +8,6 @@ import logging  # 日志导入
 from .log_manager import LogManager  # 日志管理 初始化
 from .plugin_manager import instance_plugin_manager  # 插件管理
 
-# pyside6导入
-from PySide6.QtWidgets import QApplication
-
 # 窗口管理类（用于管理设置的窗口）
 from .ui_manager import MainWindowApplication
 
@@ -19,37 +16,25 @@ from typing import Optional
 
 
 class CreateApp:
-    def __init__(self, multiple: Optional[int] = False, test=False):
+    def __init__(self, instance_num: Optional[int] = 1):
         """
         创建app
 
-        :param multiple: 创建几个实例
+        :param instance_num: 创建几个实例
         """
-        self.multiple = multiple
-        self.test = test
-        if not test:
-            self.app = QApplication(sys.argv)  # 启动一个应用
+        self.instance_num = instance_num
 
     def run(self):
         GLOBAL_SETTING_FILE_PATH, GLOBAL_OUTPUT_DIR_PATH = self.pathCheck()  # 路径检查
         self.logCheck(GLOBAL_SETTING_FILE_PATH)  # 日志检查
         global_plugin_option_id_dict = self.pluginCheck()  # 插件加载
-        if self.multiple:
-            app_list = []
-            for _ in range(self.multiple):
-                app_list.append(MainWindowApplication(GLOBAL_SETTING_FILE_PATH,
-                                                      GLOBAL_OUTPUT_DIR_PATH,
-                                                      global_plugin_option_id_dict))  # 实例化主窗口
-                app_list[_].show()
-        else:
-            main_window = MainWindowApplication(GLOBAL_SETTING_FILE_PATH,
-                                                GLOBAL_OUTPUT_DIR_PATH,
-                                                global_plugin_option_id_dict)  # 实例化主窗口
-            main_window.show()  # 展示主窗口
-        if not self.test:
-            sys.exit(self.app.exec())  # 避免程序执行到这一行后直接退出
-        else:
-            return main_window
+        list_instance_main_window = []
+        for _ in range(self.instance_num):
+            list_instance_main_window.append(MainWindowApplication(GLOBAL_SETTING_FILE_PATH,
+                                                                   GLOBAL_OUTPUT_DIR_PATH,
+                                                                   global_plugin_option_id_dict))  # 实例化主窗口
+            list_instance_main_window[_].show()
+        return list_instance_main_window
 
     @staticmethod
     def pathCheck():
