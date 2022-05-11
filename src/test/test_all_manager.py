@@ -23,10 +23,10 @@ class TestAllManager:
                                   (str(os.path.join(os.getcwd(), 'Setting', 'hpyculator_setting')),
                                    str(os.path.join(os.getcwd(), 'Output')))
 
-        global_plugin_option_id_dict = instance_app.pluginCheck(test=True)  # 插件加载
-        assert global_plugin_option_id_dict == \
-               {"test_pluginV1.0.0 by HowieHz": "test_plugin",
-                "test_folder_pluginV1.0.0 by HowieHz": "test_folder_plugin"}
+        # global_plugin_option_id_dict = instance_app.pluginCheck(test=True)  # 插件加载
+        # assert global_plugin_option_id_dict == \
+        #        {"test_pluginV1.0.0 by HowieHz": "test_plugin",
+        #         "test_folder_pluginV1.0.0 by HowieHz": "test_folder_plugin"}
 
     def test_path(self):
         setting_dir_path = str(os.path.join(os.getcwd(), 'Setting'))
