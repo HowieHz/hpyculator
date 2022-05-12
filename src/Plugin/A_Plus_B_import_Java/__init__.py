@@ -3,18 +3,16 @@ import jpype
 from hpyculator import hpycore as hpyc
 
 PLUGIN_METADATA = {
-    'input_mode': hpyc.STRING,
-    'id': 'A_Plus_B_import_Java',  # ID,插件标识符,需要和文件名一致（必须）
-    'option_name': "A+B_Problem_with_Java V1.0.1 by shacha086,HowieHz",  # 选项名-在选择算法列表中（必须）
-    'version': 'V1.0.1',  # 版本号（必须）
-
-    'save_name': "",  # 文件保存项目名-在输出（必须）
-    'quantifier': "的答案",  # 文件保存量词-在输入后面(可选)
-
-    'output_start': "",  # 输出头(可选)
-    'output_name': "A+B Problem",  # 选择此项后输出的名字（必须）
-    'author': "shacha086,HowieHz",  # 作者(可选)
-    'help': """
+    "input_mode": hpyc.STRING,
+    "id": "A_Plus_B_import_Java",  # ID,插件标识符,需要和文件名一致（必须）
+    "option_name": "A+B_Problem_with_Java V1.0.1 by shacha086,HowieHz",  # 选项名-在选择算法列表中（必须）
+    "version": "V1.0.1",  # 版本号（必须）
+    "save_name": "",  # 文件保存项目名-在输出（必须）
+    "quantifier": "的答案",  # 文件保存量词-在输入后面(可选)
+    "output_start": "",  # 输出头(可选)
+    "output_name": "A+B Problem",  # 选择此项后输出的名字（必须）
+    "author": "shacha086,HowieHz",  # 作者(可选)
+    "help": """
 输入格式
     整数A,整数B
 
@@ -30,11 +28,10 @@ PLUGIN_METADATA = {
 shacha086构建了计算核心
 HowieHz构建了插件化的部分
     """,  # 帮助和说明(可选)
-    'output_end': "",  # 输出小尾巴(可选)
-
-    'return_mode': hpyc.NO_RETURN_SINGLE_FUNCTION,
-    'use_quantifier': hpyc.OFF,
-    "fullwidth_symbol": hpyc.OFF
+    "output_end": "",  # 输出小尾巴(可选)
+    "return_mode": hpyc.NO_RETURN_SINGLE_FUNCTION,
+    "use_quantifier": hpyc.OFF,
+    "fullwidth_symbol": hpyc.OFF,
 }
 
 r"""
@@ -51,11 +48,13 @@ def on_calculate(data, todo):
     jar_path = str(os.path.abspath(__file__))[:-11] + "A+Bproj.jar"
     jvm_path = jpype.getDefaultJVMPath()
     if not jpype.isJVMStarted():
-        jpype.startJVM(jvm_path, '-ea', "-Djava.class.path=%s" % jar_path, convertStrings=False)
+        jpype.startJVM(
+            jvm_path, "-ea", "-Djava.class.path=%s" % jar_path, convertStrings=False
+        )
     if todo == "output":
-        hpyc.output(jpype.JClass('com.shacha.Main').main(a, b))
+        hpyc.output(jpype.JClass("com.shacha.Main").main(a, b))
     else:
-        hpyc.write(jpype.JClass('com.shacha.Main').main(a, b))
+        hpyc.write(jpype.JClass("com.shacha.Main").main(a, b))
     try:
         jpype.shutdownJVM()
     except:
