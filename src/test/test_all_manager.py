@@ -17,8 +17,10 @@ class TestAllManager:
         instance_app = CreateApp()
 
         setting_file_path, output_dir_path = instance_app.pathCheck()
-        assert setting_file_path, output_dir_path == (str(os.path.join(os.getcwd(), 'Setting', 'hpyculator_setting')),
-                                                      str(os.path.join(os.getcwd(), 'Output')))  # 返回检查
+        assert setting_file_path, output_dir_path == (
+            str(os.path.join(os.getcwd(), "Setting", "hpyculator_setting")),
+            str(os.path.join(os.getcwd(), "Output")),
+        )  # 返回检查
 
         instance_main_window = instance_app.run()[0]
         instance_main_window.saveCheckEvent()
@@ -45,8 +47,8 @@ class TestAllManager:
     @pytest.mark.run(order=1)
     def test_path(self):
         print(f"目前运行{self.__class__.__name__}类,test_path函数")
-        setting_dir_path = str(os.path.join(os.getcwd(), 'Setting'))
-        output_dir_path = str(os.path.join(os.getcwd(), 'Output'))
+        setting_dir_path = str(os.path.join(os.getcwd(), "Setting"))
+        output_dir_path = str(os.path.join(os.getcwd(), "Output"))
 
         assert os.path.exists(setting_dir_path) is True  # 设置文件目录路径创建测试
         assert os.path.exists(output_dir_path) is True  # 输出目录路径创建测试
@@ -55,9 +57,10 @@ class TestAllManager:
     def test_log(self):
         print(f"目前运行{self.__class__.__name__}类,test_log函数")
         instance_app = CreateApp()
-        setting_file_path = str(os.path.join(
-            os.getcwd(), 'Setting', 'hpyculator_setting'))
-        log_dir_path = str(os.path.join(os.getcwd(), 'Log'))
+        setting_file_path = str(
+            os.path.join(os.getcwd(), "Setting", "hpyculator_setting")
+        )
+        log_dir_path = str(os.path.join(os.getcwd(), "Log"))
 
         instance_app.logCheck(setting_file_path)  # 日志检查
 
