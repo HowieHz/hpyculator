@@ -2,6 +2,7 @@
 
 ![图标](ico.ico "随手画")
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/60def22c70884facacded551c2d2431c)](https://app.codacy.com/gh/HowieHz/hpyculator?utm_source=github.com&utm_medium=referral&utm_content=HowieHz/hpyculator&utm_campaign=Badge_Grade_Settings)
 [![DeepSource](https://deepsource.io/gh/HowieHz/hpyculator.svg/?label=active+issues&show_trend=true&token=1K7wErbBxaXp0pbSaXy3zLdV)](https://deepsource.io/gh/HowieHz/hpyculator/?ref=repository-badge)
 
 >这是一个基于python的可编程计算器
