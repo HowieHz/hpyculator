@@ -18,10 +18,13 @@ class TestAllManager:
 
         setting_file_path, output_dir_path = instance_app.pathCheck()
         if not setting_file_path:
-            raise AssertionError(output_dir_path == (
-                str(os.path.join(os.getcwd(), "Setting", "hpyculator_setting")),
-                str(os.path.join(os.getcwd(), "Output")),
-            ))
+            raise AssertionError(
+                output_dir_path
+                == (
+                    str(os.path.join(os.getcwd(), "Setting", "hpyculator_setting")),
+                    str(os.path.join(os.getcwd(), "Output")),
+                )
+            )
 
         instance_main_window = instance_app.run()[0]
         instance_main_window.saveCheckEvent()
