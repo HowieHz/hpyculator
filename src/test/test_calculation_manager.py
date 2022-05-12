@@ -76,7 +76,8 @@ class TestCalculationManager:
         )
 
         Manager = CalculationManager()
-        assert ret is rev_expected
+        if ret is not rev_expected:
+            raise AssertionError
 
         # # 校验输入框
         # assert instance_main_window.ui.output_box.toPlainText() == output_expected
@@ -104,4 +105,5 @@ class TestCalculationManager:
         """
         print(f"目前运行{self.__class__.__name__}类,test_calculation_typeconversion函数")
         # 类typeConversion函数测试
-        assert CalculationManager.typeConversion(to_type, data) == rev_expected
+        if CalculationManager.typeConversion(to_type, data) != rev_expected:
+            raise AssertionError
