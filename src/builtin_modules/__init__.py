@@ -75,7 +75,6 @@ class CreateApp:
         """
         # 检查存放日志文件的文件夹是否存在
         LogManager(setting_file_path).checkIsEnableLog()
-        return None
 
     @staticmethod
     def pluginCheck():
