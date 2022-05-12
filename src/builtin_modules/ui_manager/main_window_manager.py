@@ -267,7 +267,6 @@ by {selected_plugin_attributes["author"]}
             with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
                 self.OUTPUT_DIR_PATH = setting_file['save_location']
                 self.is_save_settings = setting_file['is_save_settings']
-            return
 
         logging.debug(triggers)
         logging.debug(triggers[0].text() + 'is triggered')
@@ -355,4 +354,3 @@ by {selected_plugin_attributes["author"]}
         """
         self.ui.choices_list_box.clear()
         self.ui.choices_list_box.addItems(self.selection_list)
-        return None

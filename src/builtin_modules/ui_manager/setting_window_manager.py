@@ -46,11 +46,9 @@ class SettingWindowApplication(QDialog):
 
         QMessageBox.information(self, "保存完成", "保存完成\n部分设置将在重新启动后生效", QMessageBox.Ok)
         self.close()
-        return
 
     def cancelSetting(self):
         self.close()
-        return
 
     def saveSettingCheckEvent(self):
         return

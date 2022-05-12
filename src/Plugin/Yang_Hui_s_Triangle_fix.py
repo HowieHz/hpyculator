@@ -42,4 +42,3 @@ def on_calculate_with_save(num):  # 返回一个列表
     for i in l1:
         hpyc.write_without_flush(i)
     hpyc.flush()
-    return

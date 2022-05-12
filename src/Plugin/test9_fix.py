@@ -24,7 +24,6 @@ PLUGIN_METADATA = {
 
 def on_calculate(data):  # 调用时传入两个参数，第一个参数是输入，第二个参数是程序的主类，要作为输出函数的的第一个参数\
     hpyc.output("勾个输出优化吧，谢谢")
-    return
 
 
 def on_calculate_with_save(data):  # 返回一个字符串，第一个参数是输入，第二个参数是需要被保存的文件流，要作为保存函数的第一个参数
@@ -42,4 +41,3 @@ def on_calculate_with_save(data):  # 返回一个字符串，第一个参数是�
             need_write = ""
             need_write_len = 0
     hpyc.write(need_write)
-    return

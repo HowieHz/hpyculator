@@ -38,4 +38,3 @@ class LogManager:
             else:
                 setting_file['save_log'] = False  # 默认不保存日志
                 logging.disable(logging.CRITICAL)  # 禁用日志
-        return None

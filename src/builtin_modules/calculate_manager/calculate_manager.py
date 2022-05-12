@@ -253,4 +253,3 @@ class CalculationThread(Thread):
         main_window_signal.setOutPutBoxCursor.emit("end")  # 光标设到文本框尾部
         main_window_signal.setStartButtonText.emit("计算")  # 设置按钮字
         main_window_signal.setStartButtonState.emit(True)  # 启用按钮
-        return None
