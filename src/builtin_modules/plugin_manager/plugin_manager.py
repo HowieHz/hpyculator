@@ -18,8 +18,10 @@ class PluginManager:
             os.makedirs(self.PLUGIN_DIR_PATH)
 
         # 载入模块
-        self.plugin_files_and_folder_name: List[list] = []  # Plugin目录下读取到的文件夹和文件
-        self.plugin_files_name_folder: List[str] = []  # Plugin目录下读取到的有__init__.py的文件夹
+        # Plugin目录下读取到的文件夹和文件
+        self.plugin_files_and_folder_name: List[list] = []
+        # Plugin目录下读取到的有__init__.py的文件夹
+        self.plugin_files_name_folder: List[str] = []
         # self.can_choose_number: List[str] = []  # 选择列表，储存着所有的选项名 #plugin_option_id_dict的键
         self.plugin_files_name_py: list[str] = []  # 储存着Plugin目录下的文件名
         self.plugin_option_id_dict: Dict[str, str] = {}  # 选项名和实际文件名的映射表

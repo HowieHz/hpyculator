@@ -26,7 +26,8 @@ def on_calculate(data):  # 调用时传入两个参数，第一个参数是输�
     hpyc.output("勾个输出优化吧，谢谢")
 
 
-def on_calculate_with_save(data):  # 返回一个字符串，第一个参数是输入，第二个参数是需要被保存的文件流，要作为保存函数的第一个参数
+# 返回一个字符串，第一个参数是输入，第二个参数是需要被保存的文件流，要作为保存函数的第一个参数
+def on_calculate_with_save(data):
     print(hpyc.getIoInstance())
     num = data
     num = int(num)

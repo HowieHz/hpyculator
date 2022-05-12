@@ -46,10 +46,12 @@ class MainWindowApplication(QMainWindow):
         # 读取设置文件-按钮状态和输出目录  check控件初始化
         with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
             if "is_save_settings" in setting_file:
-                self.is_save_settings = setting_file["is_save_settings"]  # 是否保存设置
+                # 是否保存设置
+                self.is_save_settings = setting_file["is_save_settings"]
                 if self.is_save_settings:  # 当保存check状态
                     for sequence in [
-                        ("save_check", False, self.ui.save_check),  # 键名 初始化状态 对应check控件
+                        # 键名 初始化状态 对应check控件
+                        ("save_check", False, self.ui.save_check),
                         (
                             "output_optimization",
                             True,
@@ -66,11 +68,13 @@ class MainWindowApplication(QMainWindow):
                                 setting_file[sequence[0]]
                             )  # 根据数据设置选项状态
                         else:
-                            setting_file[sequence[0]] = sequence[1]  # 初始化设置文件中对应的项
+                            # 初始化设置文件中对应的项
+                            setting_file[sequence[0]] = sequence[1]
                             sequence[2].setChecked(sequence[1])  # 初始化控件
                 else:  # 当不保存check状态
                     for sequence in [
-                        ("save_check", False, self.ui.save_check),  # 键名 初始化状态 对应check控件
+                        # 键名 初始化状态 对应check控件
+                        ("save_check", False, self.ui.save_check),
                         (
                             "output_optimization",
                             True,
@@ -204,7 +208,8 @@ class MainWindowApplication(QMainWindow):
         if test_input_mode:
             input_mode = test_input_mode  # 有就录入测试数据
         else:
-            input_mode = self.selected_plugin_attributes["input_mode"]  # 没有就从属性列表获取
+            # 没有就从属性列表获取
+            input_mode = self.selected_plugin_attributes["input_mode"]
 
         # 计算运行模式
         if test_calculation_mode:
