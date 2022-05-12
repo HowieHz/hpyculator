@@ -77,16 +77,15 @@ def on_calculate(n, do_what):
                 b -= 1
                 hpyc.output(str(a) + "/" + str(b))
                 continue
-            else:
-                if b % 2 == 0:  # 向xia
-                    a += 1
-                    b -= 1
-                    hpyc.output(str(a) + "/" + str(b))
-                    continue
-                a -= 1
-                b += 1
+            if b % 2 == 0:  # 向xia
+                a += 1
+                b -= 1
                 hpyc.output(str(a) + "/" + str(b))
                 continue
+            a -= 1
+            b += 1
+            hpyc.output(str(a) + "/" + str(b))
+            continue
 
     else:
         a = 1
@@ -131,15 +130,14 @@ def on_calculate(n, do_what):
                 hpyc.write_without_flush(str(a) + "/" + str(b))
                 buffer_len += 1
                 continue
-            else:
-                if b % 2 == 0:  # 向xia
-                    a += 1
-                    b -= 1
-                    hpyc.write_without_flush(str(a) + "/" + str(b))
-                    buffer_len += 1
-                    continue
-                a -= 1
-                b += 1
+            if b % 2 == 0:  # 向xia
+                a += 1
+                b -= 1
                 hpyc.write_without_flush(str(a) + "/" + str(b))
                 buffer_len += 1
                 continue
+            a -= 1
+            b += 1
+            hpyc.write_without_flush(str(a) + "/" + str(b))
+            buffer_len += 1
+            continue
