@@ -63,7 +63,7 @@ class MainWindowApplication(QMainWindow):
                     for sequence in [('save_check', False, self.ui.save_check),  # 键名 初始化状态 对应check控件
                                      ('output_optimization', True, self.ui.output_optimization_check),
                                      ('output_lock_maximums', True, self.ui.output_lock_maximums_check)]:
-                        sequence[2].setChecked(sequence[1])  #初始化控件
+                        sequence[2].setChecked(sequence[1])  # 初始化控件
             else:
                 setting_file['is_save_settings'] = False  # 默认不保存按键状态
                 self.is_save_settings = False  # 默认不保存按键状态
@@ -96,6 +96,9 @@ class MainWindowApplication(QMainWindow):
         def setOutPut(msg: str):
             self.ui.output_box.setPlainText(msg)
 
+        def getOutPut():
+            hpyc.setOutPutData(self.ui.output_box.toPlainText())
+
         def setStartButtonText(msg: str):
             self.ui.start_button.setText(msg)
 
@@ -113,31 +116,39 @@ class MainWindowApplication(QMainWindow):
         main_window_signal.appendOutPutBox.connect(appendOutPut)
         main_window_signal.setOutPutBox.connect(setOutPut)
         main_window_signal.clearOutPutBox.connect(clearOutPut)
+        main_window_signal.getOutPutBox.connect(getOutPut)
         main_window_signal.setStartButtonText.connect(setStartButtonText)
         main_window_signal.setStartButtonState.connect(setStartButtonState)
         main_window_signal.setOutPutBoxCursor.connect(setOutPutBoxCursor)
 
-    def startEvent(self) -> None:
+    def startEvent(self,
+                   test_input=None,
+                   test_input_mode=None,
+                   test_calculation_mode=None,
+                   test_selection_id=None,
+                   test_output_dir_path=None) -> None:
         """
         输入检查，启动计算线程
 
-        :return: None
+        :param test_input: 测试输入，测试专用
+        :param test_input_mode: 测试模式，测试专用
+        :param test_calculation_mode: 测试模式，测试专用
+        :param test_selection_id: 测试选择id，测试专用
+        :param test_output_dir_path: 测试专用，测试目录
+        :return:
         """
-
-        # 输入检查
-        if str(self.ui.input_box.toPlainText()) == "update_log":  # update_log检测
-            self.ui.output_box.setPlainText(doc.UPDATE_LOG)
-            return
-        if self.ui.choices_list_box.currentItem() is None:  # 是否选择检测
-            self.ui.output_box.setPlainText("""\n\n
-不选要算什么我咋知道要算啥子嘞
-
-请在左侧选择运算核心
-          ↓
-← ← ←""")
-            return None
-        if self.ui.input_box.toPlainText() == "":  # 是否输入检测
-            self.ui.output_box.setPlainText("""                                                  ↑
+        # 输入数据
+        print(test_input)
+        if test_input:
+            input_data = test_input  # 有就录入测试数据
+        else:
+            input_data = self.ui.input_box.toPlainText()  # 没有就从输入框获取
+            # 输入检查
+            if input_data == "update_log":  # update_log检测
+                self.ui.output_box.setPlainText(doc.UPDATE_LOG)
+                return
+            if input_data == "":  # 是否输入检测
+                self.ui.output_box.setPlainText("""                                                  ↑
                                                   ↑上面的就是输入框了
 不输要算什么我咋知道要算啥子嘞     ↑
          → → → → → → → → → →  ↑
@@ -145,28 +156,55 @@ class MainWindowApplication(QMainWindow):
 请在上面的框输入需要被处理的数据
 
 如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）""")
-            return None
+                return None
 
-        # 决定计算运行模式
-        if self.ui.save_check.isChecked():  # 检测保存按钮的状态判断是否保存
-            calculation_mode = "calculate_save"
-        else:  # 选择不保存才输出结果
-            if self.ui.output_optimization_check.isChecked():
-                if self.ui.output_lock_maximums_check.isChecked():
-                    calculation_mode = "calculate_o_l"  # l=limit
+        # 选择的插件id
+        if test_selection_id:
+            user_selection_id = test_selection_id
+        else:
+            user_selection_id = self.user_selection_id  # 被用户选择的插件，这个插件的id为user_selection_id
+            if self.ui.choices_list_box.currentItem() is None:  # 是否选择检测
+                self.ui.output_box.setPlainText("""\n\n
+不选要算什么我咋知道要算啥子嘞
+
+请在左侧选择运算核心
+          ↓
+← ← ←""")
+                return None
+
+        # 输入转换类型
+        if test_input_mode:
+            input_mode = test_input_mode  # 有就录入测试数据
+        else:
+            input_mode = self.selected_plugin_attributes["input_mode"]  # 没有就从属性列表获取
+
+        # 计算运行模式
+        if test_calculation_mode:
+            calculation_mode = test_calculation_mode  # 有就录入测试数据
+        else:
+            if self.ui.save_check.isChecked():  # 检测保存按钮的状态判断是否保存
+                calculation_mode = "calculate_save"
+            else:  # 选择不保存才输出结果
+                if self.ui.output_optimization_check.isChecked():
+                    if self.ui.output_lock_maximums_check.isChecked():
+                        calculation_mode = "calculate_o_l"  # l=limit
+                    else:
+                        calculation_mode = "calculate_o"
                 else:
-                    calculation_mode = "calculate_o"
-            else:
-                calculation_mode = "calculate"
+                    calculation_mode = "calculate"
 
+        if test_output_dir_path:
+            output_dir_path = test_output_dir_path
+        else:
+            output_dir_path = self.OUTPUT_DIR_PATH
         # 以上是计算前工作
         logging.debug("启动计算")
         calculate_manager = CalculationManager()
-        calculate_manager.start(self.ui.input_box.toPlainText(),  # 取得输入框的数据
-                                self.selected_plugin_attributes["input_mode"],
+        calculate_manager.start(input_data,
+                                input_mode,
                                 calculation_mode,
-                                self.user_selection_id,
-                                self.OUTPUT_DIR_PATH)  # 启动计算
+                                user_selection_id,
+                                output_dir_path)  # 启动计算
         return None
 
     def userChooseOptionEvent(self, item):

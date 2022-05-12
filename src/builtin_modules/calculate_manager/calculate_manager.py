@@ -18,14 +18,14 @@ from ..plugin_manager import instance_plugin_manager
 
 class CalculationManager:
     def __init__(self):
-        pass
+        return None
 
     def start(self,
-              inputbox_data,
-              plugin_attribute_input_mode,
-              calculation_mode,
-              user_selection_id,
-              output_dir_path):
+              inputbox_data: str,
+              plugin_attribute_input_mode: int,
+              calculation_mode: str,
+              user_selection_id: str,
+              output_dir_path: str):
         """
         启动计算线程
 
@@ -39,41 +39,41 @@ class CalculationManager:
         # 输入转换
         inputbox_data = self.typeConversion(plugin_attribute_input_mode, inputbox_data)
         if inputbox_data is None:  # 转换发生错误
-            return
+            return None
 
         # 覆盖旧实例
-        self.calculate_thread = CalculationThread(inputbox_data,
-                                                  calculation_mode,
-                                                  user_selection_id,
-                                                  output_dir_path)
+        calculate_thread = CalculationThread(inputbox_data,
+                                             calculation_mode,
+                                             user_selection_id,
+                                             output_dir_path)
 
         # 启动新实例
-        self.calculate_thread.start()
+        calculate_thread.start()
         return None
 
     @staticmethod
-    def typeConversion(type: str = hpyc.STRING, data: Any = ""):
+    def typeConversion(to_type: int, data: str):
         try:
-            if type == hpyc.STRING:
+            if to_type == hpyc.STRING:
                 data = str(data)
-            elif type == hpyc.FLOAT:
+            elif to_type == hpyc.FLOAT:
                 data = float(data)
-            elif type == hpyc.NUM:
+            elif to_type == hpyc.NUM:
                 data = int(data)
             else:
-                pass  # 缺省
+                data = None  # 缺省 转换不存在的类型就none
         except Exception as e:
             main_window_signal.setOutPutBox.emit(f"输入转换发生错误:{str(e)}\n\n请检查输入格式")
-            return None
+            return None  # 缺省 转换错误就none
         return data
 
 
 class CalculationThread(Thread):
     def __init__(self,
-                 inputbox_data,
-                 calculation_mode,
-                 user_selection_id,
-                 output_dir_path):
+                 inputbox_data: Any,
+                 calculation_mode: str,
+                 user_selection_id: str,
+                 output_dir_path: str):
         """
         计算线程
 
@@ -234,7 +234,7 @@ class CalculationThread(Thread):
             main_window_signal.appendOutPutBox.emit(
                 f"\n\n本次计算+输出花费了{time_spent:.6f}秒\n")  # 输出本次计算时间
 
-        # ------------------------------------------
+        # ------------------------------------------这些ui逻辑需外移
         main_window_signal.setStartButtonText.emit("计算程序正在运行中，请耐心等待")
         main_window_signal.setStartButtonState.emit(False)  # 防止按钮反复触发
         main_window_signal.clearOutPutBox.emit()  # 清空输出框

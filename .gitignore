@@ -15,6 +15,7 @@ report/
 *.py[cod]
 *$py.class
 *.fbp
+.history/
 
 
 # C extensions
