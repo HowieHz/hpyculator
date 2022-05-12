@@ -104,10 +104,9 @@ class PluginManager:
 
         # 从所有读取的文件中挑选出.py为后缀的文件
         for i_list in plugin_file_names:
-            if (
-                (i_list[0].split("."))[-1] == "py"
-                and not self.plugin_files_name_py
-            ):  # 第一遍空列表才写入
+            if (i_list[0].split("."))[
+                -1
+            ] == "py" and not self.plugin_files_name_py:  # 第一遍空列表才写入
                 self.plugin_files_name_py = i_list
 
         try:
