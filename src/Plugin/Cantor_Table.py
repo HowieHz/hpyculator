@@ -55,42 +55,38 @@ def on_calculate(n, do_what):
                     a += 1
                     hpyc.output(str(a) + "/" + str(b))
                     continue
-                else:
-                    b += 1
-                    hpyc.output(str(a) + "/" + str(b))
-                    continue
+                b += 1
+                hpyc.output(str(a) + "/" + str(b))
+                continue
             if b == 1:
                 if a % 2 == 0:
                     a += 1
                     hpyc.output(str(a) + "/" + str(b))
                     continue
-                else:
-                    a -= 1
-                    b += 1
-                    hpyc.output(str(a) + "/" + str(b))
-                    continue
+                a -= 1
+                b += 1
+                hpyc.output(str(a) + "/" + str(b))
+                continue
             if a % 2 == 0:
                 if b % 2 == 0:
                     a -= 1
                     b += 1
                     hpyc.output(str(a) + "/" + str(b))
                     continue
-                else:
-                    a += 1
-                    b -= 1
-                    hpyc.output(str(a) + "/" + str(b))
-                    continue
+                a += 1
+                b -= 1
+                hpyc.output(str(a) + "/" + str(b))
+                continue
             else:
                 if b % 2 == 0:  # 向xia
                     a += 1
                     b -= 1
                     hpyc.output(str(a) + "/" + str(b))
                     continue
-                else:
-                    a -= 1
-                    b += 1
-                    hpyc.output(str(a) + "/" + str(b))
-                    continue
+                a -= 1
+                b += 1
+                hpyc.output(str(a) + "/" + str(b))
+                continue
 
     else:
         a = 1
@@ -108,23 +104,21 @@ def on_calculate(n, do_what):
                     hpyc.write_without_flush(str(a) + "/" + str(b))
                     buffer_len += 1
                     continue
-                else:
-                    b += 1
-                    hpyc.write_without_flush(str(a) + "/" + str(b))
-                    buffer_len += 1
-                    continue
+                b += 1
+                hpyc.write_without_flush(str(a) + "/" + str(b))
+                buffer_len += 1
+                continue
             if b == 1:
                 if a % 2 == 0:
                     a += 1
                     hpyc.write_without_flush(str(a) + "/" + str(b))
                     buffer_len += 1
                     continue
-                else:
-                    a -= 1
-                    b += 1
-                    hpyc.write_without_flush(str(a) + "/" + str(b))
-                    buffer_len += 1
-                    continue
+                a -= 1
+                b += 1
+                hpyc.write_without_flush(str(a) + "/" + str(b))
+                buffer_len += 1
+                continue
             if a % 2 == 0:
                 if b % 2 == 0:
                     a -= 1
@@ -132,12 +126,11 @@ def on_calculate(n, do_what):
                     hpyc.write_without_flush(str(a) + "/" + str(b))
                     buffer_len += 1
                     continue
-                else:
-                    a += 1
-                    b -= 1
-                    hpyc.write_without_flush(str(a) + "/" + str(b))
-                    buffer_len += 1
-                    continue
+                a += 1
+                b -= 1
+                hpyc.write_without_flush(str(a) + "/" + str(b))
+                buffer_len += 1
+                continue
             else:
                 if b % 2 == 0:  # 向xia
                     a += 1
@@ -145,9 +138,8 @@ def on_calculate(n, do_what):
                     hpyc.write_without_flush(str(a) + "/" + str(b))
                     buffer_len += 1
                     continue
-                else:
-                    a -= 1
-                    b += 1
-                    hpyc.write_without_flush(str(a) + "/" + str(b))
-                    buffer_len += 1
-                    continue
+                a -= 1
+                b += 1
+                hpyc.write_without_flush(str(a) + "/" + str(b))
+                buffer_len += 1
+                continue
