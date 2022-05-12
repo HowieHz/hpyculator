@@ -88,9 +88,8 @@ class PluginManager:
         for root, _dir, file in os.walk(path):
             plugin_file_names.append(file)
             root_list = str(root).split("\\")
-            if root_list[-2] == "Plugin":
-                if "__init__.py" in file:
-                    folder_plugin_names.append(root_list[-1])
+            if root_list[-2] == "Plugin" and "__init__.py" in file:
+                folder_plugin_names.append(root_list[-1])
         return plugin_file_names, folder_plugin_names
 
     def initPlugin(self):
@@ -105,9 +104,11 @@ class PluginManager:
 
         # 从所有读取的文件中挑选出.py为后缀的文件
         for i_list in plugin_file_names:
-            if (i_list[0].split("."))[-1] == "py":
-                if not self.plugin_files_name_py:  # 第一遍空列表才写入
-                    self.plugin_files_name_py = i_list
+            if (
+                (i_list[0].split("."))[-1] == "py"
+                and not self.plugin_files_name_py
+            ):  # 第一遍空列表才写入
+                self.plugin_files_name_py = i_list
 
         try:
             self.__init_plugin_singer_file(self.plugin_files_name_py)  # 导入单文件插件
