@@ -21,10 +21,7 @@ from . import SettingWindowApplication
 
 
 class MainWindowApplication(QMainWindow):
-    def __init__(self,
-                 setting_file_path,
-                 output_dir_path,
-                 plugin_option_id_dict):
+    def __init__(self, setting_file_path, output_dir_path, plugin_option_id_dict):
         """
         主窗口程序类
 
@@ -48,24 +45,46 @@ class MainWindowApplication(QMainWindow):
 
         # 读取设置文件-按钮状态和输出目录  check控件初始化
         with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
-            if 'is_save_settings' in setting_file:
-                self.is_save_settings = setting_file['is_save_settings']  # 是否保存设置
+            if "is_save_settings" in setting_file:
+                self.is_save_settings = setting_file["is_save_settings"]  # 是否保存设置
                 if self.is_save_settings:  # 当保存check状态
-                    for sequence in [('save_check', False, self.ui.save_check),  # 键名 初始化状态 对应check控件
-                                     ('output_optimization', True, self.ui.output_optimization_check),
-                                     ('output_lock_maximums', True, self.ui.output_lock_maximums_check)]:
+                    for sequence in [
+                        ("save_check", False, self.ui.save_check),  # 键名 初始化状态 对应check控件
+                        (
+                            "output_optimization",
+                            True,
+                            self.ui.output_optimization_check,
+                        ),
+                        (
+                            "output_lock_maximums",
+                            True,
+                            self.ui.output_lock_maximums_check,
+                        ),
+                    ]:
                         if sequence[0] in setting_file:
-                            sequence[2].setChecked(setting_file[sequence[0]])  # 根据数据设置选项状态
+                            sequence[2].setChecked(
+                                setting_file[sequence[0]]
+                            )  # 根据数据设置选项状态
                         else:
                             setting_file[sequence[0]] = sequence[1]  # 初始化设置文件中对应的项
                             sequence[2].setChecked(sequence[1])  # 初始化控件
                 else:  # 当不保存check状态
-                    for sequence in [('save_check', False, self.ui.save_check),  # 键名 初始化状态 对应check控件
-                                     ('output_optimization', True, self.ui.output_optimization_check),
-                                     ('output_lock_maximums', True, self.ui.output_lock_maximums_check)]:
+                    for sequence in [
+                        ("save_check", False, self.ui.save_check),  # 键名 初始化状态 对应check控件
+                        (
+                            "output_optimization",
+                            True,
+                            self.ui.output_optimization_check,
+                        ),
+                        (
+                            "output_lock_maximums",
+                            True,
+                            self.ui.output_lock_maximums_check,
+                        ),
+                    ]:
                         sequence[2].setChecked(sequence[1])  # 初始化控件
             else:
-                setting_file['is_save_settings'] = False  # 默认不保存按键状态
+                setting_file["is_save_settings"] = False  # 默认不保存按键状态
                 self.is_save_settings = False  # 默认不保存按键状态
 
         # manager = Manager()
@@ -73,7 +92,9 @@ class MainWindowApplication(QMainWindow):
         self.is_thread_running = [False]  # 防止反复启动计算线程
 
         # 关于gui显示内容的初始化
-        self.ui.choices_list_box.addItems(self.plugin_option_id_dict.keys())  # 选项名添加到ui上
+        self.ui.choices_list_box.addItems(
+            self.plugin_option_id_dict.keys()
+        )  # 选项名添加到ui上
         self.ui.output_box.setPlainText(doc.START_SHOW)  # 开启的展示
         self.ui.search_box.setPlaceholderText("输入字符自动进行搜索\n清空搜索框显示全部插件")  # 灰色背景提示字符
         self.ui.search_box.clear()  # 不清空不显示灰色背景
@@ -121,12 +142,14 @@ class MainWindowApplication(QMainWindow):
         main_window_signal.setStartButtonState.connect(setStartButtonState)
         main_window_signal.setOutPutBoxCursor.connect(setOutPutBoxCursor)
 
-    def startEvent(self,
-                   test_input=None,
-                   test_input_mode=None,
-                   test_calculation_mode=None,
-                   test_selection_id=None,
-                   test_output_dir_path=None) -> None:
+    def startEvent(
+        self,
+        test_input=None,
+        test_input_mode=None,
+        test_calculation_mode=None,
+        test_selection_id=None,
+        test_output_dir_path=None,
+    ) -> None:
         """
         输入检查，启动计算线程
 
@@ -147,28 +170,34 @@ class MainWindowApplication(QMainWindow):
                 self.ui.output_box.setPlainText(doc.UPDATE_LOG)
                 return
             if input_data == "":  # 是否输入检测
-                self.ui.output_box.setPlainText("""                                                  ↑
+                self.ui.output_box.setPlainText(
+                    """                                                  ↑
                                                   ↑上面的就是输入框了
 不输要算什么我咋知道要算啥子嘞     ↑
          → → → → → → → → → →  ↑
          ↑
 请在上面的框输入需要被处理的数据
 
-如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）""")
+如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）"""
+                )
                 return None
 
         # 选择的插件id
         if test_selection_id:
             user_selection_id = test_selection_id
         else:
-            user_selection_id = self.user_selection_id  # 被用户选择的插件，这个插件的id为user_selection_id
+            user_selection_id = (
+                self.user_selection_id
+            )  # 被用户选择的插件，这个插件的id为user_selection_id
             if self.ui.choices_list_box.currentItem() is None:  # 是否选择检测
-                self.ui.output_box.setPlainText("""\n\n
+                self.ui.output_box.setPlainText(
+                    """\n\n
 不选要算什么我咋知道要算啥子嘞
 
 请在左侧选择运算核心
           ↓
-← ← ←""")
+← ← ←"""
+                )
                 return None
 
         # 输入转换类型
@@ -199,11 +228,9 @@ class MainWindowApplication(QMainWindow):
         # 以上是计算前工作
         logging.debug("启动计算")
         calculate_manager = CalculationManager()
-        calculate_manager.start(input_data,
-                                input_mode,
-                                calculation_mode,
-                                user_selection_id,
-                                output_dir_path)  # 启动计算
+        calculate_manager.start(
+            input_data, input_mode, calculation_mode, user_selection_id, output_dir_path
+        )  # 启动计算
         return None
 
     def userChooseOptionEvent(self, item):
@@ -214,11 +241,14 @@ class MainWindowApplication(QMainWindow):
         :return: None
         """
         # logging.debug(f'选中的选项名{self.ui.choices_list_box.currentItem().text()}')
-        logging.debug(f'选中的选项名{item.text()}')
+        logging.debug(f"选中的选项名{item.text()}")
         self.user_selection_id = str(self.plugin_option_id_dict[item.text()])  # 转换成ID
-        self.selected_plugin_attributes = selected_plugin_attributes = instance_plugin_manager.getPluginAttribute(self.user_selection_id)
+        self.selected_plugin_attributes = (
+            selected_plugin_attributes
+        ) = instance_plugin_manager.getPluginAttribute(self.user_selection_id)
 
-        self.ui.output_box.setPlainText(f"""\
+        self.ui.output_box.setPlainText(
+            f"""\
 {selected_plugin_attributes["output_start"]}
 {selected_plugin_attributes["output_name"]} {selected_plugin_attributes["version"]}
 by {selected_plugin_attributes["author"]}
@@ -227,7 +257,8 @@ by {selected_plugin_attributes["author"]}
 使用提示
 {selected_plugin_attributes["help"]}
 
-{selected_plugin_attributes["output_end"]}""")
+{selected_plugin_attributes["output_end"]}"""
+        )
 
     def menuBar(self, *triggers):
         """
@@ -257,26 +288,32 @@ by {selected_plugin_attributes["author"]}
             webbrowser.open("https://github.com/HowieHz/hpyculator/releases")
 
         def resetSaveLocation():
-            with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-                setting_file['save_location'] = os.path.join(os.getcwd(), 'Output')
+            with shelve.open(
+                self.SETTING_FILE_PATH, writeback=True
+            ) as setting_file:  # 读取设置文件
+                setting_file["save_location"] = os.path.join(os.getcwd(), "Output")
 
         def openSettingWindow():
             self.setting_window = SettingWindowApplication()  # 绑定子窗口
             self.setting_window.exec()
-            with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-                self.OUTPUT_DIR_PATH = setting_file['save_location']
-                self.is_save_settings = setting_file['is_save_settings']
+            with shelve.open(
+                self.SETTING_FILE_PATH, writeback=True
+            ) as setting_file:  # 读取设置文件
+                self.OUTPUT_DIR_PATH = setting_file["save_location"]
+                self.is_save_settings = setting_file["is_save_settings"]
 
         logging.debug(triggers)
-        logging.debug(triggers[0].text() + 'is triggered')
-        jump_map = {"终止当前运算": stopCompute,
-                    "退出程序": quitEvent,
-                    "重置保存路径": resetSaveLocation,
-                    "更新日志": showDONE,
-                    "更新展望": showTODO,
-                    "开屏介绍": showAbout,
-                    "检查更新": checkUpdate,
-                    "设置": openSettingWindow}
+        logging.debug(triggers[0].text() + "is triggered")
+        jump_map = {
+            "终止当前运算": stopCompute,
+            "退出程序": quitEvent,
+            "重置保存路径": resetSaveLocation,
+            "更新日志": showDONE,
+            "更新展望": showTODO,
+            "开屏介绍": showAbout,
+            "检查更新": checkUpdate,
+            "设置": openSettingWindow,
+        }
         jump_map[triggers[0].text()]()
 
     def saveCheckEvent(self):
@@ -286,8 +323,10 @@ by {selected_plugin_attributes["author"]}
         :return: None
         """
         if self.is_save_settings:  # 保存check设置
-            with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-                setting_file['save_check'] = self.ui.save_check.isChecked()
+            with shelve.open(
+                self.SETTING_FILE_PATH, writeback=True
+            ) as setting_file:  # 读取设置文件
+                setting_file["save_check"] = self.ui.save_check.isChecked()
 
     def outputOptimizationCheckEvent(self):
         """
@@ -297,14 +336,22 @@ by {selected_plugin_attributes["author"]}
         """
         if self.ui.output_optimization_check.isChecked():
             if self.is_save_settings:  # 保存check设置
-                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-                    setting_file['output_optimization'] = self.ui.output_optimization_check.isChecked()
+                with shelve.open(
+                    self.SETTING_FILE_PATH, writeback=True
+                ) as setting_file:  # 读取设置文件
+                    setting_file[
+                        "output_optimization"
+                    ] = self.ui.output_optimization_check.isChecked()
         else:
             self.ui.output_lock_maximums_check.setChecked(False)
             if self.is_save_settings:  # 保存check设置
-                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-                    setting_file['output_lock_maximums'] = False
-                    setting_file['output_optimization'] = self.ui.output_optimization_check.isChecked()
+                with shelve.open(
+                    self.SETTING_FILE_PATH, writeback=True
+                ) as setting_file:  # 读取设置文件
+                    setting_file["output_lock_maximums"] = False
+                    setting_file[
+                        "output_optimization"
+                    ] = self.ui.output_optimization_check.isChecked()
 
     def outputLockMaximumsCheckEvent(self):
         """
@@ -315,13 +362,21 @@ by {selected_plugin_attributes["author"]}
         if self.ui.output_lock_maximums_check.isChecked():
             self.ui.output_optimization_check.setChecked(True)
             if self.is_save_settings:  # 保存check设置
-                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-                    setting_file['output_optimization'] = True
-                    setting_file['output_lock_maximums'] = self.ui.output_lock_maximums_check.isChecked()  # True
+                with shelve.open(
+                    self.SETTING_FILE_PATH, writeback=True
+                ) as setting_file:  # 读取设置文件
+                    setting_file["output_optimization"] = True
+                    setting_file[
+                        "output_lock_maximums"
+                    ] = self.ui.output_lock_maximums_check.isChecked()  # True
         else:
             if self.is_save_settings:  # 保存check设置
-                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-                    setting_file['output_lock_maximums'] = self.ui.output_lock_maximums_check.isChecked()  # False
+                with shelve.open(
+                    self.SETTING_FILE_PATH, writeback=True
+                ) as setting_file:  # 读取设置文件
+                    setting_file[
+                        "output_lock_maximums"
+                    ] = self.ui.output_lock_maximums_check.isChecked()  # False
 
     def searchText(self):
         """
