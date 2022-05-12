@@ -17,10 +17,11 @@ class TestAllManager:
         instance_app = CreateApp()
 
         setting_file_path, output_dir_path = instance_app.pathCheck()
-        assert setting_file_path, output_dir_path == (
-            str(os.path.join(os.getcwd(), "Setting", "hpyculator_setting")),
-            str(os.path.join(os.getcwd(), "Output")),
-        )  # 返回检查
+        if not setting_file_path:
+            raise AssertionError(output_dir_path == (
+                str(os.path.join(os.getcwd(), "Setting", "hpyculator_setting")),
+                str(os.path.join(os.getcwd(), "Output")),
+            ))
 
         instance_main_window = instance_app.run()[0]
         instance_main_window.saveCheckEvent()
@@ -50,8 +51,10 @@ class TestAllManager:
         setting_dir_path = str(os.path.join(os.getcwd(), "Setting"))
         output_dir_path = str(os.path.join(os.getcwd(), "Output"))
 
-        assert os.path.exists(setting_dir_path) is True  # 设置文件目录路径创建测试
-        assert os.path.exists(output_dir_path) is True  # 输出目录路径创建测试
+        if os.path.exists(setting_dir_path) is not True:
+            raise AssertionError
+        if os.path.exists(output_dir_path) is not True:
+            raise AssertionError
 
     @pytest.mark.run(order=2)
     def test_log(self):
@@ -64,7 +67,8 @@ class TestAllManager:
 
         instance_app.logCheck(setting_file_path)  # 日志检查
 
-        assert os.path.exists(log_dir_path) is True  # 日志目录路径创建测试
+        if os.path.exists(log_dir_path) is not True:
+            raise AssertionError
 
     # TODO 计算模块测试 输入是否能得到输入，各种情况的输入，各种输入
     #  log模块测试 返回值，是否创建了路径，是否生成了文件，文件写入是否正常
