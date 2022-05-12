@@ -68,7 +68,8 @@ class PluginManager:
             except Exception as e:
                 logging.debug(f'init_plugin_folder inside Exception:{e}')
 
-    def __readPluginPath(self, path):
+    @staticmethod
+    def __readPluginPath(path):
         """
         读取指定目录下插件需重构
 

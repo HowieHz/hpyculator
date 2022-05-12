@@ -1,12 +1,9 @@
-from ..builtin_modules.calculate_manager import CalculationThread
 from ..builtin_modules.calculate_manager import CalculationManager
 from ..builtin_modules import CreateApp
 from hpyculator import hpycore as hpyc
 import pytest
-import sys
 import os
 from typing import Any
-from hpyculator.signal import main_window_signal
 
 
 class TestCalculationManager:
