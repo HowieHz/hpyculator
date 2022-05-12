@@ -2,10 +2,10 @@
 
 ![图标](ico.ico "随手画")
 
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/hpyculator)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/48247dc302b44b1ebe1ca6635a7a0588)](https://www.codacy.com/gh/HowieHz/hpyculator/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HowieHz/hpyculator&amp;utm_campaign=Badge_Grade)
 [![DeepSource](https://deepsource.io/gh/HowieHz/hpyculator.svg/?label=active+issues&show_trend=true&token=1K7wErbBxaXp0pbSaXy3zLdV)](https://deepsource.io/gh/HowieHz/hpyculator/?ref=repository-badge)
 [![DeepSource](https://deepsource.io/gh/HowieHz/hpyculator.svg/?label=resolved+issues&show_trend=true&token=1K7wErbBxaXp0pbSaXy3zLdV)](https://deepsource.io/gh/HowieHz/hpyculator/?ref=repository-badge)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/hpyculator)
 
 >这是一个基于python的可编程计算器
 
