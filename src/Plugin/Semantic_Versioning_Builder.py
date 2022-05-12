@@ -76,10 +76,10 @@ def on_calculate(data: str):
         if aw == bw:
             if ae == be:  # 1.2.2-1.2.2
                 return ['.'.join((str(aq), str(aw), str(ae)))]
-            else:  # 1.2.x-1.2.y
-                return ['.'.join((str(x), str(y), str(z))) for x in range(aq, aq + 1) for y in range(bw, bw + 1) for z
-                        in
-                        range(ae, be + 1)]
+            # 1.2.x-1.2.y
+            return ['.'.join((str(x), str(y), str(z))) for x in range(aq, aq + 1) for y in range(bw, bw + 1) for z
+                    in
+                    range(ae, be + 1)]
         else:  # 1.2.x-1.6.y 1.2.x-1.2.9 1.3.0-1.5.9 1.6.0-1.6.y
             return ['.'.join((str(x), str(y), str(z))) for x in range(aq, aq + 1) for y in range(aw, aw + 1) for z in
                     range(ae, 10)] + \
