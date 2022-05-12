@@ -1,18 +1,16 @@
 from hpyculator import hpycore as hpyc
 
 PLUGIN_METADATA = {
-    'input_mode': hpyc.STRING,
-    'id': 'HexBinDecOct',  # ID，插件标识符，需要和文件名一致
-    'option_name': "进制转换v1.0.0 by HowieHz",  # 选项名-在选择算法列表中
-    'version': 'v1.0.0',  # 版本号
-
-    'save_name': "进制转换",  # 文件保存项目名-在输出
-    'quantifier': "",  # 文件保存量词-在输入后面(可选)
-
-    'output_start': "",  # 输出头(可选)
-    'output_name': "进制转换",  # 选择此项后输出的名字
-    'author': "HowieHz",  # 作者(可选)
-    'help': """
+    "input_mode": hpyc.STRING,
+    "id": "HexBinDecOct",  # ID，插件标识符，需要和文件名一致
+    "option_name": "进制转换v1.0.0 by HowieHz",  # 选项名-在选择算法列表中
+    "version": "v1.0.0",  # 版本号
+    "save_name": "进制转换",  # 文件保存项目名-在输出
+    "quantifier": "",  # 文件保存量词-在输入后面(可选)
+    "output_start": "",  # 输出头(可选)
+    "output_name": "进制转换",  # 选择此项后输出的名字
+    "author": "HowieHz",  # 作者(可选)
+    "help": """
 输入格式:
     需要转换的数字,输入的进制
 
@@ -24,17 +22,16 @@ PLUGIN_METADATA = {
     8
     10,2
                     """,
-    'output_end': "",
-
-    'return_mode': hpyc.NO_RETURN_SINGLE_FUNCTION,
-    'use_quantifier': hpyc.ON,
-    "fullwidth_symbol": hpyc.OFF
+    "output_end": "",
+    "return_mode": hpyc.NO_RETURN_SINGLE_FUNCTION,
+    "use_quantifier": hpyc.ON,
+    "fullwidth_symbol": hpyc.OFF,
 }
 
 
 def on_calculate(data: str, todo):  # 输出到框体内
     try:
-        num, b = data.split(',')
+        num, b = data.split(",")
     except Exception:
         num = data
         b = "10"

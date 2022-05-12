@@ -23,7 +23,8 @@ HELLO_WORLD 常量(NEVER_GIVE_UP)全部大写，使用下划线连接单词
 numba jax感觉两个差不多都用不了
 """
 
-START_SHOW = ("""皓式可编程计算器 hpyculator %s
+START_SHOW = (
+    """皓式可编程计算器 hpyculator %s
 HowieHz制作
 
 首先选择你要计算的东西
@@ -49,7 +50,9 @@ HowieHz制作
 
 
 
-悄悄说:在输入栏输入update_log之后点击运算就可以看更新日志了""" % VERSION)
+悄悄说:在输入栏输入update_log之后点击运算就可以看更新日志了"""
+    % VERSION
+)
 
 UPDATE_LOG = """更新日志:
 20220430-20220512

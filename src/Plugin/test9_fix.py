@@ -1,24 +1,24 @@
 from hpyculator import hpycore as hpyc
 
 PLUGIN_METADATA = {
-    'input_mode': hpyc.STRING,
+    "input_mode": hpyc.STRING,
     # self.input_box_amount=1 #输入框数量
-    'id': 'test9_fix',  # ID,插件标识符
-    'option_name': "tset⑨_fixV1.0.2 by HowieHz",  # 选项名-在选择算法列表中
-    'version': 'V1.0.2',  # 版本号
-    'save_name': "tset⑨",  # 文件保存项目名-在输出
-    'quantifier': "",  # 文件保存量词-在输入后面
-    'output_start': "",  # 输出头
-    'output_name': "test⑨",
-    'author': "HowieHz",
-    'help': """
+    "id": "test9_fix",  # ID,插件标识符
+    "option_name": "tset⑨_fixV1.0.2 by HowieHz",  # 选项名-在选择算法列表中
+    "version": "V1.0.2",  # 版本号
+    "save_name": "tset⑨",  # 文件保存项目名-在输出
+    "quantifier": "",  # 文件保存量词-在输入后面
+    "output_start": "",  # 输出头
+    "output_name": "test⑨",
+    "author": "HowieHz",
+    "help": """
     输入n，输出n个⑨
     
     不满一个的⑨就会被uuz吃掉
 """,
-    'output_end': "",
-    'return_mode': hpyc.NO_RETURN,
-    'use_quantifier': hpyc.ON
+    "output_end": "",
+    "return_mode": hpyc.NO_RETURN,
+    "use_quantifier": hpyc.ON,
 }
 
 
