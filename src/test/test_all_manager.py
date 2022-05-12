@@ -2,7 +2,7 @@ from ..builtin_modules import CreateApp
 from ..builtin_modules.log_manager import LogManager
 from ..builtin_modules.ui_manager import MainWindowApplication
 from ..builtin_modules.plugin_manager import PluginManager
-from hpyculator import main_window_signal
+from hpyculator.signal import main_window_signal
 import sys
 import os
 import pytest

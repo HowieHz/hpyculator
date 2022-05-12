@@ -8,7 +8,7 @@ from ..ui import Ui_SettingWindow  # 从init导
 from ..document import VERSION  # 版本号导入
 
 # 远程包
-from hpyculator import setting_window_signal
+from hpyculator.signal import setting_window_signal
 
 
 class SettingWindowApplication(QDialog):

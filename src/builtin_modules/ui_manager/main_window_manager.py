@@ -14,7 +14,7 @@ from ..calculate_manager import CalculationManager  # 计算管理
 from PySide6.QtWidgets import QMainWindow
 from PySide6.QtGui import QTextCursor
 from ..ui import Ui_MainWindow
-from hpyculator import main_window_signal
+from hpyculator.signal import main_window_signal
 
 # 窗口管理类（用于管理设置的窗口）
 from . import SettingWindowApplication
