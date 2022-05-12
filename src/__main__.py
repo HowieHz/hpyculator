@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QApplication
 
 import sys
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)  # 启动一个应用
     instance_app = CreateApp()
     instance_app.run()

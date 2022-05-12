@@ -1,6 +1,7 @@
 import os
 import shelve
 import sys
+
 # from hpyculator import hpycore as hpyc
 # from builtin_modules import document as doc
 
@@ -30,9 +31,13 @@ class CreateApp:
         global_plugin_option_id_dict = self.pluginCheck()  # 插件加载
         list_instance_main_window = []
         for _ in range(self.instance_num):
-            list_instance_main_window.append(MainWindowApplication(GLOBAL_SETTING_FILE_PATH,
-                                                                   GLOBAL_OUTPUT_DIR_PATH,
-                                                                   global_plugin_option_id_dict))  # 实例化主窗口
+            list_instance_main_window.append(
+                MainWindowApplication(
+                    GLOBAL_SETTING_FILE_PATH,
+                    GLOBAL_OUTPUT_DIR_PATH,
+                    global_plugin_option_id_dict,
+                )
+            )  # 实例化主窗口
             list_instance_main_window[_].show()
         return list_instance_main_window
 
@@ -44,8 +49,10 @@ class CreateApp:
         :return: setting_file_path, output_dir_path
         """
 
-        setting_dir_path = str(os.path.join(os.getcwd(), 'Setting'))  # 初始化设置目录
-        setting_file_path = str(os.path.join(setting_dir_path, 'hpyculator_setting'))  # 初始化设置文件位置
+        setting_dir_path = str(os.path.join(os.getcwd(), "Setting"))  # 初始化设置目录
+        setting_file_path = str(
+            os.path.join(setting_dir_path, "hpyculator_setting")
+        )  # 初始化设置文件位置
 
         # 检查存放设置文件的文件夹是否存在
         if not os.path.exists(setting_dir_path):
@@ -53,12 +60,12 @@ class CreateApp:
 
         with shelve.open(setting_file_path, writeback=True) as setting_file:
             # 从设置文件读取输出目录
-            if 'save_location' in setting_file:
-                output_dir_path = setting_file['save_location']
+            if "save_location" in setting_file:
+                output_dir_path = setting_file["save_location"]
             else:
-                output_dir_path = str(os.path.join(os.getcwd(), 'Output'))
-                setting_file['save_location'] = output_dir_path
-            logging.debug(f'输出文件保存位置:{output_dir_path}')
+                output_dir_path = str(os.path.join(os.getcwd(), "Output"))
+                setting_file["save_location"] = output_dir_path
+            logging.debug(f"输出文件保存位置:{output_dir_path}")
 
         # 检查输出文件夹是否存在
         if not os.path.exists(output_dir_path):
