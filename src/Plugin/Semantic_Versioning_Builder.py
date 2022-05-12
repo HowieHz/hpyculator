@@ -1,18 +1,16 @@
 from hpyculator import hpycore as hpyc
 
 PLUGIN_METADATA = {
-    'input_mode': hpyc.STRING,
-    'id': 'Semantic_Versioning_Builder',  # ID,插件标识符,需要和文件名一致（必须）
-    'option_name': "语义化版本生成器 V1.0.0 by HowieHz",  # 选项名-在选择算法列表中（必须）
-    'version': 'V1.0.1',  # 版本号（必须）
-
-    'save_name': "语义化版本",  # 文件保存项目名-在输出（必须）
-    'quantifier': "",  # 文件保存量词-在输入后面(可选)
-
-    'output_start': "",  # 输出头(可选)
-    'output_name': "语义化版本生成器",  # 选择此项后输出的名字（必须）
-    'author': "HowieHz",  # 作者(可选)
-    'help': """
+    "input_mode": hpyc.STRING,
+    "id": "Semantic_Versioning_Builder",  # ID,插件标识符,需要和文件名一致（必须）
+    "option_name": "语义化版本生成器 V1.0.0 by HowieHz",  # 选项名-在选择算法列表中（必须）
+    "version": "V1.0.1",  # 版本号（必须）
+    "save_name": "语义化版本",  # 文件保存项目名-在输出（必须）
+    "quantifier": "",  # 文件保存量词-在输入后面(可选)
+    "output_start": "",  # 输出头(可选)
+    "output_name": "语义化版本生成器",  # 选择此项后输出的名字（必须）
+    "author": "HowieHz",  # 作者(可选)
+    "help": """
     关于语义化版本请看https://semver.org/lang/zh-CN/
     
 输入格式
@@ -39,11 +37,10 @@ PLUGIN_METADATA = {
     
     可传入第三个参数 wdnmd 来使用原本的（非生成器）的函数
     """,  # 帮助和说明(可选)
-    'output_end': "",  # 输出小尾巴(可选)
-
-    'output_mode': hpyc.RETURN_ONCE,
-    'save_mode': hpyc.OFF,
-    "fullwidth_symbol": hpyc.OFF
+    "output_end": "",  # 输出小尾巴(可选)
+    "output_mode": hpyc.RETURN_ONCE,
+    "save_mode": hpyc.OFF,
+    "fullwidth_symbol": hpyc.OFF,
 }
 
 
@@ -75,32 +72,71 @@ def on_calculate(data: str):
     if aq == bq:
         if aw == bw:
             if ae == be:  # 1.2.2-1.2.2
-                return ['.'.join((str(aq), str(aw), str(ae)))]
+                return [".".join((str(aq), str(aw), str(ae)))]
             # 1.2.x-1.2.y
-            return ['.'.join((str(x), str(y), str(z))) for x in range(aq, aq + 1) for y in range(bw, bw + 1) for z
-                    in
-                    range(ae, be + 1)]
+            return [
+                ".".join((str(x), str(y), str(z)))
+                for x in range(aq, aq + 1)
+                for y in range(bw, bw + 1)
+                for z in range(ae, be + 1)
+            ]
         else:  # 1.2.x-1.6.y 1.2.x-1.2.9 1.3.0-1.5.9 1.6.0-1.6.y
-            return ['.'.join((str(x), str(y), str(z))) for x in range(aq, aq + 1) for y in range(aw, aw + 1) for z in
-                    range(ae, 10)] + \
-                   ['.'.join((str(x), str(y), str(z))) for x in range(aq, aq + 1) for y in range(aw + 1, bw) for z in
-                    range(0, 10)] + \
-                   ['.'.join((str(x), str(y), str(z))) for x in range(aq, aq + 1) for y in range(bw, bw + 1) for z in
-                    range(0, be + 1)]
+            return (
+                [
+                    ".".join((str(x), str(y), str(z)))
+                    for x in range(aq, aq + 1)
+                    for y in range(aw, aw + 1)
+                    for z in range(ae, 10)
+                ]
+                + [
+                    ".".join((str(x), str(y), str(z)))
+                    for x in range(aq, aq + 1)
+                    for y in range(aw + 1, bw)
+                    for z in range(0, 10)
+                ]
+                + [
+                    ".".join((str(x), str(y), str(z)))
+                    for x in range(aq, aq + 1)
+                    for y in range(bw, bw + 1)
+                    for z in range(0, be + 1)
+                ]
+            )
             # 1.2.x-1.2.9
             # 1.3.0-1.5.9
             # 1.6.0-1.6.y
     else:  # 1.x.x-3.y.y
-        return ['.'.join((str(x), str(y), str(z))) for x in range(aq, aq + 1) for y in range(aw, aw + 1) for z in
-                range(ae, 10)] + \
-               ['.'.join((str(x), str(y), str(z))) for x in range(aq, aq + 1) for y in range(aw + 1, 10) for z in
-                range(0, 10)] + \
-               ['.'.join((str(x), str(y), str(z))) for x in range(aq + 1, bq) for y in range(0, 10) for z in
-                range(0, 10)] + \
-               ['.'.join((str(x), str(y), str(z))) for x in range(bq, bq + 1) for y in range(0, bw) for z in
-                range(0, 10)] + \
-               ['.'.join((str(x), str(y), str(z))) for x in range(bq, bq + 1) for y in range(bw, bw + 1) for z in
-                range(0, be + 1)]
+        return (
+            [
+                ".".join((str(x), str(y), str(z)))
+                for x in range(aq, aq + 1)
+                for y in range(aw, aw + 1)
+                for z in range(ae, 10)
+            ]
+            + [
+                ".".join((str(x), str(y), str(z)))
+                for x in range(aq, aq + 1)
+                for y in range(aw + 1, 10)
+                for z in range(0, 10)
+            ]
+            + [
+                ".".join((str(x), str(y), str(z)))
+                for x in range(aq + 1, bq)
+                for y in range(0, 10)
+                for z in range(0, 10)
+            ]
+            + [
+                ".".join((str(x), str(y), str(z)))
+                for x in range(bq, bq + 1)
+                for y in range(0, bw)
+                for z in range(0, 10)
+            ]
+            + [
+                ".".join((str(x), str(y), str(z)))
+                for x in range(bq, bq + 1)
+                for y in range(bw, bw + 1)
+                for z in range(0, be + 1)
+            ]
+        )
 
         # 1.3.5-1.3.9 a! b! c!
         # 1.4.0-1.9.9 a! b! c!
