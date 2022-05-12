@@ -70,9 +70,7 @@ def on_calculate(data: str):  # 输出到框体内
         if digital_answer >= 10:
             carry_num = 1  # 进位
     answer = answer[::-1]
-    if len(answer) == new_point:
-        pass
-    else:
+    if len(answer) != new_point:
         answer = answer[:new_point] + "." + answer[new_point:]
 
     return answer

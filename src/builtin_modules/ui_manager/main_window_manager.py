@@ -138,7 +138,6 @@ class MainWindowApplication(QMainWindow):
         :return:
         """
         # 输入数据
-        print(test_input)
         if test_input:
             input_data = test_input  # 有就录入测试数据
         else:

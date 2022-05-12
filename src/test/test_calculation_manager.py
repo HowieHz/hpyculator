@@ -6,7 +6,7 @@ import pytest
 import sys
 import os
 from typing import Any
-from hpyculator import main_window_signal
+from hpyculator.signal import main_window_signal
 
 
 class TestCalculationManager:

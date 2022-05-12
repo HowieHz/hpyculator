@@ -157,9 +157,7 @@ def on_calculate(data: str, todo) -> None:  # 输出到框体内
     else:
         pass
 
-    aw = ""
-    for i in aw_list:  # 列表转换为字符串
-        aw += i
+    aw = "".join(aw_list)
 
     if todo == "output":
         hpyc.output(aw)
