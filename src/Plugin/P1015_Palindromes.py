@@ -80,10 +80,7 @@ def on_calculate(data: str):  # 输出到框体内
 
 
 def ishw(list_data: list):
-    if list_data == list_data[::-1]:
-        return True
-    else:
-        return False
+    return list_data == list_data[::-1]
 
 
 def on_calculate_with_save(data: str):
