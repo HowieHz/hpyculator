@@ -342,8 +342,7 @@ by {selected_plugin_attributes["author"]}
         for i in self.selection_list:  # 选出符合要求的
             if i.find(search_keyword) == -1:  # 字符串方法，没找到指定子串就-1
                 continue
-            else:
-                self.ui.choices_list_box.addItem(i)
+            self.ui.choices_list_box.addItem(i)
         return None
 
     def searchCancel(self):
