@@ -33,4 +33,4 @@ def on_calculate(num, do_what):  # 返回一个列表
         l1.append(list(map(lambda x, y: x + y, [0] + l1[-1], l1[-1] + [0])))
     for i in l1:
         output(i)
-    return 
+    return
