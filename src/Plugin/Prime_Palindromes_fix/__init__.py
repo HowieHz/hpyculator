@@ -1,3 +1,4 @@
+"""打表法，空间换时间"""
 import hpyculator as hpyc
 
 PLUGIN_METADATA = {

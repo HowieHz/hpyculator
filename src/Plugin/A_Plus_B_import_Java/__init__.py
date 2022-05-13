@@ -1,3 +1,4 @@
+"""太好了，pj共荣"""
 import os
 import jpype
 import hpyculator as hpyc
