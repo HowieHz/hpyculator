@@ -29,7 +29,8 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(data: str, todo):  # 输出到框体内
+def on_calculate(data: str, todo):
+    """计算函数"""
     try:
         num, b = data.split(",")
     except Exception:

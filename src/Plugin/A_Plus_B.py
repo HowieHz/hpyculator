@@ -29,6 +29,7 @@ PLUGIN_METADATA = {
 
 
 def on_calculate(data: str) -> None:
+    """计算函数"""
     a, b = data.split(",")
     a = int(a)
     b = int(b)
@@ -36,6 +37,7 @@ def on_calculate(data: str) -> None:
 
 
 def on_calculate_with_save(data: str) -> None:
+    """计算并保存函数"""
     a, b = data.split(",")
     a = int(a)
     b = int(b)

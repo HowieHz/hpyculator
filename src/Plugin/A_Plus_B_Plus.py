@@ -25,7 +25,7 @@ PLUGIN_METADATA = {
 
 
 def on_calculate(data: str):  # 输出到框体内
-    """
+    """计算函数
 
     :type data: str
     """

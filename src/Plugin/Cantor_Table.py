@@ -40,6 +40,7 @@ PLUGIN_METADATA = {
 
 
 def on_calculate(n, do_what):
+    """计算函数"""
     if do_what == "output":
         a = 1
         b = 1

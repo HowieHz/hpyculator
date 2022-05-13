@@ -44,6 +44,7 @@ r"""
 
 
 def on_calculate(data, todo):
+    """计算函数"""
     a, b = data.split(",")
     jar_path = str(os.path.abspath(__file__))[:-11] + "A+Bproj.jar"
     jvm_path = jpype.getDefaultJVMPath()

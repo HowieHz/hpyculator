@@ -45,9 +45,10 @@ PLUGIN_METADATA = {
 
 
 def on_calculate(data: str):
+    """计算函数"""
     try:
         a, b, c = data.split(",")
-    except Exception as e:
+    except ValueError:
         c = ""
         a, b = data.split(",")
     if c == "wdnmd":

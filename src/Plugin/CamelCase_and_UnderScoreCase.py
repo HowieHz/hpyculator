@@ -33,6 +33,7 @@ PLUGIN_METADATA = {
 
 
 def on_calculate(data, todo):
+    """计算函数"""
     text, input_mode, output_mode = data.split(",")
     text_list = []  # 存放单词组
     if input_mode == "0":

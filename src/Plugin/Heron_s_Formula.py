@@ -28,7 +28,8 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(num: str, do_what):  # 返回一个列表
+def on_calculate(num: str, do_what):
+    """计算函数"""
     try:
         a, b, c = num.split(",")
     except ValueError:

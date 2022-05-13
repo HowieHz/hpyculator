@@ -26,7 +26,7 @@ PLUGIN_METADATA = {
 
 
 def on_calculate(data: str):  # 输出到框体内
-    # print(data)
+    """计算函数"""
     a, b = data.split(",")
     point_a = a.find(".")  # 获得a的小数点的索引
     if point_a == -1:

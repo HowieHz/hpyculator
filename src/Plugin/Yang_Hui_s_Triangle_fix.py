@@ -14,28 +14,22 @@ PLUGIN_METADATA = {
     输入数字n ，输出前n行杨辉三角
             """,  # 帮助和说明(可选)
     "output_end": "",  # 输出小尾巴(可选)
-    "return_mode": hpyc.NO_RETURN,
+    "return_mode": hpyc.NO_RETURN_SINGLE_FUNCTION,
     "use_quantifier": hpyc.OFF,
     "fullwidth_symbol": hpyc.ON,  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
 }
 
 
-def on_calculate(num):  # 返回一个列表
+def on_calculate(num, do_what):  # 返回一个列表
+    if do_what == "output":
+        output = hpyc.output
+    else:
+        output = hpyc.write
+
     if num == 0:
         return []
     l1 = [[1]]
     for _ in range(num - 1):
         l1.append(list(map(lambda x, y: x + y, [0] + l1[-1], l1[-1] + [0])))
     for i in l1:
-        hpyc.output(i)
-
-
-def on_calculate_with_save(num):  # 返回一个列表
-    if num == 0:
-        hpyc.write([])
-    l1 = [[1]]
-    for _ in range(num - 1):
-        l1.append(list(map(lambda x, y: x + y, [0] + l1[-1], l1[-1] + [0])))
-    for i in l1:
-        hpyc.write_without_flush(i)
-    hpyc.flush()
+        output(i)
