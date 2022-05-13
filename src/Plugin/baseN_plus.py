@@ -149,10 +149,10 @@ def on_calculate(data: str, todo) -> None:
     aw_list = a_list[:]  # 翻转list，左高位右低位
     aw_list.reverse()
     if n > 10:  # 把大于10的位转换为a-zA-Z-_
-        for i in range(0, len(aw_list)):
-            num = int(aw_list[i])
+        for index, aw_list_data in enumerate(aw_list):
+            num = int(aw_list_data)
             if num > 9:
-                aw_list[i] = num_rep_to[num]
+                aw_list[index] = num_rep_to[num]
     else:
         pass
 
