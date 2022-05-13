@@ -28,7 +28,6 @@ class LogManager:
         :return: None
         """
         setting_file_path = self.setting_file_path
-
         # 读取配置文件-是否保存日志
         with shelve.open(setting_file_path, writeback=True) as setting_file:
             if "save_log" in setting_file:

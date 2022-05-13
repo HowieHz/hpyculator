@@ -189,7 +189,6 @@ class CalculationThread(Thread):
             :return:
             """
             calculate_fun = selected_plugin.on_calculate
-
             with tempfile.TemporaryFile(
                 "w+t", encoding="utf-8", errors="ignore"
             ) as filestream:
