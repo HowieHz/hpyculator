@@ -53,6 +53,7 @@ PLUGIN_METADATA = {
 
 def on_calculate(data: str, do_what: str):
     """计算函数"""
+
     def ishw(list_data: list):
         """判断是否是回文函数"""
         return list_data == list_data[::-1]

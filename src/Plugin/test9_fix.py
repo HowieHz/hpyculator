@@ -21,7 +21,9 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(data: str, do_what: str):  # 调用时传入两个参数，第一个参数是输入，第二个参数是程序的主类，要作为输出函数的的第一个参数
+def on_calculate(
+    data: str, do_what: str
+):  # 调用时传入两个参数，第一个参数是输入，第二个参数是程序的主类，要作为输出函数的的第一个参数
     """计算函数"""
     print(hpyc.getIoInstance())
     num = data
@@ -36,7 +38,7 @@ def on_calculate(data: str, do_what: str):  # 调用时传入两个参数，第�
             hpyc.flush()
             need_write = ""
             need_write_len = 0
-    if do_what =="output":
+    if do_what == "output":
         hpyc.output(need_write)
     else:
         hpyc.write(need_write)
