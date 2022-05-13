@@ -44,7 +44,6 @@ class CreateApp:
 
         :return: setting_file_path, output_dir_path
         """
-
         setting_dir_path = str(os.path.join(os.getcwd(), "Setting"))  # 初始化设置目录
         setting_file_path = str(
             os.path.join(setting_dir_path, "hpyculator_setting")
