@@ -61,14 +61,12 @@ class SettingWindowApplication(QDialog):
     def cancelSetting(self):
         self.close()
 
-    @staticmethod
-    def saveSettingCheckEvent():
+    def saveSettingCheckEvent(self):
         """
         占位用，因为都是最后统一读取写入的
         """
 
-    @staticmethod
-    def saveLogCheckEvent():
+    def saveLogCheckEvent(self):
         """
         占位用，因为都是最后统一读取写入的
         """
