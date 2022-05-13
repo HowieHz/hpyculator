@@ -10,3 +10,5 @@
 [bilibili@核心電工](https://space.bilibili.com/25325033)        精神支持，水群支持
 
 [MCDReforged](https://github.com/Fallen-Breath/MCDReforged) 这个非常好，开服一直在用，在这个项目的布局参考了MCDReforged，感谢Fallen
+
+JetBrains for [Open Source licence](https://www.jetbrains.com/zh-cn/community/opensource/#support)  开源万岁！
