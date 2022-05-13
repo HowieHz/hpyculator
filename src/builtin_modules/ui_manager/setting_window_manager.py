@@ -65,16 +65,10 @@ class SettingWindowApplication(QDialog):
     def saveSettingCheckEvent():
         """
         占位用，因为都是最后统一读取写入的
-
-        :return:
         """
-        return
 
     @staticmethod
     def saveLogCheckEvent():
         """
         占位用，因为都是最后统一读取写入的
-
-        :return:
         """
-        return
