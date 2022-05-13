@@ -7,7 +7,7 @@ from typing import List, Dict
 
 class PluginManager:
     def __init__(self):
-        # 初始化模块目录
+        """初始化模块目录"""
         self.PLUGIN_DIR_PATH = str(os.path.join(os.getcwd(), "Plugin"))
         logging.debug(f"插件保存位置:{self.PLUGIN_DIR_PATH}")
 
@@ -26,8 +26,8 @@ class PluginManager:
         self.loaded_plugin: Dict[str] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
 
     def __init_plugin_singer_file(self, plugin_files_name_py):
-        """
-        导入指定单文件插件
+        """导入指定单文件插件
+
         :param plugin_files_name_py: 插件文件名列表，如[1.py,2.py,3.py]
         :return: None
         """
@@ -53,8 +53,8 @@ class PluginManager:
                 logging.debug(f"init_plugin_singer_file inside Exception:{e}")
 
     def __init_plugin_folder(self, plugin_files_name):
-        """
-        导入指定文件夹插件
+        """导入指定文件夹插件
+
         :param plugin_files_name: 文件夹插件名列表，如["a","b","c"]
         :return: None
         """
@@ -76,8 +76,7 @@ class PluginManager:
 
     @staticmethod
     def __readPluginPath(path):
-        """
-        读取指定目录下插件需重构
+        """读取指定目录下插件需重构
 
         :param path: 指定的目录 绝对路径
         :return: plugin_file_names  单文件插件的文件名,
@@ -93,8 +92,7 @@ class PluginManager:
         return plugin_file_names, folder_plugin_names
 
     def initPlugin(self):
-        """
-        导入插件
+        """导入插件
 
         :return: [dict]{插件id字段,对应的插件对象}
         """
@@ -126,8 +124,7 @@ class PluginManager:
         return self.plugin_option_id_dict
 
     def getPluginAttribute(self, user_selection_id):
-        """
-        读取插件属性
+        """读取插件属性
 
         :param user_selection_id:
         :return: [list]attributes of plugin
@@ -169,8 +166,7 @@ class PluginManager:
         return plugin_attributes
 
     def getPluginInstance(self, user_selection_id):
-        """
-        获取插件对象
+        """获取插件对象
 
         :param user_selection_id:
         :return: A instance of plugin

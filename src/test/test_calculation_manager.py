@@ -50,8 +50,7 @@ class TestCalculationManager:
         test_output_dir_path: str,
         rev_expected: Any,
     ):
-        """
-        启动计算线程
+        """启动计算线程
 
         :param test_input: 测试输入，测试专用
         :param test_input_mode: 测试目标转换模式，测试专用
@@ -63,8 +62,6 @@ class TestCalculationManager:
         :return:
         """
         print(f"目前运行{self.__class__.__name__}类,test_calculation_manager函数")
-        # 初始化
-        # self.app = QApplication(sys.argv)  # 启动一个应用
         instance_app = CreateApp()
         instance_main_window = instance_app.run()[0]
         ret = instance_main_window.startEvent(
@@ -95,8 +92,7 @@ class TestCalculationManager:
     def test_calculation_typeconversion(
         self, to_type: int, data: Any, rev_expected: Any
     ):
-        """
-        测试类型转换函数
+        """测试类型转换函数
 
         :param to_type:
         :param data:

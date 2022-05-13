@@ -18,8 +18,7 @@ from typing import Optional
 
 class CreateApp:
     def __init__(self, instance_num: Optional[int] = 1):
-        """
-        创建app
+        """创建app
 
         :param instance_num: 创建几个实例
         """
@@ -43,8 +42,7 @@ class CreateApp:
 
     @staticmethod
     def pathCheck():
-        """
-        路径检查
+        """路径检查
 
         :return: setting_file_path, output_dir_path
         """
@@ -75,8 +73,7 @@ class CreateApp:
 
     @staticmethod
     def logCheck(setting_file_path):
-        """
-        日志检查
+        """日志检查
 
         :return: None
         """
@@ -85,8 +82,7 @@ class CreateApp:
 
     @staticmethod
     def pluginCheck():
-        """
-        加载插件
+        """加载插件
 
         :return: plugin_option_id_dict, loaded_plugin
         """

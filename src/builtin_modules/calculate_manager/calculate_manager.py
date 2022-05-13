@@ -20,7 +20,7 @@ from ..plugin_manager import instance_plugin_manager
 
 class CalculationManager:
     def __init__(self):
-        return None
+        """计算管理"""
 
     def start(
         self,
@@ -30,8 +30,7 @@ class CalculationManager:
         user_selection_id: str,
         output_dir_path: str,
     ):
-        """
-        启动计算线程
+        """启动计算线程
 
         :param inputbox_data; 未经处理的用户输入
         :param plugin_attribute_input_mode; 需要转换的模式
@@ -56,6 +55,12 @@ class CalculationManager:
 
     @staticmethod
     def typeConversion(to_type: int, data: str):
+        """类型转换
+
+        :param to_type: 目标类型
+        :param data: 需要转换的数据
+        :return: 转换后的数据
+        """
         try:
             if to_type == hpyc.STRING:
                 data = str(data)
@@ -79,8 +84,7 @@ class CalculationThread(Thread):
         user_selection_id: str,
         output_dir_path: str,
     ):
-        """
-        计算线程
+        """计算线程
 
         :param inputbox_data: 经过类型转换处理的用户输入
         :param calculation_mode; 计算模式
@@ -108,9 +112,7 @@ class CalculationThread(Thread):
         )
 
         def whatNeedCalculate():
-            """
-            基础的计算模式
-            """
+            """基础的计算模式"""
             calculate_fun = selected_plugin.on_calculate
 
             time_before_calculate = time.perf_counter()  # 储存开始时间
@@ -143,9 +145,7 @@ class CalculationThread(Thread):
             return time.perf_counter() - time_before_calculate  # 储存结束时间
 
         def whatNeedCalculateWithSave(filepath_name):
-            """
-            计算+保存模式
-            """
+            """计算+保存模式"""
             # filepath_name - 储存保存到哪个文件里 路径+文件名
 
             calculate_fun = selected_plugin.on_calculate
@@ -179,8 +179,7 @@ class CalculationThread(Thread):
             return time.perf_counter() - time_before_calculate  # 储存结束时间
 
         def whatNeedCalculateWithOutputOptimization(limit=False):
-            """
-            计算+输出优化（先把结果存临时文件，再读取输出）
+            """计算+输出优化的模式（先把结果存临时文件，再读取输出）
 
             :param limit: 是否开启输出上限
             :return:
@@ -236,14 +235,20 @@ class CalculationThread(Thread):
 
             return time.perf_counter() - time_before_calculate  # 储存结束时间
 
-        # 快读，低占用读取文件
         def quickTraverseFile(file, chunk_size=8192) -> Iterator:
+            """较快，低占用读取文件，迭代器
+
+            :param file: 打开的文件流对象
+            :param chunk_size: 一次读取的字节大小
+            :return: 读取到的字节
+            """
             for chunk in iter(
                 partial(file.read, chunk_size), ""
             ):  # 用readline的话，读到换行符就会直接停止读取，不会读取到8192B，会增加读取次数
                 yield chunk
 
         def calculate_save_mode(output_dir_path):
+            """调用计算并保存的模式"""
             if plugin_attributes["use_quantifier"] == hpyc.ON:
                 filename = f"{datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S')} {plugin_attributes['save_name']}{str(inputbox_data)}{plugin_attributes['quantifier']}"
             else:
@@ -256,6 +261,7 @@ class CalculationThread(Thread):
             )  # 输出本次计算时间
 
         def calculate_o_mode(limit=False):
+            """调用计算+输出优化的模式"""
             time_spent = whatNeedCalculateWithOutputOptimization(limit)
             # 以下是计算后工作
             main_window_signal.appendOutPutBox.emit(
@@ -263,6 +269,7 @@ class CalculationThread(Thread):
             )  # 输出本次计算时间
 
         def calculate_base_mode():
+            """调用基础计算模式"""
             time_spent = whatNeedCalculate()
             # 以下是计算后工作
             main_window_signal.appendOutPutBox.emit(

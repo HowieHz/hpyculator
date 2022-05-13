@@ -13,6 +13,7 @@ from hpyculator.signal import setting_window_signal
 
 class SettingWindowApplication(QDialog):
     def __init__(self):
+        """设置窗口，是主窗口的子窗口"""
         super().__init__()
         self.ui = Ui_SettingWindow()  # 实例化ui
         self.ui.setupUi(self)  # 初始化ui，不初始化不显示
@@ -41,7 +42,10 @@ class SettingWindowApplication(QDialog):
             self.ui.save_log_check.setChecked(setting_file["save_log"])
 
     def saveSetting(self):
-        # 保存目录设置
+        """按下保存按钮之后的事件
+
+        :return:
+        """
         with shelve.open(
             self.SETTING_FILE_PATH, writeback=True
         ) as setting_file:  # 读取设置文件
@@ -57,7 +61,15 @@ class SettingWindowApplication(QDialog):
         self.close()
 
     def saveSettingCheckEvent(self):
+        """占位用
+
+        :return:
+        """
         return
 
     def saveLogCheckEvent(self):
+        """占位用
+
+        :return:
+        """
         return

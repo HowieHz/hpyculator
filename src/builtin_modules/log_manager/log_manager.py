@@ -22,8 +22,7 @@ class LogManager:
         # TODO 修复日志不可用，日志现在只有把basicConfig放到main里面才能用
 
     def checkIsEnableLog(self):
-        """
-        日志检查
+        """日志检查
 
         :return: None
         """
