@@ -1,4 +1,4 @@
-from hpyculator import hpycore as hpyc
+import hpyculator as hpyc
 
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
@@ -45,13 +45,17 @@ PLUGIN_METADATA = {
         STEP=4
             """,  # 帮助和说明(可选)
     "output_end": "",  # 输出小尾巴(可选)
-    "return_mode": hpyc.NO_RETURN,
+    "return_mode": hpyc.NO_RETURN_SINGLE_FUNCTION,
     "save_mode": hpyc.OFF,
     "fullwidth_symbol": hpyc.OFF,
 }
 
 
-def on_calculate(data: str):  # 输出到框体内
+def on_calculate(data: str, do_what: str):  # 输出到框体内
+    if do_what == "output":
+        output = hpyc.output
+    else:
+        output = hpyc.write
     o, p = data.strip().split(",")
     a = int(o.strip())  # a是多少进制
     b_list = list(map(lambda x: int(x, a), list(p.strip())))
@@ -60,46 +64,21 @@ def on_calculate(data: str):  # 输出到框体内
     b_list.reverse()  # 左边是个位，右边是高位
     for _ in range(0, 30):
         if ishw(b_list):
-            hpyc.output("STEP=" + str(times))
+            output("STEP=" + str(times))
             return
         times += 1
-        for i in range(0, len(b_list)):
-            b_list[i] = str(int(c_list[i]) + int(b_list[i]))
-            if int(b_list[i]) > (a - 1):
-                b_list[i] = str(int(b_list[i]) - a)
-                if i != (len(b_list) - 1):
-                    b_list[i + 1] = str(int(b_list[i + 1]) + 1)
+        for index, b_list_data in enumerate(b_list):
+            b_list[index] = str(int(c_list[index]) + int(b_list_data))
+            if int(b_list_data) > (a - 1):
+                b_list[index] = str(int(b_list_data) - a)
+                if index != (len(b_list) - 1):
+                    b_list[index + 1] = str(int(b_list[index + 1]) + 1)
                 else:
                     b_list.append("1")
         c_list = b_list[:]
         c_list.reverse()
-    hpyc.output("Impossible!")
+    output("Impossible!")
 
 
 def ishw(list_data: list):
     return list_data == list_data[::-1]
-
-
-def on_calculate_with_save(data: str):
-    o, p = data.strip().split(",")
-    a = int(o.strip())  # a是多少进制
-    b_list = list(map(lambda x: int(x, a), list(p.strip())))
-    times = 0
-    c_list = b_list[:]
-    b_list.reverse()  # 左边是个位，右边是高位
-    for _ in range(0, 30):
-        if ishw(b_list):
-            hpyc.write("STEP=" + str(times))
-            return
-        times += 1
-        for i in range(0, len(b_list)):
-            b_list[i] = str(int(c_list[i]) + int(b_list[i]))
-            if int(b_list[i]) > (a - 1):
-                b_list[i] = str(int(b_list[i]) - a)
-                if i != (len(b_list) - 1):
-                    b_list[i + 1] = str(int(b_list[i + 1]) + 1)
-                else:
-                    b_list.append("1")
-        c_list = b_list[:]
-        c_list.reverse()
-    hpyc.write("Impossible!")

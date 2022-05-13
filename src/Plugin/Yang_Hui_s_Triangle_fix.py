@@ -1,4 +1,4 @@
-from hpyculator import hpycore as hpyc
+import hpyculator as hpyc
 
 PLUGIN_METADATA = {
     "input_mode": hpyc.NUM,
@@ -24,7 +24,7 @@ def on_calculate(num):  # 返回一个列表
     if num == 0:
         return []
     l1 = [[1]]
-    for _ in range(0, num - 1):
+    for _ in range(num - 1):
         l1.append(list(map(lambda x, y: x + y, [0] + l1[-1], l1[-1] + [0])))
     for i in l1:
         hpyc.output(i)
@@ -34,7 +34,7 @@ def on_calculate_with_save(num):  # 返回一个列表
     if num == 0:
         hpyc.write([])
     l1 = [[1]]
-    for _ in range(0, num - 1):
+    for _ in range(num - 1):
         l1.append(list(map(lambda x, y: x + y, [0] + l1[-1], l1[-1] + [0])))
     for i in l1:
         hpyc.write_without_flush(i)

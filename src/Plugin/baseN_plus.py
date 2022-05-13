@@ -1,4 +1,4 @@
-from hpyculator import hpycore as hpyc
+import hpyculator as hpyc
 
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
@@ -136,12 +136,12 @@ def on_calculate(data: str, todo) -> None:  # 输出到框体内
             break
         a_list.append("0")
 
-    for i in range(0, len(b_list)):
-        a_list[i] = str(int(a_list[i]) + int(b_list[i]))
-        if int(a_list[i]) > (n - 1):
-            a_list[i] = str(int(a_list[i]) - n)
-            if i != (len(a_list) - 1):
-                a_list[i + 1] = str(int(a_list[i + 1]) + 1)
+    for index, b_list_data in enumerate(b_list):
+        a_list[index] = str(int(a_list[index]) + int(b_list_data))
+        if int(a_list[index]) > (n - 1):
+            a_list[index] = str(int(a_list[index]) - n)
+            if index != (len(a_list) - 1):
+                a_list[index + 1] = str(int(a_list[index + 1]) + 1)
             else:
                 a_list.append("1")
 

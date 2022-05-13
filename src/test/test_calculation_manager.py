@@ -1,6 +1,6 @@
 from ..builtin_modules.calculate_manager import CalculationManager
 from ..builtin_modules import CreateApp
-from hpyculator import hpycore as hpyc
+import hpyculator as hpyc
 import pytest
 import os
 from typing import Any

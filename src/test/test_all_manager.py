@@ -1,5 +1,5 @@
 from ..builtin_modules import CreateApp
-from hpyculator.signal import main_window_signal
+from hpyculator.hpysignal import main_window_signal
 import sys
 import os
 import pytest

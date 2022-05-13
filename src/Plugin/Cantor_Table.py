@@ -1,4 +1,4 @@
-from hpyculator import hpycore as hpyc
+import hpyculator as hpyc
 
 PLUGIN_METADATA = {
     "input_mode": hpyc.NUM,
@@ -45,7 +45,7 @@ def on_calculate(n, do_what):
         b = 1
         if n >= 1:
             hpyc.output("1/1")
-        for i in range(1, n):
+        for _ in range(n-1):
             if a == 1:
                 if b % 2 == 0:
                     b -= 1
@@ -90,7 +90,7 @@ def on_calculate(n, do_what):
         buffer_len = 0
         if n >= 1:
             hpyc.write_without_flush("1/1")
-        for i in range(1, n):
+        for _ in range(n-1):
             if buffer_len >= 5000000:
                 hpyc.flush()
             if a == 1:

@@ -1,4 +1,4 @@
-from hpyculator import hpycore as hpyc
+import hpyculator as hpyc
 
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
@@ -44,8 +44,8 @@ def on_calculate(data, todo):
         text_list = []
         for i in text:
             text_list_single.append(i)
-        for index in range(0, len(text_list_single)):
-            if "A" <= text_list_single[index] <= "Z":
+        for index,data in enumerate(text_list_single):
+            if "A" <= data <= "Z":
                 text_uppercase_index.append(index)
         text_uppercase_index.append(len(text_list_single))
         before_uppercase_index = 0
@@ -59,8 +59,8 @@ def on_calculate(data, todo):
         text_list = []
         for i in text:
             text_list_single.append(i)
-        for index in range(0, len(text_list_single)):
-            if "A" <= text_list_single[index] <= "Z":
+        for index,data in enumerate(text_list_single):
+            if "A" <= data <= "Z":
                 text_uppercase_index.append(index)
         text_uppercase_index.append(len(text_list_single))
         before_uppercase_index = 0

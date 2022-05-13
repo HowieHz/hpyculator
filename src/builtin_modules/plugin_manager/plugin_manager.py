@@ -1,7 +1,7 @@
 import os
 import logging
 import importlib
-from hpyculator import hpycore as hpyc
+import hpyculator as hpyc
 from typing import List, Dict
 
 

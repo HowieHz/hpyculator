@@ -4,8 +4,8 @@ from threading import Thread
 import tempfile
 import os
 from functools import partial  # 偏函数真好用
-from hpyculator.signal import main_window_signal
-from hpyculator import hpycore as hpyc
+from hpyculator.hpysignal import main_window_signal
+import hpyculator as hpyc
 from typing import Any
 
 # from multiprocessing import Process

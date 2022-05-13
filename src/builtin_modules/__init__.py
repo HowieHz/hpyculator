@@ -1,9 +1,5 @@
 import os
 import shelve
-import sys
-
-# from hpyculator import hpycore as hpyc
-# from builtin_modules import document as doc
 
 import logging  # 日志导入
 from .log_manager import LogManager  # 日志管理 初始化

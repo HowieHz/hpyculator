@@ -8,7 +8,7 @@ from ..ui import Ui_SettingWindow  # 从init导
 from ..document import VERSION  # 版本号导入
 
 # 远程包
-from hpyculator.signal import setting_window_signal
+from hpyculator.hpysignal import setting_window_signal
 
 
 class SettingWindowApplication(QDialog):
@@ -60,15 +60,17 @@ class SettingWindowApplication(QDialog):
     def cancelSetting(self):
         self.close()
 
-    def saveSettingCheckEvent(self):
-        """占位用
+    @staticmethod
+    def saveSettingCheckEvent():
+        """占位用，因为都是最后统一读取写入的
 
         :return:
         """
         return
 
-    def saveLogCheckEvent(self):
-        """占位用
+    @staticmethod
+    def saveLogCheckEvent():
+        """占位用，因为都是最后统一读取写入的
 
         :return:
         """
