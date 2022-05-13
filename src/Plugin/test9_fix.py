@@ -12,7 +12,7 @@ PLUGIN_METADATA = {
     "author": "HowieHz",
     "help": """
     输入n，输出n个⑨
-    
+
     不满一个的⑨就会被uuz吃掉
 """,
     "output_end": "",

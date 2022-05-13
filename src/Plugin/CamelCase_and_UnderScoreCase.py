@@ -16,11 +16,11 @@ PLUGIN_METADATA = {
 1 -> 小驼峰 例helloWorld
 2 -> 大驼峰 帕斯卡命名法 例HelloWorld
 3 -> 全大写+下划线 例NEVER_GIVE_UP
-    
+
 输入格式
     要转换的字符串,输入数据模式,输出数据模式
     （半角逗号分隔）
-    
+
 输出格式
     转换后的字符串
 

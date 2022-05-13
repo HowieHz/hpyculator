@@ -13,7 +13,7 @@ PLUGIN_METADATA = {
     "help": """
     这里引用一下洛谷OJ对Cantor表的介绍
     https://www.luogu.com.cn/problem/P1014
-    
+
     现代数学的著名证明之一是 Georg Cantor 证明了有理数是可枚举的。他是用下面这一张表来证明这一命题的：
 
     1/1, 1/2, 1/3,1/4,1/5, …
@@ -30,7 +30,7 @@ PLUGIN_METADATA = {
 
 输出格式
     表中的前 N 项
-    
+
     哈哈，把自己的题解拿来用了""",  # 帮助和说明(可选)
     "output_end": "",  # 输出小尾巴(可选)
     "return_mode": hpyc.NO_RETURN_SINGLE_FUNCTION,
