@@ -183,7 +183,7 @@ class MainWindowApplication(QMainWindow):
 
 如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）"""
                 )
-                return None
+                return
 
         # 选择的插件id
         if test_selection_id:
@@ -201,7 +201,7 @@ class MainWindowApplication(QMainWindow):
           ↓
 ← ← ←"""
                 )
-                return None
+                return
 
         # 输入转换类型
         if test_input_mode:
@@ -234,7 +234,7 @@ class MainWindowApplication(QMainWindow):
         calculate_manager.start(
             input_data, input_mode, calculation_mode, user_selection_id, output_dir_path
         )  # 启动计算
-        return None
+        return
 
     def userChooseOptionEvent(self, item):
         """
