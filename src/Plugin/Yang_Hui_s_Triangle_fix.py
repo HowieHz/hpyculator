@@ -27,7 +27,8 @@ def on_calculate(num, do_what):  # 返回一个列表
         output = hpyc.write
 
     if num == 0:
-        return []
+        output([])
+        return
     l1 = [[1]]
     for _ in range(num - 1):
         l1.append(list(map(lambda x, y: x + y, [0] + l1[-1], l1[-1] + [0])))
