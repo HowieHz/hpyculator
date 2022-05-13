@@ -57,7 +57,4 @@ def on_calculate(data, todo):
         hpyc.output(jpype.JClass("com.shacha.Main").main(a, b))
     else:
         hpyc.write(jpype.JClass("com.shacha.Main").main(a, b))
-    try:
-        jpype.shutdownJVM()
-    except:
-        pass
+    # jpype.shutdownJVM() Shutdown must be called from main thread

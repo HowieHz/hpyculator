@@ -33,7 +33,7 @@ def on_calculate(data: str, todo):
     """计算函数"""
     try:
         num, b = data.split(",")
-    except Exception:
+    except ValueError:
         num = data
         b = "10"
     if b == "2":
