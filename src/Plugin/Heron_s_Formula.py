@@ -14,12 +14,12 @@ PLUGIN_METADATA = {
 输入格式
     实数A,实数B,实数C
     三个数据用半角逗号隔开
-    
+
     例:3,4,5
 
 输出格式
     以A,B,C为边长的三角形的面积。
-    
+
    """,  # 帮助和说明(可选)
     "output_end": "",  # 输出小尾巴(可选)
     "return_mode": hpyc.NO_RETURN_SINGLE_FUNCTION,

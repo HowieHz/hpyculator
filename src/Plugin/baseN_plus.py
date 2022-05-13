@@ -13,10 +13,10 @@ PLUGIN_METADATA = {
     "help": """
 
     给定两个 C（2≤C≤64）进制数 A,B,输出A+B，输出的数是个C进制数
-    
+
     0到63映射表：0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_
     部分进制数位范围：2(0-1)，8(0-7)，10(0-9)，16(0-9a-f)，32(0-9a-v)，58(0-9a-zA-V)，62(0-9a-zA-Z)，64(0-9a-zA-Z和-_)
-    
+
 输入格式
     A,B,C
 
@@ -29,16 +29,16 @@ PLUGIN_METADATA = {
 
     输出 #1
         20
-        
+
     输入 #2
         63,63,64
 
     输出 #2
         c6
-        
+
     输入 #3
         89,89ac,16
-        
+
     输出 #3
         8a35
             """,  # 帮助和说明(可选)
