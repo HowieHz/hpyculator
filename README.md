@@ -28,8 +28,7 @@
       main分支是稳定版，dev分支是最新开发成果，自动每周dev分支同步到main分支，
       
       但如果有重大更新，会手动从dev分支同步到main分支
-  
-  
+
 ## 快速开始
 
 ### 用户
@@ -41,7 +40,6 @@
 3.去[插件市场](https://github.com/HowieHz/hpyculatorPluginCatalogue)下点插件就能愉快的使用了
 
 （程序内置插件，可直接使用）
-
 
 ### 开发者（开发插件）
 
