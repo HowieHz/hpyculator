@@ -27,7 +27,6 @@ class LogManager:
 
         :return: None
         """
-
         setting_file_path = self.setting_file_path
 
         # 读取配置文件-是否保存日志
