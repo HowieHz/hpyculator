@@ -63,7 +63,6 @@
 
 想要知道有关hpyculator的更多信息？ 去看[文档](https://hpyculator.readthedocs.io/)吧 
 
-
 ## 联系方式和声明
 
 此为HowieHz创建的项目
@@ -86,5 +85,5 @@
 
 [MCDReforged](https://github.com/Fallen-Breath/MCDReforged)这个非常好，开服一直在用，在这个项目的布局参考了MCDReforged，感谢Fallen
 
-JetBrains for [Open Source licence](https://www.jetbrains.com/zh-cn/community/opensource/#support)
+[JetBrains for Open Source licence](https://www.jetbrains.com/zh-cn/community/opensource/#support)
 
