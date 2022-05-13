@@ -42,7 +42,8 @@ class SettingWindowApplication(QDialog):
             self.ui.save_log_check.setChecked(setting_file["save_log"])
 
     def saveSetting(self):
-        """按下保存按钮之后的事件
+        """
+        按下保存按钮之后的事件
 
         :return:
         """
@@ -62,7 +63,8 @@ class SettingWindowApplication(QDialog):
 
     @staticmethod
     def saveSettingCheckEvent():
-        """占位用，因为都是最后统一读取写入的
+        """
+        占位用，因为都是最后统一读取写入的
 
         :return:
         """
@@ -70,7 +72,8 @@ class SettingWindowApplication(QDialog):
 
     @staticmethod
     def saveLogCheckEvent():
-        """占位用，因为都是最后统一读取写入的
+        """
+        占位用，因为都是最后统一读取写入的
 
         :return:
         """

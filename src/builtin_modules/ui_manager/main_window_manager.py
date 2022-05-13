@@ -87,8 +87,6 @@ class MainWindowApplication(QMainWindow):
                 setting_file["is_save_settings"] = False  # 默认不保存按键状态
                 self.is_save_settings = False  # 默认不保存按键状态
 
-        # manager = Manager()
-        # self.is_thread_running = manager.Value(bool,False)  # 防止反复启动计算线程
         self.is_thread_running = [False]  # 防止反复启动计算线程
 
         # 关于gui显示内容的初始化
@@ -101,6 +99,11 @@ class MainWindowApplication(QMainWindow):
         self.ui.input_box.setFocus()  # 设置焦点
 
     def bindSignalWithSlots(self):
+        """
+        绑定信号和槽
+
+        :return:
+        """
         # self.ui.___ACTION___.triggered.connect(___FUNCTION___)
         # self.ui.___BUTTON___.clicked.connect(___FUNCTION___)
         # self.ui.___COMBO_BOX___.currentIndexChanged.connect(___FUNCTION___)

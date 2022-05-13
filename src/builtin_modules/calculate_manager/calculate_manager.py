@@ -30,7 +30,8 @@ class CalculationManager:
         user_selection_id: str,
         output_dir_path: str,
     ):
-        """启动计算线程
+        """
+        启动计算线程
 
         :param inputbox_data; 未经处理的用户输入
         :param plugin_attribute_input_mode; 需要转换的模式
@@ -55,7 +56,8 @@ class CalculationManager:
 
     @staticmethod
     def typeConversion(to_type: int, data: str):
-        """类型转换
+        """
+        类型转换
 
         :param to_type: 目标类型
         :param data: 需要转换的数据
@@ -84,7 +86,8 @@ class CalculationThread(Thread):
         user_selection_id: str,
         output_dir_path: str,
     ):
-        """计算线程
+        """
+        计算线程
 
         :param inputbox_data: 经过类型转换处理的用户输入
         :param calculation_mode; 计算模式
@@ -179,7 +182,8 @@ class CalculationThread(Thread):
             return time.perf_counter() - time_before_calculate  # 储存结束时间
 
         def whatNeedCalculateWithOutputOptimization(limit=False):
-            """计算+输出优化的模式（先把结果存临时文件，再读取输出）
+            """
+            计算+输出优化的模式（先把结果存临时文件，再读取输出）
 
             :param limit: 是否开启输出上限
             :return:
@@ -236,7 +240,8 @@ class CalculationThread(Thread):
             return time.perf_counter() - time_before_calculate  # 储存结束时间
 
         def quickTraverseFile(file, chunk_size=8192) -> Iterator:
-            """较快，低占用读取文件，迭代器
+            """
+            较快，低占用读取文件，迭代器
 
             :param file: 打开的文件流对象
             :param chunk_size: 一次读取的字节大小

@@ -14,14 +14,14 @@ TODO = """
 # todo 16.复制到剪贴板
 
 
-"""
-各种量的命名规范
-hello_world 变量,文件名(xswl.txt)全部小写，使用下划线连接
-helloWorld 函数(def)和方法使用小驼峰式命名法，首单词字母小写，后面单词字母大写
-HelloWorld 类名(Class)、使用帕斯卡命名规则(大驼峰式命名法,每一个单词的首字母都采用大写字母)。
-HELLO_WORLD 常量(NEVER_GIVE_UP)全部大写，使用下划线连接单词
-numba jax感觉两个差不多都用不了
-"""
+# """
+# 各种量的命名规范
+# hello_world 变量,文件名(xswl.txt)全部小写，使用下划线连接
+# helloWorld 函数(def)和方法使用小驼峰式命名法，首单词字母小写，后面单词字母大写
+# HelloWorld 类名(Class)、使用帕斯卡命名规则(大驼峰式命名法,每一个单词的首字母都采用大写字母)。
+# HELLO_WORLD 常量(NEVER_GIVE_UP)全部大写，使用下划线连接单词
+# numba jax感觉两个差不多都用不了
+# """
 
 START_SHOW = (
     """皓式可编程计算器 hpyculator %s
