@@ -188,7 +188,6 @@ class CalculationThread(Thread):
             :param limit: 是否开启输出上限
             :return:
             """
-
             calculate_fun = selected_plugin.on_calculate
 
             with tempfile.TemporaryFile(
