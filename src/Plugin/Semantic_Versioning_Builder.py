@@ -35,7 +35,7 @@ PLUGIN_METADATA = {
     空间可以换时间
     我的时间换程序运行时间
 
-    可传入第三个参数 wdnmd 来使用原本的（非生成器）的函数
+    可传入第三个参数 mode2 来使用原本的（非生成器）的函数
     """,  # 帮助和说明(可选)
     "output_end": "",  # 输出小尾巴(可选)
     "output_mode": hpyc.RETURN_ONCE,
@@ -51,7 +51,7 @@ def on_calculate(data: str):
     except ValueError:
         c = ""
         a, b = data.split(",")
-    if c == "wdnmd":
+    if c == "mode2":
         list_data = []
         aq, aw, ae = map(str, a.split("."))
         bq, bw, be = map(str, b.split("."))
