@@ -45,7 +45,7 @@ def on_calculate(data, todo):
         text_list = []
         for i in text:
             text_list_single.append(i)
-        for index,data in enumerate(text_list_single):
+        for index, data in enumerate(text_list_single):
             if "A" <= data <= "Z":
                 text_uppercase_index.append(index)
         text_uppercase_index.append(len(text_list_single))
@@ -60,7 +60,7 @@ def on_calculate(data, todo):
         text_list = []
         for i in text:
             text_list_single.append(i)
-        for index,data in enumerate(text_list_single):
+        for index, data in enumerate(text_list_single):
             if "A" <= data <= "Z":
                 text_uppercase_index.append(index)
         text_uppercase_index.append(len(text_list_single))
