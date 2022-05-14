@@ -21,7 +21,8 @@ TODO = """
 # numba jax感觉两个差不多都用不了
 # """
 
-START_SHOW = ("""
+START_SHOW = (
+    """
 高拓展性计算器 hpyculator %s
 作者：HowieHz
 
