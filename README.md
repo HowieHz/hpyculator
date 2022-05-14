@@ -1,4 +1,4 @@
-# hpyculator 
+# hpyculator
 
  >high extensibility calculator base on python
 
@@ -11,25 +11,25 @@
 
 >这是一个基于python的高拓展性计算器
 
-  hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法太累了，要是能像加载Minecraft的mod一样加载算法就好了” 这样的想法
+hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法太累了，要是能像加载Minecraft的mod一样加载算法就好了” 这样的想法
+
+在[各类数组程序V1.2](https://www.bilibili.com/video/BV18p4y1h7bQ)的基础上开发而来
+
+第一次写项目，难免有些不足，欢迎提pr
   
-  在[各类数组程序V1.2](https://www.bilibili.com/video/BV18p4y1h7bQ)的基础上开发而来
+>本项目基于python3.9构建
   
-  第一次写项目，难免有些不足，欢迎提pr
-  
- >本项目基于python3.9构建
-  
-  #### 免责声明：
-      
-      这款计算器的使用体验很大程度上取决于插件作者水平，请正确选择插件，以免出现电脑内存爆炸等事件
-  
-      出现电脑黑屏，死机，蓝屏，内存爆炸等问题，请找对应插件的插件作者解决，hpyc作者概不负责
- 
-  #### 分支说明：
-   
-      main分支是稳定版，dev分支是最新开发成果，自动每周dev分支同步到main分支，
-      
-      但如果有重大更新，会手动从dev分支同步到main分支
+#### 免责声明
+
+    这款计算器的使用体验很大程度上取决于插件作者水平，请正确选择插件，以免出现电脑内存爆炸等事件
+
+    出现电脑黑屏，死机，蓝屏，内存爆炸等问题，请找对应插件的插件作者解决，hpyc作者概不负责
+
+#### 分支说明
+
+    main分支是稳定版，dev分支是最新开发成果，自动每周dev分支同步到main分支，
+
+    但如果有重大更新，会手动从dev分支同步到main分支
 
 ## 快速开始
 
@@ -63,7 +63,7 @@
 
 ## 文档
 
-想要知道有关hpyculator的更多信息？ 去看[文档](https://hpyculator.readthedocs.io/)吧 
+想要知道有关hpyculator的更多信息？ 去看[文档](https://hpyculator.readthedocs.io/)吧
 
 ## 联系方式和声明
 
@@ -88,4 +88,3 @@
 [MCDReforged](https://github.com/Fallen-Breath/MCDReforged)这个非常好，开服一直在用，在这个项目的布局参考了MCDReforged，感谢Fallen
 
 [JetBrains for Open Source licence](https://www.jetbrains.com/zh-cn/community/opensource/#support)
-
