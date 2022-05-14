@@ -1,9 +1,9 @@
 RAW_VERSION = "1.4.2"  # todo 发布的时候改版本号
 
 if "w" in RAW_VERSION:
-    VERSION=RAW_VERSION+" \n警告：开发版本，可能有未知bug\n"
+    VERSION = RAW_VERSION + " \n警告：开发版本，可能有未知bug\n"
 else:
-    VERSION=RAW_VERSION
+    VERSION = RAW_VERSION
 
 # 尾巴越短越新
 # 下一个稳定版版本 1.4.2
