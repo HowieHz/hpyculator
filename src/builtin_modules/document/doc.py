@@ -41,7 +41,7 @@ START_SHOW = (
 
 交流群694413711
 
-已在github开源 
+已在github开源
 地址：https://github.com/HowieHz/hpyculator
 软件文档：http://hpyculator.readthedocs.io/
 
