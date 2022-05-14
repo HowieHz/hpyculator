@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>hpycacular</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="main_window_resource.qrc">
+    <normaloff>:/ico/icons/ico.ico</normaloff>:/ico/icons/ico.ico</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">/*
 Aqua Style Sheet for QT Applications
@@ -22,17 +26,14 @@ Last updated: 22/01/2019, 07:55.
 Available at: https://github.com/GTRONICK/QSS/blob/master/Aqua.qss
 */
 QMainWindow {
-	background-color:#ececec;
 }
 QTextEdit {
 	border-width: 1px;
 	border-style: solid;
-	border-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 rgba(91, 171, 252, 255));
 }
 QPlainTextEdit {
 	border-width: 1px;
 	border-style: solid;
-	border-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 rgba(91, 171, 252, 255));
 }
 QToolButton {
 	border-style: solid;
@@ -576,6 +577,9 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    background: none;
 }</string>
   </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>false</bool>
+  </property>
   <widget class="QWidget" name="central_widget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
@@ -859,7 +863,9 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
   <tabstop>output_optimization_check</tabstop>
   <tabstop>output_lock_maximums_check</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="main_window_resource.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>start_button</sender>

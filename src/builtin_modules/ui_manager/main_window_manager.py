@@ -11,7 +11,7 @@ from ..plugin_manager import instance_plugin_manager  # 插件管理
 from ..calculate_manager import CalculationManager  # 计算管理
 
 # pyside6 ui signal导入
-from PySide6.QtWidgets import QMainWindow
+from PySide6.QtWidgets import QMainWindow,QGraphicsOpacityEffect
 from PySide6.QtGui import QTextCursor
 from ..ui import Ui_MainWindow
 from hpyculator.hpysignal import main_window_signal
@@ -41,7 +41,7 @@ class MainWindowApplication(QMainWindow):
         self.ui.setupUi(self)  # ui初始化
         self.bindSignalWithSlots()  # 信号和槽的绑定
         self.main_window_signal = main_window_signal  # 更方便地使用自定义事件
-        self.setWindowTitle("hpyculator %s -HowieHz制作" % doc.VERSION)  # 设置标题
+        self.setWindowTitle("hpyculator %s" % doc.VERSION)  # 设置标题
 
         # 读取设置文件-按钮状态和输出目录  check控件初始化
         with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
@@ -97,6 +97,10 @@ class MainWindowApplication(QMainWindow):
         self.ui.search_box.setPlaceholderText("输入字符自动进行搜索\n清空搜索框显示全部插件")  # 灰色背景提示字符
         self.ui.search_box.clear()  # 不清空不显示灰色背景
         self.ui.input_box.setFocus()  # 设置焦点
+        op = QGraphicsOpacityEffect()
+        # 设置透明度的值，0.0到1.0，最小值0是透明，1是不透明
+        op.setOpacity(0)
+        self.ui.output_box.setGraphicsEffect(op)
 
     def bindSignalWithSlots(self):
         """

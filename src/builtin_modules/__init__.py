@@ -28,7 +28,7 @@ class CreateApp:
         list_instance_main_window = []
         for _ in range(self.instance_num):
             list_instance_main_window.append(
-                MainWindowApplication(
+                MainWindowApplication(  # 启动实例
                     GLOBAL_SETTING_FILE_PATH,
                     GLOBAL_OUTPUT_DIR_PATH,
                     global_plugin_option_id_dict,
