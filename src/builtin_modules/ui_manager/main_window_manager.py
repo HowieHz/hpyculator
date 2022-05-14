@@ -11,7 +11,7 @@ from ..plugin_manager import instance_plugin_manager  # 插件管理
 from ..calculate_manager import CalculationManager  # 计算管理
 
 # pyside6 ui signal导入
-from PySide6.QtWidgets import QMainWindow,QGraphicsOpacityEffect
+from PySide6.QtWidgets import QMainWindow, QGraphicsOpacityEffect
 from PySide6.QtGui import QTextCursor
 from ..ui import Ui_MainWindow
 from hpyculator.hpysignal import main_window_signal
