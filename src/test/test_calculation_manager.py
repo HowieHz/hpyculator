@@ -86,7 +86,7 @@ class TestCalculationManager:
             (hpyc.FLOAT, 1, 1.0),  # 转换为浮点数
             (hpyc.NUM, 1, 1),  # 转换为整形
             (None, 1, None),  # 转换为不存在的类型 返回None
-            ((hpyc.NUM, "a", None)),
+            (hpyc.NUM, "a", None),
         ],
     )  # 无法完成的转换
     def test_calculation_typeconversion(

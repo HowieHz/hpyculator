@@ -5,8 +5,8 @@ TODO = """
 clear"""
 
 START_SHOW = (
-    """
-高拓展性计算器 hpyculator %s
+        f"""
+高拓展性计算器 hpyculator {VERSION}
 作者：HowieHz
 
 使用方法：
@@ -25,7 +25,7 @@ START_SHOW = (
 
 已在github开源
     地址：https://github.com/HowieHz/hpyculator
-    软件文档：http://hpyculator.readthedocs.io/
+    软件文档：https:///hpyculator.readthedocs.io/
 
 hpyculator的名字来历：
     high extensibility calculator base on python
@@ -35,9 +35,8 @@ hpyculator的名字来历：
 
 
 
-悄悄说:在输入栏输入update_log之后点击运算就可以看更新日志了"""
-    % VERSION
-)
+悄悄说:在输入栏输入update_log之后点击运算就可以看更新日志了
+""")
 
 UPDATE_LOG = """更新日志:
 20220430-20220512
