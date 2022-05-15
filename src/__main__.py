@@ -11,11 +11,12 @@ if __name__ == "__main__":
     instance_app.run()
     sys.exit(app.exec())  # 避免程序执行到这一行后直接退出
 
-# todo 8.可以分享脚本的平台（qq群也不错） 17.Github actions
-# todo 11.可以读取文件作为输入 # todo 16.复制到剪贴板
-# todo 15.美化 1.背景图 # todo 17.一个按钮打开插件目录
-# todo 10.上线网页版
-# todo 11.相对快捷方式
+# todo 1.可以分享脚本的平台（qq群也不错） 2.Github actions
+# todo 3.可以读取文件作为输入 # todo 4.复制到剪贴板
+# todo 5.美化 5.背景图 # todo 7.一个按钮打开插件目录
+# todo 8.上线网页版
+# todo 9.相对快捷方式
+# todo 10 os.listdir() https://github.com/CoderWanFeng/python-office/blob/master/office/word.py 学习这里重写插件读取方法
 
 # """
 # 各种量的命名规范
