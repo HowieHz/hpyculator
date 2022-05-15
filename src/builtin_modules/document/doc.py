@@ -4,8 +4,7 @@ TODO = """
 更新展望(咕咕咕):
 clear"""
 
-START_SHOW = (
-        f"""
+START_SHOW = f"""
 高拓展性计算器 hpyculator {VERSION}
 作者：HowieHz
 
@@ -36,7 +35,7 @@ hpyculator的名字来历：
 
 
 悄悄说:在输入栏输入update_log之后点击运算就可以看更新日志了
-""")
+"""
 
 UPDATE_LOG = """更新日志:
 20220430-20220512
