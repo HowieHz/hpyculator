@@ -4,6 +4,9 @@ import sys
 import webbrowser
 import hpyculator as hpyc
 
+from ctypes import cdll
+from ctypes.wintypes import HWND
+
 from .. import document as doc
 
 import logging  # 日志导入
@@ -11,8 +14,9 @@ from ..plugin_manager import instance_plugin_manager  # 插件管理
 from ..calculate_manager import CalculationManager  # 计算管理
 
 # pyside6 ui signal导入
-from PySide6.QtWidgets import QMainWindow, QGraphicsOpacityEffect
-from PySide6.QtGui import QTextCursor
+from PySide6.QtWidgets import QMainWindow, QGraphicsOpacityEffect, QGraphicsBlurEffect
+from PySide6.QtGui import QTextCursor, QColor, QPainter
+from PySide6.QtCore import Qt
 from ..ui import Ui_MainWindow
 from hpyculator.hpysignal import main_window_signal
 
@@ -97,10 +101,41 @@ class MainWindowApplication(QMainWindow):
         self.ui.search_box.setPlaceholderText("输入字符自动进行搜索\n清空搜索框显示全部插件")  # 灰色背景提示字符
         self.ui.search_box.clear()  # 不清空不显示灰色背景
         self.ui.input_box.setFocus()  # 设置焦点
-        op = QGraphicsOpacityEffect()
-        # 设置透明度的值，0.0到1.0，最小值0是透明，1是不透明
-        op.setOpacity(0)
-        self.ui.output_box.setGraphicsEffect(op)
+
+        # op = QGraphicsOpacityEffect()
+        # # 设置透明度的值，0.0到1.0，最小值0是透明，1是不透明
+        # op.setOpacity(0.1)
+        # self.ui.output_box.setGraphicsEffect(op)
+        # self.ui.output_box.setAutoFillBackground(True)
+        #
+        # op2 = QGraphicsBlurEffect()
+        # op2.setBlurRadius(12)
+        # self.setGraphicsEffect(op2)
+
+
+
+
+    #     # 去除边框
+    #     self.setWindowFlags(Qt.FramelessWindowHint)
+    #     # 背景透明
+    #     self.setAttribute(Qt.WA_TranslucentBackground)
+    # #     # 设置背景色
+    # #     # # self.bgColor = QColor(255, 50, 50, 80)  # 可以根据个人需要调节透明度
+    #     self.bgColor = QColor(255, 255, 255, 50)  # 可以根据个人需要调节透明度
+    # #
+    #     # 调用api
+    #     hWnd = HWND(int(self.winId()))  # 直接HWND(self.winId())会报错
+    #     cdll.LoadLibrary(r'builtin_modules\ui_manager\Aero\aeroDll.dll').setBlur(hWnd)  # dll和脚本放在同一个目录下会报错找不到dll
+    #     #出自 https://www.cnblogs.com/zhiyiYo/p/14643855.html
+    # #
+    # #
+    # def paintEvent(self, e):
+    #     """ 绘制背景,添加上一层蒙版 """
+    #     painter = QPainter(self)
+    #     painter.setRenderHint(QPainter.Antialiasing)
+    #     painter.setPen(Qt.NoPen)
+    #     painter.setBrush(self.bgColor)
+    #     painter.drawRoundedRect(self.rect(), 20, 20)
 
     def bindSignalWithSlots(self):
         """
@@ -288,40 +323,41 @@ by {selected_plugin_attributes["author"]}
             self.close()
             # sys.exit(0)
 
-        def stopCompute():
-            sys.exit(0)
-
         def checkUpdate():
             webbrowser.open("https://github.com/HowieHz/hpyculator/releases")
 
-        def resetSaveLocation():
-            with shelve.open(
-                self.SETTING_FILE_PATH, writeback=True
-            ) as setting_file:  # 读取设置文件
-                setting_file["save_location"] = os.path.join(os.getcwd(), "Output")
-
-        def openSettingWindow():
-            self.setting_window = SettingWindowApplication()  # 绑定子窗口
-            self.setting_window.exec()
-            with shelve.open(
-                self.SETTING_FILE_PATH, writeback=True
-            ) as setting_file:  # 读取设置文件
-                self.OUTPUT_DIR_PATH = setting_file["save_location"]
-                self.is_save_settings = setting_file["is_save_settings"]
 
         logging.debug(triggers)
         logging.debug(triggers[0].text() + "is triggered")
         jump_map = {
-            "终止当前运算": stopCompute,
-            "退出程序": quitEvent,
-            "重置保存路径": resetSaveLocation,
             "更新日志": showDONE,
             "更新展望": showTODO,
             "开屏介绍": showAbout,
             "检查更新": checkUpdate,
-            "设置": openSettingWindow,
         }
         jump_map[triggers[0].text()]()
+
+    def quitEvent(self):
+        """
+        退出程序
+
+        :return:
+        """
+        sys.exit(0)
+
+    def openSettingWindowEvent(self):
+        """
+        打开设置窗口
+
+        :return:
+        """
+        self.setting_window = SettingWindowApplication()  # 绑定子窗口
+        self.setting_window.exec()
+        with shelve.open(
+                self.SETTING_FILE_PATH, writeback=True
+        ) as setting_file:  # 读取设置文件
+            self.OUTPUT_DIR_PATH = setting_file["save_location"]
+            self.is_save_settings = setting_file["is_save_settings"]
 
     def saveCheckEvent(self):
         """

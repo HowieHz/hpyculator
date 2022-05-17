@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1181</width>
+    <height>888</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>hpycacular</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="main_window_resource.qrc">
+    <normaloff>:/ico/icons/ico.ico</normaloff>:/ico/icons/ico.ico</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow {
+	//background-image: url(:/background/images/background1.png);
+}</string>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="central_widget">
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="1" column="0">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="2" column="0" rowspan="16">
+       <widget class="QListWidget" name="choices_list_box">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>2</horstretch>
+          <verstretch>7</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>270</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPlainTextEdit" name="search_box">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>2</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>270</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>55</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="lineWidth">
+         <number>1</number>
+        </property>
+        <property name="plainText">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3" rowspan="5">
+       <widget class="QPlainTextEdit" name="input_box">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>5</horstretch>
+          <verstretch>2</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="7" column="1">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>30</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="5" column="3">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="start_button">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>3</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>计算</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="save_check">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>1</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string>保存输出到文件</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="output_optimization_check">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>1</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string>内框输出性能优化</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="output_lock_maximums_check">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>1</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string>内框输出上限</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="6" column="3" rowspan="12">
+       <widget class="QPlainTextEdit" name="output_box">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>5</horstretch>
+          <verstretch>5</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_about">
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+background:rgb(213, 213, 213);
+border-radius:5px;
+}
+QPushButton:hover{
+background-color: rgb(170, 255, 255);
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/ico/icons/ico.ico</normalon>
+         </iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_setting">
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+background:rgb(213, 213, 213);
+border-radius:5px;
+}
+QPushButton:hover{
+background-color: rgb(170, 255, 255);
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/ico/icons/setting_icon.png</normalon>
+         </iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_minimize">
+        <property name="maximumSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{background:#F7D674;border-radius:5px;}QPushButton:hover{background:yellow;}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_maximum">
+        <property name="maximumSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{background:#6DDF6D;border-radius:5px;}QPushButton:hover{background:green;}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_close">
+        <property name="maximumSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+background:#F76677;
+border-radius:5px;
+}
+QPushButton:hover{
+background:red;
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menu_bar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1181</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="about__menu">
+    <property name="title">
+     <string>|---关于---|</string>
+    </property>
+    <addaction name="cheak_update"/>
+    <addaction name="show_todo"/>
+    <addaction name="show_about"/>
+    <addaction name="separator"/>
+    <addaction name="show_update_log"/>
+   </widget>
+   <addaction name="about__menu"/>
+  </widget>
+  <action name="cheak_update">
+   <property name="text">
+    <string>更新日志</string>
+   </property>
+  </action>
+  <action name="show_todo">
+   <property name="text">
+    <string>更新展望</string>
+   </property>
+  </action>
+  <action name="show_about">
+   <property name="text">
+    <string>开屏介绍</string>
+   </property>
+  </action>
+  <action name="show_update_log">
+   <property name="text">
+    <string>检查更新</string>
+   </property>
+  </action>
+  <action name="reset_save_location">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>重置保存路径</string>
+   </property>
+  </action>
+  <action name="stop_compute">
+   <property name="text">
+    <string>终止当前运算</string>
+   </property>
+  </action>
+  <action name="stop_app">
+   <property name="text">
+    <string>退出程序</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>设置</string>
+   </property>
+  </action>
+ </widget>
+ <tabstops>
+  <tabstop>search_box</tabstop>
+  <tabstop>start_button</tabstop>
+  <tabstop>output_optimization_check</tabstop>
+  <tabstop>output_lock_maximums_check</tabstop>
+ </tabstops>
+ <resources>
+  <include location="main_window_resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>start_button</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>startEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>575</x>
+     <y>264</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>615</x>
+     <y>297</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>save_check</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>saveCheckEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>708</x>
+     <y>264</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>754</x>
+     <y>297</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>output_optimization_check</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>outputOptimizationCheckEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>857</x>
+     <y>264</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>914</x>
+     <y>296</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>output_lock_maximums_check</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>outputLockMaximumsCheckEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>976</x>
+     <y>264</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>922</x>
+     <y>295</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>menu_bar</sender>
+   <signal>triggered(QAction*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>menuBar(QAction*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>61</x>
+     <y>11</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>76</x>
+     <y>28</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>search_box</sender>
+   <signal>textChanged()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>searchText()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>164</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>227</x>
+     <y>86</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>choices_list_box</sender>
+   <signal>itemClicked(QListWidgetItem*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>userChooseOptionEvent(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>241</x>
+     <y>770</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>317</x>
+     <y>780</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>button_setting</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openSettingWindowEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>882</x>
+     <y>42</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>542</x>
+     <y>421</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>button_close</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>quitEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>967</x>
+     <y>42</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>869</x>
+     <y>55</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>showAbout()</slot>
+  <slot>showTODO()</slot>
+  <slot>showDONE()</slot>
+  <slot>saveCheckEvent()</slot>
+  <slot>outputOptimizationCheckEvent()</slot>
+  <slot>outputLockMaximumsCheckEvent()</slot>
+  <slot>quit_event()</slot>
+  <slot>stop_compute()</slot>
+  <slot>cheak_update()</slot>
+  <slot>reset_save_location()</slot>
+  <slot>searchText()</slot>
+  <slot>search_cancel()</slot>
+  <slot>startEvent()</slot>
+  <slot>menuBar(QAction*)</slot>
+  <slot>userChooseOptionEvent(QListWidgetItem*)</slot>
+  <slot>openSettingWindowEvent()</slot>
+  <slot>quitEvent()</slot>
+ </slots>
+</ui>

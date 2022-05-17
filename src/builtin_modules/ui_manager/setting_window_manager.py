@@ -70,3 +70,10 @@ class SettingWindowApplication(QDialog):
         """
         占位用，因为都是最后统一读取写入的
         """
+
+    def resetSaveLocationEvnet(self):
+        with shelve.open(
+                self.SETTING_FILE_PATH, writeback=True
+        ) as setting_file:
+            self.OUTPUT_DIR_PATH = setting_file["save_location"] = os.path.join(os.getcwd(), "Output")
+            self.ui.output_save_location.setPlainText(self.OUTPUT_DIR_PATH)

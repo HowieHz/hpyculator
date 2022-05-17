@@ -1,4 +1,4 @@
-RAW_VERSION = "1.4.2"  # todo 发布的时候改版本号
+RAW_VERSION = "22w21a-Alpha.1"  # todo 发布的时候改版本号
 
 if "w" in RAW_VERSION:
     VERSION = RAW_VERSION + " \n警告：开发版本，可能有未知bug\n"
@@ -6,12 +6,11 @@ else:
     VERSION = RAW_VERSION
 
 # 尾巴越短越新
-# 下一个稳定版版本 1.4.2
-# 下一个预览版版本 1.4.2-epsilon
-# 下一个周结算 22w20
-# 下一个开发大版本迭代 22w20c
-# 下一个目前小版迭代 22w20c-Delta
-# 下一个提交迭代 22w20c-Delta.1
+# 下一个稳定版版本 1.4.3
+# 下一个预览版版本 1.4.3-Alpha
+# 下一个周结算 22w21b
+# 下一个目前小版迭代 22w21a-Alpha
+# 下一个提交迭代 22w21a-Alpha.1
 #
 #
 # 版本号更新约定（x为更新的版本号）:

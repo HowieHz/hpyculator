@@ -683,7 +683,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    <property name="geometry">
     <rect>
      <x>230</x>
-     <y>210</y>
+     <y>240</y>
      <width>121</width>
      <height>21</height>
     </rect>
@@ -742,7 +742,7 @@ QCheckBox::indicator:unchecked {
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>190</y>
+     <y>220</y>
      <width>161</width>
      <height>61</height>
     </rect>
@@ -761,7 +761,7 @@ QCheckBox::indicator:unchecked {
    <property name="geometry">
     <rect>
      <x>230</x>
-     <y>290</y>
+     <y>320</y>
      <width>121</width>
      <height>21</height>
     </rect>
@@ -820,7 +820,7 @@ QCheckBox::indicator:unchecked {
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>270</y>
+     <y>300</y>
      <width>161</width>
      <height>61</height>
     </rect>
@@ -833,6 +833,46 @@ QCheckBox::indicator:unchecked {
    </property>
    <property name="text">
     <string>是否开启日志文件</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>160</y>
+     <width>161</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>等距更纱黑体 Slab SC</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>重置保存位置</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="reset_save_location_button">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>170</y>
+     <width>151</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Microsoft YaHei UI</family>
+     <pointsize>16</pointsize>
+     <italic>false</italic>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>重置保存位置</string>
    </property>
   </widget>
  </widget>
@@ -878,7 +918,7 @@ QCheckBox::indicator:unchecked {
    <hints>
     <hint type="sourcelabel">
      <x>267</x>
-     <y>221</y>
+     <y>251</y>
     </hint>
     <hint type="destinationlabel">
      <x>323</x>
@@ -894,11 +934,27 @@ QCheckBox::indicator:unchecked {
    <hints>
     <hint type="sourcelabel">
      <x>317</x>
-     <y>302</y>
+     <y>332</y>
     </hint>
     <hint type="destinationlabel">
      <x>434</x>
      <y>318</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>reset_save_location_button</sender>
+   <signal>clicked()</signal>
+   <receiver>SettingWindow</receiver>
+   <slot>resetSaveLocationEvnet()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>350</x>
+     <y>208</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>454</x>
+     <y>228</y>
     </hint>
    </hints>
   </connection>
@@ -908,5 +964,6 @@ QCheckBox::indicator:unchecked {
   <slot>cancelSetting()</slot>
   <slot>saveSettingCheckEvent()</slot>
   <slot>saveLogCheckEvent()</slot>
+  <slot>resetSaveLocationEvnet()</slot>
  </slots>
 </ui>
