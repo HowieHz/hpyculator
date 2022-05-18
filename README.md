@@ -65,5 +65,4 @@ hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法�
 
 ## 鸣谢
 
-特别感谢 [JetBrains](https://www.jetbrains.com/?from=mirai) 为开源项目提供免费的 [IntelliJ PyCharm](https://www.jetbrains.com/pycharm/?from=hpyculator) 等 IDE 的授权 
-[<img src=".github/jetbrains-variant-3.png" width="200"/>](https://www.jetbrains.com/?from=hpyculator)
+特别感谢 [JetBrains](https://www.jetbrains.com/?from=hpyculator) 为开源项目提供免费的 [IntelliJ PyCharm](https://www.jetbrains.com/pycharm/?from=hpyculator) 等 IDE 的授权 
