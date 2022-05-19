@@ -1,5 +1,5 @@
 from builtin_modules import CreateApp
-from builtin_modules.ui_manager.test_window_effect import testWindowApplication
+from builtin_modules.ui_manager.test_window_effect import testWinApp
 
 # pyside6导入
 from PySide6.QtWidgets import QApplication
@@ -12,7 +12,7 @@ if __name__ == "__main__":
     instance_app.run()
     sys.exit(app.exec())  # 避免程序执行到这一行后直接退出
 
-    # instance_app = testWindowApplication()
+    # instance_app = testWinApp()
     # sys.exit(app.exec())  # 避免程序执行到这一行后直接退出
 
 # todo 1.可以分享脚本的平台（qq群也不错） 2.Github actions

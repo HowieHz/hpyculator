@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'setting_window.ui'
+## Form generated from reading UI file 'setting_win.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.3.0
 ##
@@ -18,14 +18,14 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QCheckBox, QDialog, QLabel,
     QPushButton, QSizePolicy, QTextEdit, QWidget)
 
-class Ui_SettingWindow(object):
-    def setupUi(self, SettingWindow):
-        if not SettingWindow.objectName():
-            SettingWindow.setObjectName(u"SettingWindow")
-        SettingWindow.resize(640, 480)
-        SettingWindow.setMinimumSize(QSize(640, 480))
-        SettingWindow.setMaximumSize(QSize(640, 480))
-        SettingWindow.setStyleSheet(u"/*\n"
+class Ui_SettingWin(object):
+    def setupUi(self, SettingWin):
+        if not SettingWin.objectName():
+            SettingWin.setObjectName(u"SettingWin")
+        SettingWin.resize(640, 480)
+        SettingWin.setMinimumSize(QSize(640, 480))
+        SettingWin.setMaximumSize(QSize(640, 480))
+        SettingWin.setStyleSheet(u"/*\n"
 "Aqua Style Sheet for QT Applications\n"
 "Author: Jaime A. Quiroga P.\n"
 "Company: GTRONICK\n"
@@ -607,7 +607,7 @@ class Ui_SettingWindow(object):
 "QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\n"
 "   background: none;\n"
 "}")
-        self.label = QLabel(SettingWindow)
+        self.label = QLabel(SettingWin)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(30, 20, 101, 51))
         font = QFont()
@@ -615,14 +615,14 @@ class Ui_SettingWindow(object):
         font.setPointSize(20)
         font.setBold(True)
         self.label.setFont(font)
-        self.label_2 = QLabel(SettingWindow)
+        self.label_2 = QLabel(SettingWin)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setGeometry(QRect(50, 90, 161, 61))
         font1 = QFont()
         font1.setFamilies([u"\u7b49\u8ddd\u66f4\u7eb1\u9ed1\u4f53 Slab SC"])
         font1.setPointSize(12)
         self.label_2.setFont(font1)
-        self.cancel_setting_button = QPushButton(SettingWindow)
+        self.cancel_setting_button = QPushButton(SettingWin)
         self.cancel_setting_button.setObjectName(u"cancel_setting_button")
         self.cancel_setting_button.setGeometry(QRect(490, 410, 111, 41))
         font2 = QFont()
@@ -631,14 +631,14 @@ class Ui_SettingWindow(object):
         font2.setBold(False)
         font2.setItalic(False)
         self.cancel_setting_button.setFont(font2)
-        self.save_setting_button = QPushButton(SettingWindow)
+        self.save_setting_button = QPushButton(SettingWin)
         self.save_setting_button.setObjectName(u"save_setting_button")
         self.save_setting_button.setGeometry(QRect(280, 410, 201, 41))
         self.save_setting_button.setFont(font2)
-        self.output_save_location = QTextEdit(SettingWindow)
+        self.output_save_location = QTextEdit(SettingWin)
         self.output_save_location.setObjectName(u"output_save_location")
         self.output_save_location.setGeometry(QRect(230, 80, 341, 81))
-        self.save_setting_check = QCheckBox(SettingWindow)
+        self.save_setting_check = QCheckBox(SettingWin)
         self.save_setting_check.setObjectName(u"save_setting_check")
         self.save_setting_check.setGeometry(QRect(230, 240, 121, 21))
         font3 = QFont()
@@ -684,11 +684,11 @@ class Ui_SettingWindow(object):
                         ", 255), stop:1 rgba(91, 171, 252, 255));\n"
 "	color: #000000;\n"
 "}")
-        self.label_3 = QLabel(SettingWindow)
+        self.label_3 = QLabel(SettingWin)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setGeometry(QRect(50, 220, 161, 61))
         self.label_3.setFont(font1)
-        self.save_log_check = QCheckBox(SettingWindow)
+        self.save_log_check = QCheckBox(SettingWin)
         self.save_log_check.setObjectName(u"save_log_check")
         self.save_log_check.setGeometry(QRect(230, 320, 121, 21))
         self.save_log_check.setFont(font3)
@@ -731,40 +731,40 @@ class Ui_SettingWindow(object):
                         ", 255), stop:1 rgba(91, 171, 252, 255));\n"
 "	color: #000000;\n"
 "}")
-        self.label_4 = QLabel(SettingWindow)
+        self.label_4 = QLabel(SettingWin)
         self.label_4.setObjectName(u"label_4")
         self.label_4.setGeometry(QRect(50, 300, 161, 61))
         self.label_4.setFont(font1)
-        self.label_5 = QLabel(SettingWindow)
+        self.label_5 = QLabel(SettingWin)
         self.label_5.setObjectName(u"label_5")
         self.label_5.setGeometry(QRect(50, 160, 161, 61))
         self.label_5.setFont(font1)
-        self.reset_save_location_button = QPushButton(SettingWindow)
+        self.reset_save_location_button = QPushButton(SettingWin)
         self.reset_save_location_button.setObjectName(u"reset_save_location_button")
         self.reset_save_location_button.setGeometry(QRect(230, 170, 151, 41))
         self.reset_save_location_button.setFont(font2)
 
-        self.retranslateUi(SettingWindow)
-        self.save_setting_button.clicked.connect(SettingWindow.saveSetting)
-        self.cancel_setting_button.clicked.connect(SettingWindow.cancelSetting)
-        self.save_setting_check.clicked.connect(SettingWindow.saveSettingCheckEvent)
-        self.save_log_check.clicked.connect(SettingWindow.saveLogCheckEvent)
-        self.reset_save_location_button.clicked.connect(SettingWindow.resetSaveLocationEvnet)
+        self.retranslateUi(SettingWin)
+        self.save_setting_button.clicked.connect(SettingWin.saveSetting)
+        self.cancel_setting_button.clicked.connect(SettingWin.cancelSetting)
+        self.save_setting_check.clicked.connect(SettingWin.saveSettingCheckEvent)
+        self.save_log_check.clicked.connect(SettingWin.saveLogCheckEvent)
+        self.reset_save_location_button.clicked.connect(SettingWin.resetSaveLocationEvnet)
 
-        QMetaObject.connectSlotsByName(SettingWindow)
+        QMetaObject.connectSlotsByName(SettingWin)
     # setupUi
 
-    def retranslateUi(self, SettingWindow):
-        SettingWindow.setWindowTitle(QCoreApplication.translate("SettingWindow", u"Dialog", None))
-        self.label.setText(QCoreApplication.translate("SettingWindow", u"\u8bbe\u7f6e", None))
-        self.label_2.setText(QCoreApplication.translate("SettingWindow", u"\u4fdd\u5b58\u8f93\u51fa\u6587\u4ef6\u7684\u4f4d\u7f6e", None))
-        self.cancel_setting_button.setText(QCoreApplication.translate("SettingWindow", u"\u53d6\u6d88\u4fee\u6539", None))
-        self.save_setting_button.setText(QCoreApplication.translate("SettingWindow", u"\u4fdd\u5b58", None))
+    def retranslateUi(self, SettingWin):
+        SettingWin.setWindowTitle(QCoreApplication.translate("SettingWin", u"Dialog", None))
+        self.label.setText(QCoreApplication.translate("SettingWin", u"\u8bbe\u7f6e", None))
+        self.label_2.setText(QCoreApplication.translate("SettingWin", u"\u4fdd\u5b58\u8f93\u51fa\u6587\u4ef6\u7684\u4f4d\u7f6e", None))
+        self.cancel_setting_button.setText(QCoreApplication.translate("SettingWin", u"\u53d6\u6d88\u4fee\u6539", None))
+        self.save_setting_button.setText(QCoreApplication.translate("SettingWin", u"\u4fdd\u5b58", None))
         self.save_setting_check.setText("")
-        self.label_3.setText(QCoreApplication.translate("SettingWindow", u"\u662f\u5426\u4fdd\u5b58\u9009\u62e9\u6846\u72b6\u6001", None))
+        self.label_3.setText(QCoreApplication.translate("SettingWin", u"\u662f\u5426\u4fdd\u5b58\u9009\u62e9\u6846\u72b6\u6001", None))
         self.save_log_check.setText("")
-        self.label_4.setText(QCoreApplication.translate("SettingWindow", u"\u662f\u5426\u5f00\u542f\u65e5\u5fd7\u6587\u4ef6", None))
-        self.label_5.setText(QCoreApplication.translate("SettingWindow", u"\u91cd\u7f6e\u4fdd\u5b58\u4f4d\u7f6e", None))
-        self.reset_save_location_button.setText(QCoreApplication.translate("SettingWindow", u"\u91cd\u7f6e\u4fdd\u5b58\u4f4d\u7f6e", None))
+        self.label_4.setText(QCoreApplication.translate("SettingWin", u"\u662f\u5426\u5f00\u542f\u65e5\u5fd7\u6587\u4ef6", None))
+        self.label_5.setText(QCoreApplication.translate("SettingWin", u"\u91cd\u7f6e\u4fdd\u5b58\u4f4d\u7f6e", None))
+        self.reset_save_location_button.setText(QCoreApplication.translate("SettingWin", u"\u91cd\u7f6e\u4fdd\u5b58\u4f4d\u7f6e", None))
     # retranslateUi
 

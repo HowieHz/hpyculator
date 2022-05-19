@@ -1,10 +1,17 @@
 from .version import VERSION  # 版本号导入
 
-TODO = """
+TODO = """\
 更新展望(咕咕咕):
 clear"""
 
-START_SHOW = f"""
+ABOUT = f"""
+<h3>HpyCulator {VERSION}</h3>
+<p>此为AGPL协议的开源项目</p>
+<p>项目地址：https://github.com/HowieHz/hpyculator</p>
+<p>软件文档：https:///hpyculator.readthedocs.io/</p>
+"""
+
+START_SHOW = f"""\
 高拓展性计算器 hpyculator {VERSION}
 作者：HowieHz
 
@@ -37,7 +44,8 @@ hpyculator的名字来历：
 悄悄说:在输入栏输入update_log之后点击运算就可以看更新日志了
 """
 
-UPDATE_LOG = """更新日志:
+UPDATE_LOG = """\
+更新日志:
 1.4.1-1.4.2
 修改文档和说明
 

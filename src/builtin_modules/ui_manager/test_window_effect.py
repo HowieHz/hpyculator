@@ -5,13 +5,13 @@ from PySide6.QtWidgets import QApplication
 # pyside6 ui signal导入
 from PySide6.QtWidgets import QMainWindow, QGraphicsOpacityEffect
 
-from ..ui import Ui_TestWindow
+from ..ui import Ui_TestWin
 
 
-class testWindowApplication(QMainWindow):
+class testWinApp(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.ui = Ui_TestWindow()  # UI类的实例化()
+        self.ui = Ui_TestWin()  # UI类的实例化()
         self.ui.setupUi(self)  # ui初始化
         self.setWindowTitle("hpyculator test")  # 设置标题
 

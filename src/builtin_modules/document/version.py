@@ -1,7 +1,7 @@
 RAW_VERSION = "22w21a-Alpha.1"  # todo 发布的时候改版本号
 
 if "w" in RAW_VERSION:
-    VERSION = RAW_VERSION + " \n警告：开发版本，可能有未知bug\n"
+    VERSION = RAW_VERSION + "  开发版"
 else:
     VERSION = RAW_VERSION
 

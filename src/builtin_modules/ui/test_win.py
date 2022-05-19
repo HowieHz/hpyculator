@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'test_window.ui'
+## Form generated from reading UI file 'test_win.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.3.0
 ##
@@ -19,12 +19,12 @@ from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QPlainTextEdit
     QSizePolicy, QWidget)
 from . import main_window_resource_rc
 
-class Ui_TestWindow(object):
-    def setupUi(self, TestWindow):
-        if not TestWindow.objectName():
-            TestWindow.setObjectName(u"TestWindow")
-        TestWindow.resize(1037, 743)
-        self.centralwidget = QWidget(TestWindow)
+class Ui_TestWin(object):
+    def setupUi(self, TestWin):
+        if not TestWin.objectName():
+            TestWin.setObjectName(u"TestWin")
+        TestWin.resize(1037, 743)
+        self.centralwidget = QWidget(TestWin)
         self.centralwidget.setObjectName(u"centralwidget")
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
@@ -35,16 +35,16 @@ class Ui_TestWindow(object):
         self.plainTextEdit.setObjectName(u"plainTextEdit")
         self.plainTextEdit.setGeometry(QRect(160, 180, 401, 281))
         self.plainTextEdit.setStyleSheet(u"background-color: rgba(229, 229, 229, 50);")
-        TestWindow.setCentralWidget(self.centralwidget)
+        TestWin.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(TestWindow)
+        self.retranslateUi(TestWin)
 
-        QMetaObject.connectSlotsByName(TestWindow)
+        QMetaObject.connectSlotsByName(TestWin)
     # setupUi
 
-    def retranslateUi(self, TestWindow):
-        TestWindow.setWindowTitle(QCoreApplication.translate("TestWindow", u"MainWindow", None))
-        self.label.setText(QCoreApplication.translate("TestWindow", u"abcdefg", None))
-        self.plainTextEdit.setPlainText(QCoreApplication.translate("TestWindow", u"abcdefg", None))
+    def retranslateUi(self, TestWin):
+        TestWin.setWindowTitle(QCoreApplication.translate("TestWin", u"MainWindow", None))
+        self.label.setText(QCoreApplication.translate("TestWin", u"abcdefg", None))
+        self.plainTextEdit.setPlainText(QCoreApplication.translate("TestWin", u"abcdefg", None))
     # retranslateUi
 

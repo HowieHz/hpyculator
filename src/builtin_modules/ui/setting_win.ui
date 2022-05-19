@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SettingWindow</class>
- <widget class="QDialog" name="SettingWindow">
+ <class>SettingWin</class>
+ <widget class="QDialog" name="SettingWin">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -881,7 +881,7 @@ QCheckBox::indicator:unchecked {
   <connection>
    <sender>save_setting_button</sender>
    <signal>clicked()</signal>
-   <receiver>SettingWindow</receiver>
+   <receiver>SettingWin</receiver>
    <slot>saveSetting()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -897,7 +897,7 @@ QCheckBox::indicator:unchecked {
   <connection>
    <sender>cancel_setting_button</sender>
    <signal>clicked()</signal>
-   <receiver>SettingWindow</receiver>
+   <receiver>SettingWin</receiver>
    <slot>cancelSetting()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -913,7 +913,7 @@ QCheckBox::indicator:unchecked {
   <connection>
    <sender>save_setting_check</sender>
    <signal>clicked()</signal>
-   <receiver>SettingWindow</receiver>
+   <receiver>SettingWin</receiver>
    <slot>saveSettingCheckEvent()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -929,7 +929,7 @@ QCheckBox::indicator:unchecked {
   <connection>
    <sender>save_log_check</sender>
    <signal>clicked()</signal>
-   <receiver>SettingWindow</receiver>
+   <receiver>SettingWin</receiver>
    <slot>saveLogCheckEvent()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -945,7 +945,7 @@ QCheckBox::indicator:unchecked {
   <connection>
    <sender>reset_save_location_button</sender>
    <signal>clicked()</signal>
-   <receiver>SettingWindow</receiver>
+   <receiver>SettingWin</receiver>
    <slot>resetSaveLocationEvnet()</slot>
    <hints>
     <hint type="sourcelabel">

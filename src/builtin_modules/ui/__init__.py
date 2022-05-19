@@ -1,3 +1,4 @@
-from .main_window import Ui_MainWindow
-from .setting_window import Ui_SettingWindow
-from .test_window import Ui_TestWindow
+from .main_win import Ui_MainWin
+from .setting_win import Ui_SettingWin
+from .test_win import Ui_TestWin
+from .about_win import Ui_AboutWin

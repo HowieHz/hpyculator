@@ -4,7 +4,7 @@ from threading import Thread
 import tempfile
 import os
 from functools import partial  # 偏函数真好用
-from hpyculator.hpysignal import main_window_signal
+from hpyculator.hpysignal import main_win_signal
 import hpyculator as hpyc
 from typing import Any
 
@@ -15,7 +15,7 @@ from typing import Iterator
 from ..plugin_manager import instance_plugin_manager
 
 
-# TODO 用了多进程之后main_window_signal的实例化效果消失
+# TODO 用了多进程之后main_win_signal的实例化效果消失
 
 
 class CalculationManager:
@@ -73,7 +73,7 @@ class CalculationManager:
             else:
                 data = None  # 缺省 转换不存在的类型就none
         except Exception as e:
-            main_window_signal.setOutPutBox.emit(f"输入转换发生错误:{str(e)}\n\n请检查输入格式")
+            main_win_signal.setOutPutBox.emit(f"输入转换发生错误:{str(e)}\n\n请检查输入格式")
             return None  # 缺省 转换错误就none
         return data
 
@@ -122,13 +122,13 @@ class CalculationThread(Thread):
 
             if plugin_attribute_return_mode == hpyc.RETURN_ONCE:
                 result = str(calculate_fun(inputbox_data))
-                main_window_signal.appendOutPutBox.emit(
+                main_win_signal.appendOutPutBox.emit(
                     str(result) + "\n"
                 )  # 结果为str，直接输出
             elif plugin_attribute_return_mode == hpyc.RETURN_LIST:  # 算一行输出一行
                 result = calculate_fun(inputbox_data)
                 for result_process in result:
-                    main_window_signal.appendOutPutBox.emit(
+                    main_win_signal.appendOutPutBox.emit(
                         str(result_process) + "\\n"
                     )  # 算一行输出一行
             elif (
@@ -136,7 +136,7 @@ class CalculationThread(Thread):
             ):  # 算一行输出一行，但是没有换行
                 result = calculate_fun(inputbox_data)
                 for result_process in result:  # 计算
-                    main_window_signal.appendOutPutBox.emit(
+                    main_win_signal.appendOutPutBox.emit(
                         str(result_process)
                     )  # 算一行输出一行
             elif plugin_attribute_return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
@@ -225,15 +225,15 @@ class CalculationThread(Thread):
                     filestream.seek(0)  # 将文件指针移到开始处，准备读取文件
                     if limit:
                         for times, line in enumerate(quickTraverseFile(filestream)):
-                            main_window_signal.appendOutPutBox.emit(line)
+                            main_win_signal.appendOutPutBox.emit(line)
                             if times >= 128:
-                                main_window_signal.appendOutPutBox.emit(
+                                main_win_signal.appendOutPutBox.emit(
                                     "\n\n输出上限：检测到输出数据过大，请使用保存到文件防止卡死"
                                 )
                                 break
                     else:
                         for line in quickTraverseFile(filestream):
-                            main_window_signal.appendOutPutBox.emit(line)
+                            main_win_signal.appendOutPutBox.emit(line)
 
             return time.perf_counter() - time_before_calculate  # 储存结束时间
 
@@ -259,7 +259,7 @@ class CalculationThread(Thread):
             filepath_name = os.path.join(output_dir_path, f"{filename}.txt")
             time_spent = whatNeedCalculateWithSave(filepath_name)
             # 以下是计算后工作
-            main_window_signal.appendOutPutBox.emit(
+            main_win_signal.appendOutPutBox.emit(
                 f"""\n\n本次计算+保存花费了{time_spent:.6f}秒\n\n计算结果已保存在 {filepath_name} """
             )  # 输出本次计算时间
 
@@ -267,7 +267,7 @@ class CalculationThread(Thread):
             """调用计算+输出优化的模式"""
             time_spent = whatNeedCalculateWithOutputOptimization(limit)
             # 以下是计算后工作
-            main_window_signal.appendOutPutBox.emit(
+            main_win_signal.appendOutPutBox.emit(
                 f"""\n\n本次计算+输出花费了{time_spent:.6f}秒\n\n已启用输出优化"""
             )  # 输出本次计算时间
 
@@ -275,14 +275,14 @@ class CalculationThread(Thread):
             """调用基础计算模式"""
             time_spent = whatNeedCalculate()
             # 以下是计算后工作
-            main_window_signal.appendOutPutBox.emit(
+            main_win_signal.appendOutPutBox.emit(
                 f"\n\n本次计算+输出花费了{time_spent:.6f}秒\n"
             )  # 输出本次计算时间
 
         # ------------------------------------------这些ui逻辑需外移
-        main_window_signal.setStartButtonText.emit("计算程序正在运行中，请耐心等待")
-        main_window_signal.setStartButtonState.emit(False)  # 防止按钮反复触发
-        main_window_signal.clearOutPutBox.emit()  # 清空输出框
+        main_win_signal.setStartButtonText.emit("计算程序正在运行中，请耐心等待")
+        main_win_signal.setStartButtonState.emit(False)  # 防止按钮反复触发
+        main_win_signal.clearOutPutBox.emit()  # 清空输出框
         plugin_attribute_return_mode = plugin_attributes["return_mode"]
         try:
             if calculation_mode == "calculate_save":
@@ -294,7 +294,7 @@ class CalculationThread(Thread):
             elif calculation_mode == "calculate":
                 calculate_base_mode()
         except Exception as e:
-            main_window_signal.setOutPutBox.emit(f"插件运算发生错误：{str(e)}\n\n请检查输入格式")
-        main_window_signal.setOutPutBoxCursor.emit("end")  # 光标设到文本框尾部
-        main_window_signal.setStartButtonText.emit("计算")  # 设置按钮字
-        main_window_signal.setStartButtonState.emit(True)  # 启用按钮
+            main_win_signal.setOutPutBox.emit(f"插件运算发生错误：{str(e)}\n\n请检查输入格式")
+        main_win_signal.setOutPutBoxCursor.emit("end")  # 光标设到文本框尾部
+        main_win_signal.setStartButtonText.emit("计算")  # 设置按钮字
+        main_win_signal.setStartButtonState.emit(True)  # 启用按钮

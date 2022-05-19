@@ -4,21 +4,15 @@ import os
 # pyside6
 from PySide6.QtWidgets import QMessageBox, QDialog
 
-from ..ui import Ui_SettingWindow  # 从init导
+from ..ui import Ui_SettingWin  # 从init导
 from ..document import VERSION  # 版本号导入
 
-# 远程包
-from hpyculator.hpysignal import setting_window_signal
-
-
-class SettingWindowApplication(QDialog):
+class SettingWinApp(QDialog):
     def __init__(self):
         """设置窗口，是主窗口的子窗口"""
         super().__init__()
-        self.ui = Ui_SettingWindow()  # 实例化ui
+        self.ui = Ui_SettingWin()  # 实例化ui
         self.ui.setupUi(self)  # 初始化ui，不初始化不显示
-
-        self.setting_signal = setting_window_signal  # 方便调用自定义信号
 
         self.setWindowTitle(f"设置  Hpyculator版本{VERSION}")  # 设置标题
 

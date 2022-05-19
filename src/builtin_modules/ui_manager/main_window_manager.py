@@ -1,11 +1,10 @@
-import os
+# import os
 import shelve
 import sys
-import webbrowser
 import hpyculator as hpyc
 
-from ctypes import cdll
-from ctypes.wintypes import HWND
+# from ctypes import cdll
+# from ctypes.wintypes import HWND
 
 from .. import document as doc
 
@@ -14,17 +13,20 @@ from ..plugin_manager import instance_plugin_manager  # 插件管理
 from ..calculate_manager import CalculationManager  # 计算管理
 
 # pyside6 ui signal导入
-from PySide6.QtWidgets import QMainWindow, QGraphicsOpacityEffect, QGraphicsBlurEffect
-from PySide6.QtGui import QTextCursor, QColor, QPainter
+from PySide6.QtWidgets import QMainWindow
+# from PySide6.QtWidgets import QGraphicsOpacityEffect, QGraphicsBlurEffect
+from PySide6.QtGui import QTextCursor
+# from PySide6.QtGui import QColor, QPainter
 from PySide6.QtCore import Qt
-from ..ui import Ui_MainWindow
-from hpyculator.hpysignal import main_window_signal
+from ..ui import Ui_MainWin
+from hpyculator.hpysignal import main_win_signal
 
 # 窗口管理类（用于管理设置的窗口）
-from . import SettingWindowApplication
+from .setting_window_manager import SettingWinApp
+from .about_win_manager import AboutWinApp
 
 
-class MainWindowApplication(QMainWindow):
+class MainWinApp(QMainWindow):
     def __init__(self, setting_file_path, output_dir_path, plugin_option_id_dict):
         """
         主窗口程序类
@@ -41,10 +43,10 @@ class MainWindowApplication(QMainWindow):
         self.user_selection_id: str = ""  # 用户选择的插件的文件名（id)
 
         super().__init__()
-        self.ui = Ui_MainWindow()  # UI类的实例化()
+        self.ui = Ui_MainWin()  # UI类的实例化()
         self.ui.setupUi(self)  # ui初始化
         self.bindSignalWithSlots()  # 信号和槽的绑定
-        self.main_window_signal = main_window_signal  # 更方便地使用自定义事件
+        # self.main_win_signal = main_win_signal  # 更方便地使用自定义事件
         self.setWindowTitle("hpyculator %s" % doc.VERSION)  # 设置标题
 
         # 读取设置文件-按钮状态和输出目录  check控件初始化
@@ -115,10 +117,10 @@ class MainWindowApplication(QMainWindow):
 
 
 
-    #     # 去除边框
-    #     self.setWindowFlags(Qt.FramelessWindowHint)
-    #     # 背景透明
-    #     self.setAttribute(Qt.WA_TranslucentBackground)
+        # 去除边框
+        self.setWindowFlags(Qt.FramelessWindowHint)
+        # 背景透明
+        self.setAttribute(Qt.WA_TranslucentBackground)
     # #     # 设置背景色
     # #     # # self.bgColor = QColor(255, 50, 50, 80)  # 可以根据个人需要调节透明度
     #     self.bgColor = QColor(255, 255, 255, 50)  # 可以根据个人需要调节透明度
@@ -176,13 +178,13 @@ class MainWindowApplication(QMainWindow):
             self.ui.output_box.setTextCursor(cursor)
 
         # 自定义信号绑定函数
-        main_window_signal.appendOutPutBox.connect(appendOutPut)
-        main_window_signal.setOutPutBox.connect(setOutPut)
-        main_window_signal.clearOutPutBox.connect(clearOutPut)
-        main_window_signal.getOutPutBox.connect(getOutPut)
-        main_window_signal.setStartButtonText.connect(setStartButtonText)
-        main_window_signal.setStartButtonState.connect(setStartButtonState)
-        main_window_signal.setOutPutBoxCursor.connect(setOutPutBoxCursor)
+        main_win_signal.appendOutPutBox.connect(appendOutPut)
+        main_win_signal.setOutPutBox.connect(setOutPut)
+        main_win_signal.clearOutPutBox.connect(clearOutPut)
+        main_win_signal.getOutPutBox.connect(getOutPut)
+        main_win_signal.setStartButtonText.connect(setStartButtonText)
+        main_win_signal.setStartButtonState.connect(setStartButtonState)
+        main_win_signal.setOutPutBoxCursor.connect(setOutPutBoxCursor)
 
     def startEvent(
         self,
@@ -275,7 +277,7 @@ class MainWindowApplication(QMainWindow):
         )  # 启动计算
         return
 
-    def userChooseOptionEvent(self, item):
+    def chooseOptionEvent(self, item):
         """
         左侧选择算法之后触发的函数 选择算法事件
 
@@ -302,41 +304,6 @@ by {selected_plugin_attributes["author"]}
 {selected_plugin_attributes["output_end"]}"""
         )
 
-    def menuBar(self, *triggers):
-        """
-        菜单栏触发函数
-
-        :param triggers:
-        :return:
-        """
-
-        def showAbout():  # 菜单栏 关于作者
-            self.ui.output_box.setPlainText(doc.START_SHOW)
-
-        def showTODO():  # 菜单栏 更新展望
-            self.ui.output_box.setPlainText(doc.TODO)
-
-        def showDONE():  # 菜单栏 更新日志
-            self.ui.output_box.setPlainText(doc.UPDATE_LOG)
-
-        def quitEvent():  # 菜单栏退出事件
-            self.close()
-            # sys.exit(0)
-
-        def checkUpdate():
-            webbrowser.open("https://github.com/HowieHz/hpyculator/releases")
-
-
-        logging.debug(triggers)
-        logging.debug(triggers[0].text() + "is triggered")
-        jump_map = {
-            "更新日志": showDONE,
-            "更新展望": showTODO,
-            "开屏介绍": showAbout,
-            "检查更新": checkUpdate,
-        }
-        jump_map[triggers[0].text()]()
-
     def quitEvent(self):
         """
         退出程序
@@ -345,14 +312,23 @@ by {selected_plugin_attributes["author"]}
         """
         sys.exit(0)
 
-    def openSettingWindowEvent(self):
+    def openAboutWin(self):
+        """
+        打开关于窗口
+
+        :return:
+        """
+        self.about_win = AboutWinApp()  # 绑定子窗口
+        self.about_win.exec()
+
+    def openSettingWin(self):
         """
         打开设置窗口
 
         :return:
         """
-        self.setting_window = SettingWindowApplication()  # 绑定子窗口
-        self.setting_window.exec()
+        self.setting_win = SettingWinApp()  # 绑定子窗口
+        self.setting_win.exec()
         with shelve.open(
                 self.SETTING_FILE_PATH, writeback=True
         ) as setting_file:  # 读取设置文件

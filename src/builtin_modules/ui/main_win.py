@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'main_window.ui'
+## Form generated from reading UI file 'main_win.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.3.0
 ##
@@ -11,47 +11,55 @@
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
-    QCursor, QFont, QFontDatabase, QGradient,
-    QIcon, QImage, QKeySequence, QLinearGradient,
-    QPainter, QPalette, QPixmap, QRadialGradient,
-    QTransform)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QHBoxLayout,
     QLabel, QListWidget, QListWidgetItem, QMainWindow,
-    QMenu, QMenuBar, QPlainTextEdit, QPushButton,
-    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
+    QPlainTextEdit, QPushButton, QSizePolicy, QSpacerItem,
+    QVBoxLayout, QWidget)
 from . import main_window_resource_rc
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        if not MainWindow.objectName():
-            MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1374, 1014)
+class Ui_MainWin(object):
+    def setupUi(self, MainWin):
+        if not MainWin.objectName():
+            MainWin.setObjectName(u"MainWin")
+        MainWin.resize(1392, 994)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
-        MainWindow.setSizePolicy(sizePolicy)
+        sizePolicy.setHeightForWidth(MainWin.sizePolicy().hasHeightForWidth())
+        MainWin.setSizePolicy(sizePolicy)
         icon = QIcon()
         icon.addFile(u":/ico/icons/ico.ico", QSize(), QIcon.Normal, QIcon.Off)
-        MainWindow.setWindowIcon(icon)
-        MainWindow.setAutoFillBackground(False)
-        MainWindow.setStyleSheet(u"QMainWindow {\n"
-"	/*background-image: url(:/background/images/background1.png);*/\n"
+        MainWin.setWindowIcon(icon)
+        MainWin.setAutoFillBackground(False)
+        MainWin.setStyleSheet(u"/*QMainWindow{\n"
+"background-image: url(:/background/images/background3.png);\n"
+"border-radius: 20px;\n"
+"}*/\n"
+"\n"
+"#central_widget{\n"
+"background-image: url(:/background/images/background3.png);\n"
+"/*background-image: url(:/background/images/background1_gaussian_blur.png);*/\n"
+"border-radius: 10px;\n"
 "}\n"
 "\n"
-"\n"
 "QTextEdut{\n"
+"padding-top: 5px;\n"
 "background-color: rgba(229, 229, 229, 170);\n"
 "border-radius: 10px;\n"
 "}\n"
 "QPlainTextEdit{\n"
+"padding-top: 5px;\n"
 "background-color: rgba(229, 229, 229, 170);\n"
 "border-radius: 10px;\n"
 "}\n"
 "\n"
 "\n"
 "QListWidget{\n"
+"padding-top: 5px;\n"
 "background-color: rgba(229, 229, 229, 150);\n"
 "border-radius: 10px;\n"
 "}\n"
@@ -71,7 +79,8 @@ class Ui_MainWindow(object):
 "	background-color: rgba(229, 229, 229, 150);\n"
 "	border-radius: 6px;\n"
 "	height: 5px;\n"
-"	border-style:solid;\n"
+"	border-style:so"
+                        "lid;\n"
 "	border-width: 1px;\n"
 "	border-color: transparent;\n"
 "\n"
@@ -83,14 +92,11 @@ class Ui_MainWindow(object):
 "	padding: 2px;\n"
 "}\n"
 "QCheckBox:hover {\n"
-"	border-style:solid;\n"
-"	padding-left: 1px;\n"
+"	/*padding-left: 1px;\n"
 "	padding-right: 1px;\n"
-"	pa"
-                        "dding-bottom: 1px;\n"
+"	padding-bottom: 1px;\n"
 "	padding-top: 1px;\n"
-"	border-width:1px;\n"
-"	border-color: transparent;\n"
+"	border-width:1px;*/\n"
 "}\n"
 "QCheckBox::indicator:checked {\n"
 "	image: url(:/checked/images/checked.png);\n"
@@ -115,7 +121,8 @@ class Ui_MainWindow(object):
 "}\n"
 "QProgressBar::chunk {\n"
 "	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(49, 147, 250, 200), stop:1 rgba(34, 142, 255, 200));\n"
-"	border-radius: 10px;\n"
+"	border-radi"
+                        "us: 10px;\n"
 "}\n"
 "\n"
 "\n"
@@ -127,8 +134,7 @@ class Ui_MainWindow(object):
 "QScrollBar:vertical {\n"
 "	max-width: 20px;\n"
 "	border: 1px transparent grey;\n"
-""
-                        "	margin: 20px 0px 20px 0px;\n"
+"	margin: 20px 0px 20px 0px;\n"
 "}\n"
 "QScrollBar::handle:horizontal {\n"
 "	background: rgb(253,253,253);\n"
@@ -157,7 +163,8 @@ class Ui_MainWindow(object):
 "QScrollBar::handle:vertical:hover {\n"
 "	background: rgb(253,253,253);\n"
 "	border-style: solid;\n"
-"	border-width: 1px;\n"
+"	border-w"
+                        "idth: 1px;\n"
 "	border-color: rgb(147, 200, 200);\n"
 "	border-radius: 7px;\n"
 "	min-height: 25px;\n"
@@ -165,8 +172,7 @@ class Ui_MainWindow(object):
 "QScrollBar::add-line:horizontal {\n"
 "   border: 2px transparent grey;\n"
 "   border-top-right-radius: 7px;\n"
-"   border-bottom-"
-                        "right-radius: 7px;\n"
+"   border-bottom-right-radius: 7px;\n"
 "   background: rgba(34, 142, 255, 255);\n"
 "   width: 20px;\n"
 "   subcontrol-position: right;\n"
@@ -191,14 +197,14 @@ class Ui_MainWindow(object):
 "   subcontrol-origin: margin;\n"
 "}\n"
 "QScrollBar::add-line:vertical:pressed {\n"
-"   border: 2px transparent grey;\n"
+""
+                        "   border: 2px transparent grey;\n"
 "   border-bottom-left-radius: 7px;\n"
 "   border-bottom-right-radius: 7px;\n"
 "   background: rgb(181,181,181);\n"
 "   height: 20px;\n"
 "   subcontrol-position: bottom;\n"
-"   subcontrol-origin: ma"
-                        "rgin;\n"
+"   subcontrol-origin: margin;\n"
 "}\n"
 "QScrollBar::sub-line:horizontal {\n"
 "   border: 2px transparent grey;\n"
@@ -223,15 +229,15 @@ class Ui_MainWindow(object):
 "   border-top-left-radius: 7px;\n"
 "   border-top-right-radius: 7px;\n"
 "   background: rgba(34, 142, 255, 255);\n"
-"   height: 20px;\n"
+"   heigh"
+                        "t: 20px;\n"
 "   subcontrol-position: top;\n"
 "   subcontrol-origin: margin;\n"
 "}\n"
 "QScrollBar::sub-line:vertical:pressed {\n"
 "   border: 2px transparent grey;\n"
 "   border-top-left-radius: 7px;\n"
-"   border-top-right-radius: 7px"
-                        ";\n"
+"   border-top-right-radius: 7px;\n"
 "   background: rgb(181,181,181);\n"
 "   height: 20px;\n"
 "   subcontrol-position: top;\n"
@@ -259,7 +265,8 @@ class Ui_MainWindow(object):
 "   border-top-right-radius: 3px;\n"
 "   width: 6px;\n"
 "   height: 6px;\n"
-"   background: white;\n"
+"   background: white"
+                        ";\n"
 "}\n"
 "QScrollBar::down-arrow:vertical {\n"
 "   border: 1px transparent grey;\n"
@@ -269,43 +276,21 @@ class Ui_MainWindow(object):
 "   height: 6px;\n"
 "   background: white;\n"
 "}\n"
-""
-                        "QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {\n"
+"QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {\n"
 "   background: none;\n"
 "}\n"
 "QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\n"
 "   background: none;\n"
 "}")
-        MainWindow.setUnifiedTitleAndToolBarOnMac(False)
-        self.cheak_update = QAction(MainWindow)
-        self.cheak_update.setObjectName(u"cheak_update")
-        self.show_todo = QAction(MainWindow)
-        self.show_todo.setObjectName(u"show_todo")
-        self.show_about = QAction(MainWindow)
-        self.show_about.setObjectName(u"show_about")
-        self.show_update_log = QAction(MainWindow)
-        self.show_update_log.setObjectName(u"show_update_log")
-        self.reset_save_location = QAction(MainWindow)
-        self.reset_save_location.setObjectName(u"reset_save_location")
-        self.reset_save_location.setCheckable(False)
-        self.reset_save_location.setChecked(False)
-        self.stop_compute = QAction(MainWindow)
-        self.stop_compute.setObjectName(u"stop_compute")
-        self.stop_app = QAction(MainWindow)
-        self.stop_app.setObjectName(u"stop_app")
-        self.action = QAction(MainWindow)
-        self.action.setObjectName(u"action")
-        self.central_widget = QWidget(MainWindow)
+        MainWin.setUnifiedTitleAndToolBarOnMac(False)
+        self.central_widget = QWidget(MainWin)
         self.central_widget.setObjectName(u"central_widget")
-        self.layoutWidget = QWidget(self.central_widget)
-        self.layoutWidget.setObjectName(u"layoutWidget")
-        self.layoutWidget.setGeometry(QRect(162, 122, 1031, 691))
-        self.verticalLayout_4 = QVBoxLayout(self.layoutWidget)
+        self.central_widget.setStyleSheet(u"")
+        self.verticalLayout_4 = QVBoxLayout(self.central_widget)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.label_3 = QLabel(self.layoutWidget)
+        self.label_3 = QLabel(self.central_widget)
         self.label_3.setObjectName(u"label_3")
         sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy1.setHorizontalStretch(0)
@@ -315,7 +300,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addWidget(self.label_3)
 
-        self.button_about = QPushButton(self.layoutWidget)
+        self.button_about = QPushButton(self.central_widget)
         self.button_about.setObjectName(u"button_about")
         sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         sizePolicy2.setHorizontalStretch(0)
@@ -337,7 +322,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addWidget(self.button_about)
 
-        self.button_setting = QPushButton(self.layoutWidget)
+        self.button_setting = QPushButton(self.central_widget)
         self.button_setting.setObjectName(u"button_setting")
         sizePolicy3 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
         sizePolicy3.setHorizontalStretch(0)
@@ -358,7 +343,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addWidget(self.button_setting)
 
-        self.button_minimize = QPushButton(self.layoutWidget)
+        self.button_minimize = QPushButton(self.central_widget)
         self.button_minimize.setObjectName(u"button_minimize")
         sizePolicy3.setHeightForWidth(self.button_minimize.sizePolicy().hasHeightForWidth())
         self.button_minimize.setSizePolicy(sizePolicy3)
@@ -367,7 +352,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addWidget(self.button_minimize)
 
-        self.button_maximum = QPushButton(self.layoutWidget)
+        self.button_maximum = QPushButton(self.central_widget)
         self.button_maximum.setObjectName(u"button_maximum")
         sizePolicy3.setHeightForWidth(self.button_maximum.sizePolicy().hasHeightForWidth())
         self.button_maximum.setSizePolicy(sizePolicy3)
@@ -376,7 +361,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addWidget(self.button_maximum)
 
-        self.button_close = QPushButton(self.layoutWidget)
+        self.button_close = QPushButton(self.central_widget)
         self.button_close.setObjectName(u"button_close")
         sizePolicy3.setHeightForWidth(self.button_close.sizePolicy().hasHeightForWidth())
         self.button_close.setSizePolicy(sizePolicy3)
@@ -394,7 +379,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addLayout(self.horizontalLayout)
 
-        self.verticalSpacer_9 = QSpacerItem(20, 10, QSizePolicy.Minimum, QSizePolicy.Fixed)
+        self.verticalSpacer_9 = QSpacerItem(20, 13, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
         self.verticalLayout_4.addItem(self.verticalSpacer_9)
 
@@ -402,7 +387,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.search_box = QPlainTextEdit(self.layoutWidget)
+        self.search_box = QPlainTextEdit(self.central_widget)
         self.search_box.setObjectName(u"search_box")
         sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
         sizePolicy4.setHorizontalStretch(2)
@@ -425,7 +410,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addItem(self.verticalSpacer_3)
 
-        self.choices_list_box = QListWidget(self.layoutWidget)
+        self.choices_list_box = QListWidget(self.central_widget)
         QListWidgetItem(self.choices_list_box)
         QListWidgetItem(self.choices_list_box)
         QListWidgetItem(self.choices_list_box)
@@ -460,7 +445,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.verticalLayout_5 = QVBoxLayout()
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.input_box = QPlainTextEdit(self.layoutWidget)
+        self.input_box = QPlainTextEdit(self.central_widget)
         self.input_box.setObjectName(u"input_box")
         sizePolicy6 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy6.setHorizontalStretch(3)
@@ -489,7 +474,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addItem(self.verticalSpacer_8)
 
-        self.save_check = QCheckBox(self.layoutWidget)
+        self.save_check = QCheckBox(self.central_widget)
         self.save_check.setObjectName(u"save_check")
         sizePolicy7 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy7.setHorizontalStretch(3)
@@ -511,7 +496,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addItem(self.verticalSpacer_7)
 
-        self.output_lock_maximums_check = QCheckBox(self.layoutWidget)
+        self.output_lock_maximums_check = QCheckBox(self.central_widget)
         self.output_lock_maximums_check.setObjectName(u"output_lock_maximums_check")
         sizePolicy8 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy8.setHorizontalStretch(1)
@@ -531,7 +516,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addItem(self.verticalSpacer_6)
 
-        self.output_optimization_check = QCheckBox(self.layoutWidget)
+        self.output_optimization_check = QCheckBox(self.central_widget)
         self.output_optimization_check.setObjectName(u"output_optimization_check")
         sizePolicy8.setHeightForWidth(self.output_optimization_check.sizePolicy().hasHeightForWidth())
         self.output_optimization_check.setSizePolicy(sizePolicy8)
@@ -551,7 +536,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_3)
 
-        self.start_button = QPushButton(self.layoutWidget)
+        self.start_button = QPushButton(self.central_widget)
         self.start_button.setObjectName(u"start_button")
         sizePolicy9 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         sizePolicy9.setHorizontalStretch(3)
@@ -572,7 +557,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addItem(self.verticalSpacer_2)
 
-        self.output_box = QPlainTextEdit(self.layoutWidget)
+        self.output_box = QPlainTextEdit(self.central_widget)
         self.output_box.setObjectName(u"output_box")
         sizePolicy10 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy10.setHorizontalStretch(3)
@@ -590,86 +575,58 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addLayout(self.horizontalLayout_2)
 
-        self.label = QLabel(self.central_widget)
-        self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(137, 84, 1081, 781))
-        self.label.setStyleSheet(u"background-image: url(:/background/images/background3.png);\n"
-"/*background-image: url(:/background/images/background1_gaussian_blur.png);*/\n"
-"border-radius: 20px;")
-        MainWindow.setCentralWidget(self.central_widget)
-        self.label.raise_()
-        self.layoutWidget.raise_()
-        self.menu_bar = QMenuBar(MainWindow)
-        self.menu_bar.setObjectName(u"menu_bar")
-        self.menu_bar.setGeometry(QRect(0, 0, 1374, 22))
-        self.about__menu = QMenu(self.menu_bar)
-        self.about__menu.setObjectName(u"about__menu")
-        MainWindow.setMenuBar(self.menu_bar)
+        MainWin.setCentralWidget(self.central_widget)
 
-        self.menu_bar.addAction(self.about__menu.menuAction())
-        self.about__menu.addAction(self.cheak_update)
-        self.about__menu.addAction(self.show_todo)
-        self.about__menu.addAction(self.show_about)
-        self.about__menu.addAction(self.show_update_log)
+        self.retranslateUi(MainWin)
+        self.start_button.clicked.connect(MainWin.startEvent)
+        self.save_check.clicked.connect(MainWin.saveCheckEvent)
+        self.output_optimization_check.clicked.connect(MainWin.outputOptimizationCheckEvent)
+        self.output_lock_maximums_check.clicked.connect(MainWin.outputLockMaximumsCheckEvent)
+        self.search_box.textChanged.connect(MainWin.searchText)
+        self.choices_list_box.itemClicked.connect(MainWin.chooseOptionEvent)
+        self.button_setting.clicked.connect(MainWin.openSettingWin)
+        self.button_close.clicked.connect(MainWin.quitEvent)
+        self.button_about.clicked.connect(MainWin.openAboutWin)
 
-        self.retranslateUi(MainWindow)
-        self.start_button.clicked.connect(MainWindow.startEvent)
-        self.save_check.clicked.connect(MainWindow.saveCheckEvent)
-        self.output_optimization_check.clicked.connect(MainWindow.outputOptimizationCheckEvent)
-        self.output_lock_maximums_check.clicked.connect(MainWindow.outputLockMaximumsCheckEvent)
-        self.menu_bar.triggered.connect(MainWindow.menuBar)
-        self.search_box.textChanged.connect(MainWindow.searchText)
-        self.choices_list_box.itemClicked.connect(MainWindow.userChooseOptionEvent)
-        self.button_setting.clicked.connect(MainWindow.openSettingWindowEvent)
-        self.button_close.clicked.connect(MainWindow.quitEvent)
-
-        QMetaObject.connectSlotsByName(MainWindow)
+        QMetaObject.connectSlotsByName(MainWin)
     # setupUi
 
-    def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"hpycacular", None))
-        self.cheak_update.setText(QCoreApplication.translate("MainWindow", u"\u66f4\u65b0\u65e5\u5fd7", None))
-        self.show_todo.setText(QCoreApplication.translate("MainWindow", u"\u66f4\u65b0\u5c55\u671b", None))
-        self.show_about.setText(QCoreApplication.translate("MainWindow", u"\u5f00\u5c4f\u4ecb\u7ecd", None))
-        self.show_update_log.setText(QCoreApplication.translate("MainWindow", u"\u68c0\u67e5\u66f4\u65b0", None))
-        self.reset_save_location.setText(QCoreApplication.translate("MainWindow", u"\u91cd\u7f6e\u4fdd\u5b58\u8def\u5f84", None))
-        self.stop_compute.setText(QCoreApplication.translate("MainWindow", u"\u7ec8\u6b62\u5f53\u524d\u8fd0\u7b97", None))
-        self.stop_app.setText(QCoreApplication.translate("MainWindow", u"\u9000\u51fa\u7a0b\u5e8f", None))
-        self.action.setText(QCoreApplication.translate("MainWindow", u"\u8bbe\u7f6e", None))
+    def retranslateUi(self, MainWin):
+        MainWin.setWindowTitle(QCoreApplication.translate("MainWin", u"hpycacular", None))
         self.label_3.setText("")
         self.button_about.setText("")
         self.button_setting.setText("")
         self.button_minimize.setText("")
         self.button_maximum.setText("")
         self.button_close.setText("")
-        self.search_box.setPlainText(QCoreApplication.translate("MainWindow", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None))
+        self.search_box.setPlainText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None))
 
         __sortingEnabled = self.choices_list_box.isSortingEnabled()
         self.choices_list_box.setSortingEnabled(False)
         ___qlistwidgetitem = self.choices_list_box.item(0)
-        ___qlistwidgetitem.setText(QCoreApplication.translate("MainWindow", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
+        ___qlistwidgetitem.setText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
         ___qlistwidgetitem1 = self.choices_list_box.item(1)
-        ___qlistwidgetitem1.setText(QCoreApplication.translate("MainWindow", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
+        ___qlistwidgetitem1.setText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
         ___qlistwidgetitem2 = self.choices_list_box.item(2)
-        ___qlistwidgetitem2.setText(QCoreApplication.translate("MainWindow", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
+        ___qlistwidgetitem2.setText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
         ___qlistwidgetitem3 = self.choices_list_box.item(3)
-        ___qlistwidgetitem3.setText(QCoreApplication.translate("MainWindow", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
+        ___qlistwidgetitem3.setText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
         ___qlistwidgetitem4 = self.choices_list_box.item(4)
-        ___qlistwidgetitem4.setText(QCoreApplication.translate("MainWindow", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
+        ___qlistwidgetitem4.setText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
         ___qlistwidgetitem5 = self.choices_list_box.item(5)
-        ___qlistwidgetitem5.setText(QCoreApplication.translate("MainWindow", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
+        ___qlistwidgetitem5.setText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
         ___qlistwidgetitem6 = self.choices_list_box.item(6)
-        ___qlistwidgetitem6.setText(QCoreApplication.translate("MainWindow", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
+        ___qlistwidgetitem6.setText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
         ___qlistwidgetitem7 = self.choices_list_box.item(7)
-        ___qlistwidgetitem7.setText(QCoreApplication.translate("MainWindow", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
+        ___qlistwidgetitem7.setText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
         self.choices_list_box.setSortingEnabled(__sortingEnabled)
 
         self.input_box.setPlainText("")
-        self.save_check.setText(QCoreApplication.translate("MainWindow", u"\u4fdd\u5b58\u8f93\u51fa\u5230\u6587\u4ef6", None))
-        self.output_lock_maximums_check.setText(QCoreApplication.translate("MainWindow", u"\u5185\u6846\u8f93\u51fa\u4e0a\u9650", None))
-        self.output_optimization_check.setText(QCoreApplication.translate("MainWindow", u"\u5185\u6846\u8f93\u51fa\u6027\u80fd\u4f18\u5316", None))
-        self.start_button.setText(QCoreApplication.translate("MainWindow", u"\u5f00\u59cb\u8ba1\u7b97", None))
-        self.output_box.setPlainText(QCoreApplication.translate("MainWindow", u"\u8fd9\u662f\u4e00\u6bb5\u6d4b\u8bd5\u6587\u5b57\n"
+        self.save_check.setText(QCoreApplication.translate("MainWin", u"\u4fdd\u5b58\u8f93\u51fa\u5230\u6587\u4ef6", None))
+        self.output_lock_maximums_check.setText(QCoreApplication.translate("MainWin", u"\u5185\u6846\u8f93\u51fa\u4e0a\u9650", None))
+        self.output_optimization_check.setText(QCoreApplication.translate("MainWin", u"\u5185\u6846\u8f93\u51fa\u6027\u80fd\u4f18\u5316", None))
+        self.start_button.setText(QCoreApplication.translate("MainWin", u"\u5f00\u59cb\u8ba1\u7b97", None))
+        self.output_box.setPlainText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u6bb5\u6d4b\u8bd5\u6587\u5b57\n"
 "	\u6d4b\u8bd5\n"
 "Abo\n"
 "	robot\n"
@@ -683,8 +640,34 @@ class Ui_MainWindow(object):
 "12\n"
 "1233333333333333333333333333333333333333333333333333333333333\n"
 "\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee"
-                        "\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None))
-        self.label.setText("")
-        self.about__menu.setTitle(QCoreApplication.translate("MainWindow", u"|---\u5173\u4e8e---|", None))
+                        "\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u6bb5\u6d4b\u8bd5\u6587\u5b57\n"
+"	\u6d4b\u8bd5\n"
+"Abo\n"
+"	robot\n"
+"	electry\n"
+"1/2\n"
+"2/3/23/\n"
+"/12\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5"
+                        "\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\n"
+"\n"
+"12.331.23/123\n"
+"12\n"
+"1233333333333333333333333333333333333333333333333333333333333\n"
+""
+                        "\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u6bb5\u6d4b\u8bd5\u6587\u5b57\n"
+"	\u6d4b\u8bd5\n"
+"Abo\n"
+"	robot\n"
+"	electry\n"
+"1/2\n"
+"2/3/23/\n"
+"/12\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5"
+                        "\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9"
+                        "\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\n"
+"\n"
+"12.331.23/123\n"
+"12\n"
+"1233333333333333333333333333333333333333333333333333333333333\n"
+"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None))
     # retranslateUi
 

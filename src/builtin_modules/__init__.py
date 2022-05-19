@@ -6,7 +6,7 @@ from .log_manager import LogManager  # 日志管理 初始化
 from .plugin_manager import instance_plugin_manager  # 插件管理
 
 # 窗口管理类（用于管理设置的窗口）
-from .ui_manager import MainWindowApplication
+from .ui_manager import MainWinApp
 
 # 类型标注
 from typing import Optional
@@ -28,7 +28,7 @@ class CreateApp:
         list_instance_main_window = []
         for _ in range(self.instance_num):
             list_instance_main_window.append(
-                MainWindowApplication(  # 启动实例
+                MainWinApp(  # 启动实例
                     GLOBAL_SETTING_FILE_PATH,
                     GLOBAL_OUTPUT_DIR_PATH,
                     global_plugin_option_id_dict,

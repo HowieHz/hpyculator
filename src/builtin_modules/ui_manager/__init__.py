@@ -1,2 +1,1 @@
-from .setting_window_manager import SettingWindowApplication
-from .main_window_manager import MainWindowApplication
+from .main_window_manager import MainWinApp

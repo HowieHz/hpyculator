@@ -1,5 +1,5 @@
 from ..builtin_modules import CreateApp
-from hpyculator.hpysignal import main_window_signal
+from hpyculator.hpysignal import main_win_signal
 import sys
 import os
 import pytest
@@ -41,12 +41,12 @@ class TestAllManager:
     @pytest.mark.run(order=2)
     def test_signal(self):
         print(f"目前运行{self.__class__.__name__}类,test_signal函数")
-        main_window_signal.setOutPutBox.emit("test")
-        main_window_signal.clearOutPutBox.emit()
-        main_window_signal.appendOutPutBox.emit("test")
-        main_window_signal.setStartButtonState.emit("test")
-        main_window_signal.setOutPutBoxCursor.emit("end")
-        main_window_signal.setStartButtonText.emit("test")
+        main_win_signal.setOutPutBox.emit("test")
+        main_win_signal.clearOutPutBox.emit()
+        main_win_signal.appendOutPutBox.emit("test")
+        main_win_signal.setStartButtonState.emit("test")
+        main_win_signal.setOutPutBoxCursor.emit("end")
+        main_win_signal.setStartButtonText.emit("test")
 
     @pytest.mark.run(order=1)
     def test_path(self):
