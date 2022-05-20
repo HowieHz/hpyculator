@@ -6,14 +6,19 @@ from ctypes.wintypes import DWORD, LONG, LPCVOID
 from win32 import win32api, win32gui
 from win32.lib import win32con
 
-from .c_structures import (ACCENT_POLICY, ACCENT_STATE, DWMNCRENDERINGPOLICY,
-                           DWMWINDOWATTRIBUTE, MARGINS,
-                           WINDOWCOMPOSITIONATTRIB,
-                           WINDOWCOMPOSITIONATTRIBDATA)
+from .c_structures import (
+    ACCENT_POLICY,
+    ACCENT_STATE,
+    DWMNCRENDERINGPOLICY,
+    DWMWINDOWATTRIBUTE,
+    MARGINS,
+    WINDOWCOMPOSITIONATTRIB,
+    WINDOWCOMPOSITIONATTRIBDATA,
+)
 
 
 class WindowEffect:
-    """ A class that calls Windows API to realize window effect """
+    """A class that calls Windows API to realize window effect"""
 
     def __init__(self):
         # Declare the function signature of the API
@@ -39,8 +44,10 @@ class WindowEffect:
         self.winCompAttrData.SizeOfData = sizeof(self.accentPolicy)
         self.winCompAttrData.Data = pointer(self.accentPolicy)
 
-    def setAcrylicEffect(self, hWnd, gradientColor="F2F2F299", isEnableShadow=True, animationId=0):
-        """ Add the acrylic effect to the window
+    def setAcrylicEffect(
+        self, hWnd, gradientColor="F2F2F299", isEnableShadow=True, animationId=0
+    ):
+        """Add the acrylic effect to the window
 
         Parameters
         ----------
@@ -68,9 +75,10 @@ class WindowEffect:
         # matte animation
         animationId = DWORD(animationId)
         # window shadow
-        accentFlags = DWORD(0x20 | 0x40 | 0x80 |
-                            0x100) if isEnableShadow else DWORD(0)
-        self.accentPolicy.AccentState = ACCENT_STATE.ACCENT_ENABLE_ACRYLICBLURBEHIND.value
+        accentFlags = DWORD(0x20 | 0x40 | 0x80 | 0x100) if isEnableShadow else DWORD(0)
+        self.accentPolicy.AccentState = (
+            ACCENT_STATE.ACCENT_ENABLE_ACRYLICBLURBEHIND.value
+        )
         self.accentPolicy.GradientColor = gradientColor
         self.accentPolicy.AccentFlags = accentFlags
         self.accentPolicy.AnimationId = animationId
@@ -78,7 +86,7 @@ class WindowEffect:
         self.SetWindowCompositionAttribute(hWnd, pointer(self.winCompAttrData))
 
     def setMicaEffect(self, hWnd):
-        """ Add the mica effect to the window (Win11 only)
+        """Add the mica effect to the window (Win11 only)
 
         Parameters
         ----------
@@ -96,7 +104,7 @@ class WindowEffect:
         self.SetWindowCompositionAttribute(hWnd, pointer(self.winCompAttrData))
 
     def setAeroEffect(self, hWnd):
-        """ Add the aero effect to the window
+        """Add the aero effect to the window
 
         Parameters
         ----------
@@ -108,7 +116,7 @@ class WindowEffect:
         self.SetWindowCompositionAttribute(hWnd, pointer(self.winCompAttrData))
 
     def removeBackgroundEffect(self, hWnd):
-        """ Remove background effect
+        """Remove background effect
 
         Parameters
         ----------
@@ -121,7 +129,7 @@ class WindowEffect:
 
     @staticmethod
     def moveWindow(hWnd):
-        """ Move the window
+        """Move the window
 
         Parameters
         ----------
@@ -135,7 +143,7 @@ class WindowEffect:
         )
 
     def addShadowEffect(self, hWnd):
-        """ Add DWM shadow to window
+        """Add DWM shadow to window
 
         Parameters
         ----------
@@ -147,7 +155,7 @@ class WindowEffect:
         self.DwmExtendFrameIntoClientArea(hWnd, byref(margins))
 
     def addMenuShadowEffect(self, hWnd):
-        """ Add DWM shadow to menu
+        """Add DWM shadow to menu
 
         Parameters
         ----------
@@ -165,7 +173,7 @@ class WindowEffect:
         self.DwmExtendFrameIntoClientArea(hWnd, byref(margins))
 
     def removeShadowEffect(self, hWnd):
-        """ Remove DWM shadow from the window
+        """Remove DWM shadow from the window
 
         Parameters
         ----------
@@ -182,7 +190,7 @@ class WindowEffect:
 
     @staticmethod
     def removeMenuShadowEffect(hWnd):
-        """ Remove shadow from pop-up menu
+        """Remove shadow from pop-up menu
 
         Parameters
         ----------
@@ -196,7 +204,7 @@ class WindowEffect:
 
     @staticmethod
     def addWindowAnimation(hWnd):
-        """ Enables the maximize and minimize animation of the window
+        """Enables the maximize and minimize animation of the window
 
         Parameters
         ----------

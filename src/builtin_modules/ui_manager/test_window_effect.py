@@ -12,6 +12,7 @@ from ..ui import Ui_TestWin
 from requests import get
 from os.path import exists
 
+
 class testWinApp(QMainWindow):
     def __init__(self):
         super().__init__()

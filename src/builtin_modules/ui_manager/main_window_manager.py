@@ -17,6 +17,7 @@ from ..calculate import CalculationManager  # 计算管理
 # from PySide6.QtWidgets import QGraphicsOpacityEffect, QGraphicsBlurEffect
 from PySide6.QtGui import QTextCursor
 from PySide6.QtGui import QColor, QPainter, QGuiApplication
+
 # from PySide6.QtCore import Qt
 from ..ui import Ui_MainWin
 from hpyculator.hpysignal import main_win_signal
@@ -25,7 +26,7 @@ from hpyculator.hpysignal import main_win_signal
 from .setting_window_manager import SettingWinApp
 from .about_win_manager import AboutWinApp
 
-#refer to https://github.com/zhiyiYo/PyQt-Frameless-Window
+# refer to https://github.com/zhiyiYo/PyQt-Frameless-Window
 from ..pyside_frameless_win.framelesswindow import FramelessWindow
 
 
@@ -52,19 +53,21 @@ class MainWinApp(FramelessWindow):
         # 读取设置文件-按钮状态和输出目录  check控件初始化
         with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
             if "is_save_settings" in setting_file:
-                self.is_save_settings = setting_file["is_save_settings"]  # 是否保存设置
+                # 是否保存设置
+                self.is_save_settings = setting_file["is_save_settings"]
                 if self.is_save_settings:  # 当保存check状态
                     for sequence in [
-                        ("is_save", False, self.ui.check_save),  # 键名 初始化状态 对应check控件
+                        # 键名 初始化状态 对应check控件
+                        ("is_save", False, self.ui.check_save),
                         (
-                                "output_optimization",
-                                True,
-                                self.ui.check_output_optimization,
+                            "output_optimization",
+                            True,
+                            self.ui.check_output_optimization,
                         ),
                         (
-                                "output_lock_maximums",
-                                True,
-                                self.ui.check_output_lock_maximums,
+                            "output_lock_maximums",
+                            True,
+                            self.ui.check_output_lock_maximums,
                         ),
                     ]:
                         if sequence[0] in setting_file:
@@ -72,20 +75,22 @@ class MainWinApp(FramelessWindow):
                                 setting_file[sequence[0]]
                             )  # 根据数据设置选项状态
                         else:
-                            setting_file[sequence[0]] = sequence[1]  # 初始化设置文件中对应的项
+                            # 初始化设置文件中对应的项
+                            setting_file[sequence[0]] = sequence[1]
                             sequence[2].setChecked(sequence[1])  # 初始化控件
                 else:  # 当不保存check状态
                     for sequence in [
-                        ("is_save", False, self.ui.check_save),  # 键名 初始化状态 对应check控件
+                        # 键名 初始化状态 对应check控件
+                        ("is_save", False, self.ui.check_save),
                         (
-                                "output_optimization",
-                                True,
-                                self.ui.check_output_optimization,
+                            "output_optimization",
+                            True,
+                            self.ui.check_output_optimization,
                         ),
                         (
-                                "output_lock_maximums",
-                                True,
-                                self.ui.check_output_lock_maximums,
+                            "output_lock_maximums",
+                            True,
+                            self.ui.check_output_lock_maximums,
                         ),
                     ]:
                         sequence[2].setChecked(sequence[1])  # 初始化控件
@@ -150,12 +155,12 @@ class MainWinApp(FramelessWindow):
         main_win_signal.setOutPutBoxCursor.connect(setOutPutBoxCursor)
 
     def startEvent(
-            self,
-            test_input=None,
-            test_input_mode=None,
-            test_calculation_mode=None,
-            test_selection_id=None,
-            test_output_dir_path=None,
+        self,
+        test_input=None,
+        test_input_mode=None,
+        test_calculation_mode=None,
+        test_selection_id=None,
+        test_output_dir_path=None,
     ) -> None:
         """
         输入检查，启动计算线程
@@ -211,7 +216,8 @@ class MainWinApp(FramelessWindow):
         if test_input_mode:
             input_mode = test_input_mode  # 有就录入测试数据
         else:
-            input_mode = self.selected_plugin_attributes["input_mode"]  # 没有就从属性列表获取
+            # 没有就从属性列表获取
+            input_mode = self.selected_plugin_attributes["input_mode"]
 
         # 计算运行模式
         if test_calculation_mode:
@@ -243,14 +249,14 @@ class MainWinApp(FramelessWindow):
     def flushListChoicesPlugin(self):
         """
         刷新左侧列表 和对应映射表
-        
+
         :return: None
         """
-        self.plugin_option_id_dict = instance_plugin_manager.getOptionIdDict()  # 选项名映射id（文件或文件夹名）
+        self.plugin_option_id_dict = (
+            instance_plugin_manager.getOptionIdDict()
+        )  # 选项名映射id（文件或文件夹名）
         self.selection_list = self.plugin_option_id_dict.keys()  # 选项名列表
-        self.ui.list_choices_plugin.addItems(
-            self.selection_list
-        )  # 选项名添加到ui上
+        self.ui.list_choices_plugin.addItems(self.selection_list)  # 选项名添加到ui上
 
     def minimizeEvent(self):
         """
@@ -304,7 +310,10 @@ class MainWinApp(FramelessWindow):
             screen_height = screen.height()  # 屏幕的高
             # self.move(self.start_pos.x()+(event.globalPos().x()/screen_width)*新窗口宽度,self.start_pos.y()+(event.globalPos().y()/screen_height)*新窗口高度)
             # TODO 继承调整窗口的大小的方法，添加一个记录窗口大小的东西，然后改写
-            self.move(self.start_pos.x()-(event.globalPos().x()/screen_width)*1145,self.start_pos.y()-(event.globalPos().y()/screen_height)*893)
+            self.move(
+                self.start_pos.x() - (event.globalPos().x() / screen_width) * 1145,
+                self.start_pos.y() - (event.globalPos().y() / screen_height) * 893,
+            )
             self.start_pos = event.globalPos()  # 鼠标点击位置
             self.origin_pos = self.pos()  # 窗口位置
             return
@@ -364,7 +373,7 @@ by {selected_plugin_attributes["author"]}
         self.setting_win = SettingWinApp()  # 绑定子窗口
         self.setting_win.exec()
         with shelve.open(
-                self.SETTING_FILE_PATH, writeback=True
+            self.SETTING_FILE_PATH, writeback=True
         ) as setting_file:  # 读取设置文件
             self.OUTPUT_DIR_PATH = setting_file["save_location"]
             self.is_save_settings = setting_file["is_save_settings"]
@@ -377,7 +386,7 @@ by {selected_plugin_attributes["author"]}
         """
         if self.is_save_settings:  # 保存check设置
             with shelve.open(
-                    self.SETTING_FILE_PATH, writeback=True
+                self.SETTING_FILE_PATH, writeback=True
             ) as setting_file:  # 读取设置文件
                 setting_file["is_save"] = self.ui.check_save.isChecked()
 
@@ -390,7 +399,7 @@ by {selected_plugin_attributes["author"]}
         if self.ui.check_output_optimization.isChecked():
             if self.is_save_settings:  # 保存check设置
                 with shelve.open(
-                        self.SETTING_FILE_PATH, writeback=True
+                    self.SETTING_FILE_PATH, writeback=True
                 ) as setting_file:  # 读取设置文件
                     setting_file[
                         "output_optimization"
@@ -399,7 +408,7 @@ by {selected_plugin_attributes["author"]}
             self.ui.check_output_lock_maximums.setChecked(False)
             if self.is_save_settings:  # 保存check设置
                 with shelve.open(
-                        self.SETTING_FILE_PATH, writeback=True
+                    self.SETTING_FILE_PATH, writeback=True
                 ) as setting_file:  # 读取设置文件
                     setting_file["output_lock_maximums"] = False
                     setting_file[
@@ -416,7 +425,7 @@ by {selected_plugin_attributes["author"]}
             self.ui.check_output_optimization.setChecked(True)
             if self.is_save_settings:  # 保存check设置
                 with shelve.open(
-                        self.SETTING_FILE_PATH, writeback=True
+                    self.SETTING_FILE_PATH, writeback=True
                 ) as setting_file:  # 读取设置文件
                     setting_file["output_optimization"] = True
                     setting_file[
@@ -425,7 +434,7 @@ by {selected_plugin_attributes["author"]}
         else:
             if self.is_save_settings:  # 保存check设置
                 with shelve.open(
-                        self.SETTING_FILE_PATH, writeback=True
+                    self.SETTING_FILE_PATH, writeback=True
                 ) as setting_file:  # 读取设置文件
                     setting_file[
                         "output_lock_maximums"
