@@ -3,7 +3,8 @@ from ..ui import Ui_AboutWin
 import webbrowser
 
 # pyside6
-from PySide6.QtWidgets import QMessageBox, QDialog
+from PySide6.QtWidgets import QDialog
+
 
 class AboutWinApp(QDialog):
     def __init__(self):
@@ -14,14 +15,14 @@ class AboutWinApp(QDialog):
 
         self.setWindowTitle("关于 hpyculator")
 
-        self.ui.choices_doc.addItems([
+        self.ui.combo_doc.addItems([
             "开屏介绍",
             "更新日志",
             "使用说明",
             "关于"
         ])
 
-    def chooseShow(self,QString):
+    def chooseShow(self, QString):
         def showStartShow():  # 开屏介绍
             self.ui.output_doc.setText(doc.START_SHOW)
 
@@ -31,10 +32,9 @@ class AboutWinApp(QDialog):
         def showUpdataLog():  # 更新日志
             self.ui.output_doc.setText(doc.UPDATE_LOG)
 
-        def showAbout(): # 关于
+        def showAbout():  # 关于
             # self.ui.output_doc.setText("<img src='..\\ui\\icons\\ico.ico'>")
             self.ui.output_doc.setText(doc.ABOUT)
-
 
         jump_map = {
             "开屏介绍": showStartShow,

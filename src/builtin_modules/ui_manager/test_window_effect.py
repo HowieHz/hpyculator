@@ -1,7 +1,3 @@
-import sys
-
-# pyside6导入
-from PySide6.QtWidgets import QApplication
 # pyside6 ui signal导入
 from PySide6.QtWidgets import QMainWindow, QGraphicsOpacityEffect
 
@@ -15,7 +11,6 @@ class testWinApp(QMainWindow):
         self.ui.setupUi(self)  # ui初始化
         self.setWindowTitle("hpyculator test")  # 设置标题
 
-
         op = QGraphicsOpacityEffect()
         op.setOpacity(0.5)
         self.ui.plainTextEdit.setGraphicsEffect(op)
@@ -27,8 +22,6 @@ class testWinApp(QMainWindow):
         # op2 = QGraphicsBlurEffect()
         # op2.setBlurRadius(12)
         # self.setGraphicsEffect(op2)
-        #2.窗口及其上面的控件都半透明：
+        # 2.窗口及其上面的控件都半透明：
         # self.setWindowOpacity(0.7)
         self.show()
-
-

@@ -9,8 +9,8 @@ import hpyculator as hpyc
 from .. import document as doc
 
 import logging  # 日志导入
-from ..plugin_manager import instance_plugin_manager  # 插件管理
-from ..calculate_manager import CalculationManager  # 计算管理
+from ..plugin import instance_plugin_manager  # 插件管理
+from ..calculate import CalculationManager  # 计算管理
 
 # pyside6 ui signal导入
 from PySide6.QtWidgets import QMainWindow
@@ -27,19 +27,18 @@ from .about_win_manager import AboutWinApp
 
 
 class MainWinApp(QMainWindow):
-    def __init__(self, setting_file_path, output_dir_path, plugin_option_id_dict):
+    def __init__(self, setting_file_path, output_dir_path):
         """
         主窗口程序类
 
         :param setting_file_path: 用于修改设置 设置文件路径
         :param output_dir_path:  用于输出结果 输出路径
-        :param plugin_option_id_dict:  用于添加左侧选项
         """
         # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
         self.SETTING_FILE_PATH = setting_file_path
         self.OUTPUT_DIR_PATH = output_dir_path
-        self.plugin_option_id_dict = plugin_option_id_dict  # 选项名映射id（文件或文件夹名）
-        self.selection_list = plugin_option_id_dict.keys()  # 选项名列表
+        self.plugin_option_id_dict = instance_plugin_manager.getOptionIdDict()  # 选项名映射id（文件或文件夹名）
+        self.selection_list = self.plugin_option_id_dict.keys()  # 选项名列表
         self.user_selection_id: str = ""  # 用户选择的插件的文件名（id)
 
         super().__init__()
@@ -55,16 +54,16 @@ class MainWinApp(QMainWindow):
                 self.is_save_settings = setting_file["is_save_settings"]  # 是否保存设置
                 if self.is_save_settings:  # 当保存check状态
                     for sequence in [
-                        ("save_check", False, self.ui.save_check),  # 键名 初始化状态 对应check控件
+                        ("is_save", False, self.ui.check_save),  # 键名 初始化状态 对应check控件
                         (
-                            "output_optimization",
-                            True,
-                            self.ui.output_optimization_check,
+                                "output_optimization",
+                                True,
+                                self.ui.check_output_optimization,
                         ),
                         (
-                            "output_lock_maximums",
-                            True,
-                            self.ui.output_lock_maximums_check,
+                                "output_lock_maximums",
+                                True,
+                                self.ui.check_output_lock_maximums,
                         ),
                     ]:
                         if sequence[0] in setting_file:
@@ -76,16 +75,16 @@ class MainWinApp(QMainWindow):
                             sequence[2].setChecked(sequence[1])  # 初始化控件
                 else:  # 当不保存check状态
                     for sequence in [
-                        ("save_check", False, self.ui.save_check),  # 键名 初始化状态 对应check控件
+                        ("is_save", False, self.ui.check_save),  # 键名 初始化状态 对应check控件
                         (
-                            "output_optimization",
-                            True,
-                            self.ui.output_optimization_check,
+                                "output_optimization",
+                                True,
+                                self.ui.check_output_optimization,
                         ),
                         (
-                            "output_lock_maximums",
-                            True,
-                            self.ui.output_lock_maximums_check,
+                                "output_lock_maximums",
+                                True,
+                                self.ui.check_output_lock_maximums,
                         ),
                     ]:
                         sequence[2].setChecked(sequence[1])  # 初始化控件
@@ -96,12 +95,12 @@ class MainWinApp(QMainWindow):
         self.is_thread_running = [False]  # 防止反复启动计算线程
 
         # 关于gui显示内容的初始化
-        self.ui.choices_list_box.addItems(
+        self.ui.list_choices_plugin.addItems(
             self.plugin_option_id_dict.keys()
         )  # 选项名添加到ui上
         self.ui.output_box.setPlainText(doc.START_SHOW)  # 开启的展示
-        self.ui.search_box.setPlaceholderText("输入字符自动进行搜索\n清空搜索框显示全部插件")  # 灰色背景提示字符
-        self.ui.search_box.clear()  # 不清空不显示灰色背景
+        self.ui.search_plugin.setPlaceholderText("输入字符自动进行搜索\n清空搜索框显示全部插件")  # 灰色背景提示字符
+        self.ui.search_plugin.clear()  # 不清空不显示灰色背景
         self.ui.input_box.setFocus()  # 设置焦点
 
         # op = QGraphicsOpacityEffect()
@@ -114,13 +113,11 @@ class MainWinApp(QMainWindow):
         # op2.setBlurRadius(12)
         # self.setGraphicsEffect(op2)
 
-
-
-
         # 去除边框
         self.setWindowFlags(Qt.FramelessWindowHint)
         # 背景透明
         self.setAttribute(Qt.WA_TranslucentBackground)
+
     # #     # 设置背景色
     # #     # # self.bgColor = QColor(255, 50, 50, 80)  # 可以根据个人需要调节透明度
     #     self.bgColor = QColor(255, 255, 255, 50)  # 可以根据个人需要调节透明度
@@ -145,6 +142,7 @@ class MainWinApp(QMainWindow):
 
         :return:
         """
+
         # self.ui.___ACTION___.triggered.connect(___FUNCTION___)
         # self.ui.___BUTTON___.clicked.connect(___FUNCTION___)
         # self.ui.___COMBO_BOX___.currentIndexChanged.connect(___FUNCTION___)
@@ -165,10 +163,10 @@ class MainWinApp(QMainWindow):
             hpyc.setOutPutData(self.ui.output_box.toPlainText())
 
         def setStartButtonText(msg: str):
-            self.ui.start_button.setText(msg)
+            self.ui.button_start.setText(msg)
 
         def setStartButtonState(state: bool):
-            self.ui.start_button.setEnabled(state)
+            self.ui.button_start.setEnabled(state)
 
         def setOutPutBoxCursor(where: str):  # 目前只有end
             cursor = self.ui.output_box.textCursor()
@@ -187,12 +185,12 @@ class MainWinApp(QMainWindow):
         main_win_signal.setOutPutBoxCursor.connect(setOutPutBoxCursor)
 
     def startEvent(
-        self,
-        test_input=None,
-        test_input_mode=None,
-        test_calculation_mode=None,
-        test_selection_id=None,
-        test_output_dir_path=None,
+            self,
+            test_input=None,
+            test_input_mode=None,
+            test_calculation_mode=None,
+            test_selection_id=None,
+            test_output_dir_path=None,
     ) -> None:
         """
         输入检查，启动计算线程
@@ -233,7 +231,7 @@ class MainWinApp(QMainWindow):
             user_selection_id = (
                 self.user_selection_id
             )  # 被用户选择的插件，这个插件的id为user_selection_id
-            if self.ui.choices_list_box.currentItem() is None:  # 是否选择检测
+            if self.ui.list_choices_plugin.currentItem() is None:  # 是否选择检测
                 self.ui.output_box.setPlainText(
                     """\n\n
 不选要算什么我咋知道要算啥子嘞
@@ -254,11 +252,11 @@ class MainWinApp(QMainWindow):
         if test_calculation_mode:
             calculation_mode = test_calculation_mode  # 有就录入测试数据
         else:
-            if self.ui.save_check.isChecked():  # 检测保存按钮的状态判断是否保存
+            if self.ui.check_save.isChecked():  # 检测保存按钮的状态判断是否保存
                 calculation_mode = "calculate_save"
             else:  # 选择不保存才输出结果
-                if self.ui.output_optimization_check.isChecked():
-                    if self.ui.output_lock_maximums_check.isChecked():
+                if self.ui.check_output_optimization.isChecked():
+                    if self.ui.check_output_lock_maximums.isChecked():
                         calculation_mode = "calculate_o_l"  # l=limit
                     else:
                         calculation_mode = "calculate_o"
@@ -277,6 +275,13 @@ class MainWinApp(QMainWindow):
         )  # 启动计算
         return
 
+    def flush_list_choices_plugin(self):
+        """
+        刷新左侧列表
+        
+        :return: None
+        """
+
     def chooseOptionEvent(self, item):
         """
         左侧选择算法之后触发的函数 选择算法事件
@@ -284,7 +289,7 @@ class MainWinApp(QMainWindow):
         :param item:
         :return: None
         """
-        # logging.debug(f'选中的选项名{self.ui.choices_list_box.currentItem().text()}')
+        # logging.debug(f'选中的选项名{self.ui.list_choices_plugin.currentItem().text()}')
         logging.debug(f"选中的选项名{item.text()}")
         self.user_selection_id = str(self.plugin_option_id_dict[item.text()])  # 转换成ID
         self.selected_plugin_attributes = (
@@ -343,9 +348,9 @@ by {selected_plugin_attributes["author"]}
         """
         if self.is_save_settings:  # 保存check设置
             with shelve.open(
-                self.SETTING_FILE_PATH, writeback=True
+                    self.SETTING_FILE_PATH, writeback=True
             ) as setting_file:  # 读取设置文件
-                setting_file["save_check"] = self.ui.save_check.isChecked()
+                setting_file["is_save"] = self.ui.check_save.isChecked()
 
     def outputOptimizationCheckEvent(self):
         """
@@ -353,24 +358,24 @@ by {selected_plugin_attributes["author"]}
 
         :return: None
         """
-        if self.ui.output_optimization_check.isChecked():
+        if self.ui.check_output_optimization.isChecked():
             if self.is_save_settings:  # 保存check设置
                 with shelve.open(
-                    self.SETTING_FILE_PATH, writeback=True
+                        self.SETTING_FILE_PATH, writeback=True
                 ) as setting_file:  # 读取设置文件
                     setting_file[
                         "output_optimization"
-                    ] = self.ui.output_optimization_check.isChecked()
+                    ] = self.ui.check_output_optimization.isChecked()
         else:
-            self.ui.output_lock_maximums_check.setChecked(False)
+            self.ui.check_output_lock_maximums.setChecked(False)
             if self.is_save_settings:  # 保存check设置
                 with shelve.open(
-                    self.SETTING_FILE_PATH, writeback=True
+                        self.SETTING_FILE_PATH, writeback=True
                 ) as setting_file:  # 读取设置文件
                     setting_file["output_lock_maximums"] = False
                     setting_file[
                         "output_optimization"
-                    ] = self.ui.output_optimization_check.isChecked()
+                    ] = self.ui.check_output_optimization.isChecked()
 
     def outputLockMaximumsCheckEvent(self):
         """
@@ -378,24 +383,24 @@ by {selected_plugin_attributes["author"]}
 
         :return: None
         """
-        if self.ui.output_lock_maximums_check.isChecked():
-            self.ui.output_optimization_check.setChecked(True)
+        if self.ui.check_output_lock_maximums.isChecked():
+            self.ui.check_output_optimization.setChecked(True)
             if self.is_save_settings:  # 保存check设置
                 with shelve.open(
-                    self.SETTING_FILE_PATH, writeback=True
+                        self.SETTING_FILE_PATH, writeback=True
                 ) as setting_file:  # 读取设置文件
                     setting_file["output_optimization"] = True
                     setting_file[
                         "output_lock_maximums"
-                    ] = self.ui.output_lock_maximums_check.isChecked()  # True
+                    ] = self.ui.check_output_lock_maximums.isChecked()  # True
         else:
             if self.is_save_settings:  # 保存check设置
                 with shelve.open(
-                    self.SETTING_FILE_PATH, writeback=True
+                        self.SETTING_FILE_PATH, writeback=True
                 ) as setting_file:  # 读取设置文件
                     setting_file[
                         "output_lock_maximums"
-                    ] = self.ui.output_lock_maximums_check.isChecked()  # False
+                    ] = self.ui.check_output_lock_maximums.isChecked()  # False
 
     def searchText(self):
         """
@@ -403,19 +408,19 @@ by {selected_plugin_attributes["author"]}
 
         :return: None
         """
-        search_keyword = self.ui.search_box.toPlainText()
+        search_keyword = self.ui.search_plugin.toPlainText()
         logging.debug(f"search_keyword:{search_keyword}")
 
         if search_keyword == "":
             self.searchCancel()
             return None
 
-        self.ui.choices_list_box.clear()  # 清空选择栏
+        self.ui.list_choices_plugin.clear()  # 清空选择栏
 
         for i in self.selection_list:  # 选出符合要求的
             if i.find(search_keyword) == -1:  # 字符串方法，没找到指定子串就-1
                 continue
-            self.ui.choices_list_box.addItem(i)
+            self.ui.list_choices_plugin.addItem(i)
         return None
 
     def searchCancel(self):
@@ -424,5 +429,5 @@ by {selected_plugin_attributes["author"]}
 
         :return: None
         """
-        self.ui.choices_list_box.clear()
-        self.ui.choices_list_box.addItems(self.selection_list)
+        self.ui.list_choices_plugin.clear()
+        self.ui.list_choices_plugin.addItems(self.selection_list)

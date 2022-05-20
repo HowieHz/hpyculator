@@ -1,4 +1,4 @@
-from ..builtin_modules.calculate_manager import CalculationManager
+from ..builtin_modules.calculate import CalculationManager
 from ..builtin_modules import CreateApp
 import hpyculator as hpyc
 import pytest

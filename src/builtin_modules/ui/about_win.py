@@ -17,7 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QDialog, QGridLayout,
     QHBoxLayout, QLabel, QPushButton, QSizePolicy,
-    QSpacerItem, QTextEdit, QWidget)
+    QSpacerItem, QTextBrowser, QWidget)
 
 class Ui_AboutWin(object):
     def setupUi(self, AboutWin):
@@ -30,13 +30,13 @@ class Ui_AboutWin(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.choices_doc = QComboBox(AboutWin)
-        self.choices_doc.setObjectName(u"choices_doc")
+        self.combo_doc = QComboBox(AboutWin)
+        self.combo_doc.setObjectName(u"combo_doc")
         font = QFont()
         font.setPointSize(14)
-        self.choices_doc.setFont(font)
+        self.combo_doc.setFont(font)
 
-        self.horizontalLayout.addWidget(self.choices_doc)
+        self.horizontalLayout.addWidget(self.combo_doc)
 
         self.label_2 = QLabel(AboutWin)
         self.label_2.setObjectName(u"label_2")
@@ -50,12 +50,6 @@ class Ui_AboutWin(object):
 
         self.gridLayout.addLayout(self.horizontalLayout, 4, 0, 1, 2)
 
-        self.output_doc = QTextEdit(AboutWin)
-        self.output_doc.setObjectName(u"output_doc")
-        self.output_doc.setFont(font)
-
-        self.gridLayout.addWidget(self.output_doc, 5, 0, 1, 2)
-
         self.label = QLabel(AboutWin)
         self.label.setObjectName(u"label")
         font2 = QFont()
@@ -66,29 +60,38 @@ class Ui_AboutWin(object):
 
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
 
-        self.pushButton = QPushButton(AboutWin)
-        self.pushButton.setObjectName(u"pushButton")
+        self.button_check_update = QPushButton(AboutWin)
+        self.button_check_update.setObjectName(u"button_check_update")
         sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
-        self.pushButton.setSizePolicy(sizePolicy)
-        self.pushButton.setMinimumSize(QSize(200, 35))
+        sizePolicy.setHeightForWidth(self.button_check_update.sizePolicy().hasHeightForWidth())
+        self.button_check_update.setSizePolicy(sizePolicy)
+        self.button_check_update.setMinimumSize(QSize(200, 35))
         font3 = QFont()
         font3.setFamilies([u"\u66f4\u7eb1\u9ed1\u4f53 UI SC"])
         font3.setPointSize(14)
-        self.pushButton.setFont(font3)
+        self.button_check_update.setFont(font3)
 
-        self.gridLayout.addWidget(self.pushButton, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.button_check_update, 0, 1, 1, 1)
 
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.gridLayout.addItem(self.horizontalSpacer, 3, 0, 1, 1)
 
+        self.output_doc = QTextBrowser(AboutWin)
+        self.output_doc.setObjectName(u"output_doc")
+        font4 = QFont()
+        font4.setFamilies([u"\u66f4\u7eb1\u9ed1\u4f53 SC"])
+        font4.setPointSize(12)
+        self.output_doc.setFont(font4)
+
+        self.gridLayout.addWidget(self.output_doc, 5, 0, 1, 2)
+
 
         self.retranslateUi(AboutWin)
-        self.choices_doc.currentTextChanged.connect(AboutWin.chooseShow)
-        self.pushButton.clicked.connect(AboutWin.checkUpdate)
+        self.combo_doc.currentTextChanged.connect(AboutWin.chooseShow)
+        self.button_check_update.clicked.connect(AboutWin.checkUpdate)
 
         QMetaObject.connectSlotsByName(AboutWin)
     # setupUi
@@ -97,6 +100,6 @@ class Ui_AboutWin(object):
         AboutWin.setWindowTitle(QCoreApplication.translate("AboutWin", u"Dialog", None))
         self.label_2.setText(QCoreApplication.translate("AboutWin", u"\u9009\u62e9\u4f60\u8981\u67e5\u770b\u7684\u5185\u5bb9", None))
         self.label.setText(QCoreApplication.translate("AboutWin", u"\u5173\u4e8ehpycacular", None))
-        self.pushButton.setText(QCoreApplication.translate("AboutWin", u"\u68c0\u67e5\u66f4\u65b0", None))
+        self.button_check_update.setText(QCoreApplication.translate("AboutWin", u"\u68c0\u67e5\u66f4\u65b0", None))
     # retranslateUi
 

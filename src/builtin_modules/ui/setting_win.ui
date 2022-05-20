@@ -627,7 +627,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     <string>保存输出文件的位置</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="cancel_setting_button">
+  <widget class="QPushButton" name="button_cancel">
    <property name="geometry">
     <rect>
      <x>490</x>
@@ -648,7 +648,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     <string>取消修改</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="save_setting_button">
+  <widget class="QPushButton" name="button_save_setting">
    <property name="geometry">
     <rect>
      <x>280</x>
@@ -679,7 +679,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     </rect>
    </property>
   </widget>
-  <widget class="QCheckBox" name="save_setting_check">
+  <widget class="QCheckBox" name="check_is_save_check_box">
    <property name="geometry">
     <rect>
      <x>230</x>
@@ -757,7 +757,7 @@ QCheckBox::indicator:unchecked {
     <string>是否保存选择框状态</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="save_log_check">
+  <widget class="QCheckBox" name="check_is_save_log">
    <property name="geometry">
     <rect>
      <x>230</x>
@@ -854,7 +854,7 @@ QCheckBox::indicator:unchecked {
     <string>重置保存位置</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="reset_save_location_button">
+  <widget class="QPushButton" name="button_reset_save_location">
    <property name="geometry">
     <rect>
      <x>230</x>
@@ -879,7 +879,7 @@ QCheckBox::indicator:unchecked {
  <resources/>
  <connections>
   <connection>
-   <sender>save_setting_button</sender>
+   <sender>button_save_setting</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
    <slot>saveSetting()</slot>
@@ -895,7 +895,7 @@ QCheckBox::indicator:unchecked {
    </hints>
   </connection>
   <connection>
-   <sender>cancel_setting_button</sender>
+   <sender>button_cancel</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
    <slot>cancelSetting()</slot>
@@ -911,7 +911,7 @@ QCheckBox::indicator:unchecked {
    </hints>
   </connection>
   <connection>
-   <sender>save_setting_check</sender>
+   <sender>check_is_save_check_box</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
    <slot>saveSettingCheckEvent()</slot>
@@ -927,7 +927,7 @@ QCheckBox::indicator:unchecked {
    </hints>
   </connection>
   <connection>
-   <sender>save_log_check</sender>
+   <sender>check_is_save_log</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
    <slot>saveLogCheckEvent()</slot>
@@ -943,7 +943,7 @@ QCheckBox::indicator:unchecked {
    </hints>
   </connection>
   <connection>
-   <sender>reset_save_location_button</sender>
+   <sender>button_reset_save_location</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
    <slot>resetSaveLocationEvnet()</slot>

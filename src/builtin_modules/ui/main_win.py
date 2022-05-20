@@ -43,16 +43,20 @@ class Ui_MainWin(object):
 "#central_widget{\n"
 "background-image: url(:/background/images/background3.png);\n"
 "/*background-image: url(:/background/images/background1_gaussian_blur.png);*/\n"
+"background-size: cover;\n"
+"background-repeat: no-repeat;\n"
 "border-radius: 10px;\n"
 "}\n"
 "\n"
-"QTextEdut{\n"
+"QTextEdit{\n"
 "padding-top: 5px;\n"
+"padding-left: 2px;\n"
 "background-color: rgba(229, 229, 229, 170);\n"
 "border-radius: 10px;\n"
 "}\n"
 "QPlainTextEdit{\n"
 "padding-top: 5px;\n"
+"padding-left: 2px;\n"
 "background-color: rgba(229, 229, 229, 170);\n"
 "border-radius: 10px;\n"
 "}\n"
@@ -60,6 +64,7 @@ class Ui_MainWin(object):
 "\n"
 "QListWidget{\n"
 "padding-top: 5px;\n"
+"padding-left: 2px;\n"
 "background-color: rgba(229, 229, 229, 150);\n"
 "border-radius: 10px;\n"
 "}\n"
@@ -74,13 +79,13 @@ class Ui_MainWin(object):
 "	background-color: rgba(190, 190, 190, 130);\n"
 "}\n"
 "\n"
-"\n"
+""
+                        "\n"
 "QCheckBox {\n"
 "	background-color: rgba(229, 229, 229, 150);\n"
 "	border-radius: 6px;\n"
 "	height: 5px;\n"
-"	border-style:so"
-                        "lid;\n"
+"	border-style:solid;\n"
 "	border-width: 1px;\n"
 "	border-color: transparent;\n"
 "\n"
@@ -120,9 +125,9 @@ class Ui_MainWin(object):
 "	background-color:rgb(207,207,207);\n"
 "}\n"
 "QProgressBar::chunk {\n"
-"	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(49, 147, 250, 200), stop:1 rgba(34, 142, 255, 200));\n"
-"	border-radi"
-                        "us: 10px;\n"
+"	background-color: qlinearg"
+                        "radient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(49, 147, 250, 200), stop:1 rgba(34, 142, 255, 200));\n"
+"	border-radius: 10px;\n"
 "}\n"
 "\n"
 "\n"
@@ -158,13 +163,13 @@ class Ui_MainWin(object):
 "	border-width: 1px;\n"
 "	border-color: rgb(207,207,207);\n"
 "	border-radius: 7px;\n"
-"	min-height: 25px;\n"
+"	min-heigh"
+                        "t: 25px;\n"
 "}\n"
 "QScrollBar::handle:vertical:hover {\n"
 "	background: rgb(253,253,253);\n"
 "	border-style: solid;\n"
-"	border-w"
-                        "idth: 1px;\n"
+"	border-width: 1px;\n"
 "	border-color: rgb(147, 200, 200);\n"
 "	border-radius: 7px;\n"
 "	min-height: 25px;\n"
@@ -192,13 +197,13 @@ class Ui_MainWin(object):
 "   border-bottom-left-radius: 7px;\n"
 "   border-bottom-right-radius: 7px;\n"
 "   background: rgba(34, 142, 255, 255);\n"
-"   height: 20px;\n"
+"   height"
+                        ": 20px;\n"
 "   subcontrol-position: bottom;\n"
 "   subcontrol-origin: margin;\n"
 "}\n"
 "QScrollBar::add-line:vertical:pressed {\n"
-""
-                        "   border: 2px transparent grey;\n"
+"   border: 2px transparent grey;\n"
 "   border-bottom-left-radius: 7px;\n"
 "   border-bottom-right-radius: 7px;\n"
 "   background: rgb(181,181,181);\n"
@@ -225,12 +230,12 @@ class Ui_MainWin(object):
 "   subcontrol-origin: margin;\n"
 "}\n"
 "QScrollBar::sub-line:vertical {\n"
-"   border: 2px transparent grey;\n"
+"   border: 2px transparent gre"
+                        "y;\n"
 "   border-top-left-radius: 7px;\n"
 "   border-top-right-radius: 7px;\n"
 "   background: rgba(34, 142, 255, 255);\n"
-"   heigh"
-                        "t: 20px;\n"
+"   height: 20px;\n"
 "   subcontrol-position: top;\n"
 "   subcontrol-origin: margin;\n"
 "}\n"
@@ -261,12 +266,12 @@ class Ui_MainWin(object):
 "}\n"
 "QScrollBar::up-arrow:vertical {\n"
 "   border: 1px transparent grey;\n"
-"   border-top-left-radius: 3px;\n"
+""
+                        "   border-top-left-radius: 3px;\n"
 "   border-top-right-radius: 3px;\n"
 "   width: 6px;\n"
 "   height: 6px;\n"
-"   background: white"
-                        ";\n"
+"   background: white;\n"
 "}\n"
 "QScrollBar::down-arrow:vertical {\n"
 "   border: 1px transparent grey;\n"
@@ -387,50 +392,50 @@ class Ui_MainWin(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.search_box = QPlainTextEdit(self.central_widget)
-        self.search_box.setObjectName(u"search_box")
+        self.search_plugin = QPlainTextEdit(self.central_widget)
+        self.search_plugin.setObjectName(u"search_plugin")
         sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
-        sizePolicy4.setHorizontalStretch(2)
+        sizePolicy4.setHorizontalStretch(1)
         sizePolicy4.setVerticalStretch(1)
-        sizePolicy4.setHeightForWidth(self.search_box.sizePolicy().hasHeightForWidth())
-        self.search_box.setSizePolicy(sizePolicy4)
-        self.search_box.setMinimumSize(QSize(270, 0))
-        self.search_box.setMaximumSize(QSize(16777215, 100))
+        sizePolicy4.setHeightForWidth(self.search_plugin.sizePolicy().hasHeightForWidth())
+        self.search_plugin.setSizePolicy(sizePolicy4)
+        self.search_plugin.setMinimumSize(QSize(320, 0))
+        self.search_plugin.setMaximumSize(QSize(16777215, 100))
         font = QFont()
         font.setPointSize(12)
-        self.search_box.setFont(font)
-        self.search_box.setLayoutDirection(Qt.LeftToRight)
-        self.search_box.setStyleSheet(u"")
-        self.search_box.setFrameShape(QFrame.StyledPanel)
-        self.search_box.setLineWidth(1)
+        self.search_plugin.setFont(font)
+        self.search_plugin.setLayoutDirection(Qt.LeftToRight)
+        self.search_plugin.setStyleSheet(u"")
+        self.search_plugin.setFrameShape(QFrame.StyledPanel)
+        self.search_plugin.setLineWidth(1)
 
-        self.verticalLayout_3.addWidget(self.search_box)
+        self.verticalLayout_3.addWidget(self.search_plugin)
 
         self.verticalSpacer_3 = QSpacerItem(20, 13, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_3.addItem(self.verticalSpacer_3)
 
-        self.choices_list_box = QListWidget(self.central_widget)
-        QListWidgetItem(self.choices_list_box)
-        QListWidgetItem(self.choices_list_box)
-        QListWidgetItem(self.choices_list_box)
-        QListWidgetItem(self.choices_list_box)
-        QListWidgetItem(self.choices_list_box)
-        QListWidgetItem(self.choices_list_box)
-        QListWidgetItem(self.choices_list_box)
-        QListWidgetItem(self.choices_list_box)
-        self.choices_list_box.setObjectName(u"choices_list_box")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
-        sizePolicy5.setHorizontalStretch(2)
+        self.list_choices_plugin = QListWidget(self.central_widget)
+        QListWidgetItem(self.list_choices_plugin)
+        QListWidgetItem(self.list_choices_plugin)
+        QListWidgetItem(self.list_choices_plugin)
+        QListWidgetItem(self.list_choices_plugin)
+        QListWidgetItem(self.list_choices_plugin)
+        QListWidgetItem(self.list_choices_plugin)
+        QListWidgetItem(self.list_choices_plugin)
+        QListWidgetItem(self.list_choices_plugin)
+        self.list_choices_plugin.setObjectName(u"list_choices_plugin")
+        sizePolicy5 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        sizePolicy5.setHorizontalStretch(1)
         sizePolicy5.setVerticalStretch(7)
-        sizePolicy5.setHeightForWidth(self.choices_list_box.sizePolicy().hasHeightForWidth())
-        self.choices_list_box.setSizePolicy(sizePolicy5)
-        self.choices_list_box.setMinimumSize(QSize(270, 0))
-        self.choices_list_box.setMaximumSize(QSize(16777215, 16777215))
-        self.choices_list_box.setFont(font)
-        self.choices_list_box.setStyleSheet(u"")
+        sizePolicy5.setHeightForWidth(self.list_choices_plugin.sizePolicy().hasHeightForWidth())
+        self.list_choices_plugin.setSizePolicy(sizePolicy5)
+        self.list_choices_plugin.setMinimumSize(QSize(320, 0))
+        self.list_choices_plugin.setMaximumSize(QSize(16777215, 16777215))
+        self.list_choices_plugin.setFont(font)
+        self.list_choices_plugin.setStyleSheet(u"")
 
-        self.verticalLayout_3.addWidget(self.choices_list_box)
+        self.verticalLayout_3.addWidget(self.list_choices_plugin)
 
 
         self.horizontalLayout_2.addLayout(self.verticalLayout_3)
@@ -474,57 +479,57 @@ class Ui_MainWin(object):
 
         self.verticalLayout_2.addItem(self.verticalSpacer_8)
 
-        self.save_check = QCheckBox(self.central_widget)
-        self.save_check.setObjectName(u"save_check")
+        self.check_save = QCheckBox(self.central_widget)
+        self.check_save.setObjectName(u"check_save")
         sizePolicy7 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy7.setHorizontalStretch(3)
         sizePolicy7.setVerticalStretch(1)
-        sizePolicy7.setHeightForWidth(self.save_check.sizePolicy().hasHeightForWidth())
-        self.save_check.setSizePolicy(sizePolicy7)
-        self.save_check.setMinimumSize(QSize(0, 30))
+        sizePolicy7.setHeightForWidth(self.check_save.sizePolicy().hasHeightForWidth())
+        self.check_save.setSizePolicy(sizePolicy7)
+        self.check_save.setMinimumSize(QSize(0, 30))
         font1 = QFont()
         font1.setFamilies([u"\u66f4\u7eb1\u9ed1\u4f53 UI SC"])
         font1.setPointSize(12)
         font1.setBold(False)
-        self.save_check.setFont(font1)
-        self.save_check.setLayoutDirection(Qt.LeftToRight)
-        self.save_check.setStyleSheet(u"")
+        self.check_save.setFont(font1)
+        self.check_save.setLayoutDirection(Qt.LeftToRight)
+        self.check_save.setStyleSheet(u"")
 
-        self.verticalLayout_2.addWidget(self.save_check)
+        self.verticalLayout_2.addWidget(self.check_save)
 
         self.verticalSpacer_7 = QSpacerItem(20, 13, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
         self.verticalLayout_2.addItem(self.verticalSpacer_7)
 
-        self.output_lock_maximums_check = QCheckBox(self.central_widget)
-        self.output_lock_maximums_check.setObjectName(u"output_lock_maximums_check")
+        self.check_output_lock_maximums = QCheckBox(self.central_widget)
+        self.check_output_lock_maximums.setObjectName(u"check_output_lock_maximums")
         sizePolicy8 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy8.setHorizontalStretch(1)
         sizePolicy8.setVerticalStretch(1)
-        sizePolicy8.setHeightForWidth(self.output_lock_maximums_check.sizePolicy().hasHeightForWidth())
-        self.output_lock_maximums_check.setSizePolicy(sizePolicy8)
-        self.output_lock_maximums_check.setMinimumSize(QSize(0, 30))
+        sizePolicy8.setHeightForWidth(self.check_output_lock_maximums.sizePolicy().hasHeightForWidth())
+        self.check_output_lock_maximums.setSizePolicy(sizePolicy8)
+        self.check_output_lock_maximums.setMinimumSize(QSize(0, 30))
         font2 = QFont()
         font2.setFamilies([u"\u66f4\u7eb1\u9ed1\u4f53 UI SC"])
         font2.setPointSize(12)
-        self.output_lock_maximums_check.setFont(font2)
-        self.output_lock_maximums_check.setStyleSheet(u"")
+        self.check_output_lock_maximums.setFont(font2)
+        self.check_output_lock_maximums.setStyleSheet(u"")
 
-        self.verticalLayout_2.addWidget(self.output_lock_maximums_check)
+        self.verticalLayout_2.addWidget(self.check_output_lock_maximums)
 
         self.verticalSpacer_6 = QSpacerItem(20, 13, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
         self.verticalLayout_2.addItem(self.verticalSpacer_6)
 
-        self.output_optimization_check = QCheckBox(self.central_widget)
-        self.output_optimization_check.setObjectName(u"output_optimization_check")
-        sizePolicy8.setHeightForWidth(self.output_optimization_check.sizePolicy().hasHeightForWidth())
-        self.output_optimization_check.setSizePolicy(sizePolicy8)
-        self.output_optimization_check.setMinimumSize(QSize(0, 30))
-        self.output_optimization_check.setFont(font2)
-        self.output_optimization_check.setStyleSheet(u"")
+        self.check_output_optimization = QCheckBox(self.central_widget)
+        self.check_output_optimization.setObjectName(u"check_output_optimization")
+        sizePolicy8.setHeightForWidth(self.check_output_optimization.sizePolicy().hasHeightForWidth())
+        self.check_output_optimization.setSizePolicy(sizePolicy8)
+        self.check_output_optimization.setMinimumSize(QSize(0, 30))
+        self.check_output_optimization.setFont(font2)
+        self.check_output_optimization.setStyleSheet(u"")
 
-        self.verticalLayout_2.addWidget(self.output_optimization_check)
+        self.verticalLayout_2.addWidget(self.check_output_optimization)
 
         self.verticalSpacer_5 = QSpacerItem(13, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
@@ -536,22 +541,22 @@ class Ui_MainWin(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_3)
 
-        self.start_button = QPushButton(self.central_widget)
-        self.start_button.setObjectName(u"start_button")
+        self.button_start = QPushButton(self.central_widget)
+        self.button_start.setObjectName(u"button_start")
         sizePolicy9 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         sizePolicy9.setHorizontalStretch(3)
         sizePolicy9.setVerticalStretch(1)
-        sizePolicy9.setHeightForWidth(self.start_button.sizePolicy().hasHeightForWidth())
-        self.start_button.setSizePolicy(sizePolicy9)
-        self.start_button.setMinimumSize(QSize(100, 30))
+        sizePolicy9.setHeightForWidth(self.button_start.sizePolicy().hasHeightForWidth())
+        self.button_start.setSizePolicy(sizePolicy9)
+        self.button_start.setMinimumSize(QSize(100, 30))
         font3 = QFont()
         font3.setFamilies([u"\u66f4\u7eb1\u9ed1\u4f53 SC Light"])
         font3.setPointSize(18)
         font3.setBold(False)
-        self.start_button.setFont(font3)
-        self.start_button.setStyleSheet(u"")
+        self.button_start.setFont(font3)
+        self.button_start.setStyleSheet(u"")
 
-        self.verticalLayout.addWidget(self.start_button)
+        self.verticalLayout.addWidget(self.button_start)
 
         self.verticalSpacer_2 = QSpacerItem(20, 13, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
@@ -578,12 +583,12 @@ class Ui_MainWin(object):
         MainWin.setCentralWidget(self.central_widget)
 
         self.retranslateUi(MainWin)
-        self.start_button.clicked.connect(MainWin.startEvent)
-        self.save_check.clicked.connect(MainWin.saveCheckEvent)
-        self.output_optimization_check.clicked.connect(MainWin.outputOptimizationCheckEvent)
-        self.output_lock_maximums_check.clicked.connect(MainWin.outputLockMaximumsCheckEvent)
-        self.search_box.textChanged.connect(MainWin.searchText)
-        self.choices_list_box.itemClicked.connect(MainWin.chooseOptionEvent)
+        self.button_start.clicked.connect(MainWin.startEvent)
+        self.check_save.clicked.connect(MainWin.saveCheckEvent)
+        self.check_output_optimization.clicked.connect(MainWin.outputOptimizationCheckEvent)
+        self.check_output_lock_maximums.clicked.connect(MainWin.outputLockMaximumsCheckEvent)
+        self.search_plugin.textChanged.connect(MainWin.searchText)
+        self.list_choices_plugin.itemClicked.connect(MainWin.chooseOptionEvent)
         self.button_setting.clicked.connect(MainWin.openSettingWin)
         self.button_close.clicked.connect(MainWin.quitEvent)
         self.button_about.clicked.connect(MainWin.openAboutWin)
@@ -599,33 +604,33 @@ class Ui_MainWin(object):
         self.button_minimize.setText("")
         self.button_maximum.setText("")
         self.button_close.setText("")
-        self.search_box.setPlainText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None))
+        self.search_plugin.setPlainText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None))
 
-        __sortingEnabled = self.choices_list_box.isSortingEnabled()
-        self.choices_list_box.setSortingEnabled(False)
-        ___qlistwidgetitem = self.choices_list_box.item(0)
+        __sortingEnabled = self.list_choices_plugin.isSortingEnabled()
+        self.list_choices_plugin.setSortingEnabled(False)
+        ___qlistwidgetitem = self.list_choices_plugin.item(0)
         ___qlistwidgetitem.setText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
-        ___qlistwidgetitem1 = self.choices_list_box.item(1)
+        ___qlistwidgetitem1 = self.list_choices_plugin.item(1)
         ___qlistwidgetitem1.setText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
-        ___qlistwidgetitem2 = self.choices_list_box.item(2)
+        ___qlistwidgetitem2 = self.list_choices_plugin.item(2)
         ___qlistwidgetitem2.setText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
-        ___qlistwidgetitem3 = self.choices_list_box.item(3)
+        ___qlistwidgetitem3 = self.list_choices_plugin.item(3)
         ___qlistwidgetitem3.setText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
-        ___qlistwidgetitem4 = self.choices_list_box.item(4)
+        ___qlistwidgetitem4 = self.list_choices_plugin.item(4)
         ___qlistwidgetitem4.setText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
-        ___qlistwidgetitem5 = self.choices_list_box.item(5)
+        ___qlistwidgetitem5 = self.list_choices_plugin.item(5)
         ___qlistwidgetitem5.setText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
-        ___qlistwidgetitem6 = self.choices_list_box.item(6)
+        ___qlistwidgetitem6 = self.list_choices_plugin.item(6)
         ___qlistwidgetitem6.setText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
-        ___qlistwidgetitem7 = self.choices_list_box.item(7)
+        ___qlistwidgetitem7 = self.list_choices_plugin.item(7)
         ___qlistwidgetitem7.setText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u9879\u76ee", None));
-        self.choices_list_box.setSortingEnabled(__sortingEnabled)
+        self.list_choices_plugin.setSortingEnabled(__sortingEnabled)
 
         self.input_box.setPlainText("")
-        self.save_check.setText(QCoreApplication.translate("MainWin", u"\u4fdd\u5b58\u8f93\u51fa\u5230\u6587\u4ef6", None))
-        self.output_lock_maximums_check.setText(QCoreApplication.translate("MainWin", u"\u5185\u6846\u8f93\u51fa\u4e0a\u9650", None))
-        self.output_optimization_check.setText(QCoreApplication.translate("MainWin", u"\u5185\u6846\u8f93\u51fa\u6027\u80fd\u4f18\u5316", None))
-        self.start_button.setText(QCoreApplication.translate("MainWin", u"\u5f00\u59cb\u8ba1\u7b97", None))
+        self.check_save.setText(QCoreApplication.translate("MainWin", u"\u4fdd\u5b58\u8f93\u51fa\u5230\u6587\u4ef6", None))
+        self.check_output_lock_maximums.setText(QCoreApplication.translate("MainWin", u"\u5185\u6846\u8f93\u51fa\u4e0a\u9650", None))
+        self.check_output_optimization.setText(QCoreApplication.translate("MainWin", u"\u5185\u6846\u8f93\u51fa\u6027\u80fd\u4f18\u5316", None))
+        self.button_start.setText(QCoreApplication.translate("MainWin", u"\u5f00\u59cb\u8ba1\u7b97", None))
         self.output_box.setPlainText(QCoreApplication.translate("MainWin", u"\u8fd9\u662f\u4e00\u6bb5\u6d4b\u8bd5\u6587\u5b57\n"
 "	\u6d4b\u8bd5\n"
 "Abo\n"

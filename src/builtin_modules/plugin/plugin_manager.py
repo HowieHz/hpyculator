@@ -22,7 +22,7 @@ class PluginManager:
         self.plugin_files_name_folder: List[str] = []  # Plugin目录下读取到的有__init__.py的文件夹
         # self.can_choose_number: List[str] = []  # 选择列表，储存着所有的选项名 #plugin_option_id_dict的键
         self.plugin_files_name_py: list[str] = []  # 储存着Plugin目录下的文件名
-        self.plugin_option_id_dict: Dict[str, str] = {}  # 选项名和实际文件名的映射表
+        self.plugin_option_id_dict: Dict[str, str] = {}  # 选项名和实际文件名(ID)的映射表
         self.loaded_plugin: Dict[str] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
 
     def __init_plugin_singer_file(self, plugin_files_name_py):
@@ -128,11 +128,11 @@ class PluginManager:
         # plugin_option_id_dict: Optional[Dict[str, str]] = None  # 选项名和实际文件名的映射表
         # selection_list: Optional[list[str]] = None  # 存放选项名列表
         # self.loaded_plugin
-        return self.plugin_option_id_dict
+        return None
 
     def getPluginAttribute(self, user_selection_id):
         """
-        读取插件属性
+        读取指定id的插件属性
 
         :param user_selection_id:
         :return: [list]attributes of plugin
@@ -175,9 +175,17 @@ class PluginManager:
 
     def getPluginInstance(self, user_selection_id):
         """
-        获取插件对象
+        获取指定id的插件对象
 
         :param user_selection_id:
         :return: A instance of plugin
         """
         return self.loaded_plugin[user_selection_id]
+
+    def getOptionIdDict(self):
+        """
+        获取插件选项名和id的映射表
+
+        :return: A Dict [Option to Id]
+        """
+        return self.plugin_option_id_dict

@@ -7,6 +7,7 @@ from PySide6.QtWidgets import QMessageBox, QDialog
 from ..ui import Ui_SettingWin  # 从init导
 from ..document import VERSION  # 版本号导入
 
+
 class SettingWinApp(QDialog):
     def __init__(self):
         """设置窗口，是主窗口的子窗口"""
@@ -23,17 +24,17 @@ class SettingWinApp(QDialog):
         )
 
         with shelve.open(
-            self.SETTING_FILE_PATH, writeback=True
+                self.SETTING_FILE_PATH, writeback=True
         ) as setting_file:  # 读取设置文件
             # 读取目录设置
             self.OUTPUT_DIR_PATH = setting_file["save_location"]
             self.ui.output_save_location.setPlainText(self.OUTPUT_DIR_PATH)
 
             # 读取保存选项状态设置
-            self.ui.save_setting_check.setChecked(setting_file["is_save_settings"])
+            self.ui.check_is_save_check_box.setChecked(setting_file["is_save_settings"])
 
             # 读取保存日志文件设置
-            self.ui.save_log_check.setChecked(setting_file["save_log"])
+            self.ui.check_is_save_log.setChecked(setting_file["save_log"])
 
     def saveSetting(self):
         """
@@ -42,12 +43,12 @@ class SettingWinApp(QDialog):
         :return:
         """
         with shelve.open(
-            self.SETTING_FILE_PATH, writeback=True
+                self.SETTING_FILE_PATH, writeback=True
         ) as setting_file:  # 读取设置文件
             # 读取目录设置
             setting_file["save_location"] = self.ui.output_save_location.toPlainText()
-            setting_file["is_save_settings"] = self.ui.save_setting_check.isChecked()
-            setting_file["save_log"] = self.ui.save_log_check.isChecked()
+            setting_file["is_save_settings"] = self.ui.check_is_save_check_box.isChecked()
+            setting_file["save_log"] = self.ui.check_is_save_log.isChecked()
 
         QMessageBox.information(self, "保存完成", "保存完成\n部分设置将在重新启动后生效", QMessageBox.Ok)
         self.close()

@@ -6,7 +6,7 @@ import hpyculator as hpyc
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
     "id": "A_Plus_B_import_Java",  # ID,插件标识符,需要和文件名一致（必须）
-    "option_name": "A+B_Problem_with_Java V1.0.1 by shacha086,HowieHz",  # 选项名-在选择算法列表中（必须）
+    "option_name": "高精度浮点数加法_with_Java V1.0.1 by shacha086,HowieHz",  # 选项名-在选择算法列表中（必须）
     "version": "V1.0.1",  # 版本号（必须）
     "save_name": "",  # 文件保存项目名-在输出（必须）
     "quantifier": "的答案",  # 文件保存量词-在输入后面(可选)
@@ -15,9 +15,11 @@ PLUGIN_METADATA = {
     "author": "shacha086,HowieHz",  # 作者(可选)
     "help": """
 输入格式
-    整数A,整数B
+    A,B
 
-    例：1,2
+    例1：1,2
+    例2：-1,2.2
+    例3：12345678,-2.123123
 
 输出格式
     N

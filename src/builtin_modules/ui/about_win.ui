@@ -29,7 +29,7 @@
    <item row="4" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QComboBox" name="choices_doc">
+      <widget class="QComboBox" name="combo_doc">
        <property name="font">
         <font>
          <pointsize>14</pointsize>
@@ -67,7 +67,7 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="button_check_update">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -119,7 +119,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>choices_doc</sender>
+   <sender>combo_doc</sender>
    <signal>currentTextChanged(QString)</signal>
    <receiver>AboutWin</receiver>
    <slot>chooseShow(QString)</slot>
@@ -135,7 +135,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
+   <sender>button_check_update</sender>
    <signal>clicked()</signal>
    <receiver>AboutWin</receiver>
    <slot>checkUpdate()</slot>

@@ -12,7 +12,7 @@ from typing import Any
 
 from typing import Iterator
 
-from ..plugin_manager import instance_plugin_manager
+from ..plugin import instance_plugin_manager
 
 
 # TODO 用了多进程之后main_win_signal的实例化效果消失

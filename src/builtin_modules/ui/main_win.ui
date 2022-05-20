@@ -464,7 +464,7 @@ background:red;
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QPlainTextEdit" name="search_box">
+         <widget class="QPlainTextEdit" name="search_plugin">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
             <horstretch>1</horstretch>
@@ -519,7 +519,7 @@ background:red;
          </spacer>
         </item>
         <item>
-         <widget class="QListWidget" name="choices_list_box">
+         <widget class="QListWidget" name="list_choices_plugin">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>1</horstretch>
@@ -683,7 +683,7 @@ background:red;
              </spacer>
             </item>
             <item>
-             <widget class="QCheckBox" name="save_check">
+             <widget class="QCheckBox" name="check_save">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>3</horstretch>
@@ -731,7 +731,7 @@ background:red;
              </spacer>
             </item>
             <item>
-             <widget class="QCheckBox" name="output_lock_maximums_check">
+             <widget class="QCheckBox" name="check_output_lock_maximums">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>1</horstretch>
@@ -775,7 +775,7 @@ background:red;
              </spacer>
             </item>
             <item>
-             <widget class="QCheckBox" name="output_optimization_check">
+             <widget class="QCheckBox" name="check_output_optimization">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>1</horstretch>
@@ -823,7 +823,7 @@ background:red;
          </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="start_button">
+         <widget class="QPushButton" name="button_start">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>3</horstretch>
@@ -929,14 +929,14 @@ Abo
   </widget>
  </widget>
  <tabstops>
-  <tabstop>search_box</tabstop>
+  <tabstop>search_plugin</tabstop>
  </tabstops>
  <resources>
   <include location="main_window_resource.qrc"/>
  </resources>
  <connections>
   <connection>
-   <sender>start_button</sender>
+   <sender>button_start</sender>
    <signal>clicked()</signal>
    <receiver>MainWin</receiver>
    <slot>startEvent()</slot>
@@ -952,7 +952,7 @@ Abo
    </hints>
   </connection>
   <connection>
-   <sender>save_check</sender>
+   <sender>check_save</sender>
    <signal>clicked()</signal>
    <receiver>MainWin</receiver>
    <slot>saveCheckEvent()</slot>
@@ -968,7 +968,7 @@ Abo
    </hints>
   </connection>
   <connection>
-   <sender>output_optimization_check</sender>
+   <sender>check_output_optimization</sender>
    <signal>clicked()</signal>
    <receiver>MainWin</receiver>
    <slot>outputOptimizationCheckEvent()</slot>
@@ -984,7 +984,7 @@ Abo
    </hints>
   </connection>
   <connection>
-   <sender>output_lock_maximums_check</sender>
+   <sender>check_output_lock_maximums</sender>
    <signal>clicked()</signal>
    <receiver>MainWin</receiver>
    <slot>outputLockMaximumsCheckEvent()</slot>
@@ -1000,7 +1000,7 @@ Abo
    </hints>
   </connection>
   <connection>
-   <sender>search_box</sender>
+   <sender>search_plugin</sender>
    <signal>textChanged()</signal>
    <receiver>MainWin</receiver>
    <slot>searchText()</slot>
@@ -1016,7 +1016,7 @@ Abo
    </hints>
   </connection>
   <connection>
-   <sender>choices_list_box</sender>
+   <sender>list_choices_plugin</sender>
    <signal>itemClicked(QListWidgetItem*)</signal>
    <receiver>MainWin</receiver>
    <slot>chooseOptionEvent(QListWidgetItem*)</slot>
