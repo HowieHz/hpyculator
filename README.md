@@ -55,16 +55,14 @@ hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法�
 
 想要知道有关hpyculator的更多信息？ 去看[文档](https://hpyculator.readthedocs.io/)吧
 
-## 联系方式和声明
-
-此为HowieHz创建的项目
-
 文档中文版由HowieHz编写
 
-本人为学生党，是用空余时间维护项目的，对于不能及时回复表示抱歉
+## 联系方式
 
-[个人b站页面](https://space.bilibili.com/176670190)
+[可通过b站私信联系](https://space.bilibili.com/176670190)
 
-## 特别鸣谢（排名不分先后）
+欢迎提issue和pr
 
-[JetBrains for Open Source licence](https://www.jetbrains.com/zh-cn/community/opensource/#support)
+## 鸣谢
+
+特别感谢 [JetBrains](https://www.jetbrains.com/?from=hpyculator) 为开源项目提供免费的 [IntelliJ PyCharm](https://www.jetbrains.com/pycharm/?from=hpyculator) 等 IDE 的授权 
