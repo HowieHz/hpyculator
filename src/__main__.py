@@ -1,4 +1,5 @@
 from builtin_modules import CreateApp
+
 #  from builtin_modules.ui_manager.test_window_effect import testWinApp
 
 # pyside6导入
