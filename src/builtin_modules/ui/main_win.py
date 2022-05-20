@@ -15,8 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QHBoxLayout,
-    QLabel, QListWidget, QListWidgetItem, QMainWindow,
+from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QGridLayout,
+    QHBoxLayout, QLabel, QListWidget, QListWidgetItem,
     QPlainTextEdit, QPushButton, QSizePolicy, QSpacerItem,
     QVBoxLayout, QWidget)
 from . import main_window_resource_rc
@@ -25,27 +25,21 @@ class Ui_MainWin(object):
     def setupUi(self, MainWin):
         if not MainWin.objectName():
             MainWin.setObjectName(u"MainWin")
-        MainWin.resize(1392, 994)
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(1)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(MainWin.sizePolicy().hasHeightForWidth())
-        MainWin.setSizePolicy(sizePolicy)
-        icon = QIcon()
-        icon.addFile(u":/ico/icons/ico.ico", QSize(), QIcon.Normal, QIcon.Off)
-        MainWin.setWindowIcon(icon)
-        MainWin.setAutoFillBackground(False)
+        MainWin.resize(1145, 893)
         MainWin.setStyleSheet(u"/*QMainWindow{\n"
 "background-image: url(:/background/images/background3.png);\n"
 "border-radius: 20px;\n"
 "}*/\n"
 "\n"
 "#central_widget{\n"
-"background-image: url(:/background/images/background3.png);\n"
-"/*background-image: url(:/background/images/background1_gaussian_blur.png);*/\n"
+"margin-top: 0px;\n"
+"margin-right: 0px;\n"
+"margin-bottom: 0px;\n"
+"margin-left: 0px;\n"
+"/*background-image: url(:/background/images/background3.png);\n"
 "background-size: cover;\n"
 "background-repeat: no-repeat;\n"
-"border-radius: 10px;\n"
+"border-radius: 10px;*/\n"
 "}\n"
 "\n"
 "QTextEdit{\n"
@@ -77,10 +71,10 @@ class Ui_MainWin(object):
 "}\n"
 "QPushButton:hover{\n"
 "	background-color: rgba(190, 190, 190, 130);\n"
-"}\n"
-"\n"
 ""
-                        "\n"
+                        "}\n"
+"\n"
+"\n"
 "QCheckBox {\n"
 "	background-color: rgba(229, 229, 229, 150);\n"
 "	border-radius: 6px;\n"
@@ -125,8 +119,8 @@ class Ui_MainWin(object):
 "	background-color:rgb(207,207,207);\n"
 "}\n"
 "QProgressBar::chunk {\n"
-"	background-color: qlinearg"
-                        "radient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(49, 147, 250, 200), stop:1 rgba(34, 142, 255, 200));\n"
+"	background-colo"
+                        "r: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(49, 147, 250, 200), stop:1 rgba(34, 142, 255, 200));\n"
 "	border-radius: 10px;\n"
 "}\n"
 "\n"
@@ -163,8 +157,8 @@ class Ui_MainWin(object):
 "	border-width: 1px;\n"
 "	border-color: rgb(207,207,207);\n"
 "	border-radius: 7px;\n"
-"	min-heigh"
-                        "t: 25px;\n"
+""
+                        "	min-height: 25px;\n"
 "}\n"
 "QScrollBar::handle:vertical:hover {\n"
 "	background: rgb(253,253,253);\n"
@@ -197,8 +191,8 @@ class Ui_MainWin(object):
 "   border-bottom-left-radius: 7px;\n"
 "   border-bottom-right-radius: 7px;\n"
 "   background: rgba(34, 142, 255, 255);\n"
-"   height"
-                        ": 20px;\n"
+""
+                        "   height: 20px;\n"
 "   subcontrol-position: bottom;\n"
 "   subcontrol-origin: margin;\n"
 "}\n"
@@ -230,8 +224,8 @@ class Ui_MainWin(object):
 "   subcontrol-origin: margin;\n"
 "}\n"
 "QScrollBar::sub-line:vertical {\n"
-"   border: 2px transparent gre"
-                        "y;\n"
+"   border: 2px transp"
+                        "arent grey;\n"
 "   border-top-left-radius: 7px;\n"
 "   border-top-right-radius: 7px;\n"
 "   background: rgba(34, 142, 255, 255);\n"
@@ -265,9 +259,9 @@ class Ui_MainWin(object):
 "   background: white;\n"
 "}\n"
 "QScrollBar::up-arrow:vertical {\n"
-"   border: 1px transparent grey;\n"
-""
-                        "   border-top-left-radius: 3px;\n"
+"   border: 1px transparent g"
+                        "rey;\n"
+"   border-top-left-radius: 3px;\n"
 "   border-top-right-radius: 3px;\n"
 "   width: 6px;\n"
 "   height: 6px;\n"
@@ -287,31 +281,33 @@ class Ui_MainWin(object):
 "QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\n"
 "   background: none;\n"
 "}")
-        MainWin.setUnifiedTitleAndToolBarOnMac(False)
+        self.gridLayout = QGridLayout(MainWin)
+        self.gridLayout.setObjectName(u"gridLayout")
         self.central_widget = QWidget(MainWin)
         self.central_widget.setObjectName(u"central_widget")
-        self.central_widget.setStyleSheet(u"")
+        self.central_widget.setMinimumSize(QSize(800, 600))
         self.verticalLayout_4 = QVBoxLayout(self.central_widget)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.label_3 = QLabel(self.central_widget)
         self.label_3.setObjectName(u"label_3")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(1)
-        sizePolicy1.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy1)
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(1)
+        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+        self.label_3.setSizePolicy(sizePolicy)
 
         self.horizontalLayout.addWidget(self.label_3)
 
         self.button_about = QPushButton(self.central_widget)
         self.button_about.setObjectName(u"button_about")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(1)
-        sizePolicy2.setHeightForWidth(self.button_about.sizePolicy().hasHeightForWidth())
-        self.button_about.setSizePolicy(sizePolicy2)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(1)
+        sizePolicy1.setHeightForWidth(self.button_about.sizePolicy().hasHeightForWidth())
+        self.button_about.setSizePolicy(sizePolicy1)
         self.button_about.setMinimumSize(QSize(35, 25))
         self.button_about.setMaximumSize(QSize(25, 35))
         self.button_about.setStyleSheet(u"QPushButton{\n"
@@ -321,19 +317,19 @@ class Ui_MainWin(object):
 "QPushButton:hover{\n"
 "background-color: rgb(170, 255, 255);\n"
 "}")
-        icon1 = QIcon()
-        icon1.addFile(u":/ico/icons/ico.ico", QSize(), QIcon.Normal, QIcon.On)
-        self.button_about.setIcon(icon1)
+        icon = QIcon()
+        icon.addFile(u":/ico/icons/ico.ico", QSize(), QIcon.Normal, QIcon.On)
+        self.button_about.setIcon(icon)
 
         self.horizontalLayout.addWidget(self.button_about)
 
         self.button_setting = QPushButton(self.central_widget)
         self.button_setting.setObjectName(u"button_setting")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(1)
-        sizePolicy3.setHeightForWidth(self.button_setting.sizePolicy().hasHeightForWidth())
-        self.button_setting.setSizePolicy(sizePolicy3)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(1)
+        sizePolicy2.setHeightForWidth(self.button_setting.sizePolicy().hasHeightForWidth())
+        self.button_setting.setSizePolicy(sizePolicy2)
         self.button_setting.setMaximumSize(QSize(35, 35))
         self.button_setting.setStyleSheet(u"QPushButton{\n"
 "background:rgb(213, 213, 213);\n"
@@ -342,16 +338,16 @@ class Ui_MainWin(object):
 "QPushButton:hover{\n"
 "background-color: rgb(170, 255, 255);\n"
 "}")
-        icon2 = QIcon()
-        icon2.addFile(u":/ico/icons/setting_icon.png", QSize(), QIcon.Normal, QIcon.On)
-        self.button_setting.setIcon(icon2)
+        icon1 = QIcon()
+        icon1.addFile(u":/ico/icons/setting_icon.png", QSize(), QIcon.Normal, QIcon.On)
+        self.button_setting.setIcon(icon1)
 
         self.horizontalLayout.addWidget(self.button_setting)
 
         self.button_minimize = QPushButton(self.central_widget)
         self.button_minimize.setObjectName(u"button_minimize")
-        sizePolicy3.setHeightForWidth(self.button_minimize.sizePolicy().hasHeightForWidth())
-        self.button_minimize.setSizePolicy(sizePolicy3)
+        sizePolicy2.setHeightForWidth(self.button_minimize.sizePolicy().hasHeightForWidth())
+        self.button_minimize.setSizePolicy(sizePolicy2)
         self.button_minimize.setMaximumSize(QSize(35, 35))
         self.button_minimize.setStyleSheet(u"QPushButton{background:#F7D674;border-radius:5px;}QPushButton:hover{background:yellow;}")
 
@@ -359,8 +355,8 @@ class Ui_MainWin(object):
 
         self.button_maximum = QPushButton(self.central_widget)
         self.button_maximum.setObjectName(u"button_maximum")
-        sizePolicy3.setHeightForWidth(self.button_maximum.sizePolicy().hasHeightForWidth())
-        self.button_maximum.setSizePolicy(sizePolicy3)
+        sizePolicy2.setHeightForWidth(self.button_maximum.sizePolicy().hasHeightForWidth())
+        self.button_maximum.setSizePolicy(sizePolicy2)
         self.button_maximum.setMaximumSize(QSize(35, 35))
         self.button_maximum.setStyleSheet(u"QPushButton{background:#6DDF6D;border-radius:5px;}QPushButton:hover{background:green;}")
 
@@ -368,8 +364,8 @@ class Ui_MainWin(object):
 
         self.button_close = QPushButton(self.central_widget)
         self.button_close.setObjectName(u"button_close")
-        sizePolicy3.setHeightForWidth(self.button_close.sizePolicy().hasHeightForWidth())
-        self.button_close.setSizePolicy(sizePolicy3)
+        sizePolicy2.setHeightForWidth(self.button_close.sizePolicy().hasHeightForWidth())
+        self.button_close.setSizePolicy(sizePolicy2)
         self.button_close.setMaximumSize(QSize(35, 35))
         self.button_close.setStyleSheet(u"QPushButton{\n"
 "background:#F76677;\n"
@@ -394,11 +390,11 @@ class Ui_MainWin(object):
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.search_plugin = QPlainTextEdit(self.central_widget)
         self.search_plugin.setObjectName(u"search_plugin")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
-        sizePolicy4.setHorizontalStretch(1)
-        sizePolicy4.setVerticalStretch(1)
-        sizePolicy4.setHeightForWidth(self.search_plugin.sizePolicy().hasHeightForWidth())
-        self.search_plugin.setSizePolicy(sizePolicy4)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+        sizePolicy3.setHorizontalStretch(1)
+        sizePolicy3.setVerticalStretch(1)
+        sizePolicy3.setHeightForWidth(self.search_plugin.sizePolicy().hasHeightForWidth())
+        self.search_plugin.setSizePolicy(sizePolicy3)
         self.search_plugin.setMinimumSize(QSize(320, 0))
         self.search_plugin.setMaximumSize(QSize(16777215, 100))
         font = QFont()
@@ -425,11 +421,11 @@ class Ui_MainWin(object):
         QListWidgetItem(self.list_choices_plugin)
         QListWidgetItem(self.list_choices_plugin)
         self.list_choices_plugin.setObjectName(u"list_choices_plugin")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
-        sizePolicy5.setHorizontalStretch(1)
-        sizePolicy5.setVerticalStretch(7)
-        sizePolicy5.setHeightForWidth(self.list_choices_plugin.sizePolicy().hasHeightForWidth())
-        self.list_choices_plugin.setSizePolicy(sizePolicy5)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        sizePolicy4.setHorizontalStretch(1)
+        sizePolicy4.setVerticalStretch(7)
+        sizePolicy4.setHeightForWidth(self.list_choices_plugin.sizePolicy().hasHeightForWidth())
+        self.list_choices_plugin.setSizePolicy(sizePolicy4)
         self.list_choices_plugin.setMinimumSize(QSize(320, 0))
         self.list_choices_plugin.setMaximumSize(QSize(16777215, 16777215))
         self.list_choices_plugin.setFont(font)
@@ -452,11 +448,11 @@ class Ui_MainWin(object):
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.input_box = QPlainTextEdit(self.central_widget)
         self.input_box.setObjectName(u"input_box")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy6.setHorizontalStretch(3)
-        sizePolicy6.setVerticalStretch(2)
-        sizePolicy6.setHeightForWidth(self.input_box.sizePolicy().hasHeightForWidth())
-        self.input_box.setSizePolicy(sizePolicy6)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy5.setHorizontalStretch(3)
+        sizePolicy5.setVerticalStretch(2)
+        sizePolicy5.setHeightForWidth(self.input_box.sizePolicy().hasHeightForWidth())
+        self.input_box.setSizePolicy(sizePolicy5)
         self.input_box.setFont(font)
         self.input_box.setStyleSheet(u"")
 
@@ -481,11 +477,11 @@ class Ui_MainWin(object):
 
         self.check_save = QCheckBox(self.central_widget)
         self.check_save.setObjectName(u"check_save")
-        sizePolicy7 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy7.setHorizontalStretch(3)
-        sizePolicy7.setVerticalStretch(1)
-        sizePolicy7.setHeightForWidth(self.check_save.sizePolicy().hasHeightForWidth())
-        self.check_save.setSizePolicy(sizePolicy7)
+        sizePolicy6 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy6.setHorizontalStretch(3)
+        sizePolicy6.setVerticalStretch(1)
+        sizePolicy6.setHeightForWidth(self.check_save.sizePolicy().hasHeightForWidth())
+        self.check_save.setSizePolicy(sizePolicy6)
         self.check_save.setMinimumSize(QSize(0, 30))
         font1 = QFont()
         font1.setFamilies([u"\u66f4\u7eb1\u9ed1\u4f53 UI SC"])
@@ -503,11 +499,11 @@ class Ui_MainWin(object):
 
         self.check_output_lock_maximums = QCheckBox(self.central_widget)
         self.check_output_lock_maximums.setObjectName(u"check_output_lock_maximums")
-        sizePolicy8 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy8.setHorizontalStretch(1)
-        sizePolicy8.setVerticalStretch(1)
-        sizePolicy8.setHeightForWidth(self.check_output_lock_maximums.sizePolicy().hasHeightForWidth())
-        self.check_output_lock_maximums.setSizePolicy(sizePolicy8)
+        sizePolicy7 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy7.setHorizontalStretch(1)
+        sizePolicy7.setVerticalStretch(1)
+        sizePolicy7.setHeightForWidth(self.check_output_lock_maximums.sizePolicy().hasHeightForWidth())
+        self.check_output_lock_maximums.setSizePolicy(sizePolicy7)
         self.check_output_lock_maximums.setMinimumSize(QSize(0, 30))
         font2 = QFont()
         font2.setFamilies([u"\u66f4\u7eb1\u9ed1\u4f53 UI SC"])
@@ -523,8 +519,8 @@ class Ui_MainWin(object):
 
         self.check_output_optimization = QCheckBox(self.central_widget)
         self.check_output_optimization.setObjectName(u"check_output_optimization")
-        sizePolicy8.setHeightForWidth(self.check_output_optimization.sizePolicy().hasHeightForWidth())
-        self.check_output_optimization.setSizePolicy(sizePolicy8)
+        sizePolicy7.setHeightForWidth(self.check_output_optimization.sizePolicy().hasHeightForWidth())
+        self.check_output_optimization.setSizePolicy(sizePolicy7)
         self.check_output_optimization.setMinimumSize(QSize(0, 30))
         self.check_output_optimization.setFont(font2)
         self.check_output_optimization.setStyleSheet(u"")
@@ -543,11 +539,11 @@ class Ui_MainWin(object):
 
         self.button_start = QPushButton(self.central_widget)
         self.button_start.setObjectName(u"button_start")
-        sizePolicy9 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        sizePolicy9.setHorizontalStretch(3)
-        sizePolicy9.setVerticalStretch(1)
-        sizePolicy9.setHeightForWidth(self.button_start.sizePolicy().hasHeightForWidth())
-        self.button_start.setSizePolicy(sizePolicy9)
+        sizePolicy8 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy8.setHorizontalStretch(3)
+        sizePolicy8.setVerticalStretch(1)
+        sizePolicy8.setHeightForWidth(self.button_start.sizePolicy().hasHeightForWidth())
+        self.button_start.setSizePolicy(sizePolicy8)
         self.button_start.setMinimumSize(QSize(100, 30))
         font3 = QFont()
         font3.setFamilies([u"\u66f4\u7eb1\u9ed1\u4f53 SC Light"])
@@ -564,11 +560,11 @@ class Ui_MainWin(object):
 
         self.output_box = QPlainTextEdit(self.central_widget)
         self.output_box.setObjectName(u"output_box")
-        sizePolicy10 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy10.setHorizontalStretch(3)
-        sizePolicy10.setVerticalStretch(5)
-        sizePolicy10.setHeightForWidth(self.output_box.sizePolicy().hasHeightForWidth())
-        self.output_box.setSizePolicy(sizePolicy10)
+        sizePolicy9 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy9.setHorizontalStretch(3)
+        sizePolicy9.setVerticalStretch(5)
+        sizePolicy9.setHeightForWidth(self.output_box.sizePolicy().hasHeightForWidth())
+        self.output_box.setSizePolicy(sizePolicy9)
         self.output_box.setFont(font)
         self.output_box.setStyleSheet(u"")
 
@@ -580,24 +576,32 @@ class Ui_MainWin(object):
 
         self.verticalLayout_4.addLayout(self.horizontalLayout_2)
 
-        MainWin.setCentralWidget(self.central_widget)
+        self.verticalSpacer_4 = QSpacerItem(20, 13, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.verticalLayout_4.addItem(self.verticalSpacer_4)
+
+
+        self.gridLayout.addWidget(self.central_widget, 0, 0, 1, 1)
+
 
         self.retranslateUi(MainWin)
-        self.button_start.clicked.connect(MainWin.startEvent)
-        self.check_save.clicked.connect(MainWin.saveCheckEvent)
-        self.check_output_optimization.clicked.connect(MainWin.outputOptimizationCheckEvent)
-        self.check_output_lock_maximums.clicked.connect(MainWin.outputLockMaximumsCheckEvent)
+        self.button_close.clicked.connect(MainWin.quitEvent)
+        self.button_minimize.clicked.connect(MainWin.minimizeEvent)
+        self.button_maximum.clicked.connect(MainWin.maximizeEvent)
+        self.button_about.clicked.connect(MainWin.openAboutWin)
+        self.button_setting.clicked.connect(MainWin.openSettingWin)
         self.search_plugin.textChanged.connect(MainWin.searchText)
         self.list_choices_plugin.itemClicked.connect(MainWin.chooseOptionEvent)
-        self.button_setting.clicked.connect(MainWin.openSettingWin)
-        self.button_close.clicked.connect(MainWin.quitEvent)
-        self.button_about.clicked.connect(MainWin.openAboutWin)
+        self.button_start.clicked.connect(MainWin.startEvent)
+        self.check_output_optimization.clicked.connect(MainWin.outputOptimizationCheckEvent)
+        self.check_output_lock_maximums.clicked.connect(MainWin.outputLockMaximumsCheckEvent)
+        self.check_save.clicked.connect(MainWin.saveCheckEvent)
 
         QMetaObject.connectSlotsByName(MainWin)
     # setupUi
 
     def retranslateUi(self, MainWin):
-        MainWin.setWindowTitle(QCoreApplication.translate("MainWin", u"hpycacular", None))
+        MainWin.setWindowTitle(QCoreApplication.translate("MainWin", u"Form", None))
         self.label_3.setText("")
         self.button_about.setText("")
         self.button_setting.setText("")

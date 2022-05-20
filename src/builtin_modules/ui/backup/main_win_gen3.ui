@@ -1,0 +1,1144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWin</class>
+ <widget class="QMainWindow" name="MainWin">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1395</width>
+    <height>984</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>1</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>hpycacular</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="main_window_resource.qrc">
+    <normaloff>:/ico/icons/ico.ico</normaloff>:/ico/icons/ico.ico</iconset>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/*QMainWindow{
+background-image: url(:/background/images/background3.png);
+border-radius: 20px;
+}*/
+
+#central_widget{
+background-image: url(:/background/images/background3.png);
+background-size: cover;
+background-repeat: no-repeat;
+border-radius: 10px;
+}
+
+QTextEdit{
+padding-top: 5px;
+padding-left: 2px;
+background-color: rgba(229, 229, 229, 170);
+border-radius: 10px;
+}
+QPlainTextEdit{
+padding-top: 5px;
+padding-left: 2px;
+background-color: rgba(229, 229, 229, 170);
+border-radius: 10px;
+}
+
+
+QListWidget{
+padding-top: 5px;
+padding-left: 2px;
+background-color: rgba(229, 229, 229, 150);
+border-radius: 10px;
+}
+
+
+QPushButton{
+background-color: rgba(229, 229, 229, 120);
+border-radius: 10px;
+padding: 7px;
+}
+QPushButton:hover{
+	background-color: rgba(190, 190, 190, 130);
+}
+
+
+QCheckBox {
+	background-color: rgba(229, 229, 229, 150);
+	border-radius: 6px;
+	height: 5px;
+	border-style:solid;
+	border-width: 1px;
+	border-color: transparent;
+
+	color: #000000;
+	padding: 10px;
+}
+QCheckBox:disabled {
+	color: #808086;
+	padding: 2px;
+}
+QCheckBox:hover {
+	/*padding-left: 1px;
+	padding-right: 1px;
+	padding-bottom: 1px;
+	padding-top: 1px;
+	border-width:1px;*/
+}
+QCheckBox::indicator:checked {
+	image: url(:/checked/images/checked.png);
+	height: 20px;
+	width: 20px;
+}
+QCheckBox::indicator:unchecked {
+	image: url(:/checked/images/unchecked.png);
+	height: 20px;
+	width: 20px;
+}
+
+
+QProgressBar {
+	text-align: center;
+	color: rgb(240, 240, 240);
+	border-width: 1px; 
+	border-radius: 10px;
+	border-color: rgb(230, 230, 230);
+	border-style: solid;
+	background-color:rgb(207,207,207);
+}
+QProgressBar::chunk {
+	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(49, 147, 250, 200), stop:1 rgba(34, 142, 255, 200));
+	border-radius: 10px;
+}
+
+
+QScrollBar:horizontal {
+	max-height: 20px;
+	border: 1px transparent grey;
+	margin: 0px 20px 0px 20px;
+}
+QScrollBar:vertical {
+	max-width: 20px;
+	border: 1px transparent grey;
+	margin: 20px 0px 20px 0px;
+}
+QScrollBar::handle:horizontal {
+	background: rgb(253,253,253);
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgb(207,207,207);
+	border-radius: 7px;
+	min-width: 25px;
+}
+QScrollBar::handle:horizontal:hover {
+	background: rgb(253,253,253);
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgb(147, 200, 200);
+	border-radius: 7px;
+	min-width: 25px;
+}
+QScrollBar::handle:vertical {
+	background: rgb(253,253,253);
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgb(207,207,207);
+	border-radius: 7px;
+	min-height: 25px;
+}
+QScrollBar::handle:vertical:hover {
+	background: rgb(253,253,253);
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgb(147, 200, 200);
+	border-radius: 7px;
+	min-height: 25px;
+}
+QScrollBar::add-line:horizontal {
+   border: 2px transparent grey;
+   border-top-right-radius: 7px;
+   border-bottom-right-radius: 7px;
+   background: rgba(34, 142, 255, 255);
+   width: 20px;
+   subcontrol-position: right;
+   subcontrol-origin: margin;
+}
+QScrollBar::add-line:horizontal:pressed {
+   border: 2px transparent grey;
+   border-top-right-radius: 7px;
+   border-bottom-right-radius: 7px;
+   background: rgb(181,181,181);
+   width: 20px;
+   subcontrol-position: right;
+   subcontrol-origin: margin;
+}
+QScrollBar::add-line:vertical {
+   border: 2px transparent grey;
+   border-bottom-left-radius: 7px;
+   border-bottom-right-radius: 7px;
+   background: rgba(34, 142, 255, 255);
+   height: 20px;
+   subcontrol-position: bottom;
+   subcontrol-origin: margin;
+}
+QScrollBar::add-line:vertical:pressed {
+   border: 2px transparent grey;
+   border-bottom-left-radius: 7px;
+   border-bottom-right-radius: 7px;
+   background: rgb(181,181,181);
+   height: 20px;
+   subcontrol-position: bottom;
+   subcontrol-origin: margin;
+}
+QScrollBar::sub-line:horizontal {
+   border: 2px transparent grey;
+   border-top-left-radius: 7px;
+   border-bottom-left-radius: 7px;
+   background: rgba(34, 142, 255, 255);
+   width: 20px;
+   subcontrol-position: left;
+   subcontrol-origin: margin;
+}
+QScrollBar::sub-line:horizontal:pressed {
+   border: 2px transparent grey;
+   border-top-left-radius: 7px;
+   border-bottom-left-radius: 7px;
+   background: rgb(181,181,181);
+   width: 20px;
+   subcontrol-position: left;
+   subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {
+   border: 2px transparent grey;
+   border-top-left-radius: 7px;
+   border-top-right-radius: 7px;
+   background: rgba(34, 142, 255, 255);
+   height: 20px;
+   subcontrol-position: top;
+   subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical:pressed {
+   border: 2px transparent grey;
+   border-top-left-radius: 7px;
+   border-top-right-radius: 7px;
+   background: rgb(181,181,181);
+   height: 20px;
+   subcontrol-position: top;
+   subcontrol-origin: margin;
+}
+QScrollBar::left-arrow:horizontal {
+   border: 1px transparent grey;
+   border-top-left-radius: 3px;
+   border-bottom-left-radius: 3px;
+   width: 6px;
+   height: 6px;
+   background: white;
+}
+QScrollBar::right-arrow:horizontal {
+   border: 1px transparent grey;
+   border-top-right-radius: 3px;
+   border-bottom-right-radius: 3px;
+   width: 6px;
+   height: 6px;
+   background: white;
+}
+QScrollBar::up-arrow:vertical {
+   border: 1px transparent grey;
+   border-top-left-radius: 3px;
+   border-top-right-radius: 3px;
+   width: 6px;
+   height: 6px;
+   background: white;
+}
+QScrollBar::down-arrow:vertical {
+   border: 1px transparent grey;
+   border-bottom-left-radius: 3px;
+   border-bottom-right-radius: 3px;
+   width: 6px;
+   height: 6px;
+   background: white;
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+   background: none;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+   background: none;
+}</string>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="central_widget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_4">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_about">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>35</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+background:rgb(213, 213, 213);
+border-radius:5px;
+}
+QPushButton:hover{
+background-color: rgb(170, 255, 255);
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/ico/icons/ico.ico</normalon>
+         </iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_setting">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>35</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+background:rgb(213, 213, 213);
+border-radius:5px;
+}
+QPushButton:hover{
+background-color: rgb(170, 255, 255);
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/ico/icons/setting_icon.png</normalon>
+         </iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_minimize">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>35</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{background:#F7D674;border-radius:5px;}QPushButton:hover{background:yellow;}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_maximum">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>35</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{background:#6DDF6D;border-radius:5px;}QPushButton:hover{background:green;}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_close">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>35</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+background:#F76677;
+border-radius:5px;
+}
+QPushButton:hover{
+background:red;
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_9">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>13</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QPlainTextEdit" name="search_plugin">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+            <horstretch>1</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>320</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="lineWidth">
+           <number>1</number>
+          </property>
+          <property name="plainText">
+           <string>这是一个测试项目这是一个测试项目这是一个测试项目</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>13</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QListWidget" name="list_choices_plugin">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+            <horstretch>1</horstretch>
+            <verstretch>7</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>320</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <item>
+           <property name="text">
+            <string>这是一个测试项目</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>这是一个测试项目</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>这是一个测试项目</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>这是一个测试项目</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>这是一个测试项目</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>这是一个测试项目这是一个测试项目</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>这是一个测试项目这是一个测试项目这是一个测试项目</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>13</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="QPlainTextEdit" name="input_box">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>3</horstretch>
+                <verstretch>2</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="plainText">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>13</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>13</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <spacer name="verticalSpacer_8">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>13</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="check_save">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>3</horstretch>
+                <verstretch>1</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>更纱黑体 UI SC</family>
+                <pointsize>12</pointsize>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>保存输出到文件</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_7">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>13</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="check_output_lock_maximums">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>1</horstretch>
+                <verstretch>1</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>更纱黑体 UI SC</family>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>内框输出上限</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>13</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="check_output_optimization">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>1</horstretch>
+                <verstretch>1</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>更纱黑体 UI SC</family>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>内框输出性能优化</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>13</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QPushButton" name="button_start">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>3</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>更纱黑体 SC Light</family>
+            <pointsize>18</pointsize>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string>开始计算</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>13</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="output_box">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>3</horstretch>
+            <verstretch>5</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="plainText">
+           <string>这是一段测试文字
+	测试
+Abo
+	robot
+	electry
+1/2
+2/3/23/
+/12这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目
+
+12.331.23/123
+12
+1233333333333333333333333333333333333333333333333333333333333
+这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一段测试文字
+	测试
+Abo
+	robot
+	electry
+1/2
+2/3/23/
+/12这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目
+
+12.331.23/123
+12
+1233333333333333333333333333333333333333333333333333333333333
+这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一段测试文字
+	测试
+Abo
+	robot
+	electry
+1/2
+2/3/23/
+/12这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目
+
+12.331.23/123
+12
+1233333333333333333333333333333333333333333333333333333333333
+这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_4">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>3</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>search_plugin</tabstop>
+ </tabstops>
+ <resources>
+  <include location="main_window_resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>button_start</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWin</receiver>
+   <slot>startEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1329</x>
+     <y>342</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>615</x>
+     <y>297</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>check_save</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWin</receiver>
+   <slot>saveCheckEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1362</x>
+     <y>130</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>754</x>
+     <y>297</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>check_output_optimization</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWin</receiver>
+   <slot>outputOptimizationCheckEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1378</x>
+     <y>264</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>914</x>
+     <y>296</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>check_output_lock_maximums</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWin</receiver>
+   <slot>outputLockMaximumsCheckEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1346</x>
+     <y>197</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>922</x>
+     <y>295</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>search_plugin</sender>
+   <signal>textChanged()</signal>
+   <receiver>MainWin</receiver>
+   <slot>searchText()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>167</x>
+     <y>156</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>227</x>
+     <y>86</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>list_choices_plugin</sender>
+   <signal>itemClicked(QListWidgetItem*)</signal>
+   <receiver>MainWin</receiver>
+   <slot>chooseOptionEvent(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>241</x>
+     <y>770</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>317</x>
+     <y>780</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>button_setting</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWin</receiver>
+   <slot>openSettingWin()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1258</x>
+     <y>34</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>542</x>
+     <y>421</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>button_close</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWin</receiver>
+   <slot>quitEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1381</x>
+     <y>34</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>869</x>
+     <y>55</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>button_about</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWin</receiver>
+   <slot>openAboutWin()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1202</x>
+     <y>26</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1094</x>
+     <y>79</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>button_minimize</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWin</receiver>
+   <slot>minimizeEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1287</x>
+     <y>32</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1269</x>
+     <y>68</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>button_maximum</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWin</receiver>
+   <slot>maximizeEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1325</x>
+     <y>33</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1309</x>
+     <y>63</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>saveCheckEvent()</slot>
+  <slot>outputOptimizationCheckEvent()</slot>
+  <slot>outputLockMaximumsCheckEvent()</slot>
+  <slot>searchText()</slot>
+  <slot>startEvent()</slot>
+  <slot>menuBar(QAction*)</slot>
+  <slot>chooseOptionEvent(QListWidgetItem*)</slot>
+  <slot>openSettingWin()</slot>
+  <slot>quitEvent()</slot>
+  <slot>openAboutWin()</slot>
+  <slot>minimizeEvent()</slot>
+  <slot>maximizeEvent()</slot>
+ </slots>
+</ui>

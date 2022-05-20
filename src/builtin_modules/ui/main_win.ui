@@ -1,30 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWin</class>
- <widget class="QMainWindow" name="MainWin">
+ <widget class="QWidget" name="MainWin">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1392</width>
-    <height>994</height>
+    <width>1145</width>
+    <height>893</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-    <horstretch>1</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
   <property name="windowTitle">
-   <string>hpycacular</string>
-  </property>
-  <property name="windowIcon">
-   <iconset resource="main_window_resource.qrc">
-    <normaloff>:/ico/icons/ico.ico</normaloff>:/ico/icons/ico.ico</iconset>
-  </property>
-  <property name="autoFillBackground">
-   <bool>false</bool>
+   <string>Form</string>
   </property>
   <property name="styleSheet">
    <string notr="true">/*QMainWindow{
@@ -33,11 +20,14 @@ border-radius: 20px;
 }*/
 
 #central_widget{
-background-image: url(:/background/images/background3.png);
-/*background-image: url(:/background/images/background1_gaussian_blur.png);*/
+margin-top: 0px;
+margin-right: 0px;
+margin-bottom: 0px;
+margin-left: 0px;
+/*background-image: url(:/background/images/background3.png);
 background-size: cover;
 background-repeat: no-repeat;
-border-radius: 10px;
+border-radius: 10px;*/
 }
 
 QTextEdit{
@@ -274,538 +264,386 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    background: none;
 }</string>
   </property>
-  <property name="unifiedTitleAndToolBarOnMac">
-   <bool>false</bool>
-  </property>
-  <widget class="QWidget" name="central_widget">
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_4">
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QWidget" name="central_widget">
+     <property name="minimumSize">
+      <size>
+       <width>800</width>
+       <height>600</height>
+      </size>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
-       <widget class="QLabel" name="label_3">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>1</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="button_about">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>1</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>35</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>25</width>
-          <height>35</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton{
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="button_about">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>35</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{
 background:rgb(213, 213, 213);
 border-radius:5px;
 }
 QPushButton:hover{
 background-color: rgb(170, 255, 255);
 }</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/ico/icons/ico.ico</normalon>
-         </iconset>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="button_setting">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>1</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>35</width>
-          <height>35</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton{
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/ico/icons/ico.ico</normalon>
+           </iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="button_setting">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>35</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{
 background:rgb(213, 213, 213);
 border-radius:5px;
 }
 QPushButton:hover{
 background-color: rgb(170, 255, 255);
 }</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/ico/icons/setting_icon.png</normalon>
-         </iconset>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="button_minimize">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>1</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>35</width>
-          <height>35</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton{background:#F7D674;border-radius:5px;}QPushButton:hover{background:yellow;}</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="button_maximum">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>1</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>35</width>
-          <height>35</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton{background:#6DDF6D;border-radius:5px;}QPushButton:hover{background:green;}</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="button_close">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>1</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>35</width>
-          <height>35</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton{
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/ico/icons/setting_icon.png</normalon>
+           </iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="button_minimize">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>35</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{background:#F7D674;border-radius:5px;}QPushButton:hover{background:yellow;}</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="button_maximum">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>35</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{background:#6DDF6D;border-radius:5px;}QPushButton:hover{background:green;}</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="button_close">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>35</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{
 background:#F76677;
 border-radius:5px;
 }
 QPushButton:hover{
 background:red;
 }</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <spacer name="verticalSpacer_9">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Fixed</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>13</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <widget class="QPlainTextEdit" name="search_plugin">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-            <horstretch>1</horstretch>
-            <verstretch>1</verstretch>
-           </sizepolicy>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>320</width>
-            <height>0</height>
-           </size>
+          <property name="text">
+           <string/>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>100</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="lineWidth">
-           <number>1</number>
-          </property>
-          <property name="plainText">
-           <string>这是一个测试项目这是一个测试项目这是一个测试项目</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="verticalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>13</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QListWidget" name="list_choices_plugin">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-            <horstretch>1</horstretch>
-            <verstretch>7</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>320</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <item>
-           <property name="text">
-            <string>这是一个测试项目</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>这是一个测试项目</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>这是一个测试项目</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>这是一个测试项目</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>这是一个测试项目</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>这是一个测试项目这是一个测试项目</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>这是一个测试项目这是一个测试项目这是一个测试项目</string>
-           </property>
-          </item>
          </widget>
         </item>
        </layout>
       </item>
       <item>
-       <spacer name="horizontalSpacer_4">
+       <spacer name="verticalSpacer_9">
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Vertical</enum>
         </property>
         <property name="sizeType">
          <enum>QSizePolicy::Fixed</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>13</width>
-          <height>20</height>
+          <width>20</width>
+          <height>13</height>
          </size>
         </property>
        </spacer>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_5">
-            <item>
-             <widget class="QPlainTextEdit" name="input_box">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                <horstretch>3</horstretch>
-                <verstretch>2</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>12</pointsize>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <property name="plainText">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="verticalSpacer">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>13</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
+           <widget class="QPlainTextEdit" name="search_plugin">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+              <horstretch>1</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>320</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>100</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="lineWidth">
+             <number>1</number>
+            </property>
+            <property name="plainText">
+             <string>这是一个测试项目这是一个测试项目这是一个测试项目</string>
+            </property>
+           </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacer">
+           <spacer name="verticalSpacer_3">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
+             <enum>Qt::Vertical</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>13</width>
-              <height>20</height>
+              <width>20</width>
+              <height>13</height>
              </size>
             </property>
            </spacer>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
+           <widget class="QListWidget" name="list_choices_plugin">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>1</horstretch>
+              <verstretch>7</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>320</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
             <item>
-             <spacer name="verticalSpacer_8">
+             <property name="text">
+              <string>这是一个测试项目</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>这是一个测试项目</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>这是一个测试项目</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>这是一个测试项目</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>这是一个测试项目</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>这是一个测试项目这是一个测试项目</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>这是一个测试项目这是一个测试项目这是一个测试项目</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>13</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <item>
+               <widget class="QPlainTextEdit" name="input_box">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                  <horstretch>3</horstretch>
+                  <verstretch>2</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>12</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true"/>
+                </property>
+                <property name="plainText">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>13</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>13</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="check_save">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>3</horstretch>
-                <verstretch>1</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <family>更纱黑体 UI SC</family>
-                <pointsize>12</pointsize>
-                <bold>false</bold>
-               </font>
-              </property>
-              <property name="layoutDirection">
-               <enum>Qt::LeftToRight</enum>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <property name="text">
-               <string>保存输出到文件</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="verticalSpacer_7">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>13</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="check_output_lock_maximums">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>1</horstretch>
-                <verstretch>1</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <family>更纱黑体 UI SC</family>
-                <pointsize>12</pointsize>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <property name="text">
-               <string>内框输出上限</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="verticalSpacer_6">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>13</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="check_output_optimization">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>1</horstretch>
-                <verstretch>1</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <family>更纱黑体 UI SC</family>
-                <pointsize>12</pointsize>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <property name="text">
-               <string>内框输出性能优化</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="verticalSpacer_5">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Horizontal</enum>
               </property>
               <property name="sizeType">
                <enum>QSizePolicy::Fixed</enum>
@@ -818,70 +656,224 @@ background:red;
               </property>
              </spacer>
             </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <item>
+               <spacer name="verticalSpacer_8">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>13</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="check_save">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>3</horstretch>
+                  <verstretch>1</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>更纱黑体 UI SC</family>
+                  <pointsize>12</pointsize>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true"/>
+                </property>
+                <property name="text">
+                 <string>保存输出到文件</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_7">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>13</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="check_output_lock_maximums">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>1</horstretch>
+                  <verstretch>1</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>更纱黑体 UI SC</family>
+                  <pointsize>12</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true"/>
+                </property>
+                <property name="text">
+                 <string>内框输出上限</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_6">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>13</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="check_output_optimization">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>1</horstretch>
+                  <verstretch>1</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>更纱黑体 UI SC</family>
+                  <pointsize>12</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true"/>
+                </property>
+                <property name="text">
+                 <string>内框输出性能优化</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_5">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>13</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
            </layout>
           </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QPushButton" name="button_start">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>3</horstretch>
-            <verstretch>1</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>更纱黑体 SC Light</family>
-            <pointsize>18</pointsize>
-            <bold>false</bold>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>开始计算</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>13</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPlainTextEdit" name="output_box">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>3</horstretch>
-            <verstretch>5</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="plainText">
-           <string>这是一段测试文字
+          <item>
+           <widget class="QPushButton" name="button_start">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>3</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>更纱黑体 SC Light</family>
+              <pointsize>18</pointsize>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string>开始计算</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>13</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPlainTextEdit" name="output_box">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>3</horstretch>
+              <verstretch>5</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="plainText">
+             <string>这是一段测试文字
 	测试
 Abo
 	robot
@@ -918,135 +910,38 @@ Abo
 12
 1233333333333333333333333333333333333333333333333333333333333
 这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目这是一个测试项目</string>
-          </property>
-         </widget>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
+      <item>
+       <spacer name="verticalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>13</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
-    </item>
-   </layout>
-  </widget>
+    </widget>
+   </item>
+  </layout>
  </widget>
- <tabstops>
-  <tabstop>search_plugin</tabstop>
- </tabstops>
  <resources>
   <include location="main_window_resource.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>button_start</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWin</receiver>
-   <slot>startEvent()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1329</x>
-     <y>342</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>615</x>
-     <y>297</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>check_save</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWin</receiver>
-   <slot>saveCheckEvent()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1362</x>
-     <y>130</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>754</x>
-     <y>297</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>check_output_optimization</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWin</receiver>
-   <slot>outputOptimizationCheckEvent()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1378</x>
-     <y>264</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>914</x>
-     <y>296</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>check_output_lock_maximums</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWin</receiver>
-   <slot>outputLockMaximumsCheckEvent()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1346</x>
-     <y>197</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>922</x>
-     <y>295</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>search_plugin</sender>
-   <signal>textChanged()</signal>
-   <receiver>MainWin</receiver>
-   <slot>searchText()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>167</x>
-     <y>156</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>227</x>
-     <y>86</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>list_choices_plugin</sender>
-   <signal>itemClicked(QListWidgetItem*)</signal>
-   <receiver>MainWin</receiver>
-   <slot>chooseOptionEvent(QListWidgetItem*)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>241</x>
-     <y>770</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>317</x>
-     <y>780</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>button_setting</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWin</receiver>
-   <slot>openSettingWin()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1258</x>
-     <y>34</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>542</x>
-     <y>421</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>button_close</sender>
    <signal>clicked()</signal>
@@ -1054,12 +949,44 @@ Abo
    <slot>quitEvent()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1381</x>
-     <y>34</y>
+     <x>1100</x>
+     <y>45</y>
     </hint>
     <hint type="destinationlabel">
-     <x>869</x>
-     <y>55</y>
+     <x>1135</x>
+     <y>75</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>button_minimize</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWin</receiver>
+   <slot>minimizeEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1022</x>
+     <y>41</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>983</x>
+     <y>5</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>button_maximum</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWin</receiver>
+   <slot>maximizeEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1063</x>
+     <y>44</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1031</x>
+     <y>4</y>
     </hint>
    </hints>
   </connection>
@@ -1070,34 +997,139 @@ Abo
    <slot>openAboutWin()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1202</x>
-     <y>26</y>
+     <x>940</x>
+     <y>37</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1094</x>
-     <y>79</y>
+     <x>837</x>
+     <y>6</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>button_setting</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWin</receiver>
+   <slot>openSettingWin()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>972</x>
+     <y>40</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>850</x>
+     <y>2</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>search_plugin</sender>
+   <signal>textChanged()</signal>
+   <receiver>MainWin</receiver>
+   <slot>searchText()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>213</x>
+     <y>116</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>150</x>
+     <y>3</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>list_choices_plugin</sender>
+   <signal>itemClicked(QListWidgetItem*)</signal>
+   <receiver>MainWin</receiver>
+   <slot>chooseOptionEvent(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>76</x>
+     <y>821</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>874</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>button_start</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWin</receiver>
+   <slot>startEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>874</x>
+     <y>333</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1134</x>
+     <y>360</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>check_output_optimization</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWin</receiver>
+   <slot>outputOptimizationCheckEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1102</x>
+     <y>239</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1134</x>
+     <y>207</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>check_output_lock_maximums</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWin</receiver>
+   <slot>outputLockMaximumsCheckEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1062</x>
+     <y>189</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1137</x>
+     <y>184</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>check_save</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWin</receiver>
+   <slot>saveCheckEvent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1071</x>
+     <y>109</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1136</x>
+     <y>131</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
-  <slot>showAbout()</slot>
-  <slot>showTODO()</slot>
-  <slot>showDONE()</slot>
-  <slot>saveCheckEvent()</slot>
+  <slot>quitEvent()</slot>
+  <slot>minimizeEvent()</slot>
+  <slot>maximizeEvent()</slot>
+  <slot>openAboutWin()</slot>
+  <slot>openSettingWin()</slot>
+  <slot>searchText()</slot>
+  <slot>chooseOptionEvent(QListWidgetItem*)</slot>
+  <slot>startEvent()</slot>
   <slot>outputOptimizationCheckEvent()</slot>
   <slot>outputLockMaximumsCheckEvent()</slot>
-  <slot>quit_event()</slot>
-  <slot>stop_compute()</slot>
-  <slot>cheak_update()</slot>
-  <slot>reset_save_location()</slot>
-  <slot>searchText()</slot>
-  <slot>search_cancel()</slot>
-  <slot>startEvent()</slot>
-  <slot>menuBar(QAction*)</slot>
-  <slot>chooseOptionEvent(QListWidgetItem*)</slot>
-  <slot>openSettingWin()</slot>
-  <slot>quitEvent()</slot>
-  <slot>openAboutWin()</slot>
+  <slot>saveCheckEvent()</slot>
  </slots>
 </ui>

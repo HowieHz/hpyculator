@@ -13,11 +13,11 @@ from ..plugin import instance_plugin_manager  # 插件管理
 from ..calculate import CalculationManager  # 计算管理
 
 # pyside6 ui signal导入
-from PySide6.QtWidgets import QMainWindow
+# from PySide6.QtWidgets import QMainWindow
 # from PySide6.QtWidgets import QGraphicsOpacityEffect, QGraphicsBlurEffect
 from PySide6.QtGui import QTextCursor
-# from PySide6.QtGui import QColor, QPainter
-from PySide6.QtCore import Qt
+from PySide6.QtGui import QColor, QPainter, QGuiApplication
+# from PySide6.QtCore import Qt
 from ..ui import Ui_MainWin
 from hpyculator.hpysignal import main_win_signal
 
@@ -25,8 +25,11 @@ from hpyculator.hpysignal import main_win_signal
 from .setting_window_manager import SettingWinApp
 from .about_win_manager import AboutWinApp
 
+#refer to https://github.com/zhiyiYo/PyQt-Frameless-Window
+from ..pyside_frameless_win.framelesswindow import FramelessWindow
 
-class MainWinApp(QMainWindow):
+
+class MainWinApp(FramelessWindow):
     def __init__(self, setting_file_path, output_dir_path):
         """
         主窗口程序类
@@ -37,8 +40,6 @@ class MainWinApp(QMainWindow):
         # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
         self.SETTING_FILE_PATH = setting_file_path
         self.OUTPUT_DIR_PATH = output_dir_path
-        self.plugin_option_id_dict = instance_plugin_manager.getOptionIdDict()  # 选项名映射id（文件或文件夹名）
-        self.selection_list = self.plugin_option_id_dict.keys()  # 选项名列表
         self.user_selection_id: str = ""  # 用户选择的插件的文件名（id)
 
         super().__init__()
@@ -95,46 +96,11 @@ class MainWinApp(QMainWindow):
         self.is_thread_running = [False]  # 防止反复启动计算线程
 
         # 关于gui显示内容的初始化
-        self.ui.list_choices_plugin.addItems(
-            self.plugin_option_id_dict.keys()
-        )  # 选项名添加到ui上
+        self.flushListChoicesPlugin()
         self.ui.output_box.setPlainText(doc.START_SHOW)  # 开启的展示
         self.ui.search_plugin.setPlaceholderText("输入字符自动进行搜索\n清空搜索框显示全部插件")  # 灰色背景提示字符
         self.ui.search_plugin.clear()  # 不清空不显示灰色背景
         self.ui.input_box.setFocus()  # 设置焦点
-
-        # op = QGraphicsOpacityEffect()
-        # # 设置透明度的值，0.0到1.0，最小值0是透明，1是不透明
-        # op.setOpacity(0.1)
-        # self.ui.output_box.setGraphicsEffect(op)
-        # self.ui.output_box.setAutoFillBackground(True)
-        #
-        # op2 = QGraphicsBlurEffect()
-        # op2.setBlurRadius(12)
-        # self.setGraphicsEffect(op2)
-
-        # 去除边框
-        self.setWindowFlags(Qt.FramelessWindowHint)
-        # 背景透明
-        self.setAttribute(Qt.WA_TranslucentBackground)
-
-    # #     # 设置背景色
-    # #     # # self.bgColor = QColor(255, 50, 50, 80)  # 可以根据个人需要调节透明度
-    #     self.bgColor = QColor(255, 255, 255, 50)  # 可以根据个人需要调节透明度
-    # #
-    #     # 调用api
-    #     hWnd = HWND(int(self.winId()))  # 直接HWND(self.winId())会报错
-    #     cdll.LoadLibrary(r'builtin_modules\ui_manager\Aero\aeroDll.dll').setBlur(hWnd)  # dll和脚本放在同一个目录下会报错找不到dll
-    #     #出自 https://www.cnblogs.com/zhiyiYo/p/14643855.html
-    # #
-    # #
-    # def paintEvent(self, e):
-    #     """ 绘制背景,添加上一层蒙版 """
-    #     painter = QPainter(self)
-    #     painter.setRenderHint(QPainter.Antialiasing)
-    #     painter.setPen(Qt.NoPen)
-    #     painter.setBrush(self.bgColor)
-    #     painter.drawRoundedRect(self.rect(), 20, 20)
 
     def bindSignalWithSlots(self):
         """
@@ -142,7 +108,6 @@ class MainWinApp(QMainWindow):
 
         :return:
         """
-
         # self.ui.___ACTION___.triggered.connect(___FUNCTION___)
         # self.ui.___BUTTON___.clicked.connect(___FUNCTION___)
         # self.ui.___COMBO_BOX___.currentIndexChanged.connect(___FUNCTION___)
@@ -275,12 +240,76 @@ class MainWinApp(QMainWindow):
         )  # 启动计算
         return
 
-    def flush_list_choices_plugin(self):
+    def flushListChoicesPlugin(self):
         """
-        刷新左侧列表
+        刷新左侧列表 和对应映射表
         
         :return: None
         """
+        self.plugin_option_id_dict = instance_plugin_manager.getOptionIdDict()  # 选项名映射id（文件或文件夹名）
+        self.selection_list = self.plugin_option_id_dict.keys()  # 选项名列表
+        self.ui.list_choices_plugin.addItems(
+            self.selection_list
+        )  # 选项名添加到ui上
+
+    def minimizeEvent(self):
+        """
+        最小化窗口
+
+        :return:
+        """
+        self.showMinimized()
+
+    def maximizeEvent(self):
+        """
+        最大化窗口，和窗口还原
+
+        :return:
+        """
+        if self.isMaximized():
+            self.showNormal()
+        else:
+            self.showMaximized()
+
+    def mouseDoubleClickEvent(self, event):
+        """
+        双击框体的最大化和还原
+
+        :param event:
+        :return:
+        """
+        self.maximizeEvent()
+
+    def mousePressEvent(self, event):
+        """
+        鼠标按下的事件
+
+        :param event:
+        :return:
+        """
+        self.start_pos = event.globalPos()  # 鼠标点击位置
+        self.origin_pos = self.pos()  # 窗口位置
+
+    def mouseMoveEvent(self, event):
+        """
+        鼠标移动窗口
+
+        :param event:
+        :return:
+        """
+        if self.isMaximized():
+            self.showNormal()
+            screen = QGuiApplication.primaryScreen().geometry()  # 屏幕类并调用geometry获取屏幕大小
+            screen_width = screen.width()  # 屏幕的宽
+            screen_height = screen.height()  # 屏幕的高
+            # self.move(self.start_pos.x()+(event.globalPos().x()/screen_width)*新窗口宽度,self.start_pos.y()+(event.globalPos().y()/screen_height)*新窗口高度)
+            # TODO 继承调整窗口的大小的方法，添加一个记录窗口大小的东西，然后改写
+            self.move(self.start_pos.x()-(event.globalPos().x()/screen_width)*1145,self.start_pos.y()-(event.globalPos().y()/screen_height)*893)
+            self.start_pos = event.globalPos()  # 鼠标点击位置
+            self.origin_pos = self.pos()  # 窗口位置
+            return
+        move_pos = event.globalPos() - self.start_pos  # 目前鼠标的位置和之前鼠标的位置的坐标差
+        self.move(self.origin_pos + move_pos)  # 原本窗口的位置加上坐标差成为新窗口的位置
 
     def chooseOptionEvent(self, item):
         """

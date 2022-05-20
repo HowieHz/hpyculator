@@ -1,0 +1,1 @@
+https://github.com/zhiyiYo/PyQt-Frameless-Window
