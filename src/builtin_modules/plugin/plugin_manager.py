@@ -8,8 +8,10 @@ from typing import List, Dict
 class PluginManager:
     def __init__(self):
         # 载入模块
-        self.plugin_files_and_folder_name: List[list] = []  # Plugin目录下读取到的文件夹和文件
-        self.plugin_files_name_folder: List[str] = []  # Plugin目录下读取到的有__init__.py的文件夹
+        # Plugin目录下读取到的文件夹和文件
+        self.plugin_files_and_folder_name: List[list] = []
+        # Plugin目录下读取到的有__init__.py的文件夹
+        self.plugin_files_name_folder: List[str] = []
         # self.can_choose_number: List[str] = []  # 选择列表，储存着所有的选项名 #plugin_option_id_dict的键
         self.plugin_files_name_py: list[str] = []  # 储存着Plugin目录下的文件名
         self.plugin_option_id_dict: Dict[str, str] = {}  # 选项名和实际文件名(ID)的映射表
@@ -85,7 +87,7 @@ class PluginManager:
                 folder_plugin_names.append(root_list[-1])
         return plugin_file_names, folder_plugin_names
 
-    def initPlugin(self,path):
+    def initPlugin(self, path):
         """
         导入插件
 
@@ -96,7 +98,9 @@ class PluginManager:
         self.plugin_dir_path = path
         logging.debug(f"插件保存位置:{self.plugin_dir_path}")
 
-        plugin_file_names, folder_plugin_names = self.__readPluginPath(self.plugin_dir_path)  # 读目录获取文件名
+        plugin_file_names, folder_plugin_names = self.__readPluginPath(
+            self.plugin_dir_path
+        )  # 读目录获取文件名
 
         # 从所有读取的文件中挑选出.py为后缀的文件
         try:
