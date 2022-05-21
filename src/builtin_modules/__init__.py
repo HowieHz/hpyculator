@@ -33,11 +33,12 @@ class CreateApp:
                     SETTING_FILE_PATH,
                     OUTPUT_DIR_PATH,
                     PLUGIN_DIR_PATH,
-                    BACKGROUND_IMG_DIR_PATH
+                    BACKGROUND_IMG_DIR_PATH,
                 )
             )  # 实例化主窗口
             list_instance_main_window[_].show()
         return list_instance_main_window
+
 
 def checkSettingPath():
     """
@@ -53,6 +54,7 @@ def checkSettingPath():
         os.makedirs(setting_dir_path)
 
     return setting_file_path
+
 
 def checkOutputPath(setting_file_path):
     """
@@ -77,6 +79,7 @@ def checkOutputPath(setting_file_path):
 
     return output_dir_path
 
+
 def checkBackgroundImgPath(setting_file_path):
     """
     背景图片路径检查
@@ -96,6 +99,7 @@ def checkBackgroundImgPath(setting_file_path):
         os.makedirs(background_img_dir_path)
 
     return background_img_dir_path
+
 
 def logCheck(setting_file_path):
     """
