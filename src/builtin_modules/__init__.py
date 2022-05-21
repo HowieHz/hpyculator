@@ -18,26 +18,32 @@ class CreateApp:
         self.instance_num = instance_num
 
     def run(self):
-        GLOBAL_SETTING_FILE_PATH, GLOBAL_OUTPUT_DIR_PATH = pathCheck()  # 路径检查
-        logCheck(GLOBAL_SETTING_FILE_PATH)  # 日志检查
-        pluginCheck()  # 插件加载
+        # TODO 路径检查需重构，默认路径改传参
+        SETTING_FILE_PATH = checkSettingPath()
+        OUTPUT_DIR_PATH = checkOutputPath(SETTING_FILE_PATH)  # 输出路径检查
+        BACKGROUND_IMG_DIR_PATH = checkBackgroundImgPath(SETTING_FILE_PATH)  # 背景图片路径检查
+        PLUGIN_DIR_PATH = pluginCheck(SETTING_FILE_PATH)  # 插件加载
+
+        logCheck(SETTING_FILE_PATH)  # 日志检查
+
         list_instance_main_window = []
         for _ in range(self.instance_num):
             list_instance_main_window.append(
                 MainWinApp(  # 启动实例
-                    GLOBAL_SETTING_FILE_PATH,
-                    GLOBAL_OUTPUT_DIR_PATH
+                    SETTING_FILE_PATH,
+                    OUTPUT_DIR_PATH,
+                    PLUGIN_DIR_PATH,
+                    BACKGROUND_IMG_DIR_PATH
                 )
             )  # 实例化主窗口
             list_instance_main_window[_].show()
         return list_instance_main_window
 
-
-def pathCheck():
+def checkSettingPath():
     """
-    路径检查
+    设置文件路径检查
 
-    :return: setting_file_path, output_dir_path
+    :return: setting_file_path
     """
     setting_dir_path = str(os.path.join(os.getcwd(), "Setting"))  # 初始化设置目录
     setting_file_path = str(os.path.join(setting_dir_path, "hpyculator_setting"))
@@ -46,21 +52,50 @@ def pathCheck():
     if not os.path.exists(setting_dir_path):
         os.makedirs(setting_dir_path)
 
+    return setting_file_path
+
+def checkOutputPath(setting_file_path):
+    """
+    检查输出目录
+
+    :param setting_file_path: 设置文件存放目录
+    :return: output_dir_path
+    """
+
     with shelve.open(setting_file_path, writeback=True) as setting_file:
         # 从设置文件读取输出目录
-        if "save_location" in setting_file:
-            output_dir_path = setting_file["save_location"]
+        if "output_dir_path" in setting_file:
+            output_dir_path = setting_file["output_dir_path"]
         else:
             output_dir_path = str(os.path.join(os.getcwd(), "Output"))
-            setting_file["save_location"] = output_dir_path
+            setting_file["output_dir_path"] = output_dir_path
         logging.debug(f"输出文件保存位置:{output_dir_path}")
 
     # 检查输出文件夹是否存在
     if not os.path.exists(output_dir_path):
         os.makedirs(output_dir_path)
 
-    return setting_file_path, output_dir_path
+    return output_dir_path
 
+def checkBackgroundImgPath(setting_file_path):
+    """
+    背景图片路径检查
+
+    :return: background_img_dir_path
+    """
+    with shelve.open(setting_file_path, writeback=True) as setting_file:
+        # 从设置文件读取输出目录
+        if "background_img_dir_path" in setting_file:
+            background_img_dir_path = setting_file["background_img_dir_path"]
+        else:
+            background_img_dir_path = str(os.path.join(os.getcwd(), "background_img"))
+            setting_file["background_img_dir_path"] = background_img_dir_path
+
+    # 检查输出文件夹是否存在
+    if not os.path.exists(background_img_dir_path):
+        os.makedirs(background_img_dir_path)
+
+    return background_img_dir_path
 
 def logCheck(setting_file_path):
     """
@@ -72,10 +107,25 @@ def logCheck(setting_file_path):
     LogManager(setting_file_path).checkIsEnableLog()
 
 
-def pluginCheck():
+def pluginCheck(setting_file_path):
     """
     加载插件
 
-    :return: None
+    :param setting_file_path: 设置文件的文木
+    :return: 存放插件的文件夹路径
     """
-    instance_plugin_manager.initPlugin()  # 加载插件
+    with shelve.open(setting_file_path, writeback=True) as setting_file:
+        # 从设置文件读取插件目录
+        if "plugin_dir_path" in setting_file:
+            plugin_dir_path = setting_file["plugin_dir_path"]
+        else:
+            plugin_dir_path = str(os.path.join(os.getcwd(), "Plugin"))
+            setting_file["plugin_dir_path"] = plugin_dir_path
+
+    # 检查模块文件夹是否存在
+    if not os.path.exists(plugin_dir_path):
+        os.makedirs(plugin_dir_path)
+
+    instance_plugin_manager.initPlugin(plugin_dir_path)  # 加载插件
+
+    return plugin_dir_path

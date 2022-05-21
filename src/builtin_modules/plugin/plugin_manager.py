@@ -7,16 +7,6 @@ from typing import List, Dict
 
 class PluginManager:
     def __init__(self):
-        """初始化模块目录"""
-        self.PLUGIN_DIR_PATH = str(os.path.join(os.getcwd(), "Plugin"))
-        logging.debug(f"插件保存位置:{self.PLUGIN_DIR_PATH}")
-
-        # 检查模块文件夹是否存在
-        if os.path.exists(self.PLUGIN_DIR_PATH):
-            pass
-        else:
-            os.makedirs(self.PLUGIN_DIR_PATH)
-
         # 载入模块
         self.plugin_files_and_folder_name: List[list] = []  # Plugin目录下读取到的文件夹和文件
         self.plugin_files_name_folder: List[str] = []  # Plugin目录下读取到的有__init__.py的文件夹
@@ -79,7 +69,8 @@ class PluginManager:
     @staticmethod
     def __readPluginPath(path):
         """
-        读取指定目录下插件需重构
+        读取指定目录下插件
+        # TODO 需重构
 
         :param path: 指定的目录 绝对路径
         :return: plugin_file_names  单文件插件的文件名,
@@ -94,15 +85,18 @@ class PluginManager:
                 folder_plugin_names.append(root_list[-1])
         return plugin_file_names, folder_plugin_names
 
-    def initPlugin(self):
+    def initPlugin(self,path):
         """
         导入插件
 
+        :param path: 插件目录路径
         :return: [dict]{插件id字段,对应的插件对象}
         """
-        plugin_file_names, folder_plugin_names = self.__readPluginPath(
-            self.PLUGIN_DIR_PATH
-        )  # 读目录获取文件名
+        # 初始化模块目录
+        self.plugin_dir_path = path
+        logging.debug(f"插件保存位置:{self.plugin_dir_path}")
+
+        plugin_file_names, folder_plugin_names = self.__readPluginPath(self.plugin_dir_path)  # 读目录获取文件名
 
         # 从所有读取的文件中挑选出.py为后缀的文件
         try:

@@ -22,18 +22,10 @@ if __name__ == "__main__":
 # todo 8.上线网页版
 # todo 9.相对快捷方式
 # todo ！！！10 os.listdir() https://github.com/CoderWanFeng/python-office/blob/master/office/word.py 学习这里重写插件读取方法
-# todo 应该背景实，控件毛玻璃
-# todo 窗口阴影，窗口拖动
-# todo 介绍信息专门弹出窗口
-# todo 窗口动画
-# todo 自己写dll
 # todo sys增加读取路径，让exe可以单独挑出来
 # todo ！！！插件管理窗口
 # todo 多套主题
-# todo ！！！统一控件命名
 # todo combo的样式
-# todo label层叠
-# todo 项目学习
 #
 # 命名规范v1.0.0
 # hello_world 变量,文件名(xswl.txt)全部小写，使用下划线连接

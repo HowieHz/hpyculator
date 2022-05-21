@@ -1,13 +1,4 @@
 <RCC>
-  <qresource prefix="background">
-    <file>images/background1.png</file>
-    <file>images/background2.png</file>
-    <file>images/background3.png</file>
-    <file>images/background1.svg</file>
-    <file>images/background1_gaussian_blur.png</file>
-    <file>images/background2.svg</file>
-    <file>images/background3.svg</file>
-  </qresource>
   <qresource prefix="checked">
     <file>images/checked.png</file>
     <file>images/unchecked.png</file>

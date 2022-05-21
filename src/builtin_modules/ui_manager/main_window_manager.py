@@ -1,23 +1,15 @@
-# import os
 import shelve
 import sys
+import os
 import hpyculator as hpyc
-
-# from ctypes import cdll
-# from ctypes.wintypes import HWND
-
-from .. import document as doc
-
 import logging  # 日志导入
+from .. import document as doc
 from ..plugin import instance_plugin_manager  # 插件管理
 from ..calculate import CalculationManager  # 计算管理
 
 # pyside6 ui signal导入
-# from PySide6.QtWidgets import QMainWindow
-# from PySide6.QtWidgets import QGraphicsOpacityEffect, QGraphicsBlurEffect
-from PySide6.QtGui import QTextCursor
-from PySide6.QtGui import QColor, QPainter, QGuiApplication
-# from PySide6.QtCore import Qt
+from PySide6.QtGui import QTextCursor, QGuiApplication, QBrush, QPalette, QPixmap
+from PySide6.QtCore import Qt
 from ..ui import Ui_MainWin
 from hpyculator.hpysignal import main_win_signal
 
@@ -25,21 +17,28 @@ from hpyculator.hpysignal import main_win_signal
 from .setting_window_manager import SettingWinApp
 from .about_win_manager import AboutWinApp
 
-#refer to https://github.com/zhiyiYo/PyQt-Frameless-Window
+# refer to https://github.com/zhiyiYo/PyQt-Frameless-Window
 from ..pyside_frameless_win.framelesswindow import FramelessWindow
 
 
 class MainWinApp(FramelessWindow):
-    def __init__(self, setting_file_path, output_dir_path):
+    def __init__(self,
+                 setting_file_path,
+                 output_dir_path,
+                 plugin_dir_path,
+                 background_dir_path):
         """
         主窗口程序类
 
         :param setting_file_path: 用于修改设置 设置文件路径
         :param output_dir_path:  用于输出结果 输出路径
+        :param plugin_dir_path:  用于存放插件 插件文件夹路径
+        :param background_dir_path:  用于存放背景图片的路径
         """
         # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
         self.SETTING_FILE_PATH = setting_file_path
         self.OUTPUT_DIR_PATH = output_dir_path
+        self.PLUGIN_DIR_PATH = plugin_dir_path
         self.user_selection_id: str = ""  # 用户选择的插件的文件名（id)
 
         super().__init__()
@@ -50,6 +49,8 @@ class MainWinApp(FramelessWindow):
         self.setWindowTitle("hpyculator %s" % doc.VERSION)  # 设置标题
 
         self.move_fix = False  # 一个窗口全屏之后，拖动，窗口会回到正常大小，且指针和在窗口长度和比值和原来一致,True的话就进行校正
+        # self.bg_img = None  # 储存图片
+        self.bg_img = QPixmap(os.path.join(os.getcwd(), "background_img", "background1.png"))
 
         # 读取设置文件-按钮状态和输出目录  check控件初始化
         with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
@@ -110,6 +111,7 @@ class MainWinApp(FramelessWindow):
 
         :return:
         """
+
         # self.ui.___ACTION___.triggered.connect(___FUNCTION___)
         # self.ui.___BUTTON___.clicked.connect(___FUNCTION___)
         # self.ui.___COMBO_BOX___.currentIndexChanged.connect(___FUNCTION___)
@@ -254,15 +256,34 @@ class MainWinApp(FramelessWindow):
             self.selection_list
         )  # 选项名添加到ui上
 
-    def resizeEvent(self, e):
+    def resizeEvent(self, event):
+        """
+        窗口大小改变时间 实现自适应背景图片
+
+        :param event:
+        :return:
+        """
         # don't forget to call the resizeEvent() of super class
-        super().resizeEvent(e)
+        super().resizeEvent(event)
         # print("resizeEvent",self.width(), self.height())
         # self.ui.central_widget.resize(length, length)
         # self.ui.central_widget.move(
         #     self.width() // 2 - length // 2,
         #     self.height() // 2 - length // 2
         # )
+
+        if not self.bg_img:
+            return
+
+        def _adapt_bg(image):
+            """自适应图片"""
+            return image.scaled(self.width(), self.height(), Qt.KeepAspectRatioByExpanding, Qt.FastTransformation)
+            # return image.scaled(self.width(), self.height(), Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
+
+        palette = QPalette()
+        img = _adapt_bg(self.bg_img)  # 转换为自适应大小的图片
+        palette.setBrush(QPalette.Window, QBrush(img))
+        self.setPalette(palette)
 
     def minimizeEvent(self):
         """
@@ -326,8 +347,8 @@ class MainWinApp(FramelessWindow):
             # print("相对于窗口左上角的新位置", (self.start_mouse_pos.x() / screen_width) * self.width(),(self.start_mouse_pos.y() / screen_height) * self.height())
             # print("新计算位置",event.globalPos().x() - (self.start_mouse_pos.x() / screen_width) * self.width(), event.globalPos().y() - ( self.start_mouse_pos.y()/ screen_height) * self.height())
             # 这里的self.start_mouse_pos是全屏状态下点击的位置
-            self.move(event.globalPos().x() - (self.start_mouse_pos.x() / screen_width) * self.width(), event.globalPos().y() - ( self.start_mouse_pos.y()/ screen_height) * self.height())
-            self.move_fix=False
+            self.move(event.globalPos().x() - (self.start_mouse_pos.x() / screen_width) * self.width(), event.globalPos().y() - (self.start_mouse_pos.y() / screen_height) * self.height())
+            self.move_fix = False
             # print("self.start_mouse_pos1.9", self.origin_win_pos)
             self.start_mouse_pos = event.globalPos()  # 鼠标点击位置 可能可以注释掉这句
             # print("self.start_mouse_pos2", self.origin_win_pos)
@@ -395,7 +416,7 @@ by {selected_plugin_attributes["author"]}
         with shelve.open(
                 self.SETTING_FILE_PATH, writeback=True
         ) as setting_file:  # 读取设置文件
-            self.OUTPUT_DIR_PATH = setting_file["save_location"]
+            self.OUTPUT_DIR_PATH = setting_file["output_dir_path"]
             self.is_save_settings = setting_file["is_save_settings"]
 
     def saveCheckEvent(self):
