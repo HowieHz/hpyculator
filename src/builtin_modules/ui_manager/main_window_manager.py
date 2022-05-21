@@ -1,6 +1,7 @@
 import shelve
 import sys
 import os
+import pathlib
 import hpyculator as hpyc
 import logging  # 日志导入
 from .. import document as doc
@@ -47,10 +48,13 @@ class MainWinApp(FramelessWindow):
         self.setWindowTitle("hpyculator %s" % doc.VERSION)  # 设置标题
 
         self.move_fix = False  # 一个窗口全屏之后，拖动，窗口会回到正常大小，且指针和在窗口长度和比值和原来一致,True的话就进行校正
-        # self.bg_img = None  # 储存图片
-        self.bg_img = QPixmap(
-            os.path.join(os.getcwd(), "background_img", "background1.png")
-        )
+
+        background_img_path = pathlib.Path(background_dir_path).joinpath("background1.png")
+        # print(pathlib.Path().cwd())
+        if background_img_path.is_file():
+            self.bg_img = QPixmap(
+                background_img_path
+            )
 
         # 读取设置文件-按钮状态和输出目录  check控件初始化
         with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:

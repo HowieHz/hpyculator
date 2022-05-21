@@ -26,6 +26,7 @@ if __name__ == "__main__":
 # todo ！！！插件管理窗口
 # todo 多套主题
 # todo combo的样式
+# todo pathlib替换掉os.path
 #
 # 命名规范v1.0.0
 # hello_world 变量,文件名(xswl.txt)全部小写，使用下划线连接
