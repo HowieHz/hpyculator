@@ -49,6 +49,8 @@ class MainWinApp(FramelessWindow):
         # self.main_win_signal = main_win_signal  # 更方便地使用自定义事件
         self.setWindowTitle("hpyculator %s" % doc.VERSION)  # 设置标题
 
+        self.move_fix = False  # 一个窗口全屏之后，拖动，窗口会回到正常大小，且指针和在窗口长度和比值和原来一致,True的话就进行校正
+
         # 读取设置文件-按钮状态和输出目录  check控件初始化
         with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
             if "is_save_settings" in setting_file:
@@ -252,6 +254,16 @@ class MainWinApp(FramelessWindow):
             self.selection_list
         )  # 选项名添加到ui上
 
+    def resizeEvent(self, e):
+        # don't forget to call the resizeEvent() of super class
+        super().resizeEvent(e)
+        # print("resizeEvent",self.width(), self.height())
+        # self.ui.central_widget.resize(length, length)
+        # self.ui.central_widget.move(
+        #     self.width() // 2 - length // 2,
+        #     self.height() // 2 - length // 2
+        # )
+
     def minimizeEvent(self):
         """
         最小化窗口
@@ -287,8 +299,8 @@ class MainWinApp(FramelessWindow):
         :param event:
         :return:
         """
-        self.start_pos = event.globalPos()  # 鼠标点击位置
-        self.origin_pos = self.pos()  # 窗口位置
+        self.start_mouse_pos = event.globalPos()  # 鼠标点击位置
+        self.origin_win_pos = self.pos()  # 窗口位置
 
     def mouseMoveEvent(self, event):
         """
@@ -298,18 +310,35 @@ class MainWinApp(FramelessWindow):
         :return:
         """
         if self.isMaximized():
-            self.showNormal()
+            self.showNormal()  # 有个动画，所以会瞬移一下
+            self.move_fix = True  # 需要按照比例将窗口移动到鼠标的对应位置
+            self.start_mouse_pos = event.globalPos()  # 鼠标点击位置
+            return
+        if self.move_fix:
             screen = QGuiApplication.primaryScreen().geometry()  # 屏幕类并调用geometry获取屏幕大小
             screen_width = screen.width()  # 屏幕的宽
             screen_height = screen.height()  # 屏幕的高
-            # self.move(self.start_pos.x()+(event.globalPos().x()/screen_width)*新窗口宽度,self.start_pos.y()+(event.globalPos().y()/screen_height)*新窗口高度)
-            # TODO 继承调整窗口的大小的方法，添加一个记录窗口大小的东西，然后改写
-            self.move(self.start_pos.x()-(event.globalPos().x()/screen_width)*1145,self.start_pos.y()-(event.globalPos().y()/screen_height)*893)
-            self.start_pos = event.globalPos()  # 鼠标点击位置
-            self.origin_pos = self.pos()  # 窗口位置
+            # print("屏幕大小",screen_width,screen_height)
+            # print("窗口大小2 玄学",self.width(),self.height())
+            # print("屏幕大小和原来鼠标点击位置的比值",(self.start_mouse_pos.x() / screen_width),(self.start_mouse_pos.y() / screen_height))
+            # print("目前鼠标点击位置",event.globalPos().x(),event.globalPos().y())
+            # print("原来鼠标点击位置",self.start_mouse_pos)
+            # print("相对于窗口左上角的新位置", (self.start_mouse_pos.x() / screen_width) * self.width(),(self.start_mouse_pos.y() / screen_height) * self.height())
+            # print("新计算位置",event.globalPos().x() - (self.start_mouse_pos.x() / screen_width) * self.width(), event.globalPos().y() - ( self.start_mouse_pos.y()/ screen_height) * self.height())
+            # 这里的self.start_mouse_pos是全屏状态下点击的位置
+            self.move(event.globalPos().x() - (self.start_mouse_pos.x() / screen_width) * self.width(), event.globalPos().y() - ( self.start_mouse_pos.y()/ screen_height) * self.height())
+            self.move_fix=False
+            # print("self.start_mouse_pos1.9", self.origin_win_pos)
+            self.start_mouse_pos = event.globalPos()  # 鼠标点击位置 可能可以注释掉这句
+            # print("self.start_mouse_pos2", self.origin_win_pos)
+            # print("窗口位置1.9", self.origin_win_pos)
+            self.origin_win_pos = self.pos()  # 窗口位置重置到新位置
+            # print("窗口位置2", self.origin_win_pos)
             return
-        move_pos = event.globalPos() - self.start_pos  # 目前鼠标的位置和之前鼠标的位置的坐标差
-        self.move(self.origin_pos + move_pos)  # 原本窗口的位置加上坐标差成为新窗口的位置
+        # print("self.start_mouse_pos2.1!=2", self.start_mouse_pos)
+        # print("窗口位置2.1=2", self.origin_win_pos)
+        move_pos = event.globalPos() - self.start_mouse_pos  # 目前鼠标的位置和之前鼠标的位置的坐标差
+        self.move(self.origin_win_pos + move_pos)  # 原本窗口的位置加上坐标差成为新窗口的位置
 
     def chooseOptionEvent(self, item):
         """

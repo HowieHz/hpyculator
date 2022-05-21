@@ -196,4 +196,5 @@ class UnixFramelessWindow(FramelessWindowBase):
         return super().eventFilter(obj, event)
 
 
-FramelessWindow = WindowsFramelessWindow if os.name == "nt" else UnixFramelessWindow
+# FramelessWindow = WindowsFramelessWindow if os.name == "nt" else UnixFramelessWindow
+FramelessWindow = WindowsFramelessWindow
