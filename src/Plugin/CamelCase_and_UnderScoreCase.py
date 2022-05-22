@@ -38,7 +38,7 @@ def on_calculate(data, todo):
     text_list = []  # 存放单词组
     if input_mode == "0":
         text_list = str(text).split("_")
-        print(text_list)
+        # print(text_list)
     elif input_mode == "1":
         text_list_single = []
         text_uppercase_index = []

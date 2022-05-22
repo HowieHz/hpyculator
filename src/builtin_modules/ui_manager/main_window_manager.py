@@ -260,7 +260,7 @@ class MainWinApp(FramelessWindow):
         else:
             output_dir_path = self.OUTPUT_DIR_PATH
         # 以上是计算前工作
-        print("启动计算")
+        # print("启动计算")
         calculate_manager = CalculationManager()
         calculate_manager.start(
             input_data, input_mode, calculation_mode, user_selection_id, output_dir_path
@@ -401,7 +401,7 @@ class MainWinApp(FramelessWindow):
         :param item:
         :return: None
         """
-        print(f"选中的选项名{item.text()}")
+        # print(f"选中的选项名{item.text()}")
         self.user_selection_id = str(self.plugin_option_id_dict[item.text()])  # 转换成ID
         self.selected_plugin_attributes = (
             selected_plugin_attributes
@@ -520,7 +520,7 @@ by {selected_plugin_attributes["author"]}
         :return: None
         """
         search_keyword = self.ui.search_plugin.toPlainText()
-        print(f"search_keyword:{search_keyword}")
+        # print(f"search_keyword:{search_keyword}")
 
         if search_keyword == "":
             self.searchCancel()

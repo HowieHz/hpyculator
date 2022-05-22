@@ -55,10 +55,9 @@ class PluginManager:
         :param plugin_files_name: 文件夹插件名列表，如["a","b","c"]
         :return: None
         """
-        print(f"读取到的文件夹插件:{plugin_files_name}")
+        # print(f"读取到的文件夹插件:{plugin_files_name}")
         for name in plugin_files_name:
             self.loaded_plugin[name] = importlib.import_module(f".{name}.__init__", package="Plugin")
-            print(name)
             try:
                 self.plugin_option_id_dict[
                     self.loaded_plugin[name].PLUGIN_METADATA["option_name"]
@@ -96,7 +95,7 @@ class PluginManager:
         """
         # 初始化模块目录
         self.plugin_dir_path = path
-        print(f"插件保存位置:{self.plugin_dir_path}")
+        # print(f"插件保存位置:{self.plugin_dir_path}")
 
         plugin_file_names, folder_plugin_names = self.__readPluginPath(
             self.plugin_dir_path

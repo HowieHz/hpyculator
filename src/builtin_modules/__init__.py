@@ -68,7 +68,7 @@ def checkOutputPath(setting_file_path):
         else:
             output_dir_path = str(os.path.join(os.getcwd(), "Output"))
             setting_file["output_dir_path"] = output_dir_path
-        print(f"输出文件保存位置:{output_dir_path}")
+        # print(f"输出文件保存位置:{output_dir_path}")
 
     # 检查输出文件夹是否存在
     if not os.path.exists(output_dir_path):
