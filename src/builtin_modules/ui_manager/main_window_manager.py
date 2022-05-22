@@ -99,8 +99,24 @@ class MainWinApp(FramelessWindow):
                     ]:
                         sequence[2].setChecked(sequence[1])  # 初始化控件
             else:
+                # 初始化部分
                 setting_file["is_save_settings"] = False  # 默认不保存按键状态
                 self.is_save_settings = False  # 默认不保存按键状态
+                for sequence in [
+                    # 键名 初始化状态 对应check控件
+                    ("is_save", False, self.ui.check_save),
+                    (
+                            "output_optimization",
+                            True,
+                            self.ui.check_output_optimization,
+                    ),
+                    (
+                            "output_lock_maximums",
+                            True,
+                            self.ui.check_output_lock_maximums,
+                    ),
+                ]:
+                    sequence[2].setChecked(sequence[1])  # 初始化控件
 
         self.is_thread_running = [False]  # 防止反复启动计算线程
 
