@@ -1,4 +1,4 @@
-RAW_VERSION = "22w21a"  # todo 发布的时候改版本号
+RAW_VERSION = "1.5.0"  # todo 发布的时候改版本号
 
 if "w" in RAW_VERSION:
     VERSION = RAW_VERSION + "  开发版"
