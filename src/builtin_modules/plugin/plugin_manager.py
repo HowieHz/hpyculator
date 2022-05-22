@@ -32,7 +32,9 @@ class PluginManager:
                     self.loaded_plugin[name] = importlib.import_module(f"Plugin.{name}")
                     self.plugin_option_id_dict[
                         self.loaded_plugin[name].PLUGIN_METADATA["option_name"]
-                    ] = self.loaded_plugin[name].PLUGIN_METADATA["id"]  # 读取模块元数据，添加gui选项
+                    ] = self.loaded_plugin[name].PLUGIN_METADATA[
+                        "id"
+                    ]  # 读取模块元数据，添加gui选项
                 except ImportError as e:
                     print(f"init_plugin_singer_file inside Exception:{str(e)}")
                 except Exception as e:
@@ -47,11 +49,15 @@ class PluginManager:
         """
         # print(f"读取到的文件夹插件:{plugin_files_name}")
         for name in plugin_files_name:
-            self.loaded_plugin[name] = importlib.import_module(f".{name}.__init__", package="Plugin")
+            self.loaded_plugin[name] = importlib.import_module(
+                f".{name}.__init__", package="Plugin"
+            )
             try:
                 self.plugin_option_id_dict[
                     self.loaded_plugin[name].PLUGIN_METADATA["option_name"]
-                ] = self.loaded_plugin[name].PLUGIN_METADATA["id"]  # 读取模块元数据，添加gui选项
+                ] = self.loaded_plugin[name].PLUGIN_METADATA[
+                    "id"
+                ]  # 读取模块元数据，添加gui选项
             except ImportError as e:
                 print(f"init_plugin_folder inside Exception:{str(e)}")
             except Exception as e:
@@ -70,16 +76,23 @@ class PluginManager:
 
         # 从所有读取的文件和文件夹中挑选出.py为后缀的文件
         files_in_plugin_dir = map(
-            lambda file_name: file_name.split(".")[0] if file_name.endswith(plugin_suffix) else "",
-            things_in_plugin_dir)
+            lambda file_name: file_name.split(".")[0]
+            if file_name.endswith(plugin_suffix)
+            else "",
+            things_in_plugin_dir,
+        )
         # 去除空值
         files_in_plugin_dir = [_ for _ in files_in_plugin_dir if _ != ""]
 
         # 从所有读取的文件和文件夹中挑选出文件夹
         dirs_in_plugin_dir = map(
-            lambda file_name: file_name if os.path.isdir(os.path.join(path,file_name)) and os.path.isfile(os.path.join(path,file_name,"__init__.py")) else "",
-            things_in_plugin_dir)
-        #去除空值
+            lambda file_name: file_name
+            if os.path.isdir(os.path.join(path, file_name))
+            and os.path.isfile(os.path.join(path, file_name, "__init__.py"))
+            else "",
+            things_in_plugin_dir,
+        )
+        # 去除空值
         dirs_in_plugin_dir = [_ for _ in dirs_in_plugin_dir if _ != ""]
 
         try:
@@ -127,12 +140,12 @@ class PluginManager:
         if plugin_attributes["fullwidth_symbol"] == hpyc.ON:
             plugin_attributes["help"] = (
                 plugin_attributes["help"]
-                    .replace(",", "，")
-                    .replace(".", "。")
-                    .replace("'", "‘")
-                    .replace('"', "”")
-                    .replace("(", "（")
-                    .replace(")", "）")
+                .replace(",", "，")
+                .replace(".", "。")
+                .replace("'", "‘")
+                .replace('"', "”")
+                .replace("(", "（")
+                .replace(")", "）")
             )
 
         return plugin_attributes

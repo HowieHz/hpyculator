@@ -7,6 +7,7 @@ from PySide6.QtWidgets import QApplication
 
 import os
 import sys
+
 # sys.path.append(os.path.join(os.getcwd(),"bin"))
 
 if __name__ == "__main__":
