@@ -33,9 +33,6 @@ class SettingWinApp(QDialog):
             # 读取保存选项状态设置
             self.ui.check_is_save_check_box.setChecked(setting_file["is_save_settings"])
 
-            # 读取保存日志文件设置
-            self.ui.check_is_save_log.setChecked(setting_file["is_save_log"])
-
     def saveSetting(self):
         """
         按下保存按钮之后的事件
@@ -50,7 +47,6 @@ class SettingWinApp(QDialog):
             setting_file[
                 "is_save_settings"
             ] = self.ui.check_is_save_check_box.isChecked()
-            setting_file["is_save_log"] = self.ui.check_is_save_log.isChecked()
 
         QMessageBox.information(self, "保存完成", "保存完成\n部分设置将在重新启动后生效", QMessageBox.Ok)
         self.close()
@@ -59,11 +55,6 @@ class SettingWinApp(QDialog):
         self.close()
 
     def saveSettingCheckEvent(self):
-        """
-        占位用，因为都是最后统一读取写入设置文件的
-        """
-
-    def saveLogCheckEvent(self):
         """
         占位用，因为都是最后统一读取写入设置文件的
         """

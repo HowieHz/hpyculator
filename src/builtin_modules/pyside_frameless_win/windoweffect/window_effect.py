@@ -3,7 +3,7 @@ import sys
 from ctypes import POINTER, byref, c_bool, c_int, cdll, pointer, sizeof
 from ctypes.wintypes import DWORD, LONG, LPCVOID
 
-from win32 import win32api, win32gui
+import win32api, win32gui
 from win32.lib import win32con
 
 from .c_structures import (ACCENT_POLICY, ACCENT_STATE, DWMNCRENDERINGPOLICY,

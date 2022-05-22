@@ -59,22 +59,7 @@ class TestAllManager:
         if os.path.exists(output_dir_path) is not True:
             raise AssertionError
 
-    @pytest.mark.run(order=2)
-    def test_log(self):
-        print(f"目前运行{self.__class__.__name__}类,test_log函数")
-        instance_app = CreateApp()
-        setting_file_path = str(
-            os.path.join(os.getcwd(), "Setting", "hpyculator_setting")
-        )
-        log_dir_path = str(os.path.join(os.getcwd(), "Log"))
-
-        instance_app.logCheck(setting_file_path)  # 日志检查
-
-        if os.path.exists(log_dir_path) is not True:
-            raise AssertionError
-
     # TODO 计算模块测试 输入是否能得到输入，各种情况的输入，各种输入
-    #  log模块测试 返回值，是否创建了路径，是否生成了文件，文件写入是否正常
     #  插件模块加载测试 检查各项加载是否正常
     #  插件模块调用测试 调用是否正常，返回值是否符合预估
     #  初始化测试 初始化是否能正常调用 路径是否正常调用

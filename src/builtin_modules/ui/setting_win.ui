@@ -689,84 +689,11 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
      <pointsize>14</pointsize>
     </font>
    </property>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>370</y>
-     <width>128</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>等距更纱黑体 Slab SC</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>是否开启日志文件</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="check_is_save_log">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>370</y>
-     <width>161</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>更纱黑体 SC</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QCheckBox {
-	color: #000000;
-	padding: 2px;
-}
-QCheckBox:disabled {
-	color: #808086;
-	padding: 2px;
-}
-
-QCheckBox:hover {
-	border-radius:4px;
-	border-style:solid;
-	padding-left: 1px;
-	padding-right: 1px;
-	padding-bottom: 1px;
-	padding-top: 1px;
-	border-width:1px;
-	border-color: transparent;
-}
-QCheckBox::indicator:checked {
-
-	height: 15px;
-	width: 15px;
-	border-style:solid;
-	border-width: 1px;
-	border-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 rgba(91, 171, 252, 255));
-	color: #000000;
-	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 rgba(91, 171, 252, 255));
-}
-QCheckBox::indicator:unchecked {
-
-	height: 15px;
-	width: 15px;
-	border-style:solid;
-	border-width: 1px;
-	border-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(0, 113, 255, 255), stop:1 rgba(91, 171, 252, 255));
-	color: #000000;
-}</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
+   <item>
+    <property name="text">
+     <string>未完工</string>
+    </property>
+   </item>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
@@ -1028,22 +955,6 @@ QCheckBox::indicator:unchecked {
    </hints>
   </connection>
   <connection>
-   <sender>check_is_save_log</sender>
-   <signal>clicked()</signal>
-   <receiver>SettingWin</receiver>
-   <slot>saveLogCheckEvent()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>370</x>
-     <y>390</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>434</x>
-     <y>318</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>button_reset_save_location</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
@@ -1112,7 +1023,6 @@ QCheckBox::indicator:unchecked {
   <slot>saveSetting()</slot>
   <slot>cancelSetting()</slot>
   <slot>saveSettingCheckEvent()</slot>
-  <slot>saveLogCheckEvent()</slot>
   <slot>resetSaveLocationEvnet()</slot>
   <slot>chooseBackgroundImg(QString)</slot>
   <slot>openBackgroundDirEvent()</slot>

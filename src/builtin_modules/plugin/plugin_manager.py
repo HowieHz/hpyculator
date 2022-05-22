@@ -1,9 +1,11 @@
 import os
-import logging
+import sys
 import importlib
 import hpyculator as hpyc
 from typing import List, Dict
 
+# 这样才可以导入上层包哈哈
+sys.path.append(os.path.join(sys.path[0], ".."))
 
 class PluginManager:
     def __init__(self):
@@ -26,24 +28,25 @@ class PluginManager:
         """
 
         def remove_file_suffix(file_name: str):
-            return file_name.split(".")[0]
+            if file_name[-3:] == ".py":
+                return file_name.split(".")[0]
+            else:
+                return ""
 
         plugin_files_name = map(remove_file_suffix, plugin_files_name_py)
-        logging.debug(f"去掉.py后缀的文件名 {plugin_files_name}")
+        # print(f"去掉.py后缀的文件名 {list(plugin_files_name)}")
         for name in plugin_files_name:
-            self.loaded_plugin[name] = importlib.import_module(
-                f".{name}", package="Plugin"
-            )
-            # self.i = importlib.import_module('.' + str(name), package='Plugin')  # 相对导入
-            logging.debug(name)
-            try:
-                # self.can_choose_number.append(
-                #     self.loaded_plugin[name].PLUGIN_METADATA['option_name'])  # 读取模块元数据，添加gui选项
-                self.plugin_option_id_dict[
-                    self.loaded_plugin[name].PLUGIN_METADATA["option_name"]
-                ] = self.loaded_plugin[name].PLUGIN_METADATA["id"]
-            except Exception as e:
-                logging.debug(f"init_plugin_singer_file inside Exception:{e}")
+            if name:  # 跳过空位
+                try:
+                    # self.loaded_plugin[name] = importlib.import_module(f".{name}", package="Plugin")
+                    self.loaded_plugin[name] = importlib.import_module(f"Plugin.{name}")
+                    self.plugin_option_id_dict[
+                        self.loaded_plugin[name].PLUGIN_METADATA["option_name"]
+                    ] = self.loaded_plugin[name].PLUGIN_METADATA["id"]  # 读取模块元数据，添加gui选项
+                except ImportError as e:
+                    print(f"init_plugin_singer_file inside Exception:{str(e)}")
+                except Exception as e:
+                    print(f"init_plugin_singer_file inside Exception:{str(e)}")
 
     def __init_plugin_folder(self, plugin_files_name):
         """
@@ -52,21 +55,18 @@ class PluginManager:
         :param plugin_files_name: 文件夹插件名列表，如["a","b","c"]
         :return: None
         """
-        logging.debug(f"读取到的文件夹插件:{plugin_files_name}")
+        print(f"读取到的文件夹插件:{plugin_files_name}")
         for name in plugin_files_name:
-            self.loaded_plugin[name] = importlib.import_module(
-                f".{name}.__init__", package="Plugin"
-            )
-            # self.i = importlib.import_module('.' + str(name), package='Plugin')  # 相对导入
-            logging.debug(name)
+            self.loaded_plugin[name] = importlib.import_module(f".{name}.__init__", package="Plugin")
+            print(name)
             try:
-                # self.can_choose_number.append(
-                #     self.loaded_plugin[name].PLUGIN_METADATA['option_name'])  # 读取模块元数据，添加gui选项
                 self.plugin_option_id_dict[
                     self.loaded_plugin[name].PLUGIN_METADATA["option_name"]
-                ] = self.loaded_plugin[name].PLUGIN_METADATA["id"]
+                ] = self.loaded_plugin[name].PLUGIN_METADATA["id"]  # 读取模块元数据，添加gui选项
+            except ImportError as e:
+                print(f"init_plugin_folder inside Exception:{str(e)}")
             except Exception as e:
-                logging.debug(f"init_plugin_folder inside Exception:{e}")
+                print(f"init_plugin_folder inside Exception:{str(e)}")
 
     @staticmethod
     def __readPluginPath(path):
@@ -83,7 +83,7 @@ class PluginManager:
         for root, _dir, file in os.walk(path):
             plugin_file_names.append(file)
             root_list = str(root).split("\\")
-            if root_list[-2] == "Plugin" and "__init__.py" in file:
+            if (root_list[-2] == "Plugin") and ("__init__.py" in file):
                 folder_plugin_names.append(root_list[-1])
         return plugin_file_names, folder_plugin_names
 
@@ -96,31 +96,32 @@ class PluginManager:
         """
         # 初始化模块目录
         self.plugin_dir_path = path
-        logging.debug(f"插件保存位置:{self.plugin_dir_path}")
+        print(f"插件保存位置:{self.plugin_dir_path}")
 
         plugin_file_names, folder_plugin_names = self.__readPluginPath(
             self.plugin_dir_path
         )  # 读目录获取文件名
 
         # 从所有读取的文件中挑选出.py为后缀的文件
-        try:
-            for i_list in plugin_file_names:
-                if (i_list[0].split("."))[
-                    -1
-                ] == "py" and not self.plugin_files_name_py:  # 第一遍空列表才写入
-                    self.plugin_files_name_py = i_list
-        except IndexError:  # 没读到
-            self.plugin_files_name_py = []
+        self.plugin_files_name_py = os.listdir(path)
+        # try:
+        #     for i_list in plugin_file_names:
+        #         if (i_list[0].split("."))[
+        #             -1
+        #         ] == "py" and not self.plugin_files_name_py:  # 第一遍空列表才写入
+        #             self.plugin_files_name_py = i_list
+        # except IndexError:  # 没读到
+        #     self.plugin_files_name_py = []
 
         try:
             self.__init_plugin_singer_file(self.plugin_files_name_py)  # 导入单文件插件
         except Exception as e:
-            logging.debug(f"init_plugin_singer_file outside Exception:{e}")
+            print(f"init_plugin_singer_file outside Exception:{e}")
 
         try:
             self.__init_plugin_folder(folder_plugin_names)  # 导入文件插件
         except Exception as e:
-            logging.debug(f"init_plugin_folder outside Exception:{e}")
+            print(f"init_plugin_folder outside Exception:{e}")
 
         # loaded_plugin: Optional[Dict[str, Callable]] = None  # 存放加载完毕的插件 ID-读取的插件
         # plugin_option_id_dict: Optional[Dict[str, str]] = None  # 选项名和实际文件名的映射表

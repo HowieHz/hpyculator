@@ -1,0 +1,4 @@
+点我启动.exe 启动软件
+
+背景图片目录为.\background_img
+插件目录为.\bin\Plugin

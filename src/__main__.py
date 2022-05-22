@@ -5,7 +5,9 @@ from builtin_modules import CreateApp
 # pyside6导入
 from PySide6.QtWidgets import QApplication
 
+import os
 import sys
+# sys.path.append(os.path.join(os.getcwd(),"bin"))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)  # 启动一个应用
@@ -16,9 +18,9 @@ if __name__ == "__main__":
     # instance_app = testWinApp()
     # sys.exit(app.exec())  # 避免程序执行到这一行后直接退出
 
+# todo debug qt.gui.imageio: libpng warning: iCCP: known incorrect sRGB profile
 # todo 1.可以分享脚本的平台（qq群也不错） 2.Github actions
 # todo 3.可以读取文件作为输入 # todo 4.复制到剪贴板
-# todo 5.美化 5.背景图 # todo 7.一个按钮打开插件目录
 # todo 8.上线网页版
 # todo 9.相对快捷方式
 # todo ！！！10 os.listdir() https://github.com/CoderWanFeng/python-office/blob/master/office/word.py 学习这里重写插件读取方法
@@ -27,7 +29,8 @@ if __name__ == "__main__":
 # todo 多套主题
 # todo combo的样式
 # todo pathlib替换掉os.path
-#
+# todo 重写无边框窗体
+
 # 命名规范v1.0.0
 # hello_world 变量,文件名(xswl.txt)全部小写，使用下划线连接
 # helloWorld 函数(def)和方法使用小驼峰式命名法，首单词字母小写，后面单词字母大写

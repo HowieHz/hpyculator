@@ -1,9 +1,8 @@
 import os
 import shelve
 from typing import Optional
-import logging
 
-from .log import LogManager  # 日志管理 初始化
+# from .log import LogManager  # 日志管理 初始化
 from .plugin import instance_plugin_manager  # 插件管理
 from .ui_manager import MainWinApp  # 窗口管理类（用于管理设置的窗口）
 
@@ -23,8 +22,6 @@ class CreateApp:
         OUTPUT_DIR_PATH = checkOutputPath(SETTING_FILE_PATH)  # 输出路径检查
         BACKGROUND_IMG_DIR_PATH = checkBackgroundImgPath(SETTING_FILE_PATH)  # 背景图片路径检查
         PLUGIN_DIR_PATH = pluginCheck(SETTING_FILE_PATH)  # 插件加载
-
-        logCheck(SETTING_FILE_PATH)  # 日志检查
 
         list_instance_main_window = []
         for _ in range(self.instance_num):
@@ -71,7 +68,7 @@ def checkOutputPath(setting_file_path):
         else:
             output_dir_path = str(os.path.join(os.getcwd(), "Output"))
             setting_file["output_dir_path"] = output_dir_path
-        logging.debug(f"输出文件保存位置:{output_dir_path}")
+        print(f"输出文件保存位置:{output_dir_path}")
 
     # 检查输出文件夹是否存在
     if not os.path.exists(output_dir_path):
@@ -99,16 +96,6 @@ def checkBackgroundImgPath(setting_file_path):
         os.makedirs(background_img_dir_path)
 
     return background_img_dir_path
-
-
-def logCheck(setting_file_path):
-    """
-    日志检查
-
-    :return: None
-    """
-    # 检查存放日志文件的文件夹是否存在
-    LogManager(setting_file_path).checkIsEnableLog()
 
 
 def pluginCheck(setting_file_path):

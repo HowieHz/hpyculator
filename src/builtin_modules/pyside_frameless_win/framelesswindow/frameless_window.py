@@ -6,14 +6,19 @@ from PySide6.QtCore import QCoreApplication, QEvent, Qt
 from PySide6.QtGui import QCursor, QMouseEvent
 from PySide6.QtWidgets import QWidget, QMainWindow
 
-if os.name == 'nt':
-    from ctypes.wintypes import MSG
-    from win32 import win32api, win32gui
-    from win32.lib import win32con
-    from ..windoweffect import MINMAXINFO, NCCALCSIZE_PARAMS, WindowEffect
-else:
-    # from utils.linux_utils import LinuxMoveResize
-    pass  # sip没有找到在pyside6下对应的模块，故砍去
+from ctypes.wintypes import MSG
+import win32api, win32gui
+from win32.lib import win32con
+from ..windoweffect import MINMAXINFO, NCCALCSIZE_PARAMS, WindowEffect
+
+# if os.name == 'nt':
+#     from ctypes.wintypes import MSG
+#     import win32api, win32gui
+#     from win32.lib import win32con
+#     from ..windoweffect import MINMAXINFO, NCCALCSIZE_PARAMS, WindowEffect
+# else:
+#     # from utils.linux_utils import LinuxMoveResize
+#     pass  # sip没有找到在pyside6下对应的模块，故砍去
 
 class FramelessWindowBase(QWidget):
 # class FramelessWindowBase(QMainWindow):

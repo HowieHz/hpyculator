@@ -1,16 +1,5 @@
-# pyside6 ui signal导入
-from PySide6.QtCore import Qt, QObject, QEvent, QSize, QRect
-from PySide6.QtGui import QIcon, QPixmap, QPalette, QBrush
 from PySide6.QtWidgets import *
-from requests import get
-from os.path import exists
-import logging
-
-
-import logging
 from ..ui import Ui_TestWin
-from requests import get
-from os.path import exists
 
 class testWinApp(QMainWindow):
     def __init__(self):
