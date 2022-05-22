@@ -32,7 +32,9 @@ class PluginManager:
                     self.loaded_plugin[name] = importlib.import_module(f"Plugin.{name}")
                     self.plugin_option_id_dict[
                         self.loaded_plugin[name].PLUGIN_METADATA["option_name"]
-                    ] = self.loaded_plugin[name].PLUGIN_METADATA["id"]  # 读取模块元数据，添加gui选项
+                    ] = self.loaded_plugin[name].PLUGIN_METADATA[
+                        "id"
+                    ]  # 读取模块元数据，添加gui选项
                 except ImportError as e:
                     print(f"init_plugin_singer_file inside Exception:{str(e)}")
                 except Exception as e:
@@ -47,11 +49,15 @@ class PluginManager:
         """
         # print(f"读取到的文件夹插件:{plugin_files_name}")
         for name in plugin_files_name:
-            self.loaded_plugin[name] = importlib.import_module(f".{name}.__init__", package="Plugin")
+            self.loaded_plugin[name] = importlib.import_module(
+                f".{name}.__init__", package="Plugin"
+            )
             try:
                 self.plugin_option_id_dict[
                     self.loaded_plugin[name].PLUGIN_METADATA["option_name"]
-                ] = self.loaded_plugin[name].PLUGIN_METADATA["id"]  # 读取模块元数据，添加gui选项
+                ] = self.loaded_plugin[name].PLUGIN_METADATA[
+                    "id"
+                ]  # 读取模块元数据，添加gui选项
             except ImportError as e:
                 print(f"init_plugin_folder inside Exception:{str(e)}")
             except Exception as e:
