@@ -1,5 +1,2 @@
-jpype1
-hpyculator>=1.4.5
+hpyculator>=1.4.9
 pyside6
-mypy
-pytest
