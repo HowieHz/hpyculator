@@ -13,7 +13,6 @@ PLUGIN_METADATA = {
     "help": "help",
     "output_end": "output_end",
     "return_mode": hpyc.NO_RETURN,
-    "use_quantifier": hpyc.ON,
 }
 
 

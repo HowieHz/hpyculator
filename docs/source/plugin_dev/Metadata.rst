@@ -38,8 +38,6 @@
     # （推荐）hpyc.NO_RETURN无return返回值，要求插件作者放置保存和输出（性能最好，推荐使用，默认值）（要求插件作者自己写好保存和返回，计算调用on_calculate函数，
     #         保存调用mon_calculate_with_save函数），
     # （推荐）hpyc.NO_RETURN_SINGLE_FUNCTION和三类似，但是只会调用on_calculate，且会传入第三个参数，第三个参数为'save'时表示为要输出到内屏，第三个参数为'output'时表示要保存
-    'use_quantifier' : hpyc.OFF ,#保存名的形式，OFF为 时间+算法名+输入+量词  ON为 时间+输入+“的”+算法名
-                                    #如果是ON，则quantifier无效化
     "fullwidth_symbol" : hpyc.OFF #懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
     }
 
@@ -71,10 +69,7 @@
     """
 
     """保存文件名
-        use_quantifier为ON
-            时间 + save_name + 输入 + quantifier .txt
-        use_quantifier为OFF
-            时间 + 输入 + "的" +save_name .txt
+        时间 + save_name + 输入 + quantifier .txt
 
         """
 

@@ -29,6 +29,10 @@ if __name__ == "__main__":
 # todo pathlib替换掉os.path
 # todo 重写无边框窗体
 # todo 把模块里面偷懒的东西修一遍
+# todo 学习snipaste的设置界面
+# todo 动画问题
+# todo 异形窗口
+# todo 升级检查
 
 # 命名规范v1.0.0
 # hello_world 变量,文件名(xswl.txt)全部小写，使用下划线连接

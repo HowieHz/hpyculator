@@ -34,7 +34,6 @@ PLUGIN_METADATA = {
     哈哈，把自己的题解拿来用了""",  # 帮助和说明(可选)
     "output_end": "",  # 输出小尾巴(可选)
     "return_mode": hpyc.NO_RETURN_SINGLE_FUNCTION,
-    "use_quantifier": hpyc.ON,
     "fullwidth_symbol": hpyc.ON,  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
 }
 

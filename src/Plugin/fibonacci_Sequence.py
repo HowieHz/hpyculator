@@ -15,7 +15,6 @@ PLUGIN_METADATA = {
 """,
     "output_end": "",
     "return_mode": hpyc.NO_RETURN_SINGLE_FUNCTION,
-    "use_quantifier": hpyc.OFF,
     "fullwidth_symbol": hpyc.ON,
 }
 

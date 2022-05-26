@@ -1,2 +1,3 @@
 hpyculator>=1.4.9
-pyside6
+PySide6
+pywin32

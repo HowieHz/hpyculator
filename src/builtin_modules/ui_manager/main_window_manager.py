@@ -10,7 +10,7 @@ from ..calculate import CalculationManager  # 计算管理
 from PySide6.QtGui import QTextCursor, QGuiApplication, QBrush, QPalette, QPixmap
 from PySide6.QtCore import Qt
 from ..ui import Ui_MainWin
-from hpyculator.hpysignal import main_win_signal
+from hpyculator.hpysignal import instance_main_win_signal
 
 # 窗口管理类（用于管理设置的窗口）
 from .setting_window_manager import SettingWinApp
@@ -42,7 +42,6 @@ class MainWinApp(FramelessWindow):
         self.ui = Ui_MainWin()  # UI类的实例化()
         self.ui.setupUi(self)  # ui初始化
         self.bindSignalWithSlots()  # 信号和槽的绑定
-        # self.main_win_signal = main_win_signal  # 更方便地使用自定义事件
         self.setWindowTitle("hpyculator %s" % doc.VERSION)  # 设置标题
 
         self.move_fix = False  # 一个窗口全屏之后，拖动，窗口会回到正常大小，且指针和在窗口长度和比值和原来一致,True的话就进行校正
@@ -167,13 +166,13 @@ class MainWinApp(FramelessWindow):
             self.ui.output_box.setTextCursor(cursor)
 
         # 自定义信号绑定函数
-        main_win_signal.appendOutPutBox.connect(appendOutPut)
-        main_win_signal.setOutPutBox.connect(setOutPut)
-        main_win_signal.clearOutPutBox.connect(clearOutPut)
-        main_win_signal.getOutPutBox.connect(getOutPut)
-        main_win_signal.setStartButtonText.connect(setStartButtonText)
-        main_win_signal.setStartButtonState.connect(setStartButtonState)
-        main_win_signal.setOutPutBoxCursor.connect(setOutPutBoxCursor)
+        instance_main_win_signal.appendOutPutBox.connect(appendOutPut)
+        instance_main_win_signal.setOutPutBox.connect(setOutPut)
+        instance_main_win_signal.clearOutPutBox.connect(clearOutPut)
+        instance_main_win_signal.getOutPutBox.connect(getOutPut)
+        instance_main_win_signal.setStartButtonText.connect(setStartButtonText)
+        instance_main_win_signal.setStartButtonState.connect(setStartButtonState)
+        instance_main_win_signal.setOutPutBoxCursor.connect(setOutPutBoxCursor)
 
     def startEvent(
         self,
@@ -405,7 +404,7 @@ class MainWinApp(FramelessWindow):
         self.user_selection_id = str(self.plugin_option_id_dict[item.text()])  # 转换成ID
         self.selected_plugin_attributes = (
             selected_plugin_attributes
-        ) = instance_plugin_manager.getPluginAttribute(self.user_selection_id)
+        ) = instance_plugin_manager.getPluginAttributes(self.user_selection_id)
 
         self.ui.output_box.setPlainText(
             f"""\
@@ -426,6 +425,7 @@ by {selected_plugin_attributes["author"]}
 
         :return:
         """
+        self.close()
         sys.exit(0)
 
     def openAboutWin(self):

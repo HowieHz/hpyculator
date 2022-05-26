@@ -4,9 +4,9 @@ PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
     "id": "A_Plus_B_String",  # ID,插件标识符,需要和文件名一致
     "option_name": "高精度浮点数加法 基于字符串 by HowieHz",  # 选项名-在选择算法列表中
-    "version": "V1.0.1",  # 版本号
-    "save_name": "加法",  # 文件保存项目名-在输出
-    "quantifier": "",  # 文件保存量词-在输入后面(可选)
+    "version": "V1.0.2",  # 版本号
+    "save_name": "",  # 文件保存项目名-在输出
+    "quantifier": "相加所得",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
     "output_name": "高精度浮点数加法 基于字符串",  # 选择此项后输出的名字
     "author": "HowieHz",  # 作者(可选)
@@ -19,8 +19,6 @@ PLUGIN_METADATA = {
                 """,  # 帮助和说明(可选)
     "output_end": "",  # 输出小尾巴(可选)
     "return_mode": hpyc.RETURN_ONCE,
-    "use_quantifier": hpyc.OFF,  # 保存名的形式，OFF为 时间+算法名+输入+量词  ON为 时间+输入+“的”+算法名
-    # 如果是ON，则quantifier无效化
     "fullwidth_symbol": hpyc.OFF,  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
 }
 

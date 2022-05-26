@@ -107,7 +107,7 @@ class PluginManager:
 
         return None
 
-    def getPluginAttribute(self, user_selection_id):
+    def getPluginAttributes(self, user_selection_id):
         """
         读取指定id的插件属性
 
@@ -130,7 +130,6 @@ class PluginManager:
             "return_mode",
             "save_name",
             "output_name",
-            "use_quantifier",
             "version",
         ]:
             if option_name in PLUGIN_METADATA:
