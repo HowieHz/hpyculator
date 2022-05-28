@@ -863,8 +863,7 @@ def scope_builder(num):
         ret = int(num / 10 ** ((num_len + 1) / 2 - 1))
         if int(str(ret) + str(ret)[-2::-1]) <= num:
             return int(num / 10 ** ((num_len + 1) / 2 - 1))
-        else:
-            return int(num / 10 ** ((num_len + 1) / 2 - 1) - 1)
+        return int(num / 10 ** ((num_len + 1) / 2 - 1) - 1)
     else:  # 偶数位
         return int(9 * (1 - 10 ** (num_len / 2)) / -9)  # 9*(10**0+10**1+10**2)
 

@@ -76,19 +76,19 @@ class WindowsFramelessWindow(FramelessWindowBase):
             by = yPos > h - self.BORDER_WIDTH
             if lx and ty:
                 return True, win32con.HTTOPLEFT
-            elif rx and by:
+            if rx and by:
                 return True, win32con.HTBOTTOMRIGHT
-            elif rx and ty:
+            if rx and ty:
                 return True, win32con.HTTOPRIGHT
-            elif lx and by:
+            if lx and by:
                 return True, win32con.HTBOTTOMLEFT
-            elif ty:
+            if ty:
                 return True, win32con.HTTOP
-            elif by:
+            if by:
                 return True, win32con.HTBOTTOM
-            elif lx:
+            if lx:
                 return True, win32con.HTLEFT
-            elif rx:
+            if rx:
                 return True, win32con.HTRIGHT
         elif msg.message == win32con.WM_NCCALCSIZE:
             if self._isWindowMaximized(msg.hWnd):
@@ -142,7 +142,7 @@ class WindowsFramelessWindow(FramelessWindowBase):
         # If the display information is not saved, return directly
         if monitor is None and not self.__monitorInfo:
             return
-        elif monitor is not None:
+        if monitor is not None:
             self.__monitorInfo = win32api.GetMonitorInfo(monitor)
 
         # adjust the size of window

@@ -43,8 +43,7 @@ def is_prime_jit(num):
     if (num % 6 != 1) and (num % 6 != 5):
         if num % 2 == 0:
             return False, 2
-        else:
-            return False, 3
+        return False, 3
     for i in range(5, int(num**0.5) + 1, 6):
         if (num % i == 0) or (num % (i + 2) == 0):
             return False, i
@@ -61,8 +60,7 @@ def is_prime(num):
     if (num % 6 != 1) and (num % 6 != 5):
         if num % 2 == 0:
             return False, 2
-        else:
-            return False, 3
+        return False, 3
     for i in range(5, int(num**0.5) + 1, 6):
         if (num % i == 0) or (num % (i + 2) == 0):
             return False, i
@@ -80,8 +78,7 @@ def is_prime_big_int(num):
     if (int(num) % 6 != 1) and (num % 6 != 5):
         if num % 2 == 0:
             return False, 2
-        else:
-            return False, 3
+        return False, 3
     for i in range(5, int(Decimal(num) / 2) + 1, 6):
         if (num % i == 0) or (num % (i + 2) == 0):
             return False, i
@@ -97,16 +94,13 @@ def on_calculate(num: str):
         answer = is_prime_big_int(num)
         if answer[0]:
             return f"{num}是质数"
-        else:
-            return f"{num}不是质数，有一个因数是{answer[1]}"
+        return f"{num}不是质数，有一个因数是{answer[1]}"
     if num > 9223372036854775807:
         answer = is_prime(num)
         if answer[0]:
             return f"{num}是质数"
-        else:
-            return f"{num}不是质数，有一个因数是{answer[1]}"
+        return f"{num}不是质数，有一个因数是{answer[1]}"
     answer = is_prime_jit(num)
     if answer[0]:
         return f"{num}是质数"
-    else:
-        return f"{num}不是质数，有一个因数是{answer[1]}"
+    return f"{num}不是质数，有一个因数是{answer[1]}"

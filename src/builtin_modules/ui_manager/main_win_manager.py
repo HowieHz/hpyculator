@@ -636,12 +636,11 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 
             self.ui.list_choices_plugin.addItems(_set_matched_item)  # 匹配的添加到选框
             return None
-        else:  # 选项名搜索模式
-            for i in self.selection_list:  # 选出符合要求的
-                if i.find(_search_keyword) == -1:  # 字符串方法，没找到指定子串就-1
-                    continue
-                self.ui.list_choices_plugin.addItem(i)
-            return None
+        for i in self.selection_list:  # 选出符合要求的
+            if i.find(_search_keyword) == -1:  # 字符串方法，没找到指定子串就-1
+                continue
+            self.ui.list_choices_plugin.addItem(i)
+        return None
 
     def event_search_cancel(self) -> None:
         """
