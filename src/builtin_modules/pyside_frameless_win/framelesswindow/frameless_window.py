@@ -34,13 +34,6 @@ class FramelessWindowBase(QWidget):
         # self.titleBar.raise_()
         self.resize(500, 500)
 
-    def resizeEvent(self, e):
-        """Adjust the width and icon of title bar"""
-        super().resizeEvent(e)
-        # self.titleBar.resize(self.width(), self.titleBar.height())
-        # self.titleBar.maxBtn.setMaxState(
-        #     self._isWindowMaximized(int(self.winId())))
-
     def _isWindowMaximized(self, hWnd):
         """Determine whether the window is maximized"""
         return self.isMaximized()
