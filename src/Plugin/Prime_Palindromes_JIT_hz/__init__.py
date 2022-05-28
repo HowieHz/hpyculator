@@ -11,7 +11,7 @@ PLUGIN_METADATA = {
     "id": "Prime_Palindromes_JIT_hz",  # ID,插件标识符,需要和文件名一致（必须）
     "option": f"{NAME}{VERSION} by {AUTHOR}",  # 选项名-在选择算法列表中（必须）
     "version": VERSION,  # 版本号（必须）
-    "tag": ["category:Mathematical calculations","depend:numba","jit"],
+    "tag": ["category:Mathematical calculations", "depend:numba", "jit"],
     "save_name": "",  # 文件保存项目名-在输出（必须）
     "quantifier": "以内的回文质数",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
@@ -828,7 +828,8 @@ def hw_builder_jit(scope):
         while temp > 0:
             reversal = reversal * 10 + temp % 10  # 左移一位并且去temp最后一位
             temp //= 10  # temp去掉最后一位
-        yield (i // 10) * (10 ** (int(math.log10(i)) + 1)) + reversal  # 输入123 左边是12000 reversal是321 加起来就是12321
+        # 输入123 左边是12000 reversal是321 加起来就是12321
+        yield (i // 10) * (10 ** (int(math.log10(i)) + 1)) + reversal
 
 
 def hw_builder(scope):
@@ -844,7 +845,8 @@ def hw_builder(scope):
         while temp > 0:
             reversal = reversal * 10 + temp % 10  # 左移一位并且去temp最后一位
             temp //= 10  # temp去掉最后一位
-        yield (i // 10) * (10 ** (int(math.log10(i)) + 1)) + reversal  # 输入123 左边是12000 reversal是321 加起来就是12321
+        # 输入123 左边是12000 reversal是321 加起来就是12321
+        yield (i // 10) * (10 ** (int(math.log10(i)) + 1)) + reversal
 
 
 def scope_builder(num):
@@ -877,7 +879,7 @@ def is_prime_jit(num):
     """
     if (num % 6 != 1) and (num % 6 != 5):
         return False
-    for i in range(5, int(num ** 0.5) + 1, 6):
+    for i in range(5, int(num**0.5) + 1, 6):
         if (num % i == 0) or (num % (i + 2) == 0):
             return False
     return True
@@ -892,7 +894,7 @@ def is_prime(num):
     """
     if (num % 6 != 1) and (num % 6 != 5):
         return False
-    for i in range(5, int(num ** 0.5) + 1, 6):
+    for i in range(5, int(num**0.5) + 1, 6):
         if (num % i == 0) or (num % (i + 2) == 0):
             return False
     return True
@@ -934,5 +936,6 @@ def on_calculate(inp: int, do_what):
     else:  # <=100030001遍历表 输出
         for answer in select_table(inp):
             output(answer)
+
 
 # 超过2的64次方的特判

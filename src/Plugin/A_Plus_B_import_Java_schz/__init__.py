@@ -5,13 +5,18 @@ import hpyculator as hpyc
 
 NAME = "高精度浮点数加法(基于Java)"
 VERSION = "V1.0.3"
-AUTHOR = ["shacha086","HowieHz"]
+AUTHOR = ["shacha086", "HowieHz"]
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
     "id": "A_Plus_B_import_Java_schz",  # ID,插件标识符,需要和文件名一致（必须）
-    "option": f"{NAME}{VERSION} by {', '.join(AUTHOR) if isinstance(AUTHOR,list) else AUTHOR}",  # 选项名-在选择算法列表中（必须）
+    # 选项名-在选择算法列表中（必须）
+    "option": f"{NAME}{VERSION} by {', '.join(AUTHOR) if isinstance(AUTHOR,list) else AUTHOR}",
     "version": VERSION,  # 版本号（必须）
-    "tag": ["category:Mathematical calculations","computer_language:java","depend:jpype"],
+    "tag": [
+        "category:Mathematical calculations",
+        "computer_language:java",
+        "depend:jpype",
+    ],
     "save_name": "",  # 文件保存项目名-在输出（必须）
     "quantifier": "相加所得",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)

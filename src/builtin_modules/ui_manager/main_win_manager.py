@@ -23,7 +23,7 @@ from ..pyside_frameless_win.framelesswindow import FramelessWindow
 
 class MainWinApp(FramelessWindow):
     def __init__(
-            self, setting_file_path, output_dir_path, plugin_dir_path, background_dir_path
+        self, setting_file_path, output_dir_path, plugin_dir_path, background_dir_path
     ):
         """
         主窗口程序类
@@ -81,7 +81,9 @@ class MainWinApp(FramelessWindow):
                     else:
                         dict_setting[sequence[0]] = sequence[1]  # 初始化设置文件中对应的项
                         sequence[2].setChecked(sequence[1])  # 初始化控件
-                with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                with open(
+                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
+                ) as setting_file:  # 写入配置文件
                     toml.dump(dict_setting, setting_file)
             else:  # 当不保存check状态 设置控件状态
                 for sequence in _default_state:
@@ -92,23 +94,31 @@ class MainWinApp(FramelessWindow):
             self.is_save_check_box_status = False  # 默认不保存按键状态
             for sequence in _default_state:
                 sequence[2].setChecked(sequence[1])  # 初始化控件
-            with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+            with open(
+                self.SETTING_FILE_PATH, "w+", encoding="utf-8"
+            ) as setting_file:  # 写入配置文件
                 toml.dump(dict_setting, setting_file)
 
         dict_setting = toml.load(self.SETTING_FILE_PATH)
         # 初始化背景图片
         if "background_img" in dict_setting:
             # noinspection PyTypeChecker
-            background_img_path = pathlib.Path(background_dir_path).joinpath(dict_setting["background_img"])
+            background_img_path = pathlib.Path(background_dir_path).joinpath(
+                dict_setting["background_img"]
+            )
             # print(pathlib.Path().cwd())
             if background_img_path.is_file():
                 self.bg_img = QPixmap(background_img_path)
         else:
-            background_img_path = pathlib.Path(background_dir_path).joinpath("default.png")
+            background_img_path = pathlib.Path(background_dir_path).joinpath(
+                "default.png"
+            )
             dict_setting["background_img"] = "default.png"
             if background_img_path.is_file():
                 self.bg_img = QPixmap(background_img_path)
-            with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+            with open(
+                self.SETTING_FILE_PATH, "w+", encoding="utf-8"
+            ) as setting_file:  # 写入配置文件
                 toml.dump(dict_setting, setting_file)
 
         self.is_thread_running = [False]  # 防止反复启动计算线程
@@ -116,31 +126,38 @@ class MainWinApp(FramelessWindow):
         # 关于gui显示内容的初始化
         self.flush_list_choices_plugin()
         self.ui.output_box.setPlainText(doc.START_SHOW)  # 开启的展示
-        self.ui.search_plugin.setPlaceholderText(_("输入字符自动进行搜索\n清空搜索框显示全部插件"))  # 灰色背景提示字符
+        self.ui.search_plugin.setPlaceholderText(
+            _("输入字符自动进行搜索\n清空搜索框显示全部插件")
+        )  # 灰色背景提示字符
         self.ui.search_plugin.clear()  # 不清空不显示灰色背景
         self.ui.input_box.setFocus()  # 设置焦点
 
         # 加载tag系统
-        _list_plugin_tag_option = instance_plugin_manager.get_all_plugin_tag_option()  # tag和选项名的映射表_list_plugin_tag_option [([tag1,tag2],name),([tag1,tag2],name)]
+        # tag和选项名的映射表_list_plugin_tag_option [([tag1,tag2],name),([tag1,tag2],name)]
+        _list_plugin_tag_option = instance_plugin_manager.get_all_plugin_tag_option()
         _set_tags = set()  # _set_tags里面有所有的tag
         for _tags_and_option in _list_plugin_tag_option:
             for _tag in _tags_and_option[0]:
                 _set_tags.add(_tag)  # _set_tags里面有所有的tag
 
         special_tags = doc.tags.SPECIAL_TAGS  # 读取特殊tag
-        _dict_set_tags = {}  # {"special_tag1":{"tag1","tag2"}, "special_tag2":{"tag1","tag2"}, "special_tag3":{"tag1","tag2"}, "special_tag4":{"tag1","tag2"}}
+        _dict_set_tags = (
+            {}
+        )  # {"special_tag1":{"tag1","tag2"}, "special_tag2":{"tag1","tag2"}, "special_tag3":{"tag1","tag2"}, "special_tag4":{"tag1","tag2"}}
         for _special_tag in special_tags:  # 初始化特殊tag的set
             _dict_set_tags[_special_tag] = set()
         for _tag in _set_tags:  # _set_tags里面有所有的tag
             for _special_tag in special_tags:  # 读取并分类特殊tag
-                if _tag[:len(_special_tag)] == _special_tag:  # 满足特殊tag
+                if _tag[: len(_special_tag)] == _special_tag:  # 满足特殊tag
                     _dict_set_tags[_special_tag].add(_tag)  # 分到对应的类别
                     break
             else:  # 没break的就是普通tag，直接添加
                 self.ui.output_box.appendPlainText(f"    {_tag}")  # 添加普通tag
         for _special_tag in special_tags:
             if locale.getdefaultlocale()[0] in doc.tags.SPECIAL_TAGS_TRANSLATOR:
-                self.ui.output_box.appendPlainText(f"    {doc.tags.SPECIAL_TAGS_TRANSLATOR[locale.getdefaultlocale()[0]][_special_tag]}")  # 特殊tag分类标题
+                self.ui.output_box.appendPlainText(
+                    f"    {doc.tags.SPECIAL_TAGS_TRANSLATOR[locale.getdefaultlocale()[0]][_special_tag]}"
+                )  # 特殊tag分类标题
             else:
                 self.ui.output_box.appendPlainText(f"    {_special_tag}")  # 特殊tag分类标题
             for _tag in _dict_set_tags[_special_tag]:
@@ -195,12 +212,12 @@ class MainWinApp(FramelessWindow):
         instance_main_win_signal.set_output_box_cursor.connect(_set_output_box_cursor)
 
     def event_start_calculation(
-            self,
-            test_input=None,
-            test_input_mode=None,
-            test_calculation_mode=None,
-            test_selection_id=None,
-            test_output_dir_path=None,
+        self,
+        test_input=None,
+        test_input_mode=None,
+        test_calculation_mode=None,
+        test_selection_id=None,
+        test_output_dir_path=None,
     ) -> None:
         """
         输入检查，启动计算线程
@@ -222,8 +239,9 @@ class MainWinApp(FramelessWindow):
                 self.ui.output_box.setPlainText(doc.CHANGELOG)
                 return
             if input_data == "":  # 是否输入检测
-                self.ui.output_box.setPlainText(_(
-                    """                                                  ↑
+                self.ui.output_box.setPlainText(
+                    _(
+                        """                                                  ↑
                                                   ↑上面的就是输入框了
 不输要算什么我咋知道要算啥子嘞     ↑
          → → → → → → → → → →  ↑
@@ -231,7 +249,8 @@ class MainWinApp(FramelessWindow):
 请在上面的框输入需要被处理的数据
 
 如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）"""
-                ))
+                    )
+                )
                 return
 
         # 选择的插件id
@@ -242,14 +261,16 @@ class MainWinApp(FramelessWindow):
                 self.user_selection_id
             )  # 被用户选择的插件，这个插件的id为user_selection_id
             if self.ui.list_choices_plugin.currentItem() is None:  # 是否选择检测
-                self.ui.output_box.setPlainText(_(
-                    """\n\n
+                self.ui.output_box.setPlainText(
+                    _(
+                        """\n\n
 不选要算什么我咋知道要算啥子嘞
 
 请在左侧选择运算核心
           ↓
 ← ← ←"""
-                ))
+                    )
+                )
                 return
 
         # 输入转换类型
@@ -430,17 +451,23 @@ class MainWinApp(FramelessWindow):
         """
         # print(f"选中的选项名{item.text()}")
         self.user_selection_id = str(self.plugin_option_id_dict[item.text()])  # 转换成ID
-        self.selected_plugin_attributes = _METADATA = instance_plugin_manager.get_plugin_attributes(self.user_selection_id)
-        self.ui.output_box.setPlainText(f"""\
+        self.selected_plugin_attributes = (
+            _METADATA
+        ) = instance_plugin_manager.get_plugin_attributes(self.user_selection_id)
+        self.ui.output_box.setPlainText(
+            f"""\
 {_METADATA["output_start"]}
 {_METADATA["output_name"]} {_METADATA["version"]}
 by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else _METADATA['author']}
 
 
-"""+_("使用提示")+f"""\
+"""
+            + _("使用提示")
+            + f"""\
 {_METADATA["help"]}
 
-{_METADATA["output_end"]}""")
+{_METADATA["output_end"]}"""
+        )
 
     def event_quit(self) -> None:
         """
@@ -473,7 +500,9 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         dict_setting = toml.load(self.SETTING_FILE_PATH)
         self.OUTPUT_DIR_PATH = dict_setting["output_dir_path"]
         self.is_save_check_box_status = dict_setting["is_save_check_box_status"]
-        background_img_path = pathlib.Path(self.background_dir_path).joinpath(dict_setting["background_img"])
+        background_img_path = pathlib.Path(self.background_dir_path).joinpath(
+            dict_setting["background_img"]
+        )
         if background_img_path.is_file():
             self.bg_img = QPixmap(background_img_path)
         self.draw_background()
@@ -487,7 +516,9 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         if self.is_save_check_box_status:  # 保存check设置
             dict_setting = toml.load(self.SETTING_FILE_PATH)
             dict_setting["is_save"] = self.ui.check_save.isChecked()
-            with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+            with open(
+                self.SETTING_FILE_PATH, "w+", encoding="utf-8"
+            ) as setting_file:  # 写入配置文件
                 toml.dump(dict_setting, setting_file)
 
     def event_output_optimization_check(self) -> None:
@@ -500,7 +531,9 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             if self.is_save_check_box_status:  # 保存check设置
                 dict_setting = toml.load(self.SETTING_FILE_PATH)
                 dict_setting["output_optimization"] = True
-                with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                with open(
+                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
+                ) as setting_file:  # 写入配置文件
                     toml.dump(dict_setting, setting_file)
         else:
             self.ui.check_output_lock_maximums.setChecked(False)
@@ -508,7 +541,9 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
                 dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
                 dict_setting["output_lock_maximums"] = False
                 dict_setting["output_optimization"] = False
-                with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                with open(
+                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
+                ) as setting_file:  # 写入配置文件
                     toml.dump(dict_setting, setting_file)
 
     def event_output_lock_maximums_check(self) -> None:
@@ -523,13 +558,17 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
                 dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
                 dict_setting["output_optimization"] = True
                 dict_setting["output_lock_maximums"] = True  # True
-                with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                with open(
+                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
+                ) as setting_file:  # 写入配置文件
                     toml.dump(dict_setting, setting_file)
         else:
             if self.is_save_check_box_status:  # 保存check设置
                 dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
                 dict_setting["output_lock_maximums"] = False  # False
-                with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                with open(
+                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
+                ) as setting_file:  # 写入配置文件
                     toml.dump(dict_setting, setting_file)
 
     def event_auto_wrap_check(self) -> None:
@@ -542,7 +581,9 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             if self.is_save_check_box_status:  # 保存check设置
                 dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
                 dict_setting["auto_wrap"] = True  # True
-                with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                with open(
+                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
+                ) as setting_file:  # 写入配置文件
                     toml.dump(dict_setting, setting_file)
             self.ui.output_box.setLineWrapMode(self.ui.output_box.WidgetWidth)
             self.ui.input_box.setLineWrapMode(self.ui.input_box.WidgetWidth)
@@ -550,7 +591,9 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             if self.is_save_check_box_status:  # 保存check设置
                 dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
                 dict_setting["auto_wrap"] = False  # False
-                with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                with open(
+                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
+                ) as setting_file:  # 写入配置文件
                     toml.dump(dict_setting, setting_file)
             self.ui.output_box.setLineWrapMode(self.ui.output_box.NoWrap)
             self.ui.input_box.setLineWrapMode(self.ui.input_box.NoWrap)
@@ -585,8 +628,12 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         if _search_keyword[:4] == ":tag" or _search_keyword[:4] == "：tag":  # 进入tag搜索模式
             _set_matched_item = set()  # 匹配上的插件名
             _tags = _search_keyword.split()[1:]  # 用户输入的tag
-            _list_plugin_tag_option = instance_plugin_manager.get_all_plugin_tag_option()  # tag和选项名的映射表_list_plugin_tag_option [((tag1,tag2),name),((tag1,tag2),name)]
-            for _tag_and_option in _list_plugin_tag_option:  # 单项 tag和选项名_tag_and_option ((tag1,tag2),name)
+            # tag和选项名的映射表_list_plugin_tag_option [((tag1,tag2),name),((tag1,tag2),name)]
+            _list_plugin_tag_option = (
+                instance_plugin_manager.get_all_plugin_tag_option()
+            )
+            # 单项 tag和选项名_tag_and_option ((tag1,tag2),name)
+            for _tag_and_option in _list_plugin_tag_option:
                 if _tag_check(_tags, _tag_and_option):
                     _set_matched_item.add(_tag_and_option[1])
 
