@@ -613,10 +613,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             :param tag_and_option: 单项 tag和选项名_tag_and_option ((tag1,tag2),name)
             :return:
             """
-            for _tag in tags:
-                if not (_tag in tag_and_option[0]):
-                    return False
-            return True
+            return all((_tag in tag_and_option[0]) for _tag in tags)
 
         _search_keyword = self.ui.search_plugin.toPlainText()
 
