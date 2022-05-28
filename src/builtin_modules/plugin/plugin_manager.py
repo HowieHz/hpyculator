@@ -12,7 +12,7 @@ class PluginManager:
     def __init__(self):
         # Plugin目录下读取到的有__init__.py的文件夹
         self._dict_plugin_option_id: Dict[str, str] = {}  # 选项名和实际文件名(ID)的映射表
-        self._list_plugin_tag_option: List[tuple[tuple[str], str]] = []  # 选项名和实际文件名(ID)的映射表 [((tag1,tag2),name),((tag1,tag2),name)]
+        self._list_plugin_tag_option: List[tuple[list[str], str]] = []  # 选项名和实际文件名(ID)的映射表 [([tag1,tag2],name),([tag1,tag2],name)]
         self._dict_loaded_plugin: Dict[str] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
 
     def _init_plugin_singer_file(self, plugin_files_name) -> None:

@@ -1,1 +1,1 @@
-from .main_window_manager import MainWinApp
+from .main_win_manager import MainWinApp

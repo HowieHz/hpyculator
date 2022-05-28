@@ -1,0 +1,30 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2022-05-28 10:36+0800\n"
+"PO-Revision-Date: 2022-05-28 11:31+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Generator: Poedit 3.0.1\n"
+
+#: setting_win_manager.py:55
+msgid "保存完成"
+msgstr "Save complete"
+
+#: setting_win_manager.py:55
+msgid ""
+"保存完成\n"
+"部分设置将在重新启动后生效"
+msgstr ""
+"Save complete\n"
+"Some settings will take effect after a restart"

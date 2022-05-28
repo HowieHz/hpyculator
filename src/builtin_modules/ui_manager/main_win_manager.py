@@ -1,6 +1,7 @@
 import shelve
 import sys
 import pathlib
+import locale
 import hpyculator as hpyc
 from .. import document as doc
 from ..plugin import instance_plugin_manager  # 插件管理
@@ -13,7 +14,7 @@ from ..ui import Ui_MainWin
 from hpyculator.hpysignal import instance_main_win_signal
 
 # 窗口管理类（用于管理设置的窗口）
-from .setting_window_manager import SettingWinApp
+from .setting_win_manager import SettingWinApp
 from .about_win_manager import AboutWinApp
 
 # refer to https://github.com/zhiyiYo/PyQt-Frameless-Window
@@ -106,9 +107,9 @@ class MainWinApp(FramelessWindow):
         self.ui.search_plugin.setPlaceholderText(_("输入字符自动进行搜索\n清空搜索框显示全部插件"))  # 灰色背景提示字符
         self.ui.search_plugin.clear()  # 不清空不显示灰色背景
         self.ui.input_box.setFocus()  # 设置焦点
+
         # 加载tag系统
         _list_plugin_tag_option = instance_plugin_manager.get_all_plugin_tag_option()  # tag和选项名的映射表_list_plugin_tag_option [([tag1,tag2],name),([tag1,tag2],name)]
-        print(_list_plugin_tag_option)
         _set_tags = set()  # _set_tags里面有所有的tag
         for _tags_and_option in _list_plugin_tag_option:
             for _tag in _tags_and_option[0]:
@@ -126,7 +127,10 @@ class MainWinApp(FramelessWindow):
             else:  # 没break的就是普通tag，直接添加
                 self.ui.output_box.appendPlainText(f"    {_tag}")  # 添加普通tag
         for _special_tag in special_tags:
-            self.ui.output_box.appendPlainText(f"\n    {_special_tag}")  # 特殊tag分类标题
+            if locale.getdefaultlocale()[0] in doc.tags.SPECIAL_TAGS_TRANSLATOR:
+                self.ui.output_box.appendPlainText(f"    {doc.tags.SPECIAL_TAGS_TRANSLATOR[locale.getdefaultlocale()[0]][_special_tag]}")  # 特殊tag分类标题
+            else:
+                self.ui.output_box.appendPlainText(f"    {_special_tag}")  # 特殊tag分类标题
             for _tag in _dict_set_tags[_special_tag]:
                 self.ui.output_box.appendPlainText(f"        {_tag}")  # 添加特殊tag
 
@@ -407,18 +411,16 @@ class MainWinApp(FramelessWindow):
         # print(f"选中的选项名{item.text()}")
         self.user_selection_id = str(self.plugin_option_id_dict[item.text()])  # 转换成ID
         self.selected_plugin_attributes = _METADATA = instance_plugin_manager.get_plugin_attributes(self.user_selection_id)
-        self.ui.output_box.setPlainText(
-            (_(f"""\
+        self.ui.output_box.setPlainText(f"""\
 {_METADATA["output_start"]}
 {_METADATA["output_name"]} {_METADATA["version"]}
 by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else _METADATA['author']}
 
 
-使用提示
+"""+_("使用提示")+f"""\
 {_METADATA["help"]}
 
-{_METADATA["output_end"]}"""
-        ))
+{_METADATA["output_end"]}""")
 
     def event_quit(self) -> None:
         """

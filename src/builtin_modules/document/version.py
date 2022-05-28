@@ -1,7 +1,11 @@
 RAW_VERSION = "22w22a"  # todo 发布的时候改版本号 和更新日志
 
+#i18n
+import gettext
+gettext.install('en',localedir=r'..\locale')
+
 if "w" in RAW_VERSION:
-    VERSION = RAW_VERSION + "  开发版"
+    VERSION = RAW_VERSION + _("  开发版")
 else:
     VERSION = RAW_VERSION
 

@@ -1,19 +1,14 @@
 from .version import VERSION  # 版本号导入
 
-TODO = """\
-更新展望(咕咕咕):
-clear"""
+ABOUT =\
+f"<h3>HpyCulator {VERSION}</h3>"
+"<p>"+_("此为AGPL协议的开源项目")+"</p>"
+"<p>"+_("项目地址：")+"https://github.com/HowieHz/hpyculator</p>"
+"<p>"+_("软件文档：")+"https:///hpyculator.readthedocs.io/</p>"
 
-ABOUT = f"""
-<h3>HpyCulator {VERSION}</h3>
-<p>此为AGPL协议的开源项目</p>
-<p>项目地址：https://github.com/HowieHz/hpyculator</p>
-<p>软件文档：https:///hpyculator.readthedocs.io/</p>
-"""
-
-START_SHOW = f"""\
-高拓展性计算器 hpyculator {VERSION}
-作者：HowieHz
+START_SHOW =\
+_("高拓展性计算器")+f" hpyculator {VERSION}\n"+\
+_('''作者：HowieHz
 
 测试版本注释：只要修改background_img目录下的background1.png文件为你要的背景文件就好了
 
@@ -27,7 +22,7 @@ START_SHOW = f"""\
     1.“保存”会将结果保存到程序所在目录下 "Output" 文件夹内
     2.设置行(项)数较大请选择保存到文件，运算时间较长，可以通过查看任务管理器确认程序是否假死，不同插件性能（读写性能和运算性能）不同
     3.默认插件保存位置为程序同目录下的 "Plugin" 文件夹内，可通过设置页面打开
-    4.输入" :tag "进入tag搜索模式，如" :tag 我是tag1 我是tag2 我是tag3 "，可用tag请下拉
+    4.输入" :tag "进入tag搜索模式，如" :tag 我是tag1 我是tag2 我是tag3 "，查看可用tag请下拉
 
 交流群694413711，欢迎反馈bug，提出建议
 
@@ -38,8 +33,7 @@ START_SHOW = f"""\
 hpyculator的名字来历：
     high extensibility calculator base on python
 
-可用tag：
-"""
+可用tag：''')
 
 UPDATE_LOG = """\
 更新日志:

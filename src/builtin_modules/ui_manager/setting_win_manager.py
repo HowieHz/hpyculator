@@ -15,7 +15,7 @@ class SettingWinApp(QDialog):
         self.ui = Ui_SettingWin()  # 实例化ui
         self.ui.setupUi(self)  # 初始化ui，不初始化不显示
 
-        self.setWindowTitle(_(f"设置  Hpyculator版本{VERSION}"))  # 设置标题
+        self.setWindowTitle(_("设置")+"  Hpyculator"+_("版本")+f"{VERSION}")  # 设置标题
 
         # 初始化设置目录
         self.SETTING_DIR_PATH = str(os.path.join(os.getcwd(), "Setting"))

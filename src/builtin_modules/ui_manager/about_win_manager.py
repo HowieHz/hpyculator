@@ -15,14 +15,11 @@ class AboutWinApp(QDialog):
 
         self.setWindowTitle(_("关于 hpyculator"))
 
-        self.ui.combo_doc.addItems([_("开屏介绍"), _("更新日志"), _("使用说明"), _("关于")])
+        self.ui.combo_doc.addItems([_("开屏介绍"), _("更新日志"), _("关于")])
 
     def event_choose_show(self, qstring):
         def _show_start_show():  # 开屏介绍
             self.ui.output_doc.setText(doc.START_SHOW)
-
-        def _show_todo():  # 更新展望
-            self.ui.output_doc.setText(doc.TODO)
 
         def _show_updata_log():  # 更新日志
             self.ui.output_doc.setText(doc.UPDATE_LOG)
@@ -34,7 +31,6 @@ class AboutWinApp(QDialog):
         dict_jump_map = {
             _("开屏介绍"): _show_start_show,
             _("更新日志"): _show_updata_log,
-            _("使用说明"): _show_todo,
             _("关于"): _show_about,
         }
         dict_jump_map[qstring]()

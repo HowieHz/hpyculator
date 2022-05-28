@@ -7,6 +7,10 @@ from PySide6.QtWidgets import QApplication
 
 import sys
 
+#i18n
+import gettext
+gettext.install('en',localedir=r'.\builtin_modules\locale')
+
 # from builtin_modules.ui import main_window_resource_rc
 
 # 易于打包加几句
@@ -71,6 +75,8 @@ if __name__ == "__main__":
 # 检查框（一个勾） check_功能
 # 列表控件 list_功能
 # 下拉选择控件 combo_功能
+
+#python C:\dev\python39\Tools\i18n\pygettext.py -d about_win_manager about_win_manager.py
 """
 category
 computer_language
