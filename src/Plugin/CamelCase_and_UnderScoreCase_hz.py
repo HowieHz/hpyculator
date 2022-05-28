@@ -1,10 +1,11 @@
 import hpyculator as hpyc
 
+VERSION = "V1.0.3"
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
-    "id": "CamelCase_and_UnderScoreCase",  # ID,插件标识符,需要和文件名一致（必须）
-    "option_name": "下划线驼峰转换器 V1.0.1 by HowieHz",  # 选项名-在选择算法列表中（必须）
-    "version": "V1.0.2",  # 版本号（必须）
+    "id": "CamelCase_and_UnderScoreCase_hz",  # ID,插件标识符,需要和文件名一致（必须）
+    "option": f"下划线驼峰转换器 {VERSION} by HowieHz",  # 选项名-在选择算法列表中（必须）
+    "version": VERSION,  # 版本号（必须）
     "save_name": "",  # 文件保存项目名-在输出（必须）
     "quantifier": "的转换结果",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
@@ -19,10 +20,15 @@ PLUGIN_METADATA = {
 
 输入格式
     要转换的字符串,输入数据模式,输出数据模式
-    （半角逗号分隔）
+    （逗号或空格分隔）
 
 输出格式
     转换后的字符串
+    
+输入样例
+    a_b,0,1
+    A_B 3 1
+    aB，1，2
 
     """,  # 帮助和说明(可选)
     "output_end": "",  # 输出小尾巴(可选)
@@ -33,7 +39,16 @@ PLUGIN_METADATA = {
 
 def on_calculate(data, todo):
     """计算函数"""
-    text, input_mode, output_mode = data.split(",")
+    try:
+        if "," in data:
+            text, input_mode, output_mode = data.split(",")
+        elif "，" in data:
+            text, input_mode, output_mode = data.split("，")
+        else:
+            text, input_mode, output_mode = data.split()
+    except ValueError:
+        hpyc.output("请按格式输入！！！")
+        return
     text_list = []  # 存放单词组
     if input_mode == "0":
         text_list = str(text).split("_")

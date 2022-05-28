@@ -2,20 +2,26 @@ import hpyculator as hpyc
 
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
-    "id": "A_Plus_B_Plus",  # ID,插件标识符,需要和文件名一致
-    "option_name": "高精度浮点数加法 基于列表 by HowieHz",  # 选项名-在选择算法列表中
-    "version": "V1.0.2",  # 版本号
-    "save_name": "",  # 文件保存名
+    "id": "A_Plus_B_String_hz",  # ID,插件标识符,需要和文件名一致
+    "option": "高精度浮点数加法 基于字符串 by HowieHz",  # 选项名-在选择算法列表中
+    "version": "V1.0.3",  # 版本号
+    "save_name": "",  # 文件保存项目名-在输出
     "quantifier": "相加所得",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
-    "output_name": "高精度浮点数加法 基于列表",  # 选择此项后输出的名字
+    "output_name": "高精度浮点数加法 基于字符串",  # 选择此项后输出的名字
     "author": "HowieHz",  # 作者(可选)
     "help": """
 输入格式：
     A,B（A>0,B>0）
+    （数字间用空格或逗号分隔）
 
 输出结果:
     A+B
+
+输入样例
+    1,2
+    1 2
+    1,2
                 """,  # 帮助和说明(可选)
     "output_end": "",  # 输出小尾巴(可选)
     "return_mode": hpyc.RETURN_ONCE,
@@ -24,11 +30,17 @@ PLUGIN_METADATA = {
 
 
 def on_calculate(data: str):  # 输出到框体内
-    """计算函数
-
-    :type data: str
-    """
-    a, b = data.split(",")
+    """计算函数"""
+    try:
+        if "," in data:
+            a, b = data.split(",")
+        elif "，" in data:
+            a, b = data.split("，")
+        else:
+            a, b = data.split()
+    except ValueError:
+        hpyc.output("请按格式输入！！！")
+        return
     point_a = a.find(".")  # 获得a的小数点的索引
     if point_a == -1:
         point_a = len(a)
@@ -37,8 +49,8 @@ def on_calculate(data: str):  # 输出到框体内
         point_b = len(b)
     integer_a = a[:point_a]
     integer_b = b[:point_b]
-    fractional_a = a[point_a + 1 :]
-    fractional_b = b[point_b + 1 :]
+    fractional_a = a[point_a + 1:]
+    fractional_b = b[point_b + 1:]
 
     # 整数补齐
     if len(integer_a) > len(integer_b):  # a的整数部分比较长，所以补b的整数部分
@@ -56,28 +68,19 @@ def on_calculate(data: str):  # 输出到框体内
     else:  # len(integer_a)<len(integer_b):
         fractional_a = fractional_a.ljust(len(fractional_b), "0")
 
+    carry_num = 0  # 需要进位的数字
+    answer = ""
     new_point = len(integer_a)
-    list_a = list(integer_a + fractional_a)[::-1]  # 用[::-1]倒转，现在左边低位，右边高位
-    list_b = list(integer_b + fractional_b)[::-1]
-
-    # 各位相加
-    list_answer = []
-    for digital_a, digital_b in zip(list_a, list_b):
-        list_answer.append(int(digital_a) + int(digital_b))
-
-    # 进位
-    for index, digital_answer in enumerate(list_answer):
+    a = (integer_a + fractional_a)[::-1]  # 用[::-1]倒转，现在左边低位，右边高位
+    b = (integer_b + fractional_b)[::-1]
+    for digital_a, digital_b in zip(a, b):
+        digital_answer = int(digital_a) + int(digital_b)
+        answer += str(digital_answer + carry_num)
+        carry_num = 0  # 进位清零
         if digital_answer >= 10:
-            list_answer[index] -= 10
-            try:
-                list_answer[index + 1] + 1
-            except IndexError:
-                list_answer.append(1)
+            carry_num = 1  # 进位
+    answer = answer[::-1]
+    if len(answer) != new_point:
+        answer = answer[:new_point] + "." + answer[new_point:]
 
-    # 倒置加点输出
-    list_answer.reverse()  # (用.reverse方法倒转更好读一点)
-    if new_point != len(list_answer):
-        list_answer.insert(new_point, ".")
-    list_answer = map(str, list_answer)  # 把每项的数字转换成字符串
-    answer = "".join(list_answer)
     return answer

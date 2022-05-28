@@ -2,9 +2,9 @@
 import os
 from ctypes import POINTER, cast
 
-from PySide6.QtCore import QCoreApplication, QEvent, Qt
-from PySide6.QtGui import QCursor, QMouseEvent
-from PySide6.QtWidgets import QWidget, QMainWindow
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QCursor
+from PySide6.QtWidgets import QWidget
 
 from ctypes.wintypes import MSG
 import win32api

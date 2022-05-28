@@ -1,4 +1,4 @@
-RAW_VERSION = "1.5.0"  # todo 发布的时候改版本号 和更新日志
+RAW_VERSION = "22w22a"  # todo 发布的时候改版本号 和更新日志
 
 if "w" in RAW_VERSION:
     VERSION = RAW_VERSION + "  开发版"
@@ -8,9 +8,9 @@ else:
 # 尾巴越短越新
 # 下一个稳定版版本 1.4.3
 # 下一个预览版版本 1.4.3-Alpha
-# 下一个周结算 22w22a
-# 下一个目前小版迭代 22w22a-Alpha
-# 下一个提交迭代 22w22a-Alpha.1
+# 下一个周结算 22w23a
+# 下一个目前小版迭代 22w23a-Alpha
+# 下一个提交迭代 22w23a-Alpha.1
 #
 #
 # 版本号更新约定（x为更新的版本号）:

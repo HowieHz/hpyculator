@@ -3,22 +3,25 @@ import hpyculator as hpyc
 import numba
 import math
 
+NAME = "回文质数(使用即时编译技术)"
+VERSION = "V2.0.0"
+AUTHOR = "HowieHz"
 PLUGIN_METADATA = {
     "input_mode": hpyc.NUM,
-    "id": "Prime_Palindromes",  # ID,插件标识符,需要和文件名一致（必须）
-    "option_name": "回文质数V2.0.0 by HowieHz",  # 选项名-在选择算法列表中（必须）
-    "version": "V2.0.0",  # 版本号（必须）
+    "id": "Prime_Palindromes_JIT_hz",  # ID,插件标识符,需要和文件名一致（必须）
+    "option": f"{NAME}{VERSION} by {AUTHOR}",  # 选项名-在选择算法列表中（必须）
+    "version": VERSION,  # 版本号（必须）
     "save_name": "",  # 文件保存项目名-在输出（必须）
     "quantifier": "以内的回文质数",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
     "output_name": "回文质数",  # 选择此项后输出的名字（必须）
-    "author": "HowieHz",  # 作者(可选)
-    "help": """
+    "author": AUTHOR,  # 作者(可选)
+    "help": """\
     输入数字n(n为正整数),输出 >=0且<=n 回文质数
 
     对于输入小于100030001的数 有着绝佳的性能
     
-    使用了jit技术,对于>100030001的数第一次运行稍慢，可以先输入一个100030001让程序热热身体
+    使用了即时编译(JIT)技术，对于>100030000的数第一次运行稍慢
             """,  # 帮助和说明(可选)
     "output_end": "",  # 输出小尾巴(可选)
     "return_mode": hpyc.NO_RETURN_SINGLE_FUNCTION,
@@ -26,7 +29,6 @@ PLUGIN_METADATA = {
 }
 
 answer_list = (
-    0,
     2,
     3,
     5,
@@ -810,21 +812,39 @@ answer_list = (
     9989899,
 )
 
+
 @numba.jit(nopython=True)
-def hw_builder(end):
+def hw_builder_jit(scope):
     """
     回文生成器 小范围需要对11特判
 
     :param scope: 范围，假如终值是1300 这个值应该是12；假如终值是13121 这个值应该是130；假如终值是13131 这个值应该是131；假如终值是312213 这个值应该是1312
     :return:
     """
-    for i in range(10003, end+1):
+    for i in range(10003, scope + 1):
         temp = i
         reversal = 0  # 最后得到一个倒序数字 123得321
         while temp > 0:
             reversal = reversal * 10 + temp % 10  # 左移一位并且去temp最后一位
             temp //= 10  # temp去掉最后一位
-        yield (i//10)*(10**(int(math.log10(i)) + 1))+reversal  # 输入123 左边是12000 reversal是321 加起来就是12321
+        yield (i // 10) * (10 ** (int(math.log10(i)) + 1)) + reversal  # 输入123 左边是12000 reversal是321 加起来就是12321
+
+
+def hw_builder(scope):
+    """
+    回文生成器 小范围需要对11特判
+
+    :param scope: 范围，假如终值是1300 这个值应该是12；假如终值是13121 这个值应该是130；假如终值是13131 这个值应该是131；假如终值是312213 这个值应该是1312
+    :return:
+    """
+    for i in range(9223372036, scope + 1):
+        temp = i
+        reversal = 0  # 最后得到一个倒序数字 123得321
+        while temp > 0:
+            reversal = reversal * 10 + temp % 10  # 左移一位并且去temp最后一位
+            temp //= 10  # temp去掉最后一位
+        yield (i // 10) * (10 ** (int(math.log10(i)) + 1)) + reversal  # 输入123 左边是12000 reversal是321 加起来就是12321
+
 
 def scope_builder(num):
     """
@@ -837,15 +857,31 @@ def scope_builder(num):
     """
     num_len = int(math.log10(num)) + 1  # 获取数字位数
     if num_len % 2:  # 奇数位
-        ret = int(num/10**((num_len+1)/2-1))
-        if int(str(ret)+str(ret)[-2::-1]) <= num:
-            return int(num/10**((num_len+1)/2-1))
+        ret = int(num / 10 ** ((num_len + 1) / 2 - 1))
+        if int(str(ret) + str(ret)[-2::-1]) <= num:
+            return int(num / 10 ** ((num_len + 1) / 2 - 1))
         else:
-            return int(num/10**((num_len+1)/2-1)-1)
+            return int(num / 10 ** ((num_len + 1) / 2 - 1) - 1)
     else:  # 偶数位
-        return int(9*(1-10**(num_len/2))/-9)  # 9*(10**0+10**1+10**2)
+        return int(9 * (1 - 10 ** (num_len / 2)) / -9)  # 9*(10**0+10**1+10**2)
+
 
 @numba.jit(nopython=True)
+def is_prime_jit(num):
+    """
+    判断是否是质数 小范围的话要2，3特判
+
+    :param num:
+    :return:
+    """
+    if (num % 6 != 1) and (num % 6 != 5):
+        return False
+    for i in range(5, int(num ** 0.5) + 1, 6):
+        if (num % i == 0) or (num % (i + 2) == 0):
+            return False
+    return True
+
+
 def is_prime(num):
     """
     判断是否是质数 小范围的话要2，3特判
@@ -860,7 +896,8 @@ def is_prime(num):
             return False
     return True
 
-def select_table(inp:int):
+
+def select_table(inp: int):
     """
     读表
 
@@ -872,7 +909,7 @@ def select_table(inp:int):
             yield i
 
 
-def on_calculate(inp:int, do_what):
+def on_calculate(inp: int, do_what):
     if do_what == "output":
         output = hpyc.output
     else:
@@ -882,8 +919,16 @@ def on_calculate(inp:int, do_what):
         for answer in answer_list:  # 直接输出100030001以内
             output(answer)
 
-        for num in hw_builder(scope_builder(inp)):
-            if is_prime(num):  # 是否质数
+        if inp > 9223372036854775807:  # 9223372002002733229 2的63次方内最大的回文质数
+            for num in hw_builder_jit(scope_builder(9223372002002733229)):
+                if is_prime_jit(num):  # 是否质数
+                    output(num)
+            for num in hw_builder(scope_builder(inp)):
+                if is_prime(num):  # 是否质数
+                    output(num)
+
+        for num in hw_builder_jit(scope_builder(inp)):
+            if is_prime_jit(num):  # 是否质数
                 output(num)
     else:  # <=100030001遍历表 输出
         for answer in select_table(inp):

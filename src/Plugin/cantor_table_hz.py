@@ -1,37 +1,33 @@
 import hpyculator as hpyc
 
+VERSION = "V1.0.2"
 PLUGIN_METADATA = {
     "input_mode": hpyc.NUM,
-    "id": "Cantor_Table",  # ID,插件标识符,需要和文件名一致（必须）
-    "option_name": "Cantor表_fixV1.0.1 by HowieHz",  # 选项名-在选择算法列表中（必须）
-    "version": "V1.0.1",  # 版本号（必须）
+    "id": "cantor_table_hz",  # ID,插件标识符,需要和文件名一致（必须）
+    "option": f"Cantor Table(康托表){VERSION} by HowieHz",  # 选项名-在选择算法列表中（必须）
+    "version": VERSION,  # 版本号（必须）
     "save_name": "Cantor表前",  # 文件保存项目名-在输出（必须）
     "quantifier": "项",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
     "output_name": "Cantor表",  # 选择此项后输出的名字（必须）
     "author": "HowieHz",  # 作者(可选)
-    "help": """
-    这里引用一下洛谷OJ对Cantor表的介绍
-    https://www.luogu.com.cn/problem/P1014
-
+    "help": """\
     现代数学的著名证明之一是 Georg Cantor 证明了有理数是可枚举的。他是用下面这一张表来证明这一命题的：
 
-    1/1, 1/2, 1/3,1/4,1/5, …
-    2/1, 2/2, 2/3,2/4, …
+    1/1, 1/2, 1/3, 1/4, 1/5, …
+    2/1, 2/2, 2/3, 2/4, …
     3/1, 3/2, 3/3, …
     4/1, 4/2, …
     5/1, …
     …
 
-    我们以 Z 字形给上表的每一项编号。第一项是 1/1，然后是 1/2，2/1，3/1，2/2，…
+    以 Z 字形给上表的每一项编号。第一项是 1/1，然后是 1/2，2/1，3/1，2/2，…
 
 输入格式
     整数N（1≤N)
 
 输出格式
-    表中的前 N 项
-
-    哈哈，把自己的题解拿来用了""",  # 帮助和说明(可选)
+    表中的前 N 项""",  # 帮助和说明(可选)
     "output_end": "",  # 输出小尾巴(可选)
     "return_mode": hpyc.NO_RETURN_SINGLE_FUNCTION,
     "fullwidth_symbol": hpyc.ON,  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)

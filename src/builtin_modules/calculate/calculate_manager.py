@@ -41,7 +41,7 @@ class CalculationManager:
         :return:
         """
         # 输入转换
-        inputbox_data = self.typeConversion(plugin_attribute_input_mode, inputbox_data)
+        inputbox_data = self.type_conversion(plugin_attribute_input_mode, inputbox_data)
         if inputbox_data is None:  # 转换发生错误
             return None
 
@@ -55,7 +55,7 @@ class CalculationManager:
         return None
 
     @staticmethod
-    def typeConversion(to_type: int, data: str):
+    def type_conversion(to_type: int, data: str):
         """
         类型转换
 
@@ -73,7 +73,7 @@ class CalculationManager:
             else:
                 data = None  # 缺省 转换不存在的类型就none
         except Exception as e:
-            instance_main_win_signal.setOutPutBox.emit(f"输入转换发生错误:{str(e)}\n\n请检查输入格式")
+            instance_main_win_signal.set_output_box.emit(f"输入转换发生错误:{str(e)}\n\n请检查输入格式")
             return None  # 缺省 转换错误就none
         return data
 
@@ -107,12 +107,10 @@ class CalculationThread(Thread):
         inputbox_data = self.inputbox_data
         calculation_mode = self.calculation_mode
         # instance_plugin_manager.initPlugin()  # 多进程用
-        plugin_attributes = instance_plugin_manager.getPluginAttributes(self.user_selection_id)  # 插件属性字典
-        selected_plugin = instance_plugin_manager.getPluginInstance(
-            self.user_selection_id
-        )
+        plugin_attributes = instance_plugin_manager.get_plugin_attributes(self.user_selection_id)  # 插件属性字典
+        selected_plugin = instance_plugin_manager.get_plugin_instance(self.user_selection_id)
 
-        def whatNeedCalculate():
+        def _base_calculate():
             """基础的计算模式"""
             calculate_fun = selected_plugin.on_calculate
 
@@ -120,11 +118,11 @@ class CalculationThread(Thread):
 
             if plugin_attribute_return_mode == hpyc.RETURN_ONCE:
                 result = str(calculate_fun(inputbox_data))
-                instance_main_win_signal.appendOutPutBox.emit(str(result) + "\n")  # 结果为str，直接输出
+                instance_main_win_signal.append_output_box.emit(str(result) + "\n")  # 结果为str，直接输出
             elif plugin_attribute_return_mode == hpyc.RETURN_LIST:  # 算一行输出一行
                 result = calculate_fun(inputbox_data)
                 for result_process in result:
-                    instance_main_win_signal.appendOutPutBox.emit(
+                    instance_main_win_signal.append_output_box.emit(
                         str(result_process) + "\\n"
                     )  # 算一行输出一行
             elif (
@@ -132,7 +130,7 @@ class CalculationThread(Thread):
             ):  # 算一行输出一行，但是没有换行
                 result = calculate_fun(inputbox_data)
                 for result_process in result:  # 计算
-                    instance_main_win_signal.appendOutPutBox.emit(str(result_process))  # 算一行输出一行
+                    instance_main_win_signal.append_output_box.emit(str(result_process))  # 算一行输出一行
             elif plugin_attribute_return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
                 calculate_fun(inputbox_data, "output")
             elif plugin_attribute_return_mode == hpyc.NO_RETURN:
@@ -141,7 +139,7 @@ class CalculationThread(Thread):
                 pass
             return time.perf_counter() - time_before_calculate  # 储存结束时间
 
-        def whatNeedCalculateWithSave(filepath_name):
+        def _calculate_with_save(filepath_name):
             """计算+保存模式"""
             # filepath_name - 储存保存到哪个文件里 路径+文件名
 
@@ -175,7 +173,7 @@ class CalculationThread(Thread):
 
             return time.perf_counter() - time_before_calculate  # 储存结束时间
 
-        def whatNeedCalculateWithOutputOptimization(limit=False):
+        def _calculate_with_output_optimization(limit=False):
             """
             计算+输出优化的模式（先把结果存临时文件，再读取输出）
 
@@ -218,20 +216,20 @@ class CalculationThread(Thread):
                 finally:
                     filestream.seek(0)  # 将文件指针移到开始处，准备读取文件
                     if limit:
-                        for times, line in enumerate(quickTraverseFile(filestream)):
-                            instance_main_win_signal.appendOutPutBox.emit(line)
+                        for times, line in enumerate(_quick_traverse_file(filestream)):
+                            instance_main_win_signal.append_output_box.emit(line)
                             if times >= 128:
-                                instance_main_win_signal.appendOutPutBox.emit(
+                                instance_main_win_signal.append_output_box.emit(
                                     "\n\n输出上限：检测到输出数据过大，请使用保存到文件防止卡死"
                                 )
                                 break
                     else:
-                        for line in quickTraverseFile(filestream):
-                            instance_main_win_signal.appendOutPutBox.emit(line)
+                        for line in _quick_traverse_file(filestream):
+                            instance_main_win_signal.append_output_box.emit(line)
 
             return time.perf_counter() - time_before_calculate  # 储存结束时间
 
-        def quickTraverseFile(file, chunk_size=8192) -> Iterator:
+        def _quick_traverse_file(file, chunk_size=8192) -> Iterator:
             """
             较快，低占用读取文件，迭代器
 
@@ -244,49 +242,49 @@ class CalculationThread(Thread):
             ):  # 用readline的话，读到换行符就会直接停止读取，不会读取到8192B，会增加读取次数
                 yield chunk
 
-        def calculate_save_mode(output_dir_path):
+        def _calculate_save_mode(output_dir_path):
             """调用计算并保存的模式"""
             filename = f"{datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S')} {plugin_attributes['save_name']}{str(inputbox_data)}{plugin_attributes['quantifier']}"
 
             filepath_name = os.path.join(output_dir_path, f"{filename}.txt")
-            time_spent = whatNeedCalculateWithSave(filepath_name)
+            time_spent = _calculate_with_save(filepath_name)
             # 以下是计算后工作
-            instance_main_win_signal.appendOutPutBox.emit(
+            instance_main_win_signal.append_output_box.emit(
                 f"""\n\n本次计算+保存花费了{time_spent:.6f}秒\n\n计算结果已保存在 {filepath_name} """
             )  # 输出本次计算时间
 
-        def calculate_o_mode(limit=False):
+        def _calculate_optimization_mode(limit=False):
             """调用计算+输出优化的模式"""
-            time_spent = whatNeedCalculateWithOutputOptimization(limit)
+            time_spent = _calculate_with_output_optimization(limit)
             # 以下是计算后工作
-            instance_main_win_signal.appendOutPutBox.emit(
+            instance_main_win_signal.append_output_box.emit(
                 f"""\n\n本次计算+输出花费了{time_spent:.6f}秒\n\n已启用输出优化"""
             )  # 输出本次计算时间
 
-        def calculate_base_mode():
+        def _calculate_base_mode():
             """调用基础计算模式"""
-            time_spent = whatNeedCalculate()
+            time_spent = _base_calculate()
             # 以下是计算后工作
-            instance_main_win_signal.appendOutPutBox.emit(
+            instance_main_win_signal.append_output_box.emit(
                 f"\n\n本次计算+输出花费了{time_spent:.6f}秒\n"
             )  # 输出本次计算时间
 
         # ------------------------------------------这些ui逻辑需外移
-        instance_main_win_signal.setStartButtonText.emit("计算程序正在运行中，请耐心等待")
-        instance_main_win_signal.setStartButtonState.emit(False)  # 防止按钮反复触发
-        instance_main_win_signal.clearOutPutBox.emit()  # 清空输出框
+        instance_main_win_signal.set_start_button_text.emit("计算程序正在运行中，请耐心等待")
+        instance_main_win_signal.set_start_button_state.emit(False)  # 防止按钮反复触发
+        instance_main_win_signal.clear_output_box.emit()  # 清空输出框
         plugin_attribute_return_mode = plugin_attributes["return_mode"]
         try:
             if calculation_mode == "calculate_save":
-                calculate_save_mode(self.output_dir_path)
+                _calculate_save_mode(self.output_dir_path)
             elif calculation_mode == "calculate_o":
-                calculate_o_mode()
+                _calculate_optimization_mode()
             elif calculation_mode == "calculate_o_l":
-                calculate_o_mode(limit=True)
+                _calculate_optimization_mode(limit=True)
             elif calculation_mode == "calculate":
-                calculate_base_mode()
+                _calculate_base_mode()
         except Exception as e:
-            instance_main_win_signal.setOutPutBox.emit(f"插件运算发生错误：{str(e)}\n\n请检查输入格式")
-        instance_main_win_signal.setOutPutBoxCursor.emit("end")  # 光标设到文本框尾部
-        instance_main_win_signal.setStartButtonText.emit("计算")  # 设置按钮字
-        instance_main_win_signal.setStartButtonState.emit(True)  # 启用按钮
+            instance_main_win_signal.set_output_box.emit(f"插件运算发生错误：{str(e)}\n\n请检查输入格式")
+        instance_main_win_signal.set_output_box_cursor.emit("end")  # 光标设到文本框尾部
+        instance_main_win_signal.set_start_button_text.emit("计算")  # 设置按钮字
+        instance_main_win_signal.set_start_button_state.emit(True)  # 启用按钮

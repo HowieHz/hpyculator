@@ -27,11 +27,11 @@ class TestAllManager:
             )
 
         instance_main_window = instance_app.run()[0]
-        instance_main_window.saveCheckEvent()
-        instance_main_window.outputOptimizationCheckEvent()
-        instance_main_window.outputLockMaximumsCheckEvent()
-        instance_main_window.searchText()
-        instance_main_window.searchCancel()
+        instance_main_window.event_save_check()
+        instance_main_window.event_output_optimization_check()
+        instance_main_window.event_output_lock_maximums_check()
+        instance_main_window.event_search()
+        instance_main_window.event_search_cancel()
 
         # global_plugin_option_id_dict = instance_app.pluginCheck(test=True)  # 插件加载
         # assert global_plugin_option_id_dict == \
@@ -41,12 +41,12 @@ class TestAllManager:
     @pytest.mark.run(order=2)
     def test_signal(self):
         print(f"目前运行{self.__class__.__name__}类,test_signal函数")
-        instance_main_win_signal.setOutPutBox.emit("test")
-        instance_main_win_signal.clearOutPutBox.emit()
-        instance_main_win_signal.appendOutPutBox.emit("test")
-        instance_main_win_signal.setStartButtonState.emit("test")
-        instance_main_win_signal.setOutPutBoxCursor.emit("end")
-        instance_main_win_signal.setStartButtonText.emit("test")
+        instance_main_win_signal.set_output_box.emit("test")
+        instance_main_win_signal.clear_output_box.emit()
+        instance_main_win_signal.append_output_box.emit("test")
+        instance_main_win_signal.set_start_button_state.emit("test")
+        instance_main_win_signal.set_output_box_cursor.emit("end")
+        instance_main_win_signal.set_start_button_text.emit("test")
 
     @pytest.mark.run(order=1)
     def test_path(self):

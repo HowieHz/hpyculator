@@ -1,10 +1,11 @@
 import hpyculator as hpyc
 
+VERSION = "V1.0.2"
 PLUGIN_METADATA = {
     "input_mode": hpyc.FLOAT,
-    "id": "fibonacci_Sequence",
-    "option_name": "斐波那契数列V1.0.1 by HowieHz",
-    "version": "V1.0.1",
+    "id": "fibonacci_sequence_hz",
+    "option": f"斐波那契数列{VERSION} by HowieHz",
+    "version": VERSION,
     "save_name": "斐波那契数列前",
     "quantifier": "项",
     "output_start": "",
