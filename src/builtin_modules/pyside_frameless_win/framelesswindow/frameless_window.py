@@ -94,35 +94,36 @@ class WindowsFramelessWindow(FramelessWindowBase):
             if self._isWindowMaximized(msg.hWnd):
                 self.__monitorNCCALCSIZE(msg)
             return True, 0
-        elif msg.message == win32con.WM_GETMINMAXINFO:
-            if self._isWindowMaximized(msg.hWnd):
-                window_rect = win32gui.GetWindowRect(msg.hWnd)
-                if not window_rect:
-                    return False, 0
+        elif msg.message == win32con.WM_GETMINMAXINFO and self._isWindowMaximized(
+            msg.hWnd
+        ):
+            window_rect = win32gui.GetWindowRect(msg.hWnd)
+            if not window_rect:
+                return False, 0
 
-                # get the monitor handle
-                monitor = win32api.MonitorFromRect(window_rect)
-                if not monitor:
-                    return False, 0
+            # get the monitor handle
+            monitor = win32api.MonitorFromRect(window_rect)
+            if not monitor:
+                return False, 0
 
-                # get the monitor info
-                __monitorInfo = win32api.GetMonitorInfo(monitor)
-                monitor_rect = __monitorInfo["Monitor"]
-                work_area = __monitorInfo["Work"]
+            # get the monitor info
+            __monitorInfo = win32api.GetMonitorInfo(monitor)
+            monitor_rect = __monitorInfo["Monitor"]
+            work_area = __monitorInfo["Work"]
 
-                # convert lParam to MINMAXINFO pointer
-                info = cast(msg.lParam, POINTER(MINMAXINFO)).contents
+            # convert lParam to MINMAXINFO pointer
+            info = cast(msg.lParam, POINTER(MINMAXINFO)).contents
 
-                # adjust the size of window
-                info.ptMaxSize.x = work_area[2] - work_area[0]
-                info.ptMaxSize.y = work_area[3] - work_area[1]
-                info.ptMaxTrackSize.x = info.ptMaxSize.x
-                info.ptMaxTrackSize.y = info.ptMaxSize.y
+            # adjust the size of window
+            info.ptMaxSize.x = work_area[2] - work_area[0]
+            info.ptMaxSize.y = work_area[3] - work_area[1]
+            info.ptMaxTrackSize.x = info.ptMaxSize.x
+            info.ptMaxTrackSize.y = info.ptMaxSize.y
 
-                # modify the upper left coordinate
-                info.ptMaxPosition.x = abs(window_rect[0] - monitor_rect[0])
-                info.ptMaxPosition.y = abs(window_rect[1] - monitor_rect[1])
-                return True, 1
+            # modify the upper left coordinate
+            info.ptMaxPosition.x = abs(window_rect[0] - monitor_rect[0])
+            info.ptMaxPosition.y = abs(window_rect[1] - monitor_rect[1])
+            return True, 1
 
         return QWidget.nativeEvent(self, eventType, message)
 
