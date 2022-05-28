@@ -56,6 +56,7 @@ PLUGIN_METADATA = {
 #     :return:
 #     """
 
+
 def mode(num_list):
     """
     统计一个数列里面数字的出现次数
@@ -99,6 +100,8 @@ def on_calculate(inp):
     标准差(均方差):{np.std(list_num)}
     标准样本差:{np.std(list_num, ddof=1)}
     """
+
+
 # np.median(a) # 得到数组 a 的中位数
 # np.quantile(a, 0.25) # 得到数组 a 的上四分位数
 # np.quantile(a, 0.5) # 得到数组 a 的中位数

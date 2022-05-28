@@ -1,14 +1,15 @@
 from .version import VERSION  # 版本号导入
 
-ABOUT = \
-    f"<h3>HpyCulator {VERSION}</h3>"
+ABOUT = f"<h3>HpyCulator {VERSION}</h3>"
 "<p>" + _("此为AGPL协议的开源项目") + "</p>"
 "<p>" + _("项目地址：") + "https://github.com/HowieHz/hpyculator</p>"
 "<p>" + _("软件文档：") + "https:///hpyculator.readthedocs.io/</p>"
 
-START_SHOW = \
-    _("高拓展性计算器") + f" hpyculator {VERSION}\n" + \
-    _('''作者：HowieHz
+START_SHOW = (
+    _("高拓展性计算器")
+    + f" hpyculator {VERSION}\n"
+    + _(
+        """作者：HowieHz
 
 测试版本注释：只要修改background_img目录下的background1.png文件为你要的背景文件就好了
 
@@ -33,7 +34,9 @@ START_SHOW = \
 hpyculator的名字来历：
     high extensibility calculator base on python
 
-可用tag：''')
+可用tag："""
+    )
+)
 
 # Added － 这里记录新增加了哪些功能／接口
 # Changed － 功能／接口变更

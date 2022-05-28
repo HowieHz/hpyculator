@@ -20,7 +20,9 @@ class CreateApp:
         # TODO 路径检查需重构，默认路径改传参
         SETTING_FILE_PATH = check_setting_path()
         OUTPUT_DIR_PATH = check_output_path(SETTING_FILE_PATH)  # 输出路径检查
-        BACKGROUND_IMG_DIR_PATH = check_background_img_path(SETTING_FILE_PATH)  # 背景图片路径检查
+        BACKGROUND_IMG_DIR_PATH = check_background_img_path(
+            SETTING_FILE_PATH
+        )  # 背景图片路径检查
         PLUGIN_DIR_PATH = plugin_check(SETTING_FILE_PATH)  # 插件加载
 
         list_instance_main_window = []
@@ -51,7 +53,7 @@ def check_setting_path():
         os.makedirs(setting_dir_path)
 
     if not os.path.isfile(setting_file_path):
-        open(setting_file_path,"w",encoding='utf-8')  # 初始化文件
+        open(setting_file_path, "w", encoding="utf-8")  # 初始化文件
 
     return setting_file_path
 
@@ -68,8 +70,8 @@ def check_output_path(setting_file_path):
         output_dir_path = dict_setting["output_dir_path"]
     else:
         output_dir_path = str(os.path.join(os.getcwd(), "Output"))
-        with open(setting_file_path, 'a+', encoding='utf-8') as setting_file:
-            toml.dump({"output_dir_path" : output_dir_path},setting_file)
+        with open(setting_file_path, "a+", encoding="utf-8") as setting_file:
+            toml.dump({"output_dir_path": output_dir_path}, setting_file)
         # print(f"输出文件保存位置:{output_dir_path}")
 
     # 检查输出文件夹是否存在
@@ -91,8 +93,10 @@ def check_background_img_path(setting_file_path):
         background_img_dir_path = dict_setting["background_img_dir_path"]
     else:
         background_img_dir_path = str(os.path.join(os.getcwd(), "background_img"))
-        with open(setting_file_path, 'a+', encoding='utf-8') as setting_file:
-            toml.dump({"background_img_dir_path" : background_img_dir_path},setting_file)
+        with open(setting_file_path, "a+", encoding="utf-8") as setting_file:
+            toml.dump(
+                {"background_img_dir_path": background_img_dir_path}, setting_file
+            )
 
     # 检查输出文件夹是否存在
     if not os.path.exists(background_img_dir_path):
@@ -114,7 +118,7 @@ def plugin_check(setting_file_path):
         plugin_dir_path = dict_setting["plugin_dir_path"]
     else:
         plugin_dir_path = str(os.path.join(os.getcwd(), "Plugin"))
-        with open(setting_file_path, 'a+', encoding='utf-8') as setting_file:
+        with open(setting_file_path, "a+", encoding="utf-8") as setting_file:
             toml.dump({"plugin_dir_path": plugin_dir_path}, setting_file)
 
     # 检查模块文件夹是否存在

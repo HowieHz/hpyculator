@@ -13,6 +13,7 @@ import os
 # 易于打包加几句
 # import numba
 import hpyculator
+
 # import jpype
 import dbm
 import argparse
@@ -20,9 +21,9 @@ import argparse
 # i18n
 import gettext
 
-langs = ['en']
+langs = ["en"]
 for lang in langs:
-    gettext.install(lang, localedir=os.path.join('.', 'builtin_modules', 'locale'))
+    gettext.install(lang, localedir=os.path.join(".", "builtin_modules", "locale"))
 
 # sys.path.append(os.path.join(os.getcwd(),"bin"))
 

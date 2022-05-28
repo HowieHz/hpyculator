@@ -98,29 +98,6 @@ def on_calculate(inp: str):
                 for z in range(ae, be + 1)
             ]
         return (  # 1.2.x-1.6.y 1.2.x-1.2.9 1.3.0-1.5.9 1.6.0-1.6.y
-                [
-                    ".".join((str(x), str(y), str(z)))
-                    for x in range(aq, aq + 1)
-                    for y in range(aw, aw + 1)
-                    for z in range(ae, 10)
-                ]
-                + [
-                    ".".join((str(x), str(y), str(z)))
-                    for x in range(aq, aq + 1)
-                    for y in range(aw + 1, bw)
-                    for z in range(0, 10)
-                ]
-                + [
-                    ".".join((str(x), str(y), str(z)))
-                    for x in range(aq, aq + 1)
-                    for y in range(bw, bw + 1)
-                    for z in range(0, be + 1)
-                ]
-        )
-        # 1.2.x-1.2.9
-        # 1.3.0-1.5.9
-        # 1.6.0-1.6.y
-    return (  # 1.x.x-3.y.y
             [
                 ".".join((str(x), str(y), str(z)))
                 for x in range(aq, aq + 1)
@@ -130,27 +107,50 @@ def on_calculate(inp: str):
             + [
                 ".".join((str(x), str(y), str(z)))
                 for x in range(aq, aq + 1)
-                for y in range(aw + 1, 10)
+                for y in range(aw + 1, bw)
                 for z in range(0, 10)
             ]
             + [
                 ".".join((str(x), str(y), str(z)))
-                for x in range(aq + 1, bq)
-                for y in range(0, 10)
-                for z in range(0, 10)
-            ]
-            + [
-                ".".join((str(x), str(y), str(z)))
-                for x in range(bq, bq + 1)
-                for y in range(0, bw)
-                for z in range(0, 10)
-            ]
-            + [
-                ".".join((str(x), str(y), str(z)))
-                for x in range(bq, bq + 1)
+                for x in range(aq, aq + 1)
                 for y in range(bw, bw + 1)
                 for z in range(0, be + 1)
             ]
+        )
+        # 1.2.x-1.2.9
+        # 1.3.0-1.5.9
+        # 1.6.0-1.6.y
+    return (  # 1.x.x-3.y.y
+        [
+            ".".join((str(x), str(y), str(z)))
+            for x in range(aq, aq + 1)
+            for y in range(aw, aw + 1)
+            for z in range(ae, 10)
+        ]
+        + [
+            ".".join((str(x), str(y), str(z)))
+            for x in range(aq, aq + 1)
+            for y in range(aw + 1, 10)
+            for z in range(0, 10)
+        ]
+        + [
+            ".".join((str(x), str(y), str(z)))
+            for x in range(aq + 1, bq)
+            for y in range(0, 10)
+            for z in range(0, 10)
+        ]
+        + [
+            ".".join((str(x), str(y), str(z)))
+            for x in range(bq, bq + 1)
+            for y in range(0, bw)
+            for z in range(0, 10)
+        ]
+        + [
+            ".".join((str(x), str(y), str(z)))
+            for x in range(bq, bq + 1)
+            for y in range(bw, bw + 1)
+            for z in range(0, be + 1)
+        ]
     )
     # 1.3.5-1.3.9 a! b! c!
     # 1.4.0-1.9.9 a! b! c!

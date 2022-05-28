@@ -824,7 +824,8 @@ def hw_builder(scope):
         while temp > 0:
             reversal = reversal * 10 + temp % 10  # 左移一位并且去temp最后一位
             temp //= 10  # temp去掉最后一位
-        yield (i // 10) * (10 ** (int(math.log10(i)) + 1)) + reversal  # 输入123 左边是12000 reversal是321 加起来就是12321
+        # 输入123 左边是12000 reversal是321 加起来就是12321
+        yield (i // 10) * (10 ** (int(math.log10(i)) + 1)) + reversal
 
 
 def scope_builder(num):
@@ -856,7 +857,7 @@ def is_prime(num):
     """
     if (num % 6 != 1) and (num % 6 != 5):
         return False
-    for i in range(5, int(num ** 0.5) + 1, 6):
+    for i in range(5, int(num**0.5) + 1, 6):
         if (num % i == 0) or (num % (i + 2) == 0):
             return False
     return True
@@ -890,5 +891,6 @@ def on_calculate(inp: int, do_what):
     else:  # <=100030001遍历表 输出
         for answer in select_table(inp):
             output(answer)
+
 
 # 超过2的64次方的特判

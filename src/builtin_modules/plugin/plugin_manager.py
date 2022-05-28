@@ -12,7 +12,8 @@ class PluginManager:
     def __init__(self):
         # Plugin目录下读取到的有__init__.py的文件夹
         self._dict_plugin_option_id: Dict[str, str] = {}  # 选项名和实际文件名(ID)的映射表
-        self._list_plugin_tag_option: List[tuple[list[str], str]] = []  # 选项名和实际文件名(ID)的映射表 [([tag1,tag2],name),([tag1,tag2],name)]
+        # 选项名和实际文件名(ID)的映射表 [([tag1,tag2],name),([tag1,tag2],name)]
+        self._list_plugin_tag_option: List[tuple[list[str], str]] = []
         self._dict_loaded_plugin: Dict[str] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
 
     def _init_plugin_singer_file(self, plugin_files_name) -> None:
@@ -26,15 +27,27 @@ class PluginManager:
         for name in plugin_files_name:
             if name:  # 跳过空位
                 try:
-                    self._dict_loaded_plugin[name] = importlib.import_module(f"Plugin.{name}")
+                    self._dict_loaded_plugin[name] = importlib.import_module(
+                        f"Plugin.{name}"
+                    )
 
-                    _METADATA = self._dict_loaded_plugin[name].PLUGIN_METADATA  # PLUGIN_METADATA暂时储存着插件的元数据
-                    self._dict_plugin_option_id[_METADATA["option"]] = _METADATA["id"]  # 读取模块元数据，添加gui选项
+                    # PLUGIN_METADATA暂时储存着插件的元数据
+                    _METADATA = self._dict_loaded_plugin[name].PLUGIN_METADATA
+                    # 读取模块元数据，添加gui选项
+                    self._dict_plugin_option_id[_METADATA["option"]] = _METADATA["id"]
 
                     tag_list = _METADATA["tag"] if "tag" in _METADATA else []
-                    tag_list.extend(['author:' + i for i in _METADATA['author']] if isinstance(_METADATA['author'], list) else ['author:' + _METADATA['author']])  # 作者列表或单个作者
-                    tag_list.extend((f"id:{_METADATA['id']}", f"version:{_METADATA['version']}"))  # 版本号，id
-                    self._list_plugin_tag_option.append((tag_list, _METADATA["option"]))  # tag对应选项名
+                    tag_list.extend(
+                        ["author:" + i for i in _METADATA["author"]]
+                        if isinstance(_METADATA["author"], list)
+                        else ["author:" + _METADATA["author"]]
+                    )  # 作者列表或单个作者
+                    tag_list.extend(
+                        (f"id:{_METADATA['id']}", f"version:{_METADATA['version']}")
+                    )  # 版本号，id
+                    self._list_plugin_tag_option.append(
+                        (tag_list, _METADATA["option"])
+                    )  # tag对应选项名
                 except ImportError as e:
                     print(f"init_plugin_singer_file inside Exception:{str(e)}")
                 except Exception as e:
@@ -50,15 +63,27 @@ class PluginManager:
         # print(f"读取到的文件夹插件:{plugin_files_name}")
         for name in plugin_files_name:
             try:
-                self._dict_loaded_plugin[name] = importlib.import_module(f".{name}.__init__", package="Plugin")
+                self._dict_loaded_plugin[name] = importlib.import_module(
+                    f".{name}.__init__", package="Plugin"
+                )
 
-                _METADATA = self._dict_loaded_plugin[name].PLUGIN_METADATA  # PLUGIN_METADATA暂时储存着插件的元数据
-                self._dict_plugin_option_id[_METADATA["option"]] = _METADATA["id"]  # 读取模块元数据，添加gui选项
+                # PLUGIN_METADATA暂时储存着插件的元数据
+                _METADATA = self._dict_loaded_plugin[name].PLUGIN_METADATA
+                # 读取模块元数据，添加gui选项
+                self._dict_plugin_option_id[_METADATA["option"]] = _METADATA["id"]
 
                 tag_list = _METADATA["tag"] if "tag" in _METADATA else []
-                tag_list.extend(['author:' + i for i in _METADATA['author']] if isinstance(_METADATA['author'], list) else ['author:' + _METADATA['author']])  # 作者列表或单个作者
-                tag_list.extend((f"id:{_METADATA['id']}", f"version:{_METADATA['version']}"))  # 版本号，id
-                self._list_plugin_tag_option.append((tag_list, _METADATA["option"]))  # tag对应选项名
+                tag_list.extend(
+                    ["author:" + i for i in _METADATA["author"]]
+                    if isinstance(_METADATA["author"], list)
+                    else ["author:" + _METADATA["author"]]
+                )  # 作者列表或单个作者
+                tag_list.extend(
+                    (f"id:{_METADATA['id']}", f"version:{_METADATA['version']}")
+                )  # 版本号，id
+                self._list_plugin_tag_option.append(
+                    (tag_list, _METADATA["option"])
+                )  # tag对应选项名
             except ImportError as e:
                 print(f"init_plugin_folder inside Exception:{str(e)}")
             except Exception as e:
@@ -89,7 +114,7 @@ class PluginManager:
         dirs_in_plugin_dir = map(
             lambda file_name: file_name
             if os.path.isdir(os.path.join(path, file_name))
-               and os.path.isfile(os.path.join(path, file_name, "__init__.py"))
+            and os.path.isfile(os.path.join(path, file_name, "__init__.py"))
             else "",
             things_in_plugin_dir,
         )
@@ -117,7 +142,8 @@ class PluginManager:
         """
         plugin_attributes = {}  # 读取好的属性放在这里
 
-        _METADATA = self._dict_loaded_plugin[user_selection_id].PLUGIN_METADATA  # PLUGIN_METADATA暂时储存着插件的元数据
+        # PLUGIN_METADATA暂时储存着插件的元数据
+        _METADATA = self._dict_loaded_plugin[user_selection_id].PLUGIN_METADATA
         for _metadata_item in [
             "output_start",
             "quantifier",
@@ -132,10 +158,20 @@ class PluginManager:
             "version",
             "tag",
         ]:
-            plugin_attributes[_metadata_item] = _METADATA[_metadata_item] if _metadata_item in _METADATA else hpyc.OFF
+            plugin_attributes[_metadata_item] = (
+                _METADATA[_metadata_item] if _metadata_item in _METADATA else hpyc.OFF
+            )
 
         if plugin_attributes["fullwidth_symbol"] == hpyc.ON:  # 处理全角转换
-            plugin_attributes["help"] = plugin_attributes["help"].replace(",", "，").replace(".", "。").replace("'", "‘").replace('"', "”").replace("(", "（").replace(")", "）")
+            plugin_attributes["help"] = (
+                plugin_attributes["help"]
+                .replace(",", "，")
+                .replace(".", "。")
+                .replace("'", "‘")
+                .replace('"', "”")
+                .replace("(", "（")
+                .replace(")", "）")
+            )
 
         return plugin_attributes
 

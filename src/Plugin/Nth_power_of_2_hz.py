@@ -33,4 +33,4 @@ def on_calculate(inp):
         inp = float(inp) if "." in inp else int(inp)
     except ValueError:
         return "请按照格式输入"
-    return 2 ** inp
+    return 2**inp

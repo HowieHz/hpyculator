@@ -45,7 +45,7 @@ def is_prime_jit(num):
             return False, 2
         else:
             return False, 3
-    for i in range(5, int(num ** 0.5) + 1, 6):
+    for i in range(5, int(num**0.5) + 1, 6):
         if (num % i == 0) or (num % (i + 2) == 0):
             return False, i
     return True, 0
@@ -63,7 +63,7 @@ def is_prime(num):
             return False, 2
         else:
             return False, 3
-    for i in range(5, int(num ** 0.5) + 1, 6):
+    for i in range(5, int(num**0.5) + 1, 6):
         if (num % i == 0) or (num % (i + 2) == 0):
             return False, i
     return True, 0

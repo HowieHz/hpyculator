@@ -43,4 +43,4 @@ def on_calculate(inp):
         x = float(x) if "." in x else int(x)
     except ValueError:
         return "请按照格式输入"
-    return x ** n
+    return x**n

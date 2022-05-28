@@ -64,7 +64,13 @@ class TestCalculationManager:
         print(f"目前运行{self.__class__.__name__}类,test_calculation_manager函数")
         instance_app = CreateApp()
         instance_main_window = instance_app.run()[0]
-        ret = instance_main_window.event_start_calculation(test_input=test_input, test_input_mode=test_input_mode, test_calculation_mode=test_calculation_mode, test_selection_id=test_selection_id, test_output_dir_path=test_output_dir_path)
+        ret = instance_main_window.event_start_calculation(
+            test_input=test_input,
+            test_input_mode=test_input_mode,
+            test_calculation_mode=test_calculation_mode,
+            test_selection_id=test_selection_id,
+            test_output_dir_path=test_output_dir_path,
+        )
 
         Manager = CalculationManager()
         if ret is not rev_expected:

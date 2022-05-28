@@ -73,7 +73,9 @@ class CalculationManager:
             else:
                 data = None  # 缺省 转换不存在的类型就none
         except Exception as e:
-            instance_main_win_signal.set_output_box.emit(f"输入转换发生错误:{str(e)}\n\n请检查输入格式")
+            instance_main_win_signal.set_output_box.emit(
+                f"输入转换发生错误:{str(e)}\n\n请检查输入格式"
+            )
             return None  # 缺省 转换错误就none
         return data
 
@@ -107,8 +109,12 @@ class CalculationThread(Thread):
         inputbox_data = self.inputbox_data
         calculation_mode = self.calculation_mode
         # instance_plugin_manager.initPlugin()  # 多进程用
-        plugin_attributes = instance_plugin_manager.get_plugin_attributes(self.user_selection_id)  # 插件属性字典
-        selected_plugin = instance_plugin_manager.get_plugin_instance(self.user_selection_id)
+        plugin_attributes = instance_plugin_manager.get_plugin_attributes(
+            self.user_selection_id
+        )  # 插件属性字典
+        selected_plugin = instance_plugin_manager.get_plugin_instance(
+            self.user_selection_id
+        )
 
         def _base_calculate():
             """基础的计算模式"""
@@ -118,7 +124,9 @@ class CalculationThread(Thread):
 
             if plugin_attribute_return_mode == hpyc.RETURN_ONCE:
                 result = str(calculate_fun(inputbox_data))
-                instance_main_win_signal.append_output_box.emit(str(result) + "\n")  # 结果为str，直接输出
+                instance_main_win_signal.append_output_box.emit(
+                    str(result) + "\n"
+                )  # 结果为str，直接输出
             elif plugin_attribute_return_mode == hpyc.RETURN_LIST:  # 算一行输出一行
                 result = calculate_fun(inputbox_data)
                 for result_process in result:
@@ -130,7 +138,9 @@ class CalculationThread(Thread):
             ):  # 算一行输出一行，但是没有换行
                 result = calculate_fun(inputbox_data)
                 for result_process in result:  # 计算
-                    instance_main_win_signal.append_output_box.emit(str(result_process))  # 算一行输出一行
+                    instance_main_win_signal.append_output_box.emit(
+                        str(result_process)
+                    )  # 算一行输出一行
             elif plugin_attribute_return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
                 calculate_fun(inputbox_data, "output")
             elif plugin_attribute_return_mode == hpyc.NO_RETURN:
@@ -284,7 +294,9 @@ class CalculationThread(Thread):
             elif calculation_mode == "calculate":
                 _calculate_base_mode()
         except Exception as e:
-            instance_main_win_signal.set_output_box.emit(f"插件运算发生错误：{str(e)}\n\n请检查输入格式")
+            instance_main_win_signal.set_output_box.emit(
+                f"插件运算发生错误：{str(e)}\n\n请检查输入格式"
+            )
         instance_main_win_signal.set_output_box_cursor.emit("end")  # 光标设到文本框尾部
         instance_main_win_signal.set_start_button_text.emit("计算")  # 设置按钮字
         instance_main_win_signal.set_start_button_state.emit(True)  # 启用按钮
