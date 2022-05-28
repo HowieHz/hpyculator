@@ -122,9 +122,7 @@ class CalculationThread(Thread):
 
             if plugin_attribute_return_mode == hpyc.RETURN_ONCE:
                 result = str(calculate_fun(inputbox_data))
-                main_win_signal.appendOutPutBox.emit(
-                    str(result) + "\n"
-                )  # 结果为str，直接输出
+                main_win_signal.appendOutPutBox.emit(str(result) + "\n")  # 结果为str，直接输出
             elif plugin_attribute_return_mode == hpyc.RETURN_LIST:  # 算一行输出一行
                 result = calculate_fun(inputbox_data)
                 for result_process in result:
@@ -136,9 +134,7 @@ class CalculationThread(Thread):
             ):  # 算一行输出一行，但是没有换行
                 result = calculate_fun(inputbox_data)
                 for result_process in result:  # 计算
-                    main_win_signal.appendOutPutBox.emit(
-                        str(result_process)
-                    )  # 算一行输出一行
+                    main_win_signal.appendOutPutBox.emit(str(result_process))  # 算一行输出一行
             elif plugin_attribute_return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
                 calculate_fun(inputbox_data, "output")
             elif plugin_attribute_return_mode == hpyc.NO_RETURN:

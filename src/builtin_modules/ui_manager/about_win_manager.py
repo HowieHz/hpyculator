@@ -15,12 +15,7 @@ class AboutWinApp(QDialog):
 
         self.setWindowTitle("关于 hpyculator")
 
-        self.ui.combo_doc.addItems([
-            "开屏介绍",
-            "更新日志",
-            "使用说明",
-            "关于"
-        ])
+        self.ui.combo_doc.addItems(["开屏介绍", "更新日志", "使用说明", "关于"])
 
     def chooseShow(self, QString):
         def showStartShow():  # 开屏介绍
@@ -40,7 +35,7 @@ class AboutWinApp(QDialog):
             "开屏介绍": showStartShow,
             "更新日志": showUpdataLog,
             "使用说明": showTODO,
-            "关于": showAbout
+            "关于": showAbout,
         }
         jump_map[QString]()
 
