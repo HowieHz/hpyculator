@@ -38,7 +38,7 @@ def is_prime_jit(num):
     :param num:
     :return:
     """
-    if (num == 2) or (num == 3):
+    if num in (2, 3):
         return True, 0
     if (num % 6 != 1) and (num % 6 != 5):
         if num % 2 == 0:
