@@ -1,5 +1,6 @@
 import shelve
 import os
+import pathlib
 
 # pyside6
 from PySide6.QtWidgets import QMessageBox, QDialog
@@ -23,15 +24,21 @@ class SettingWinApp(QDialog):
             os.path.join(self.SETTING_DIR_PATH, "hpyculator_setting")
         )
 
-        with shelve.open(
-            self.SETTING_FILE_PATH, writeback=True
-        ) as setting_file:  # 读取设置文件
+        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
             # 读取目录设置
             self.OUTPUT_DIR_PATH = setting_file["output_dir_path"]
             self.ui.output_save_location.setPlainText(self.OUTPUT_DIR_PATH)
 
             # 读取保存选项状态设置
-            self.ui.check_is_save_check_box.setChecked(setting_file["is_save_settings"])
+            self.ui.check_is_save_check_box.setChecked(setting_file["is_save_check_box_status"])
+
+        # 读取设置文件-按钮状态和输出目录  check控件初始化
+        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
+            # 背景图片选择框初始化
+            self.background_dir_path = os.path.join(".","background_img")
+            self.ui.combo_background.clear()  # 清空选框
+            self.ui.combo_background.addItems(os.listdir(self.background_dir_path))  # 相对入口文件位置
+            self.ui.combo_background.setCurrentText(setting_file["background_img"])
 
     def event_save_setting(self):
         """
@@ -44,9 +51,7 @@ class SettingWinApp(QDialog):
         ) as setting_file:  # 读取设置文件
             # 读取目录设置
             setting_file["output_dir_path"] = self.ui.output_save_location.toPlainText()
-            setting_file[
-                "is_save_settings"
-            ] = self.ui.check_is_save_check_box.isChecked()
+            setting_file["is_save_check_box_status"] = self.ui.check_is_save_check_box.isChecked()
 
         QMessageBox.information(self, _("保存完成"), _("保存完成\n部分设置将在重新启动后生效"), QMessageBox.Ok)
         self.close()
@@ -67,9 +72,13 @@ class SettingWinApp(QDialog):
             )
             self.ui.output_save_location.setPlainText(self.OUTPUT_DIR_PATH)
 
-    def event_choose_background_img(self, QString):
+    def event_choose_background_img(self, qstring):
         """选择背景图片"""
-        # TODO Finish
+        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+            setting_file["background_img"] = qstring
+        # background_img_path = pathlib.Path(self.background_dir_path).joinpath(qstring)
+        # if background_img_path.is_file():
+        #     self.bg_img = QPixmap(background_img_path)
         return
 
     def event_open_background_dir(self):

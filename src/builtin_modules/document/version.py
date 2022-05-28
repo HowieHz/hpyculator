@@ -1,8 +1,12 @@
-RAW_VERSION = "22w22a"  # todo 发布的时候改版本号 和更新日志
+import os
 
-#i18n
+# i18n
 import gettext
-gettext.install('en',localedir=r'..\locale')
+langs=['en']
+for lang in langs:
+    gettext.install(lang, localedir=os.path.join('..', 'locale'))
+
+RAW_VERSION = "22w22a"  # todo 发布的时候改版本号 和更新日志
 
 if "w" in RAW_VERSION:
     VERSION = RAW_VERSION + _("  开发版")

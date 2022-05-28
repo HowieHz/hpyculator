@@ -22,7 +22,7 @@ class AboutWinApp(QDialog):
             self.ui.output_doc.setText(doc.START_SHOW)
 
         def _show_updata_log():  # 更新日志
-            self.ui.output_doc.setText(doc.UPDATE_LOG)
+            self.ui.output_doc.setText(doc.CHANGELOG)
 
         def _show_about():  # 关于
             # self.ui.output_doc.setText("<img src='..\\ui\\icons\\ico.ico'>")

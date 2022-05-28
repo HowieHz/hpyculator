@@ -6,10 +6,7 @@ from builtin_modules import CreateApp
 from PySide6.QtWidgets import QApplication
 
 import sys
-
-#i18n
-import gettext
-gettext.install('en',localedir=r'.\builtin_modules\locale')
+import os
 
 # from builtin_modules.ui import main_window_resource_rc
 
@@ -19,6 +16,13 @@ import hpyculator
 # import jpype
 import dbm
 import argparse
+
+# i18n
+import gettext
+
+langs = ['en']
+for lang in langs:
+    gettext.install(lang, localedir=os.path.join('.', 'builtin_modules', 'locale'))
 
 # sys.path.append(os.path.join(os.getcwd(),"bin"))
 
@@ -40,15 +44,11 @@ if __name__ == "__main__":
 # todo combo的样式
 # todo pathlib替换掉os.path
 # todo 重写无边框窗体
-# todo 把模块里面偷懒的东西修一遍
 # todo 学习snipaste的设置界面
 # todo 动画问题
 # todo 异形窗口
-# todo 升级检查
 # todo 插件 https://www.osgeo.cn/app/s2711把这个站里面的还原
 # todo 默认插件里面放一份没有numba的，带numba作为拓展包提供给用
-# todo 埃筛
-# todo tag系统
 
 # 命名规范v1.0.0
 # 1类：hello_world 变量,函数(def)和方法，文件名(xswl.txt)全部小写，使用下划线连接
@@ -76,7 +76,7 @@ if __name__ == "__main__":
 # 列表控件 list_功能
 # 下拉选择控件 combo_功能
 
-#python C:\dev\python39\Tools\i18n\pygettext.py -d about_win_manager about_win_manager.py
+# python C:\dev\python39\Tools\i18n\pygettext.py -d about_win_manager about_win_manager.py
 """
 category
 computer_language

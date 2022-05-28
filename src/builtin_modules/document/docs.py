@@ -1,14 +1,14 @@
 from .version import VERSION  # 版本号导入
 
-ABOUT =\
-f"<h3>HpyCulator {VERSION}</h3>"
-"<p>"+_("此为AGPL协议的开源项目")+"</p>"
-"<p>"+_("项目地址：")+"https://github.com/HowieHz/hpyculator</p>"
-"<p>"+_("软件文档：")+"https:///hpyculator.readthedocs.io/</p>"
+ABOUT = \
+    f"<h3>HpyCulator {VERSION}</h3>"
+"<p>" + _("此为AGPL协议的开源项目") + "</p>"
+"<p>" + _("项目地址：") + "https://github.com/HowieHz/hpyculator</p>"
+"<p>" + _("软件文档：") + "https:///hpyculator.readthedocs.io/</p>"
 
-START_SHOW =\
-_("高拓展性计算器")+f" hpyculator {VERSION}\n"+\
-_('''作者：HowieHz
+START_SHOW = \
+    _("高拓展性计算器") + f" hpyculator {VERSION}\n" + \
+    _('''作者：HowieHz
 
 测试版本注释：只要修改background_img目录下的background1.png文件为你要的背景文件就好了
 
@@ -35,14 +35,34 @@ hpyculator的名字来历：
 
 可用tag：''')
 
-UPDATE_LOG = """\
+# Added － 这里记录新增加了哪些功能／接口
+# Changed － 功能／接口变更
+# Deprecated － 不建议使用的功能／接口，将来会删掉
+# Removed － 之前不建议使用的功能／接口，这次真的删掉了
+# Fixed － 这里记录解决了哪些问题
+# Others － 这里记录性能优化和安全性增强等改进。
+
+CHANGELOG = """\
 更新日志:
-20220527
-v1.5.1
-监修插件
-移除无用插件
-新增插件
-代码风格修订
+20220528
+v1.6.0
+Added
+    i18n
+    tag系统
+    新增插件
+    可切换背景图片
+    插件元数据tag项
+Changed
+    插件元数据option_name -> option
+    插件元数据author现支持多作者
+    文档示例更新
+Removed
+    移除无用插件
+    插件元数据use_quantifier项
+Fixed
+    修复插件无法正常运行的bug
+Others
+    代码风格修订
 
 v1.5.0
 重绘ui

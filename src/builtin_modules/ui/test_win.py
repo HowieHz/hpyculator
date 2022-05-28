@@ -62,7 +62,7 @@ class Ui_TestWin(object):
         self.label.setObjectName("label")
         self.label.setGeometry(QRect(50, 50, 731, 531))
         self.label.setStyleSheet(
-            "background-image: url(:/background/images/background1.png);\n"
+            "background-image: url(:/background/images/default.png);\n"
             "border-radius: 20px;"
         )
         self.plainTextEdit = QPlainTextEdit(self.centralwidget)
