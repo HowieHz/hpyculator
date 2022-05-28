@@ -105,8 +105,6 @@ class PluginManager:
         except Exception as e:
             print(f"init_plugin_folder outside Exception:{e}")
 
-        return None
-
     def getPluginAttribute(self, user_selection_id):
         """
         读取指定id的插件属性
