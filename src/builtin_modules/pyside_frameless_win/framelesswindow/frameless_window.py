@@ -94,9 +94,8 @@ class WindowsFramelessWindow(FramelessWindowBase):
             if self._isWindowMaximized(msg.hWnd):
                 self.__monitorNCCALCSIZE(msg)
             return True, 0
-        elif (
-            msg.message == win32con.WM_GETMINMAXINFO
-            and self._isWindowMaximized(msg.hWnd)
+        elif msg.message == win32con.WM_GETMINMAXINFO and self._isWindowMaximized(
+            msg.hWnd
         ):
             window_rect = win32gui.GetWindowRect(msg.hWnd)
             if not window_rect:
