@@ -35,6 +35,7 @@ class AboutWinApp(QDialog):
         }
         dict_jump_map[qstring]()
 
-    def event_check_update(self):
+    @staticmethod
+    def event_check_update():
         """检查更新"""
         webbrowser.open("https://github.com/HowieHz/hpyculator/releases")
