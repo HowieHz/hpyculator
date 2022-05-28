@@ -1,5 +1,5 @@
 import os
-import shelve
+import toml
 from typing import Optional
 
 # from .log import LogManager  # 日志管理 初始化
@@ -44,11 +44,14 @@ def check_setting_path():
     :return: setting_file_path
     """
     setting_dir_path = str(os.path.join(os.getcwd(), "Setting"))  # 初始化设置目录
-    setting_file_path = str(os.path.join(setting_dir_path, "hpyculator_setting"))
+    setting_file_path = str(os.path.join(setting_dir_path, "hpyculator_setting.toml"))
     # 初始化设置文件位置
     # 检查存放设置文件的文件夹是否存在
     if not os.path.exists(setting_dir_path):
         os.makedirs(setting_dir_path)
+
+    if not os.path.isfile(setting_file_path):
+        open(setting_file_path,"w",encoding='utf-8')  # 初始化文件
 
     return setting_file_path
 
@@ -60,14 +63,13 @@ def check_output_path(setting_file_path):
     :param setting_file_path: 设置文件存放目录
     :return: output_dir_path
     """
-
-    with shelve.open(setting_file_path, writeback=True) as setting_file:
-        # 从设置文件读取输出目录
-        if "output_dir_path" in setting_file:
-            output_dir_path = setting_file["output_dir_path"]
-        else:
-            output_dir_path = str(os.path.join(os.getcwd(), "Output"))
-            setting_file["output_dir_path"] = output_dir_path
+    dict_setting = toml.load(setting_file_path)
+    if "output_dir_path" in dict_setting:
+        output_dir_path = dict_setting["output_dir_path"]
+    else:
+        output_dir_path = str(os.path.join(os.getcwd(), "Output"))
+        with open(setting_file_path, 'a+', encoding='utf-8') as setting_file:
+            toml.dump({"output_dir_path" : output_dir_path},setting_file)
         # print(f"输出文件保存位置:{output_dir_path}")
 
     # 检查输出文件夹是否存在
@@ -83,13 +85,14 @@ def check_background_img_path(setting_file_path):
 
     :return: background_img_dir_path
     """
-    with shelve.open(setting_file_path, writeback=True) as setting_file:
-        # 从设置文件读取输出目录
-        if "background_img_dir_path" in setting_file:
-            background_img_dir_path = setting_file["background_img_dir_path"]
-        else:
-            background_img_dir_path = str(os.path.join(os.getcwd(), "background_img"))
-            setting_file["background_img_dir_path"] = background_img_dir_path
+    # 从设置文件读取输出目录
+    dict_setting = toml.load(setting_file_path)
+    if "background_img_dir_path" in dict_setting:
+        background_img_dir_path = dict_setting["background_img_dir_path"]
+    else:
+        background_img_dir_path = str(os.path.join(os.getcwd(), "background_img"))
+        with open(setting_file_path, 'a+', encoding='utf-8') as setting_file:
+            toml.dump({"background_img_dir_path" : background_img_dir_path},setting_file)
 
     # 检查输出文件夹是否存在
     if not os.path.exists(background_img_dir_path):
@@ -105,13 +108,14 @@ def plugin_check(setting_file_path):
     :param setting_file_path: 设置文件的文木
     :return: 存放插件的文件夹路径
     """
-    with shelve.open(setting_file_path, writeback=True) as setting_file:
-        # 从设置文件读取插件目录
-        if "plugin_dir_path" in setting_file:
-            plugin_dir_path = setting_file["plugin_dir_path"]
-        else:
-            plugin_dir_path = str(os.path.join(os.getcwd(), "Plugin"))
-            setting_file["plugin_dir_path"] = plugin_dir_path
+    # 从设置文件读取插件目录
+    dict_setting = toml.load(setting_file_path)
+    if "plugin_dir_path" in dict_setting:
+        plugin_dir_path = dict_setting["plugin_dir_path"]
+    else:
+        plugin_dir_path = str(os.path.join(os.getcwd(), "Plugin"))
+        with open(setting_file_path, 'a+', encoding='utf-8') as setting_file:
+            toml.dump({"plugin_dir_path": plugin_dir_path}, setting_file)
 
     # 检查模块文件夹是否存在
     if not os.path.exists(plugin_dir_path):

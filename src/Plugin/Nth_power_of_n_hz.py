@@ -6,6 +6,7 @@ PLUGIN_METADATA = {
     "id": "Nth_power_of_n_hz",
     "option": f"x的n次方(幂运算) {VERSION} by HowieHz",
     "version": VERSION,
+    "tag": ["category:Mathematical calculations"],
     "save_name": "",
     "quantifier": "次幂",
     "output_start": "",

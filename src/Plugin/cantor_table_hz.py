@@ -1,16 +1,19 @@
 import hpyculator as hpyc
 
+NAME = "Cantor Table(康托表)"
+AUTHOR = "HowieHz"
 VERSION = "V1.0.2"
 PLUGIN_METADATA = {
     "input_mode": hpyc.NUM,
     "id": "cantor_table_hz",  # ID,插件标识符,需要和文件名一致（必须）
-    "option": f"Cantor Table(康托表){VERSION} by HowieHz",  # 选项名-在选择算法列表中（必须）
+    "option": f"{NAME}{VERSION} by {AUTHOR}",  # 选项名-在选择算法列表中（必须）
     "version": VERSION,  # 版本号（必须）
-    "save_name": "Cantor表前",  # 文件保存项目名-在输出（必须）
+    "tag": ["category:Mathematical calculations"],
+    "save_name": "CantorTable前",  # 文件保存项目名-在输出（必须）
     "quantifier": "项",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
-    "output_name": "Cantor表",  # 选择此项后输出的名字（必须）
-    "author": "HowieHz",  # 作者(可选)
+    "output_name": NAME,  # 选择此项后输出的名字（必须）
+    "author": AUTHOR,  # 作者(可选)
     "help": """\
     现代数学的著名证明之一是 Georg Cantor 证明了有理数是可枚举的。他是用下面这一张表来证明这一命题的：
 

@@ -6,6 +6,7 @@ PLUGIN_METADATA = {
     "id": "fibonacci_sequence_hz",
     "option": f"斐波那契数列{VERSION} by HowieHz",
     "version": VERSION,
+    "tag": ["category:Mathematical calculations"],
     "save_name": "斐波那契数列前",
     "quantifier": "项",
     "output_start": "",

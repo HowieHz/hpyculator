@@ -8,6 +8,7 @@ PLUGIN_METADATA = {
     "id": "statistics_hz",
     "option": f"数列统计 {VERSION} by HowieHz",
     "version": VERSION,
+    "tag": ["category:Mathematical calculations"],
     "save_name": "数列统计",
     "quantifier": "",
     "output_start": "",

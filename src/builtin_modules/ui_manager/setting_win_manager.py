@@ -1,4 +1,4 @@
-import shelve
+import toml
 import os
 import pathlib
 
@@ -20,25 +20,25 @@ class SettingWinApp(QDialog):
 
         # 初始化设置目录
         self.SETTING_DIR_PATH = str(os.path.join(os.getcwd(), "Setting"))
-        self.SETTING_FILE_PATH = str(
-            os.path.join(self.SETTING_DIR_PATH, "hpyculator_setting")
-        )
+        self.SETTING_FILE_PATH = str(os.path.join(self.SETTING_DIR_PATH, "hpyculator_setting.toml"))
 
-        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
+        # 从设置文件读取插件目录
+        dict_setting = toml.load(self.SETTING_FILE_PATH)
+        if "output_dir_path" in dict_setting:
             # 读取目录设置
-            self.OUTPUT_DIR_PATH = setting_file["output_dir_path"]
+            self.OUTPUT_DIR_PATH = dict_setting["output_dir_path"]
             self.ui.output_save_location.setPlainText(self.OUTPUT_DIR_PATH)
 
-            # 读取保存选项状态设置
-            self.ui.check_is_save_check_box.setChecked(setting_file["is_save_check_box_status"])
+        # 读取保存选项状态设置
+        if "is_save_check_box_status" in dict_setting:
+            self.ui.check_is_save_check_box.setChecked(dict_setting["is_save_check_box_status"])
 
-        # 读取设置文件-按钮状态和输出目录  check控件初始化
-        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
-            # 背景图片选择框初始化
-            self.background_dir_path = os.path.join(".","background_img")
-            self.ui.combo_background.clear()  # 清空选框
-            self.ui.combo_background.addItems(os.listdir(self.background_dir_path))  # 相对入口文件位置
-            self.ui.combo_background.setCurrentText(setting_file["background_img"])
+        # 背景图片选择框初始化
+        self.background_dir_path = os.path.join(".", "background_img")
+        self.ui.combo_background.clear()  # 清空选框
+        self.ui.combo_background.addItems(os.listdir(self.background_dir_path))  # 相对入口文件位置
+        if "background_img" in dict_setting:
+            self.ui.combo_background.setCurrentText(dict_setting["background_img"])
 
     def event_save_setting(self):
         """
@@ -46,12 +46,11 @@ class SettingWinApp(QDialog):
 
         :return:
         """
-        with shelve.open(
-            self.SETTING_FILE_PATH, writeback=True
-        ) as setting_file:  # 读取设置文件
-            # 读取目录设置
-            setting_file["output_dir_path"] = self.ui.output_save_location.toPlainText()
-            setting_file["is_save_check_box_status"] = self.ui.check_is_save_check_box.isChecked()
+        dict_setting = toml.load(self.SETTING_FILE_PATH)
+        dict_setting["output_dir_path"] = self.ui.output_save_location.toPlainText()
+        dict_setting["is_save_check_box_status"] = self.ui.check_is_save_check_box.isChecked()
+        with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:
+            toml.dump(dict_setting, setting_file)
 
         QMessageBox.information(self, _("保存完成"), _("保存完成\n部分设置将在重新启动后生效"), QMessageBox.Ok)
         self.close()
@@ -66,16 +65,18 @@ class SettingWinApp(QDialog):
 
     def event_reset_save_location(self):
         """重置保存路径"""
-        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
-            self.OUTPUT_DIR_PATH = setting_file["output_dir_path"] = os.path.join(
-                os.getcwd(), "Output"
-            )
-            self.ui.output_save_location.setPlainText(self.OUTPUT_DIR_PATH)
+        dict_setting = toml.load(self.SETTING_FILE_PATH)
+        dict_setting["output_dir_path"] = self.OUTPUT_DIR_PATH = os.path.join(os.getcwd(), "Output")
+        self.ui.output_save_location.setPlainText(self.OUTPUT_DIR_PATH)
+        with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+            toml.dump(dict_setting, setting_file)
 
     def event_choose_background_img(self, qstring):
         """选择背景图片"""
-        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-            setting_file["background_img"] = qstring
+        dict_setting = toml.load(self.SETTING_FILE_PATH)
+        dict_setting["background_img"] = qstring
+        with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+            toml.dump(dict_setting, setting_file)
         # background_img_path = pathlib.Path(self.background_dir_path).joinpath(qstring)
         # if background_img_path.is_file():
         #     self.bg_img = QPixmap(background_img_path)
@@ -87,8 +88,8 @@ class SettingWinApp(QDialog):
 
         :return:
         """
-        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
-            os.system(f'explorer {setting_file["background_img_dir_path"]}')
+        dict_setting = toml.load(self.SETTING_FILE_PATH)
+        os.system(f'explorer {dict_setting["background_img_dir_path"]}')
 
     def event_open_plugin_dir(self):
         """
@@ -96,5 +97,5 @@ class SettingWinApp(QDialog):
 
         :return:
         """
-        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
-            os.system(f'explorer {setting_file["plugin_dir_path"]}')
+        dict_setting = toml.load(self.SETTING_FILE_PATH)
+        os.system(f'explorer {dict_setting["plugin_dir_path"]}')

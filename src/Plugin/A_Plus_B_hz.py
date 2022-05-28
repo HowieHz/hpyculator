@@ -8,6 +8,7 @@ PLUGIN_METADATA = {
     "id": "A_Plus_B_hz",  # ID,插件标识符,需要和文件名一致（必须）
     "option": f"{NAME}{VERSION} by {AUTHOR}",  # 选项名-在选择算法列表中（必须）
     "version": VERSION,  # 版本号（必须）
+    "tag": ["category:Mathematical calculations"],
     "save_name": "",  # 文件保存项目名-在输出（必须）
     "quantifier": "相加所得",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)

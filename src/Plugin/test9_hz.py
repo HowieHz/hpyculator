@@ -6,6 +6,7 @@ PLUGIN_METADATA = {
     "id": "test9_hz",  # ID,插件标识符
     "option": f"tset⑨{VERSION} by HowieHz",  # 选项名-在选择算法列表中
     "version": VERSION,  # 版本号
+    "tag": ["category:Other"],
     "save_name": "tset⑨",  # 文件保存项目名-在输出
     "quantifier": "",  # 文件保存量词-在输入后面
     "output_start": "",  # 输出头

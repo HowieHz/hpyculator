@@ -1,4 +1,4 @@
-import shelve
+import toml
 import sys
 import pathlib
 import locale
@@ -69,44 +69,47 @@ class MainWinApp(FramelessWindow):
         ]
 
         # 读取设置文件-按钮状态和输出目录  check控件初始化
-        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
-            if "is_save_check_box_status" in setting_file:
-                # 是否保存设置
-                self.is_save_check_box_status = setting_file["is_save_check_box_status"]
-                if self.is_save_check_box_status:  # 当保存check状态 所要读取和设置的控件 以及这个设置项不存在时的初始化
-                    for sequence in _default_state:
-                        if sequence[0] in setting_file:
-                            sequence[2].setChecked(
-                                setting_file[sequence[0]]
-                            )  # 根据数据设置选项状态
-                        else:
-                            # 初始化设置文件中对应的项
-                            setting_file[sequence[0]] = sequence[1]
-                            sequence[2].setChecked(sequence[1])  # 初始化控件
-                else:  # 当不保存check状态 设置控件状态
-                    for sequence in _default_state:
+
+        dict_setting = toml.load(self.SETTING_FILE_PATH)
+        if "is_save_check_box_status" in dict_setting:
+            # 是否保存设置
+            self.is_save_check_box_status = dict_setting["is_save_check_box_status"]
+            if self.is_save_check_box_status:  # 当保存check状态 所要读取和设置的控件 以及这个设置项不存在时的初始化
+                for sequence in _default_state:
+                    if sequence[0] in dict_setting:
+                        sequence[2].setChecked(dict_setting[sequence[0]])  # 根据数据设置选项状态
+                    else:
+                        dict_setting[sequence[0]] = sequence[1]  # 初始化设置文件中对应的项
                         sequence[2].setChecked(sequence[1])  # 初始化控件
-            else:
-                # 第一遍启动初始化设置
-                setting_file["is_save_check_box_status"] = False  # 默认不保存按键状态
-                self.is_save_check_box_status = False  # 默认不保存按键状态
+                with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                    toml.dump(dict_setting, setting_file)
+            else:  # 当不保存check状态 设置控件状态
                 for sequence in _default_state:
                     sequence[2].setChecked(sequence[1])  # 初始化控件
+        else:
+            # 第一遍启动初始化设置
+            dict_setting["is_save_check_box_status"] = False  # 默认不保存按键状态
+            self.is_save_check_box_status = False  # 默认不保存按键状态
+            for sequence in _default_state:
+                sequence[2].setChecked(sequence[1])  # 初始化控件
+            with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                toml.dump(dict_setting, setting_file)
 
-        # 读取设置文件-按钮状态和输出目录  check控件初始化
-        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:
-            # 初始化背景图片
-            if "background_img" in setting_file:
-                # noinspection PyTypeChecker
-                background_img_path = pathlib.Path(background_dir_path).joinpath(setting_file["background_img"])
-                # print(pathlib.Path().cwd())
-                if background_img_path.is_file():
-                    self.bg_img = QPixmap(background_img_path)
-            else:
-                background_img_path = pathlib.Path(background_dir_path).joinpath("default.png")
-                setting_file["background_img"] = "default.png"
-                if background_img_path.is_file():
-                    self.bg_img = QPixmap(background_img_path)
+        dict_setting = toml.load(self.SETTING_FILE_PATH)
+        # 初始化背景图片
+        if "background_img" in dict_setting:
+            # noinspection PyTypeChecker
+            background_img_path = pathlib.Path(background_dir_path).joinpath(dict_setting["background_img"])
+            # print(pathlib.Path().cwd())
+            if background_img_path.is_file():
+                self.bg_img = QPixmap(background_img_path)
+        else:
+            background_img_path = pathlib.Path(background_dir_path).joinpath("default.png")
+            dict_setting["background_img"] = "default.png"
+            if background_img_path.is_file():
+                self.bg_img = QPixmap(background_img_path)
+            with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                toml.dump(dict_setting, setting_file)
 
         self.is_thread_running = [False]  # 防止反复启动计算线程
 
@@ -465,15 +468,15 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         """
         self.setting_win = SettingWinApp()  # 绑定子窗口
         self.setting_win.exec()
-        with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-            self.OUTPUT_DIR_PATH = setting_file["output_dir_path"]
 
-            self.is_save_check_box_status = setting_file["is_save_check_box_status"]
-
-            background_img_path = pathlib.Path(self.background_dir_path).joinpath(setting_file["background_img"])
-            if background_img_path.is_file():
-                self.bg_img = QPixmap(background_img_path)
-            self.draw_background()
+        # 读取新设置
+        dict_setting = toml.load(self.SETTING_FILE_PATH)
+        self.OUTPUT_DIR_PATH = dict_setting["output_dir_path"]
+        self.is_save_check_box_status = dict_setting["is_save_check_box_status"]
+        background_img_path = pathlib.Path(self.background_dir_path).joinpath(dict_setting["background_img"])
+        if background_img_path.is_file():
+            self.bg_img = QPixmap(background_img_path)
+        self.draw_background()
 
     def event_save_check(self) -> None:
         """
@@ -482,8 +485,10 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         :return: None
         """
         if self.is_save_check_box_status:  # 保存check设置
-            with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-                setting_file["is_save"] = self.ui.check_save.isChecked()
+            dict_setting = toml.load(self.SETTING_FILE_PATH)
+            dict_setting["is_save"] = self.ui.check_save.isChecked()
+            with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                toml.dump(dict_setting, setting_file)
 
     def event_output_optimization_check(self) -> None:
         """
@@ -493,14 +498,18 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         """
         if self.ui.check_output_optimization.isChecked():
             if self.is_save_check_box_status:  # 保存check设置
-                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-                    setting_file["output_optimization"] = True
+                dict_setting = toml.load(self.SETTING_FILE_PATH)
+                dict_setting["output_optimization"] = True
+                with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                    toml.dump(dict_setting, setting_file)
         else:
             self.ui.check_output_lock_maximums.setChecked(False)
             if self.is_save_check_box_status:  # 保存check设置
-                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-                    setting_file["output_lock_maximums"] = False
-                    setting_file["output_optimization"] = False
+                dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
+                dict_setting["output_lock_maximums"] = False
+                dict_setting["output_optimization"] = False
+                with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                    toml.dump(dict_setting, setting_file)
 
     def event_output_lock_maximums_check(self) -> None:
         """
@@ -511,13 +520,17 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         if self.ui.check_output_lock_maximums.isChecked():
             self.ui.check_output_optimization.setChecked(True)
             if self.is_save_check_box_status:  # 保存check设置
-                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-                    setting_file["output_optimization"] = True
-                    setting_file["output_lock_maximums"] = True  # True
+                dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
+                dict_setting["output_optimization"] = True
+                dict_setting["output_lock_maximums"] = True  # True
+                with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                    toml.dump(dict_setting, setting_file)
         else:
             if self.is_save_check_box_status:  # 保存check设置
-                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-                    setting_file["output_lock_maximums"] = False  # False
+                dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
+                dict_setting["output_lock_maximums"] = False  # False
+                with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                    toml.dump(dict_setting, setting_file)
 
     def event_auto_wrap_check(self) -> None:
         """
@@ -527,14 +540,18 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         """
         if self.ui.check_auto_wrap.isChecked():
             if self.is_save_check_box_status:  # 保存check设置
-                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-                    setting_file["auto_wrap"] = True  # True
+                dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
+                dict_setting["auto_wrap"] = True  # True
+                with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                    toml.dump(dict_setting, setting_file)
             self.ui.output_box.setLineWrapMode(self.ui.output_box.WidgetWidth)
             self.ui.input_box.setLineWrapMode(self.ui.input_box.WidgetWidth)
         else:
             if self.is_save_check_box_status:  # 保存check设置
-                with shelve.open(self.SETTING_FILE_PATH, writeback=True) as setting_file:  # 读取设置文件
-                    setting_file["auto_wrap"] = False  # False
+                dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
+                dict_setting["auto_wrap"] = False  # False
+                with open(self.SETTING_FILE_PATH, 'w+', encoding='utf-8') as setting_file:  # 写入配置文件
+                    toml.dump(dict_setting, setting_file)
             self.ui.output_box.setLineWrapMode(self.ui.output_box.NoWrap)
             self.ui.input_box.setLineWrapMode(self.ui.input_box.NoWrap)
 

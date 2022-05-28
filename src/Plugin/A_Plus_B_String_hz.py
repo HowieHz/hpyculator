@@ -1,14 +1,18 @@
 import hpyculator as hpyc
 
+NAME = "高精度浮点数加法(基于字符串)"
+AUTHOR = "HowieHz"
+VERSION = "V1.0.3"
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
     "id": "A_Plus_B_String_hz",  # ID,插件标识符,需要和文件名一致
-    "option": "高精度浮点数加法 基于字符串 by HowieHz",  # 选项名-在选择算法列表中
-    "version": "V1.0.3",  # 版本号
+    "option": f"{NAME} by {AUTHOR}",  # 选项名-在选择算法列表中
+    "version": VERSION,  # 版本号
+    "tag": ["category:Mathematical calculations"],
     "save_name": "",  # 文件保存项目名-在输出
     "quantifier": "相加所得",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
-    "output_name": "高精度浮点数加法 基于字符串",  # 选择此项后输出的名字
+    "output_name": NAME,  # 选择此项后输出的名字
     "author": "HowieHz",  # 作者(可选)
     "help": """
 输入格式：

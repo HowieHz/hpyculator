@@ -21,7 +21,7 @@ class TestAllManager:
             raise AssertionError(
                 output_dir_path
                 == (
-                    str(os.path.join(os.getcwd(), "Setting", "hpyculator_setting")),
+                    str(os.path.join(os.getcwd(), "Setting", "hpyculator_setting.toml")),
                     str(os.path.join(os.getcwd(), "Output")),
                 )
             )

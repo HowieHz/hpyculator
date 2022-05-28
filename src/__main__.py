@@ -39,15 +39,12 @@ if __name__ == "__main__":
 # todo 1.可以分享脚本的平台（qq群也不错） 2.Github actions
 # todo 3.可以读取文件作为输入
 # todo 8.上线网页版
-# todo ！！！插件管理窗口
+# todo 插件管理窗口
 # todo 多套主题
 # todo combo的样式
-# todo pathlib替换掉os.path
 # todo 重写无边框窗体
 # todo 学习snipaste的设置界面
-# todo 动画问题
-# todo 异形窗口
-# todo 插件 https://www.osgeo.cn/app/s2711把这个站里面的还原
+# todo 动画
 # todo 默认插件里面放一份没有numba的，带numba作为拓展包提供给用
 
 # 命名规范v1.0.0
@@ -77,6 +74,11 @@ if __name__ == "__main__":
 # 下拉选择控件 combo_功能
 
 # python C:\dev\python39\Tools\i18n\pygettext.py -d about_win_manager about_win_manager.py
+
+# 配置文件操作指南
+# 初始化： a+open  然后初始化单项
+# 修改： load 修改 w+open dump
+# 初始化第二种： load 修改（因为是字典，不存在的项会自动初始化） w+open dump
 """
 category
 computer_language
@@ -87,6 +89,8 @@ id
 version
 
 给插件加tag
-
-修改开屏
+数学计算Mathematical calculations
+物理计算Physical computations
+换算工具Unit conversion
+还有其他Other
 """

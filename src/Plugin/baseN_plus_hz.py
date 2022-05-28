@@ -1,15 +1,19 @@
 import hpyculator as hpyc
 
+NAME = "n进制加法"
+AUTHOR = "HowieHz"
+VERSION = "V1.2.2"
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
     "id": "baseN_plus_hz",  # ID,插件标识符,需要和文件名一致（必须）
-    "option": "n进制加法V1.2.2 by HowieHz",  # 选项名-在选择算法列表中（必须）
-    "version": "V1.2.2",  # 版本号（必须）
+    "option": f"{NAME}{VERSION} by {AUTHOR}",  # 选项名-在选择算法列表中（必须）
+    "version": VERSION,  # 版本号（必须）
+    "tag": ["category:Mathematical calculations"],
     "save_name": "",  # 文件保存项目名-在输出（必须）
     "quantifier": "进制下的相加所得",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
-    "output_name": "n进制加法",  # 选择此项后输出的名字（必须）
-    "author": "HowieHz",  # 作者(可选)
+    "output_name": NAME,  # 选择此项后输出的名字（必须）
+    "author": AUTHOR,  # 作者(可选)
     "help": """
 
     给定两个 C（2≤C≤64）进制数 A,B,输出A+B，输出的数是个C进制数

@@ -6,6 +6,7 @@ PLUGIN_METADATA = {
     "id": "HexBinDecOct_hz",  # ID，插件标识符，需要和文件名一致
     "option": f"进制转换{VERSION} by HowieHz",  # 选项名-在选择算法列表中
     "version": VERSION,  # 版本号
+    "tag": ["category:Mathematical calculations"],
     "save_name": "",  # 文件保存项目名-在输出
     "quantifier": "的进制转换结果",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
