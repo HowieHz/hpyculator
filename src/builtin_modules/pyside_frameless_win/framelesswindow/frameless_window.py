@@ -34,13 +34,6 @@ class FramelessWindowBase(QWidget):
         # self.titleBar.raise_()
         self.resize(500, 500)
 
-    def resizeEvent(self, e):
-        """Adjust the width and icon of title bar"""
-        super().resizeEvent(e)
-        # self.titleBar.resize(self.width(), self.titleBar.height())
-        # self.titleBar.maxBtn.setMaxState(
-        #     self._isWindowMaximized(int(self.winId())))
-
     def _isWindowMaximized(self, hWnd):
         """Determine whether the window is maximized"""
         return self.isMaximized()
@@ -83,53 +76,54 @@ class WindowsFramelessWindow(FramelessWindowBase):
             by = yPos > h - self.BORDER_WIDTH
             if lx and ty:
                 return True, win32con.HTTOPLEFT
-            elif rx and by:
+            if rx and by:
                 return True, win32con.HTBOTTOMRIGHT
-            elif rx and ty:
+            if rx and ty:
                 return True, win32con.HTTOPRIGHT
-            elif lx and by:
+            if lx and by:
                 return True, win32con.HTBOTTOMLEFT
-            elif ty:
+            if ty:
                 return True, win32con.HTTOP
-            elif by:
+            if by:
                 return True, win32con.HTBOTTOM
-            elif lx:
+            if lx:
                 return True, win32con.HTLEFT
-            elif rx:
+            if rx:
                 return True, win32con.HTRIGHT
         elif msg.message == win32con.WM_NCCALCSIZE:
             if self._isWindowMaximized(msg.hWnd):
                 self.__monitorNCCALCSIZE(msg)
             return True, 0
-        elif msg.message == win32con.WM_GETMINMAXINFO:
-            if self._isWindowMaximized(msg.hWnd):
-                window_rect = win32gui.GetWindowRect(msg.hWnd)
-                if not window_rect:
-                    return False, 0
+        elif msg.message == win32con.WM_GETMINMAXINFO and self._isWindowMaximized(
+            msg.hWnd
+        ):
+            window_rect = win32gui.GetWindowRect(msg.hWnd)
+            if not window_rect:
+                return False, 0
 
-                # get the monitor handle
-                monitor = win32api.MonitorFromRect(window_rect)
-                if not monitor:
-                    return False, 0
+            # get the monitor handle
+            monitor = win32api.MonitorFromRect(window_rect)
+            if not monitor:
+                return False, 0
 
-                # get the monitor info
-                __monitorInfo = win32api.GetMonitorInfo(monitor)
-                monitor_rect = __monitorInfo["Monitor"]
-                work_area = __monitorInfo["Work"]
+            # get the monitor info
+            __monitorInfo = win32api.GetMonitorInfo(monitor)
+            monitor_rect = __monitorInfo["Monitor"]
+            work_area = __monitorInfo["Work"]
 
-                # convert lParam to MINMAXINFO pointer
-                info = cast(msg.lParam, POINTER(MINMAXINFO)).contents
+            # convert lParam to MINMAXINFO pointer
+            info = cast(msg.lParam, POINTER(MINMAXINFO)).contents
 
-                # adjust the size of window
-                info.ptMaxSize.x = work_area[2] - work_area[0]
-                info.ptMaxSize.y = work_area[3] - work_area[1]
-                info.ptMaxTrackSize.x = info.ptMaxSize.x
-                info.ptMaxTrackSize.y = info.ptMaxSize.y
+            # adjust the size of window
+            info.ptMaxSize.x = work_area[2] - work_area[0]
+            info.ptMaxSize.y = work_area[3] - work_area[1]
+            info.ptMaxTrackSize.x = info.ptMaxSize.x
+            info.ptMaxTrackSize.y = info.ptMaxSize.y
 
-                # modify the upper left coordinate
-                info.ptMaxPosition.x = abs(window_rect[0] - monitor_rect[0])
-                info.ptMaxPosition.y = abs(window_rect[1] - monitor_rect[1])
-                return True, 1
+            # modify the upper left coordinate
+            info.ptMaxPosition.x = abs(window_rect[0] - monitor_rect[0])
+            info.ptMaxPosition.y = abs(window_rect[1] - monitor_rect[1])
+            return True, 1
 
         return QWidget.nativeEvent(self, eventType, message)
 
@@ -149,7 +143,7 @@ class WindowsFramelessWindow(FramelessWindowBase):
         # If the display information is not saved, return directly
         if monitor is None and not self.__monitorInfo:
             return
-        elif monitor is not None:
+        if monitor is not None:
             self.__monitorInfo = win32api.GetMonitorInfo(monitor)
 
         # adjust the size of window

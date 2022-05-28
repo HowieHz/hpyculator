@@ -21,7 +21,7 @@ PLUGIN_METADATA = {
     输入数字n(n为正整数),输出 >=0且<=n 回文质数
 
     对于输入小于100030001的数 有着绝佳的性能
-    
+
     使用了即时编译(JIT)技术，对于>100030000的数第一次运行稍慢
             """,  # 帮助和说明(可选)
     "output_end": "",  # 输出小尾巴(可选)
@@ -863,10 +863,8 @@ def scope_builder(num):
         ret = int(num / 10 ** ((num_len + 1) / 2 - 1))
         if int(str(ret) + str(ret)[-2::-1]) <= num:
             return int(num / 10 ** ((num_len + 1) / 2 - 1))
-        else:
-            return int(num / 10 ** ((num_len + 1) / 2 - 1) - 1)
-    else:  # 偶数位
-        return int(9 * (1 - 10 ** (num_len / 2)) / -9)  # 9*(10**0+10**1+10**2)
+        return int(num / 10 ** ((num_len + 1) / 2 - 1) - 1)
+    return int(9 * (1 - 10 ** (num_len / 2)) / -9)  # 9*(10**0+10**1+10**2)
 
 
 @numba.jit(nopython=True)
