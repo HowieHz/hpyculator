@@ -93,10 +93,6 @@ class SettingWinApp(QDialog):
             self.SETTING_FILE_PATH, "w+", encoding="utf-8"
         ) as setting_file:  # 写入配置文件
             toml.dump(dict_setting, setting_file)
-        # background_img_path = pathlib.Path(self.background_dir_path).joinpath(qstring)
-        # if background_img_path.is_file():
-        #     self.bg_img = QPixmap(background_img_path)
-        return
 
     def event_open_background_dir(self):
         """
