@@ -21,7 +21,7 @@ PLUGIN_METADATA = {
 
 输入格式:
     n(n为正整数且n>1)
-    
+
 使用了jit技术，第一次运行稍慢
 """,
     "output_end": "",
