@@ -689,11 +689,6 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
      <pointsize>14</pointsize>
     </font>
    </property>
-   <item>
-    <property name="text">
-     <string>未完工</string>
-    </property>
-   </item>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
@@ -714,7 +709,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     <string>是否保存选择框状态</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="check_is_save_check_box">
+  <widget class="QCheckBox" name="check_is_save_check_box_status">
    <property name="geometry">
     <rect>
      <x>210</x>
@@ -910,7 +905,7 @@ QCheckBox::indicator:unchecked {
    <sender>button_save_setting</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
-   <slot>event_save_setting()</slot>
+   <slot>eventSaveSetting()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>385</x>
@@ -926,7 +921,7 @@ QCheckBox::indicator:unchecked {
    <sender>button_cancel</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
-   <slot>event_cancel_setting()</slot>
+   <slot>eventCancelSetting()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>534</x>
@@ -939,10 +934,10 @@ QCheckBox::indicator:unchecked {
    </hints>
   </connection>
   <connection>
-   <sender>check_is_save_check_box</sender>
+   <sender>check_is_save_check_box_status</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
-   <slot>event_save_setting_check()</slot>
+   <slot>eventSaveCheckBoxStatus()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>386</x>
@@ -958,7 +953,7 @@ QCheckBox::indicator:unchecked {
    <sender>button_reset_save_location</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
-   <slot>event_reset_save_location()</slot>
+   <slot>eventResetSaveLocation()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>357</x>
@@ -974,7 +969,7 @@ QCheckBox::indicator:unchecked {
    <sender>combo_background</sender>
    <signal>currentTextChanged(QString)</signal>
    <receiver>SettingWin</receiver>
-   <slot>event_choose_background_img(QString)</slot>
+   <slot>eventChooseBackgroundImg(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>279</x>
@@ -990,7 +985,7 @@ QCheckBox::indicator:unchecked {
    <sender>button_open_background_dir</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
-   <slot>event_open_background_dir()</slot>
+   <slot>eventOpenBackgroundDir()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>575</x>
@@ -1006,7 +1001,7 @@ QCheckBox::indicator:unchecked {
    <sender>button_open_plugin_dir</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
-   <slot>event_open_plugin_dir()</slot>
+   <slot>eventOpenPluginDir()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>385</x>
@@ -1020,12 +1015,12 @@ QCheckBox::indicator:unchecked {
   </connection>
  </connections>
  <slots>
-  <slot>event_save_setting()</slot>
-  <slot>event_cancel_setting()</slot>
-  <slot>event_save_setting_check()</slot>
-  <slot>event_reset_save_location()</slot>
-  <slot>event_choose_background_img(QString)</slot>
-  <slot>event_open_background_dir()</slot>
-  <slot>event_open_plugin_dir()</slot>
+  <slot>eventSaveSetting()</slot>
+  <slot>eventCancelSetting()</slot>
+  <slot>eventSaveCheckBoxStatus()</slot>
+  <slot>eventResetSaveLocation()</slot>
+  <slot>eventChooseBackgroundImg(QString)</slot>
+  <slot>eventOpenBackgroundDir()</slot>
+  <slot>eventOpenPluginDir()</slot>
  </slots>
 </ui>

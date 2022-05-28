@@ -49,8 +49,8 @@ if __name__ == "__main__":
 # todo 默认插件里面放一份没有numba的，带numba作为拓展包提供给用
 
 # 命名规范v1.0.0
-# 1类：hello_world 变量,函数(def)和方法，文件名(xswl.txt)全部小写，使用下划线连接
-# 2类：helloWorld 没有使用小驼峰式命名法，首单词字母小写，后面单词字母大写
+# 1类：hello_world 变量，文件名(xswl.txt)全部小写，使用下划线连接
+# 2类：helloWorld 函数(def)和方法使用小驼峰式命名法，首单词字母小写，后面单词字母大写
 # 3类：HelloWorld 类名(Class)、使用帕斯卡命名规则(大驼峰式命名法,每一个单词的首字母都采用大写字母)。
 # 4类：HELLO_WORLD 常量(NEVER_GIVE_UP)全部大写，使用下划线连接单词
 # 命名特别约定：

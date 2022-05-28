@@ -17,25 +17,25 @@ class AboutWinApp(QDialog):
 
         self.ui.combo_doc.addItems([_("开屏介绍"), _("更新日志"), _("关于")])
 
-    def event_choose_show(self, qstring):
-        def _show_start_show():  # 开屏介绍
+    def eventChooseShow(self, qstring):
+        def _showStartShow():  # 开屏介绍
             self.ui.output_doc.setText(doc.START_SHOW)
 
-        def _show_updata_log():  # 更新日志
+        def _showUpdataLog():  # 更新日志
             self.ui.output_doc.setText(doc.CHANGELOG)
 
-        def _show_about():  # 关于
+        def _showAbout():  # 关于
             # self.ui.output_doc.setText("<img src='..\\ui\\icons\\ico.ico'>")
             self.ui.output_doc.setText(doc.ABOUT)
 
         dict_jump_map = {
-            _("开屏介绍"): _show_start_show,
-            _("更新日志"): _show_updata_log,
-            _("关于"): _show_about,
+            _("开屏介绍"): _showStartShow,
+            _("更新日志"): _showUpdataLog,
+            _("关于"): _showAbout,
         }
         dict_jump_map[qstring]()
 
     @staticmethod
-    def event_check_update():
+    def eventCheckUpdate():
         """检查更新"""
         webbrowser.open("https://github.com/HowieHz/hpyculator/releases")

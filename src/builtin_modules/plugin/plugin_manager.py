@@ -16,7 +16,7 @@ class PluginManager:
         self._list_plugin_tag_option: List[tuple[list[str], str]] = []
         self._dict_loaded_plugin: Dict[str] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
 
-    def _init_plugin_singer_file(self, plugin_files_name) -> None:
+    def _initPluginSingerFile(self, plugin_files_name) -> None:
         """
         导入指定单文件插件
 
@@ -53,7 +53,7 @@ class PluginManager:
                 except Exception as e:
                     print(f"init_plugin_singer_file inside Exception:{str(e)}")
 
-    def _init_plugin_folder(self, plugin_files_name) -> None:
+    def _initPluginFolder(self, plugin_files_name) -> None:
         """
         导入指定文件夹插件
 
@@ -89,7 +89,7 @@ class PluginManager:
             except Exception as e:
                 print(f"init_plugin_folder inside Exception:{str(e)}")
 
-    def init_plugin(self, path, plugin_suffix=".py") -> None:
+    def initPlugin(self, path, plugin_suffix=".py") -> None:
         """
         导入插件
 
@@ -122,18 +122,18 @@ class PluginManager:
         dirs_in_plugin_dir = [_ for _ in dirs_in_plugin_dir if _ != ""]
 
         try:
-            self._init_plugin_singer_file(files_in_plugin_dir)  # 导入单文件插件
+            self._initPluginSingerFile(files_in_plugin_dir)  # 导入单文件插件
         except Exception as e:
             print(f"init_plugin_singer_file outside Exception:{e}")
 
         try:
-            self._init_plugin_folder(dirs_in_plugin_dir)  # 导入文件插件
+            self._initPluginFolder(dirs_in_plugin_dir)  # 导入文件插件
         except Exception as e:
             print(f"init_plugin_folder outside Exception:{e}")
 
         return None
 
-    def get_plugin_attributes(self, user_selection_id) -> dict:
+    def getPluginAttributes(self, user_selection_id) -> dict:
         """
         读取指定id的插件属性
 
@@ -175,7 +175,7 @@ class PluginManager:
 
         return plugin_attributes
 
-    def get_plugin_instance(self, user_selection_id) -> importlib.import_module:
+    def getPluginInstance(self, user_selection_id) -> importlib.import_module:
         """
         获取指定id的插件对象
 
@@ -184,7 +184,7 @@ class PluginManager:
         """
         return self._dict_loaded_plugin[user_selection_id]
 
-    def get_all_plugin_tag_option(self) -> list[tuple[list[str], str]]:
+    def getAllPluginTagOption(self) -> list[tuple[list[str], str]]:
         """
         获取所有插件的tag，tag对应插件选项名
 
@@ -192,7 +192,7 @@ class PluginManager:
         """
         return self._list_plugin_tag_option
 
-    def get_option_id_dict(self) -> dict[str, str]:
+    def getOptionIdDict(self) -> dict[str, str]:
         """
         获取插件选项名和id的映射表
 

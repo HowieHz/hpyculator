@@ -18,12 +18,10 @@ class CreateApp:
 
     def run(self):
         # TODO 路径检查需重构，默认路径改传参
-        SETTING_FILE_PATH = check_setting_path()
-        OUTPUT_DIR_PATH = check_output_path(SETTING_FILE_PATH)  # 输出路径检查
-        BACKGROUND_IMG_DIR_PATH = check_background_img_path(
-            SETTING_FILE_PATH
-        )  # 背景图片路径检查
-        PLUGIN_DIR_PATH = plugin_check(SETTING_FILE_PATH)  # 插件加载
+        SETTING_FILE_PATH = checkSettingPath()
+        OUTPUT_DIR_PATH = checkOutputPath(SETTING_FILE_PATH)  # 输出路径检查
+        BACKGROUND_IMG_DIR_PATH = checkBackgroundImgPath(SETTING_FILE_PATH)  # 背景图片路径检查
+        PLUGIN_DIR_PATH = pluginCheck(SETTING_FILE_PATH)  # 插件加载
 
         list_instance_main_window = []
         for _ in range(self.instance_num):
@@ -39,7 +37,7 @@ class CreateApp:
         return list_instance_main_window
 
 
-def check_setting_path():
+def checkSettingPath():
     """
     设置文件路径检查
 
@@ -58,7 +56,7 @@ def check_setting_path():
     return setting_file_path
 
 
-def check_output_path(setting_file_path):
+def checkOutputPath(setting_file_path):
     """
     检查输出目录
 
@@ -81,7 +79,7 @@ def check_output_path(setting_file_path):
     return output_dir_path
 
 
-def check_background_img_path(setting_file_path):
+def checkBackgroundImgPath(setting_file_path):
     """
     背景图片路径检查
 
@@ -105,7 +103,7 @@ def check_background_img_path(setting_file_path):
     return background_img_dir_path
 
 
-def plugin_check(setting_file_path):
+def pluginCheck(setting_file_path):
     """
     加载插件
 
@@ -125,6 +123,6 @@ def plugin_check(setting_file_path):
     if not os.path.exists(plugin_dir_path):
         os.makedirs(plugin_dir_path)
 
-    instance_plugin_manager.init_plugin(plugin_dir_path)  # 加载插件
+    instance_plugin_manager.initPlugin(plugin_dir_path)  # 加载插件
 
     return plugin_dir_path

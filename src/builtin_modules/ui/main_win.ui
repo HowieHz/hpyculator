@@ -982,7 +982,7 @@ Abo
    <sender>button_close</sender>
    <signal>clicked()</signal>
    <receiver>MainWin</receiver>
-   <slot>event_quit()</slot>
+   <slot>eventQuit()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>1133</x>
@@ -998,7 +998,7 @@ Abo
    <sender>button_minimize</sender>
    <signal>clicked()</signal>
    <receiver>MainWin</receiver>
-   <slot>event_minimize()</slot>
+   <slot>eventMinimize()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>1051</x>
@@ -1014,7 +1014,7 @@ Abo
    <sender>button_maximum</sender>
    <signal>clicked()</signal>
    <receiver>MainWin</receiver>
-   <slot>event_maximize()</slot>
+   <slot>eventMaximize()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>1092</x>
@@ -1030,7 +1030,7 @@ Abo
    <sender>button_about</sender>
    <signal>clicked()</signal>
    <receiver>MainWin</receiver>
-   <slot>event_open_about_win()</slot>
+   <slot>eventOpenAboutWin()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>940</x>
@@ -1046,7 +1046,7 @@ Abo
    <sender>button_setting</sender>
    <signal>clicked()</signal>
    <receiver>MainWin</receiver>
-   <slot>event_open_setting_win()</slot>
+   <slot>eventOpenSettingWin()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>1010</x>
@@ -1062,7 +1062,7 @@ Abo
    <sender>search_plugin</sender>
    <signal>textChanged()</signal>
    <receiver>MainWin</receiver>
-   <slot>event_search()</slot>
+   <slot>eventSearch()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>213</x>
@@ -1078,7 +1078,7 @@ Abo
    <sender>list_choices_plugin</sender>
    <signal>itemClicked(QListWidgetItem*)</signal>
    <receiver>MainWin</receiver>
-   <slot>event_choose_option(QListWidgetItem*)</slot>
+   <slot>eventChooseOption(QListWidgetItem*)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>76</x>
@@ -1094,7 +1094,7 @@ Abo
    <sender>button_start</sender>
    <signal>clicked()</signal>
    <receiver>MainWin</receiver>
-   <slot>event_start_calculation()</slot>
+   <slot>eventStartCalculation()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>874</x>
@@ -1110,7 +1110,7 @@ Abo
    <sender>check_output_optimization</sender>
    <signal>clicked()</signal>
    <receiver>MainWin</receiver>
-   <slot>event_output_optimization_check()</slot>
+   <slot>eventOutputOptimizationCheck()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>1102</x>
@@ -1126,7 +1126,7 @@ Abo
    <sender>check_output_lock_maximums</sender>
    <signal>clicked()</signal>
    <receiver>MainWin</receiver>
-   <slot>event_output_lock_maximums_check()</slot>
+   <slot>eventOutputLockMaximumsCheck()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>1062</x>
@@ -1142,7 +1142,7 @@ Abo
    <sender>check_save</sender>
    <signal>clicked()</signal>
    <receiver>MainWin</receiver>
-   <slot>event_save_check()</slot>
+   <slot>eventSaveCheck()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>1071</x>
@@ -1158,7 +1158,7 @@ Abo
    <sender>check_auto_wrap</sender>
    <signal>clicked()</signal>
    <receiver>MainWin</receiver>
-   <slot>event_auto_wrap_check()</slot>
+   <slot>eventAutoWrapCheck()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>1012</x>
@@ -1172,17 +1172,17 @@ Abo
   </connection>
  </connections>
  <slots>
-  <slot>event_quit()</slot>
-  <slot>event_minimize()</slot>
-  <slot>event_maximize()</slot>
-  <slot>event_open_about_win()</slot>
-  <slot>event_open_setting_win()</slot>
-  <slot>event_search()</slot>
-  <slot>event_choose_option(QListWidgetItem*)</slot>
-  <slot>event_start_calculation()</slot>
-  <slot>event_output_optimization_check()</slot>
-  <slot>event_output_lock_maximums_check()</slot>
-  <slot>event_save_check()</slot>
-  <slot>event_auto_wrap_check()</slot>
+  <slot>eventQuit()</slot>
+  <slot>eventMinimize()</slot>
+  <slot>eventMaximize()</slot>
+  <slot>eventOpenAboutWin()</slot>
+  <slot>eventOpenSettingWin()</slot>
+  <slot>eventSearch()</slot>
+  <slot>eventChooseOption(QListWidgetItem*)</slot>
+  <slot>eventStartCalculation()</slot>
+  <slot>eventOutputOptimizationCheck()</slot>
+  <slot>eventOutputLockMaximumsCheck()</slot>
+  <slot>eventSaveCheck()</slot>
+  <slot>eventAutoWrapCheck()</slot>
  </slots>
 </ui>

@@ -687,7 +687,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    <sender>combo_doc</sender>
    <signal>currentTextChanged(QString)</signal>
    <receiver>AboutWin</receiver>
-   <slot>event_choose_show(QString)</slot>
+   <slot>eventChooseShow(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>324</x>
@@ -703,7 +703,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
    <sender>button_check_update</sender>
    <signal>clicked()</signal>
    <receiver>AboutWin</receiver>
-   <slot>event_check_update()</slot>
+   <slot>eventCheckUpdate()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>606</x>
@@ -717,7 +717,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
   </connection>
  </connections>
  <slots>
-  <slot>event_choose_show(QString)</slot>
-  <slot>event_check_update()</slot>
+  <slot>eventChooseShow(QString)</slot>
+  <slot>eventCheckUpdate()</slot>
  </slots>
 </ui>

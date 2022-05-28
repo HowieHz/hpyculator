@@ -41,21 +41,21 @@ class CalculationManager:
         :return:
         """
         # 输入转换
-        inputbox_data = self.type_conversion(plugin_attribute_input_mode, inputbox_data)
+        inputbox_data = self.typeConversion(plugin_attribute_input_mode, inputbox_data)
         if inputbox_data is None:  # 转换发生错误
             return None
 
         # 覆盖旧实例
-        calculate_thread = CalculationThread(
+        instance_calculate_thread = CalculationThread(
             inputbox_data, calculation_mode, user_selection_id, output_dir_path
         )
 
         # 启动新实例
-        calculate_thread.start()
+        instance_calculate_thread.start()
         return None
 
     @staticmethod
-    def type_conversion(to_type: int, data: str):
+    def typeConversion(to_type: int, data: str):
         """
         类型转换
 
@@ -109,14 +109,10 @@ class CalculationThread(Thread):
         inputbox_data = self.inputbox_data
         calculation_mode = self.calculation_mode
         # instance_plugin_manager.initPlugin()  # 多进程用
-        plugin_attributes = instance_plugin_manager.get_plugin_attributes(
-            self.user_selection_id
-        )  # 插件属性字典
-        selected_plugin = instance_plugin_manager.get_plugin_instance(
-            self.user_selection_id
-        )
+        plugin_attributes = instance_plugin_manager.getPluginAttributes(self.user_selection_id)  # 插件属性字典
+        selected_plugin = instance_plugin_manager.getPluginInstance(self.user_selection_id)
 
-        def _base_calculate():
+        def _baseCalculate():
             """基础的计算模式"""
             calculate_fun = selected_plugin.on_calculate
 
@@ -149,7 +145,7 @@ class CalculationThread(Thread):
                 pass
             return time.perf_counter() - time_before_calculate  # 储存结束时间
 
-        def _calculate_with_save(filepath_name):
+        def _calculateWithSave(filepath_name):
             """计算+保存模式"""
             # filepath_name - 储存保存到哪个文件里 路径+文件名
 
@@ -183,7 +179,7 @@ class CalculationThread(Thread):
 
             return time.perf_counter() - time_before_calculate  # 储存结束时间
 
-        def _calculate_with_output_optimization(limit=False):
+        def _calculateWithOutputOptimization(limit=False):
             """
             计算+输出优化的模式（先把结果存临时文件，再读取输出）
 
@@ -226,7 +222,7 @@ class CalculationThread(Thread):
                 finally:
                     filestream.seek(0)  # 将文件指针移到开始处，准备读取文件
                     if limit:
-                        for times, line in enumerate(_quick_traverse_file(filestream)):
+                        for times, line in enumerate(_quickTraverseFile(filestream)):
                             instance_main_win_signal.append_output_box.emit(line)
                             if times >= 128:
                                 instance_main_win_signal.append_output_box.emit(
@@ -234,12 +230,12 @@ class CalculationThread(Thread):
                                 )
                                 break
                     else:
-                        for line in _quick_traverse_file(filestream):
+                        for line in _quickTraverseFile(filestream):
                             instance_main_win_signal.append_output_box.emit(line)
 
             return time.perf_counter() - time_before_calculate  # 储存结束时间
 
-        def _quick_traverse_file(file, chunk_size=8192) -> Iterator:
+        def _quickTraverseFile(file, chunk_size=8192) -> Iterator:
             """
             较快，低占用读取文件，迭代器
 
@@ -252,28 +248,28 @@ class CalculationThread(Thread):
             ):  # 用readline的话，读到换行符就会直接停止读取，不会读取到8192B，会增加读取次数
                 yield chunk
 
-        def _calculate_save_mode(output_dir_path):
+        def _calculateSaveMode(output_dir_path):
             """调用计算并保存的模式"""
             filename = f"{datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S')} {plugin_attributes['save_name']}{str(inputbox_data)}{plugin_attributes['quantifier']}"
 
             filepath_name = os.path.join(output_dir_path, f"{filename}.txt")
-            time_spent = _calculate_with_save(filepath_name)
+            time_spent = _calculateWithSave(filepath_name)
             # 以下是计算后工作
             instance_main_win_signal.append_output_box.emit(
                 f"""\n\n本次计算+保存花费了{time_spent:.6f}秒\n\n计算结果已保存在 {filepath_name} """
             )  # 输出本次计算时间
 
-        def _calculate_optimization_mode(limit=False):
+        def _calculateOptimizationMode(limit=False):
             """调用计算+输出优化的模式"""
-            time_spent = _calculate_with_output_optimization(limit)
+            time_spent = _calculateWithOutputOptimization(limit)
             # 以下是计算后工作
             instance_main_win_signal.append_output_box.emit(
                 f"""\n\n本次计算+输出花费了{time_spent:.6f}秒\n\n已启用输出优化"""
             )  # 输出本次计算时间
 
-        def _calculate_base_mode():
+        def _calculateBaseMode():
             """调用基础计算模式"""
-            time_spent = _base_calculate()
+            time_spent = _baseCalculate()
             # 以下是计算后工作
             instance_main_win_signal.append_output_box.emit(
                 f"\n\n本次计算+输出花费了{time_spent:.6f}秒\n"
@@ -286,13 +282,13 @@ class CalculationThread(Thread):
         plugin_attribute_return_mode = plugin_attributes["return_mode"]
         try:
             if calculation_mode == "calculate_save":
-                _calculate_save_mode(self.output_dir_path)
+                _calculateSaveMode(self.output_dir_path)
             elif calculation_mode == "calculate_o":
-                _calculate_optimization_mode()
+                _calculateOptimizationMode()
             elif calculation_mode == "calculate_o_l":
-                _calculate_optimization_mode(limit=True)
+                _calculateOptimizationMode(limit=True)
             elif calculation_mode == "calculate":
-                _calculate_base_mode()
+                _calculateBaseMode()
         except Exception as e:
             instance_main_win_signal.set_output_box.emit(
                 f"插件运算发生错误：{str(e)}\n\n请检查输入格式"

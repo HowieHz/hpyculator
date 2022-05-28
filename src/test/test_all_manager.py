@@ -29,11 +29,11 @@ class TestAllManager:
             )
 
         instance_main_window = instance_app.run()[0]
-        instance_main_window.event_save_check()
-        instance_main_window.event_output_optimization_check()
-        instance_main_window.event_output_lock_maximums_check()
-        instance_main_window.event_search()
-        instance_main_window.event_search_cancel()
+        instance_main_window.eventSaveCheck()
+        instance_main_window.eventOutputOptimizationCheck()
+        instance_main_window.eventOutputLockMaximumsCheck()
+        instance_main_window.eventSearch()
+        instance_main_window.eventSearchCancel()
 
         # global_plugin_option_id_dict = instance_app.pluginCheck(test=True)  # 插件加载
         # assert global_plugin_option_id_dict == \

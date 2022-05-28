@@ -46,7 +46,7 @@ class SettingWinApp(QDialog):
         if "background_img" in dict_setting:
             self.ui.combo_background.setCurrentText(dict_setting["background_img"])
 
-    def event_save_setting(self):
+    def eventSaveSetting(self):
         """
         按下保存按钮之后的事件
 
@@ -65,15 +65,15 @@ class SettingWinApp(QDialog):
         )
         self.close()
 
-    def event_cancel_setting(self):
+    def eventCancelSetting(self):
         self.close()
 
-    def event_save_setting_check(self):
+    def eventSaveCheckBoxStatus(self):
         """
         占位用，因为都是最后统一读取写入设置文件的
         """
 
-    def event_reset_save_location(self):
+    def eventResetSaveLocation(self):
         """重置保存路径"""
         dict_setting = toml.load(self.SETTING_FILE_PATH)
         dict_setting["output_dir_path"] = self.OUTPUT_DIR_PATH = os.path.join(
@@ -85,7 +85,7 @@ class SettingWinApp(QDialog):
         ) as setting_file:  # 写入配置文件
             toml.dump(dict_setting, setting_file)
 
-    def event_choose_background_img(self, qstring):
+    def eventChooseBackgroundImg(self, qstring):
         """选择背景图片"""
         dict_setting = toml.load(self.SETTING_FILE_PATH)
         dict_setting["background_img"] = qstring
@@ -94,7 +94,7 @@ class SettingWinApp(QDialog):
         ) as setting_file:  # 写入配置文件
             toml.dump(dict_setting, setting_file)
 
-    def event_open_background_dir(self):
+    def eventOpenBackgroundDir(self):
         """
         打开存储背景图片的文件夹
 
@@ -103,7 +103,7 @@ class SettingWinApp(QDialog):
         dict_setting = toml.load(self.SETTING_FILE_PATH)
         os.system(f'explorer {dict_setting["background_img_dir_path"]}')
 
-    def event_open_plugin_dir(self):
+    def eventOpenPluginDir(self):
         """
         打开储存插件的文件架
 

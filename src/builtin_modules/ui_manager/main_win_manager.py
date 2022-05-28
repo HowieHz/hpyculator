@@ -43,7 +43,7 @@ class MainWinApp(FramelessWindow):
         super().__init__()
         self.ui = Ui_MainWin()  # UI类的实例化()
         self.ui.setupUi(self)  # ui初始化
-        self.bind_signal_with_slots()  # 信号和槽的绑定
+        self.bindSignalWithSlots()  # 信号和槽的绑定
         self.setWindowTitle(f"hpyculator {doc.VERSION}")  # 设置标题
 
         self.move_fix = False  # 一个窗口全屏之后，拖动，窗口会回到正常大小，且指针和在窗口长度和比值和原来一致,True的话就进行校正
@@ -124,7 +124,7 @@ class MainWinApp(FramelessWindow):
         self.is_thread_running = [False]  # 防止反复启动计算线程
 
         # 关于gui显示内容的初始化
-        self.flush_list_choices_plugin()
+        self.flushListChoicesPlugin()
         self.ui.output_box.setPlainText(doc.START_SHOW)  # 开启的展示
         self.ui.search_plugin.setPlaceholderText(
             _("输入字符自动进行搜索\n清空搜索框显示全部插件")
@@ -134,7 +134,7 @@ class MainWinApp(FramelessWindow):
 
         # 加载tag系统
         # tag和选项名的映射表_list_plugin_tag_option [([tag1,tag2],name),([tag1,tag2],name)]
-        _list_plugin_tag_option = instance_plugin_manager.get_all_plugin_tag_option()
+        _list_plugin_tag_option = instance_plugin_manager.getAllPluginTagOption()
         _set_tags = set()  # _set_tags里面有所有的tag
         for _tags_and_option in _list_plugin_tag_option:
             for _tag in _tags_and_option[0]:
@@ -163,7 +163,7 @@ class MainWinApp(FramelessWindow):
             for _tag in _dict_set_tags[_special_tag]:
                 self.ui.output_box.appendPlainText(f"        {_tag}")  # 添加特殊tag
 
-    def bind_signal_with_slots(self) -> None:
+    def bindSignalWithSlots(self) -> None:
         """
         绑定信号和槽
 
@@ -177,41 +177,41 @@ class MainWinApp(FramelessWindow):
         # 自定义信号.属性名.connect(___FUNCTION___)
         # my_signal.setProgressBar.connect(self.set_progress_bar)
         # my_signal.setResult.connect(self.set_result)
-        def _append_output(msg: str) -> None:
+        def _appendOutput(msg: str) -> None:
             self.ui.output_box.appendPlainText(msg)
 
-        def _clear_output() -> None:
+        def _clearOutput() -> None:
             self.ui.output_box.clear()
 
-        def _set_out_put(msg: str) -> None:
+        def _setOutput(msg: str) -> None:
             self.ui.output_box.setPlainText(msg)
 
-        def _get_output() -> None:
+        def _getOutput() -> None:
             hpyc.setOutPutData(self.ui.output_box.toPlainText())
 
-        def _set_start_button_text(msg: str) -> None:
+        def _setStartButtonText(msg: str) -> None:
             self.ui.button_start.setText(msg)
 
-        def _set_start_button_state(state: bool) -> None:
+        def _setStartButtonState(state: bool) -> None:
             self.ui.button_start.setEnabled(state)
 
-        def _set_output_box_cursor(where: str) -> None:  # 目前只有end
-            cursor = self.ui.output_box.textCursor()
-            cursor_state_map = {"end": QTextCursor.End}
-            cursor.movePosition(cursor_state_map[where])
+        def _setOutputBoxCursor(where: str) -> None:  # 目前只有end
+            _cursor = self.ui.output_box.textCursor()
+            _cursor_state_map = {"end": QTextCursor.End}
+            _cursor.movePosition(_cursor_state_map[where])
             # https://doc.qt.io/qtforpython-5/PySide2/QtGui/QTextCursor.html#PySide2.QtGui.PySide2.QtGui.QTextCursor.MoveOperation
-            self.ui.output_box.setTextCursor(cursor)
+            self.ui.output_box.setTextCursor(_cursor)
 
         # 自定义信号绑定函数
-        instance_main_win_signal.append_output_box.connect(_append_output)
-        instance_main_win_signal.set_output_box.connect(_set_out_put)
-        instance_main_win_signal.clear_output_box.connect(_clear_output)
-        instance_main_win_signal.get_output_box.connect(_get_output)
-        instance_main_win_signal.set_start_button_text.connect(_set_start_button_text)
-        instance_main_win_signal.set_start_button_state.connect(_set_start_button_state)
-        instance_main_win_signal.set_output_box_cursor.connect(_set_output_box_cursor)
+        instance_main_win_signal.append_output_box.connect(_appendOutput)
+        instance_main_win_signal.set_output_box.connect(_setOutput)
+        instance_main_win_signal.clear_output_box.connect(_clearOutput)
+        instance_main_win_signal.get_output_box.connect(_getOutput)
+        instance_main_win_signal.set_start_button_text.connect(_setStartButtonText)
+        instance_main_win_signal.set_start_button_state.connect(_setStartButtonState)
+        instance_main_win_signal.set_output_box_cursor.connect(_setOutputBoxCursor)
 
-    def event_start_calculation(
+    def eventStartCalculation(
         self,
         test_input=None,
         test_input_mode=None,
@@ -307,14 +307,14 @@ class MainWinApp(FramelessWindow):
         )  # 启动计算
         return
 
-    def flush_list_choices_plugin(self) -> None:
+    def flushListChoicesPlugin(self) -> None:
         """
         刷新左侧列表 和对应映射表
 
         :return: None
         """
         self.plugin_option_id_dict = (
-            instance_plugin_manager.get_option_id_dict()
+            instance_plugin_manager.getOptionIdDict()
         )  # 选项名映射id（文件或文件夹名）
         self.selection_list = self.plugin_option_id_dict.keys()  # 选项名列表
         self.ui.list_choices_plugin.addItems(self.selection_list)  # 选项名添加到ui上
@@ -334,9 +334,9 @@ class MainWinApp(FramelessWindow):
         #     self.width() // 2 - length // 2,
         #     self.height() // 2 - length // 2
         # )
-        self.draw_background()
+        self.drawBackground()
 
-    def draw_background(self):
+    def drawBackground(self):
         """
         绘制背景
 
@@ -345,7 +345,7 @@ class MainWinApp(FramelessWindow):
         if not self.bg_img:
             return
 
-        def _adapt_bg(image):
+        def _adaptBackground(image):
             """自适应图片"""
             return image.scaled(
                 self.width(),
@@ -357,11 +357,11 @@ class MainWinApp(FramelessWindow):
             # return image.scaled(self.width(), self.height(), Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
 
         palette = QPalette()
-        img = _adapt_bg(self.bg_img)  # 转换为自适应大小的图片
+        img = _adaptBackground(self.bg_img)  # 转换为自适应大小的图片
         palette.setBrush(QPalette.Window, QBrush(img))
         self.setPalette(palette)
 
-    def event_minimize(self) -> None:
+    def eventMinimize(self) -> None:
         """
         最小化窗口
 
@@ -369,7 +369,7 @@ class MainWinApp(FramelessWindow):
         """
         self.showMinimized()
 
-    def event_maximize(self) -> None:
+    def eventMaximize(self) -> None:
         """
         最大化窗口，和窗口还原
 
@@ -387,7 +387,7 @@ class MainWinApp(FramelessWindow):
         :param event:
         :return:
         """
-        self.event_maximize()
+        self.eventMaximize()
 
     def mousePressEvent(self, event) -> None:
         """
@@ -442,7 +442,7 @@ class MainWinApp(FramelessWindow):
         move_pos = event.globalPos() - self.start_mouse_pos  # 目前鼠标的位置和之前鼠标的位置的坐标差
         self.move(self.origin_win_pos + move_pos)  # 原本窗口的位置加上坐标差成为新窗口的位置
 
-    def event_choose_option(self, item) -> None:
+    def eventChooseOption(self, item) -> None:
         """
         左侧选择算法之后触发的函数 选择算法事件
 
@@ -453,7 +453,7 @@ class MainWinApp(FramelessWindow):
         self.user_selection_id = str(self.plugin_option_id_dict[item.text()])  # 转换成ID
         self.selected_plugin_attributes = (
             _METADATA
-        ) = instance_plugin_manager.get_plugin_attributes(self.user_selection_id)
+        ) = instance_plugin_manager.getPluginAttributes(self.user_selection_id)
         self.ui.output_box.setPlainText(
             f"""\
 {_METADATA["output_start"]}
@@ -469,7 +469,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 {_METADATA["output_end"]}"""
         )
 
-    def event_quit(self) -> None:
+    def eventQuit(self) -> None:
         """
         退出程序
 
@@ -478,7 +478,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         self.close()
         sys.exit(0)
 
-    def event_open_about_win(self) -> None:
+    def eventOpenAboutWin(self) -> None:
         """
         打开关于窗口
 
@@ -487,7 +487,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         self.about_win = AboutWinApp()  # 绑定子窗口
         self.about_win.exec()
 
-    def event_open_setting_win(self) -> None:
+    def eventOpenSettingWin(self) -> None:
         """
         打开设置窗口
 
@@ -505,9 +505,9 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         )
         if background_img_path.is_file():
             self.bg_img = QPixmap(background_img_path)
-        self.draw_background()
+        self.drawBackground()
 
-    def event_save_check(self) -> None:
+    def eventSaveCheck(self) -> None:
         """
         当触发保存选项（那个√）事件
 
@@ -521,7 +521,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             ) as setting_file:  # 写入配置文件
                 toml.dump(dict_setting, setting_file)
 
-    def event_output_optimization_check(self) -> None:
+    def eventOutputOptimizationCheck(self) -> None:
         """
         当触发优化输出选项
 
@@ -546,7 +546,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
                 ) as setting_file:  # 写入配置文件
                     toml.dump(dict_setting, setting_file)
 
-    def event_output_lock_maximums_check(self) -> None:
+    def eventOutputLockMaximumsCheck(self) -> None:
         """
         当触发锁内框输出上限选项，开启锁上限需要同时开启输出优化
 
@@ -571,7 +571,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
                 ) as setting_file:  # 写入配置文件
                     toml.dump(dict_setting, setting_file)
 
-    def event_auto_wrap_check(self) -> None:
+    def eventAutoWrapCheck(self) -> None:
         """
         当点击切换 是否自动换行的勾勾
 
@@ -598,14 +598,14 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             self.ui.output_box.setLineWrapMode(self.ui.output_box.NoWrap)
             self.ui.input_box.setLineWrapMode(self.ui.input_box.NoWrap)
 
-    def event_search(self) -> None:
+    def eventSearch(self) -> None:
         """
         搜索框字符修改后触发的事件
 
         :return: None
         """
 
-        def _tag_check(tags: list[str], tag_and_option: tuple[tuple[str], str]) -> bool:
+        def _tagCheck(tags: list[str], tag_and_option: tuple[tuple[str], str]) -> bool:
             """
             检查此项是否符合tag
 
@@ -618,7 +618,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         _search_keyword = self.ui.search_plugin.toPlainText()
 
         if _search_keyword == "":
-            self.event_search_cancel()
+            self.eventSearchCancel()
             return None
 
         self.ui.list_choices_plugin.clear()  # 清空选择栏
@@ -627,11 +627,11 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             _tags = _search_keyword.split()[1:]  # 用户输入的tag
             # tag和选项名的映射表_list_plugin_tag_option [((tag1,tag2),name),((tag1,tag2),name)]
             _list_plugin_tag_option = (
-                instance_plugin_manager.get_all_plugin_tag_option()
+                instance_plugin_manager.getAllPluginTagOption()
             )
             # 单项 tag和选项名_tag_and_option ((tag1,tag2),name)
             for _tag_and_option in _list_plugin_tag_option:
-                if _tag_check(_tags, _tag_and_option):
+                if _tagCheck(_tags, _tag_and_option):
                     _set_matched_item.add(_tag_and_option[1])
 
             self.ui.list_choices_plugin.addItems(_set_matched_item)  # 匹配的添加到选框
@@ -642,7 +642,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             self.ui.list_choices_plugin.addItem(i)
         return None
 
-    def event_search_cancel(self) -> None:
+    def eventSearchCancel(self) -> None:
         """
         取消搜索结果，显示全部插件
 
