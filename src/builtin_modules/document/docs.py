@@ -47,9 +47,9 @@ CHANGELOG = """\
 20220528
 v1.6.0
 Added
-    i18n
-    tag系统
-    新增插件
+    i18n -> en语言支持
+    tag系统，可以使用tag进行搜索了
+    新增插件若干
     可切换背景图片
     插件元数据tag项
 Changed
