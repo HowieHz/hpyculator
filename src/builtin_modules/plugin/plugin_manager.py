@@ -10,15 +10,13 @@ sys.path.append(os.path.join(sys.path[0], ".."))
 
 class PluginManager:
     def __init__(self):
-        # 载入模块
-        # Plugin目录下读取到的文件夹和文件
-        self.plugin_files_and_folder_name: List[list] = []
         # Plugin目录下读取到的有__init__.py的文件夹
-        self.plugin_files_name_folder: List[str] = []
-        self.plugin_option_id_dict: Dict[str, str] = {}  # 选项名和实际文件名(ID)的映射表
-        self.loaded_plugin: Dict[str] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
+        self._dict_plugin_option_id: Dict[str, str] = {}  # 选项名和实际文件名(ID)的映射表
+        # 选项名和实际文件名(ID)的映射表 [([tag1,tag2],name),([tag1,tag2],name)]
+        self._list_plugin_tag_option: List[tuple[list[str], str]] = []
+        self._dict_loaded_plugin: Dict[str] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
 
-    def __init_plugin_singer_file(self, plugin_files_name):
+    def _init_plugin_singer_file(self, plugin_files_name) -> None:
         """
         导入指定单文件插件
 
@@ -29,18 +27,33 @@ class PluginManager:
         for name in plugin_files_name:
             if name:  # 跳过空位
                 try:
-                    self.loaded_plugin[name] = importlib.import_module(f"Plugin.{name}")
-                    self.plugin_option_id_dict[
-                        self.loaded_plugin[name].PLUGIN_METADATA["option_name"]
-                    ] = self.loaded_plugin[name].PLUGIN_METADATA[
-                        "id"
-                    ]  # 读取模块元数据，添加gui选项
+                    self._dict_loaded_plugin[name] = importlib.import_module(
+                        f"Plugin.{name}"
+                    )
+
+                    # PLUGIN_METADATA暂时储存着插件的元数据
+                    _METADATA = self._dict_loaded_plugin[name].PLUGIN_METADATA
+                    # 读取模块元数据，添加gui选项
+                    self._dict_plugin_option_id[_METADATA["option"]] = _METADATA["id"]
+
+                    tag_list = _METADATA["tag"] if "tag" in _METADATA else []
+                    tag_list.extend(
+                        ["author:" + i for i in _METADATA["author"]]
+                        if isinstance(_METADATA["author"], list)
+                        else ["author:" + _METADATA["author"]]
+                    )  # 作者列表或单个作者
+                    tag_list.extend(
+                        (f"id:{_METADATA['id']}", f"version:{_METADATA['version']}")
+                    )  # 版本号，id
+                    self._list_plugin_tag_option.append(
+                        (tag_list, _METADATA["option"])
+                    )  # tag对应选项名
                 except ImportError as e:
                     print(f"init_plugin_singer_file inside Exception:{str(e)}")
                 except Exception as e:
                     print(f"init_plugin_singer_file inside Exception:{str(e)}")
 
-    def __init_plugin_folder(self, plugin_files_name):
+    def _init_plugin_folder(self, plugin_files_name) -> None:
         """
         导入指定文件夹插件
 
@@ -49,21 +62,34 @@ class PluginManager:
         """
         # print(f"读取到的文件夹插件:{plugin_files_name}")
         for name in plugin_files_name:
-            self.loaded_plugin[name] = importlib.import_module(
-                f".{name}.__init__", package="Plugin"
-            )
             try:
-                self.plugin_option_id_dict[
-                    self.loaded_plugin[name].PLUGIN_METADATA["option_name"]
-                ] = self.loaded_plugin[name].PLUGIN_METADATA[
-                    "id"
-                ]  # 读取模块元数据，添加gui选项
+                self._dict_loaded_plugin[name] = importlib.import_module(
+                    f".{name}.__init__", package="Plugin"
+                )
+
+                # PLUGIN_METADATA暂时储存着插件的元数据
+                _METADATA = self._dict_loaded_plugin[name].PLUGIN_METADATA
+                # 读取模块元数据，添加gui选项
+                self._dict_plugin_option_id[_METADATA["option"]] = _METADATA["id"]
+
+                tag_list = _METADATA["tag"] if "tag" in _METADATA else []
+                tag_list.extend(
+                    ["author:" + i for i in _METADATA["author"]]
+                    if isinstance(_METADATA["author"], list)
+                    else ["author:" + _METADATA["author"]]
+                )  # 作者列表或单个作者
+                tag_list.extend(
+                    (f"id:{_METADATA['id']}", f"version:{_METADATA['version']}")
+                )  # 版本号，id
+                self._list_plugin_tag_option.append(
+                    (tag_list, _METADATA["option"])
+                )  # tag对应选项名
             except ImportError as e:
                 print(f"init_plugin_folder inside Exception:{str(e)}")
             except Exception as e:
                 print(f"init_plugin_folder inside Exception:{str(e)}")
 
-    def initPlugin(self, path, plugin_suffix=".py"):
+    def init_plugin(self, path, plugin_suffix=".py") -> None:
         """
         导入插件
 
@@ -96,18 +122,18 @@ class PluginManager:
         dirs_in_plugin_dir = [_ for _ in dirs_in_plugin_dir if _ != ""]
 
         try:
-            self.__init_plugin_singer_file(files_in_plugin_dir)  # 导入单文件插件
+            self._init_plugin_singer_file(files_in_plugin_dir)  # 导入单文件插件
         except Exception as e:
             print(f"init_plugin_singer_file outside Exception:{e}")
 
         try:
-            self.__init_plugin_folder(dirs_in_plugin_dir)  # 导入文件插件
+            self._init_plugin_folder(dirs_in_plugin_dir)  # 导入文件插件
         except Exception as e:
             print(f"init_plugin_folder outside Exception:{e}")
 
         return None
 
-    def getPluginAttribute(self, user_selection_id):
+    def get_plugin_attributes(self, user_selection_id) -> dict:
         """
         读取指定id的插件属性
 
@@ -116,10 +142,9 @@ class PluginManager:
         """
         plugin_attributes = {}  # 读取好的属性放在这里
 
-        PLUGIN_METADATA = self.loaded_plugin[
-            user_selection_id
-        ].PLUGIN_METADATA  # PLUGIN_METADATA暂时储存着插件的元数据
-        for option_name in [
+        # PLUGIN_METADATA暂时储存着插件的元数据
+        _METADATA = self._dict_loaded_plugin[user_selection_id].PLUGIN_METADATA
+        for _metadata_item in [
             "output_start",
             "quantifier",
             "author",
@@ -130,14 +155,14 @@ class PluginManager:
             "return_mode",
             "save_name",
             "output_name",
-            "use_quantifier",
             "version",
+            "tag",
         ]:
-            if option_name in PLUGIN_METADATA:
-                plugin_attributes[option_name] = PLUGIN_METADATA[option_name]
-            else:
-                plugin_attributes[option_name] = hpyc.OFF
-        if plugin_attributes["fullwidth_symbol"] == hpyc.ON:
+            plugin_attributes[_metadata_item] = (
+                _METADATA[_metadata_item] if _metadata_item in _METADATA else hpyc.OFF
+            )
+
+        if plugin_attributes["fullwidth_symbol"] == hpyc.ON:  # 处理全角转换
             plugin_attributes["help"] = (
                 plugin_attributes["help"]
                 .replace(",", "，")
@@ -150,19 +175,27 @@ class PluginManager:
 
         return plugin_attributes
 
-    def getPluginInstance(self, user_selection_id):
+    def get_plugin_instance(self, user_selection_id) -> importlib.import_module:
         """
         获取指定id的插件对象
 
         :param user_selection_id:
         :return: A instance of plugin
         """
-        return self.loaded_plugin[user_selection_id]
+        return self._dict_loaded_plugin[user_selection_id]
 
-    def getOptionIdDict(self):
+    def get_all_plugin_tag_option(self) -> list[tuple[list[str], str]]:
+        """
+        获取所有插件的tag，tag对应插件选项名
+
+        :return:
+        """
+        return self._list_plugin_tag_option
+
+    def get_option_id_dict(self) -> dict[str, str]:
         """
         获取插件选项名和id的映射表
 
         :return: A Dict [Option to Id]
         """
-        return self.plugin_option_id_dict
+        return self._dict_plugin_option_id

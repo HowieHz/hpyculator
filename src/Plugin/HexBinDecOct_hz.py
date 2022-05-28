@@ -1,12 +1,14 @@
 import hpyculator as hpyc
 
+VERSION = "V1.0.2"
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
-    "id": "HexBinDecOct",  # ID，插件标识符，需要和文件名一致
-    "option_name": "进制转换v1.0.0 by HowieHz",  # 选项名-在选择算法列表中
-    "version": "v1.0.0",  # 版本号
-    "save_name": "进制转换",  # 文件保存项目名-在输出
-    "quantifier": "",  # 文件保存量词-在输入后面(可选)
+    "id": "HexBinDecOct_hz",  # ID，插件标识符，需要和文件名一致
+    "option": f"进制转换{VERSION} by HowieHz",  # 选项名-在选择算法列表中
+    "version": VERSION,  # 版本号
+    "tag": ["category:Mathematical calculations"],
+    "save_name": "",  # 文件保存项目名-在输出
+    "quantifier": "的进制转换结果",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
     "output_name": "进制转换",  # 选择此项后输出的名字
     "author": "HowieHz",  # 作者(可选)
@@ -15,16 +17,16 @@ PLUGIN_METADATA = {
     需要转换的数字,输入的进制
 
     (输入的进制 -> 默认值10)
-    (半角逗号分隔)
+    (逗号 或 空格分隔)
 
 输入例:
     8,10
     8
-    10,2
+    10，2 
+    10 2
                     """,
     "output_end": "",
     "return_mode": hpyc.NO_RETURN_SINGLE_FUNCTION,
-    "use_quantifier": hpyc.ON,
     "fullwidth_symbol": hpyc.OFF,
 }
 
@@ -32,7 +34,12 @@ PLUGIN_METADATA = {
 def on_calculate(data: str, todo):
     """计算函数"""
     try:
-        num, b = data.split(",")
+        if "," in data:
+            num, b = data.split(",")
+        elif "，" in data:
+            num, b = data.split("，")
+        else:
+            num, b = data.split()
     except ValueError:
         num = data
         b = "10"

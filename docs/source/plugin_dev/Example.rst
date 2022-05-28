@@ -22,39 +22,37 @@ Example1
 
     import hpyculator as hpyc
 
+    NAME = "名"
+    AUTHOR = "作者" or ["作者1", "作者2"]
+    VERSION = "V1.0.0"
     PLUGIN_METADATA = {
-        'input_mode' : hpyc.STRING,#输入模式，STRING为传入字符串,NUM为传入int,FLOAT为传入float(传入的作为on_calculate函数的开始计算值)
-        'id' : '[文件名]',#ID，插件标识符，需要和文件名一致
-        'option_name' : "[算法名][版本号(推荐语义化版本)] by [作者名]",#选项名-在选择算法列表中
-        'version' : '[版本号(推荐语义化版本)]',#版本号
+        'input_mode': hpyc.STRING,  # 输入模式，STRING为传入字符串,NUM为传入int,FLOAT为传入float(传入的作为main函数的开始计算值)
+        'id': "prime_hz",  # 插件标识符,需要和文件名一致
+        'option': f"{NAME}{VERSION} by {', '.join(AUTHOR) if isinstance(AUTHOR,list) else AUTHOR}",  # 选项名-在选择算法列表中（必须）
+        'version': VERSION,  # 版本号
+        'tag' : [""],
 
-        'save_name' : "{}",#文件保存项目名-在输出
-        'quantifier' : "{}",#文件保存量词-在输入后面(可选)
+        'save_name': "",  # 文件保存名
+        'quantifier': "",  # 文件保存量词
 
-        'output_start' : "",#输出头(可选)
-        'output_name' : "{算法名}", #选择此项后输出的名字
-        'author' : "{作者名}",#作者(可选)
-        'help' : """
-            {帮助内容}
-                    """,#帮助和说明(可选)
-        'output_end' : "",#输出小尾巴(可选)
+        'output_start': "",  # 输出头
+        'output_name': NAME,  # 选择此项后输出的名字
+        'author': AUTHOR,  # 作者
+        'help': """\
+    输入格式
+        n
 
-        'return_mode' : hpyc.RETURN_ONCE,
-        # 具体说明和区别请看“return_mode参数讲解”一节
-        # hpyc.RETURN_ONCE为返回一次（适用于return字符串等情况），
-        # hpyc.RETURN_LIST为将返回的数据迭代输出（适用于return列表等情况），
-        # hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE为将返回的数据迭代输出（适用于return列表等情况，和hpyc.RETURN_LIST相似，但是每次输出不换行）,
-        # （推荐）hpyc.NO_RETURN无return返回值，要求插件作者放置保存和输出（性能最好，推荐使用，默认值）（要求插件作者自己写好保存和返回，计算调用on_calculate函数，
-        #         保存调用on_calculate_with_save函数），
-        # （推荐）hpyc.NO_RETURN_SINGLE_FUNCTION和三类似，但是只会调用on_calculate，且会传入第三个参数，第三个参数为'save'时表示为要输出到内屏，第三个参数为'output'时表示要保存
-        'use_quantifier' : hpyc.OFF ,#保存名的形式，OFF为 时间+算法名+输入+量词  ON为 时间+输入+“的”+算法名
-                                        #如果是ON，则quantifier无效化
-        "fullwidth_symbol" : hpyc.OFF #懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
-        }
+    输入样例
+        1
+                    """,  # 帮助和说明
+        'output_end': "",  # 输出小尾巴
 
-    def on_calculate(inputdata):
+        'return_mode': hpyc.RETURN_ONCE,
+        "fullwidth_symbol": hpyc.OFF  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
+    }
+
+    def on_calculate(input_data):
         pass
-
 
 Example2
 
@@ -62,40 +60,39 @@ Example2
 
     import hpyculator as hpyc
 
+    NAME = "名"
+    AUTHOR = "作者" or ["作者1", "作者2"]
+    VERSION = "V1.0.0"
     PLUGIN_METADATA = {
-        'input_mode' : hpyc.STRING,#输入模式，STRING为传入字符串,NUM为传入int,FLOAT为传入float(传入的作为on_calculate函数的开始计算值)
-        'id' : '[文件名]',#ID，插件标识符，需要和文件名一致
-        'option_name' : "[算法名][版本号(推荐语义化版本)] by [作者名]",#选项名-在选择算法列表中
-        'version' : '[版本号(推荐语义化版本)]',#版本号
+        'input_mode': hpyc.STRING,  # 输入模式，STRING为传入字符串,NUM为传入int,FLOAT为传入float(传入的作为main函数的开始计算值)
+        'id': "prime_hz",  # 插件标识符,需要和文件名一致
+        'option': f"{NAME}{VERSION} by {', '.join(AUTHOR) if isinstance(AUTHOR,list) else AUTHOR}",  # 选项名-在选择算法列表中（必须）
+        'version': VERSION,  # 版本号
+        'tag' : [""],
 
-        'save_name' : "{}",#文件保存项目名-在输出
-        'quantifier' : "{}",#文件保存量词-在输入后面(可选)
+        'save_name': "",  # 文件保存名
+        'quantifier': "",  # 文件保存量词
 
-        'output_start' : "",#输出头(可选)
-        'output_name' : "{算法名}", #选择此项后输出的名字
-        'author' : "{作者名}",#作者(可选)
-        'help' : """
-            {帮助内容}
-                    """,#帮助和说明(可选)
-        'output_end' : "",#输出小尾巴(可选)
+        'output_start': "",  # 输出头
+        'output_name': NAME,  # 选择此项后输出的名字
+        'author': AUTHOR,  # 作者
+        'help': """\
+    输入格式
+        n
 
-        'return_mode' : hpyc.NO_RETURN,
-        # 具体说明和区别请看“return_mode参数讲解”一节
-        # hpyc.RETURN_ONCE为返回一次（适用于return字符串等情况），
-        # hpyc.RETURN_LIST为将返回的数据迭代输出（适用于return列表等情况），
-        # hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE为将返回的数据迭代输出（适用于return列表等情况，和hpyc.RETURN_LIST相似，但是每次输出不换行）,
-        # （推荐）hpyc.NO_RETURN无return返回值，要求插件作者放置保存和输出（性能最好，推荐使用，默认值）（要求插件作者自己写好保存和返回，计算调用on_calculate函数，
-        #         保存调用on_calculate_with_save函数），
-        # （推荐）hpyc.NO_RETURN_SINGLE_FUNCTION和三类似，但是只会调用on_calculate，且会传入第三个参数，第三个参数为'save'时表示为要输出到内屏，第三个参数为'output'时表示要保存
-        'use_quantifier' : hpyc.OFF ,#保存名的形式，OFF为 时间+算法名+输入+量词  ON为 时间+输入+“的”+算法名
-                                        #如果是ON，则quantifier无效化
-        "fullwidth_symbol" : hpyc.OFF #懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
-        }
+    输入样例
+        1
+                    """,  # 帮助和说明
+        'output_end': "",  # 输出小尾巴
+
+        'return_mode': hpyc.NO_RETURN,
+        "fullwidth_symbol": hpyc.OFF  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
+    }
         
-    def on_calculate(inputdata):#输出到框体内
+    def on_calculate(input_data):#输出到框体内
         pass
         
-    def on_calculate_with_save(inputdata):#保存到文件
+    def on_calculate_with_save(input_data):#保存到文件
         pass
 
 
@@ -105,52 +102,44 @@ Example3
 
     import hpyculator as hpyc
 
+    NAME = "名"
+    AUTHOR = "作者" or ["作者1", "作者2"]
+    VERSION = "V1.0.0"
     PLUGIN_METADATA = {
-        'input_mode' : hpyc.STRING,#输入模式，STRING为传入字符串,NUM为传入int,FLOAT为传入float(传入的作为on_calculate函数的开始计算值)
-        'id' : '[文件名]',#ID，插件标识符，需要和文件名一致
-        'option_name' : "[算法名][版本号(推荐语义化版本)] by [作者名]",#选项名-在选择算法列表中
-        'version' : '[版本号(推荐语义化版本)]',#版本号
+        'input_mode': hpyc.STRING,  # 输入模式，STRING为传入字符串,NUM为传入int,FLOAT为传入float(传入的作为main函数的开始计算值)
+        'id': "prime_hz",  # 插件标识符,需要和文件名一致
+        'option': f"{NAME}{VERSION} by {', '.join(AUTHOR) if isinstance(AUTHOR,list) else AUTHOR}",  # 选项名-在选择算法列表中（必须）
+        'version': VERSION,  # 版本号
+        'tag' : [""],
 
-        'save_name' : "{}",#文件保存项目名-在输出
-        'quantifier' : "{}",#文件保存量词-在输入后面(可选)
+        'save_name': "",  # 文件保存名
+        'quantifier': "",  # 文件保存量词
 
-        'output_start' : "",#输出头(可选)
-        'output_name' : "{算法名}", #选择此项后输出的名字
-        'author' : "{作者名}",#作者(可选)
-        'help' : """
-            {帮助内容}
-                    """,#帮助和说明(可选)
-        'output_end' : "",#输出小尾巴(可选)
+        'output_start': "",  # 输出头
+        'output_name': NAME,  # 选择此项后输出的名字
+        'author': AUTHOR,  # 作者
+        'help': """\
+    输入格式
+        n
 
-        'return_mode' : hpyc.NO_RETURN,
-        # 具体说明和区别请看“return_mode参数讲解”一节
-        # hpyc.RETURN_ONCE为返回一次（适用于return字符串等情况），
-        # hpyc.RETURN_LIST为将返回的数据迭代输出（适用于return列表等情况），
-        # hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE为将返回的数据迭代输出（适用于return列表等情况，和hpyc.RETURN_LIST相似，但是每次输出不换行）,
-        # （推荐）hpyc.NO_RETURN无return返回值，要求插件作者放置保存和输出（性能最好，推荐使用，默认值）（要求插件作者自己写好保存和返回，计算调用on_calculate函数，
-        #         保存调用on_calculate_with_save函数），
-        # （推荐）hpyc.NO_RETURN_SINGLE_FUNCTION和三类似，但是只会调用on_calculate，且会传入第三个参数，第三个参数为'save'时表示为要输出到内屏，为'output'时表示要保存
-        'use_quantifier' : hpyc.OFF ,#保存名的形式，OFF为 时间+算法名+输入+量词  ON为 时间+输入+“的”+算法名
-                                        #如果是ON，则quantifier无效化
-        "fullwidth_symbol" : hpyc.OFF #懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
-        }
+    输入样例
+        1
+                    """,  # 帮助和说明
+        'output_end': "",  # 输出小尾巴
 
-    def on_calculate(inputdata, do_what):
-        pass
+        'return_mode': hpyc.NO_RETURN_SINGLE_FUNCTION,
+        "fullwidth_symbol": hpyc.OFF  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
+    }
+
+
+    def on_calculate(data, do_what: str):
+        output = hpyc.output if do_what == "output" else hpyc.write  # 输出内容只需要用output就好了
+
 
 以下.py文件均代指 `内置插件 <https://github.com/HowieHz/hpyculator/tree/main/Plugin>`_
 hpyc代指hpyculator模块
 
-test9_one.py
-    是test9系列中内存开销最大，时间开销最小的方案，
-    虽然这里用的是outputmode=hpyc.NO_RETURN，其实效果和outputmode=hpyc.RETURN_ONCE是一致的，
-    用outputmode=hpyc.RETURN_ONCE的等价写法已经注释在插件文件主函数下面
-
-test9_n.py
-    是test9系列中内存开销最小，时间开销最大的方案，
-    使用了write函数
-
-test9_fix.py
+test9.py
     是return_mode=hpyc.NO_RETURN的典范，
     在test9系列中内存开销和时间开销中找了一个平衡点，
     使用了write_without_flush和flush函数

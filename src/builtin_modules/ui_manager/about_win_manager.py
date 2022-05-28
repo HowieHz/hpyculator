@@ -13,37 +13,28 @@ class AboutWinApp(QDialog):
         self.ui = Ui_AboutWin()
         self.ui.setupUi(self)
 
-        self.setWindowTitle("关于 hpyculator")
+        self.setWindowTitle(_("关于 hpyculator"))
 
-        self.ui.combo_doc.addItems([
-            "开屏介绍",
-            "更新日志",
-            "使用说明",
-            "关于"
-        ])
+        self.ui.combo_doc.addItems([_("开屏介绍"), _("更新日志"), _("关于")])
 
-    def chooseShow(self, QString):
-        def showStartShow():  # 开屏介绍
+    def event_choose_show(self, qstring):
+        def _show_start_show():  # 开屏介绍
             self.ui.output_doc.setText(doc.START_SHOW)
 
-        def showTODO():  # 更新展望
-            self.ui.output_doc.setText(doc.TODO)
+        def _show_updata_log():  # 更新日志
+            self.ui.output_doc.setText(doc.CHANGELOG)
 
-        def showUpdataLog():  # 更新日志
-            self.ui.output_doc.setText(doc.UPDATE_LOG)
-
-        def showAbout():  # 关于
+        def _show_about():  # 关于
             # self.ui.output_doc.setText("<img src='..\\ui\\icons\\ico.ico'>")
             self.ui.output_doc.setText(doc.ABOUT)
 
-        jump_map = {
-            "开屏介绍": showStartShow,
-            "更新日志": showUpdataLog,
-            "使用说明": showTODO,
-            "关于": showAbout
+        dict_jump_map = {
+            _("开屏介绍"): _show_start_show,
+            _("更新日志"): _show_updata_log,
+            _("关于"): _show_about,
         }
-        jump_map[QString]()
+        dict_jump_map[qstring]()
 
-    def checkUpdate(self):
+    def event_check_update(self):
         """检查更新"""
         webbrowser.open("https://github.com/HowieHz/hpyculator/releases")

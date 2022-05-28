@@ -714,8 +714,8 @@ class Ui_AboutWin(object):
         self.gridLayout.addWidget(self.output_doc, 5, 0, 1, 2)
 
         self.retranslateUi(AboutWin)
-        self.combo_doc.currentTextChanged.connect(AboutWin.chooseShow)
-        self.button_check_update.clicked.connect(AboutWin.checkUpdate)
+        self.combo_doc.currentTextChanged.connect(AboutWin.event_choose_show)
+        self.button_check_update.clicked.connect(AboutWin.event_check_update)
 
         QMetaObject.connectSlotsByName(AboutWin)
 

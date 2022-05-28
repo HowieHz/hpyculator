@@ -910,7 +910,7 @@ QCheckBox::indicator:unchecked {
    <sender>button_save_setting</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
-   <slot>saveSetting()</slot>
+   <slot>event_save_setting()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>385</x>
@@ -926,7 +926,7 @@ QCheckBox::indicator:unchecked {
    <sender>button_cancel</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
-   <slot>cancelSetting()</slot>
+   <slot>event_cancel_setting()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>534</x>
@@ -942,7 +942,7 @@ QCheckBox::indicator:unchecked {
    <sender>check_is_save_check_box</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
-   <slot>saveSettingCheckEvent()</slot>
+   <slot>event_save_setting_check()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>386</x>
@@ -958,7 +958,7 @@ QCheckBox::indicator:unchecked {
    <sender>button_reset_save_location</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
-   <slot>resetSaveLocationEvnet()</slot>
+   <slot>event_reset_save_location()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>357</x>
@@ -974,7 +974,7 @@ QCheckBox::indicator:unchecked {
    <sender>combo_background</sender>
    <signal>currentTextChanged(QString)</signal>
    <receiver>SettingWin</receiver>
-   <slot>chooseBackgroundImg(QString)</slot>
+   <slot>event_choose_background_img(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>279</x>
@@ -990,7 +990,7 @@ QCheckBox::indicator:unchecked {
    <sender>button_open_background_dir</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
-   <slot>openBackgroundDirEvent()</slot>
+   <slot>event_open_background_dir()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>575</x>
@@ -1006,7 +1006,7 @@ QCheckBox::indicator:unchecked {
    <sender>button_open_plugin_dir</sender>
    <signal>clicked()</signal>
    <receiver>SettingWin</receiver>
-   <slot>openPluginDirEvent()</slot>
+   <slot>event_open_plugin_dir()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>385</x>
@@ -1020,12 +1020,12 @@ QCheckBox::indicator:unchecked {
   </connection>
  </connections>
  <slots>
-  <slot>saveSetting()</slot>
-  <slot>cancelSetting()</slot>
-  <slot>saveSettingCheckEvent()</slot>
-  <slot>resetSaveLocationEvnet()</slot>
-  <slot>chooseBackgroundImg(QString)</slot>
-  <slot>openBackgroundDirEvent()</slot>
-  <slot>openPluginDirEvent()</slot>
+  <slot>event_save_setting()</slot>
+  <slot>event_cancel_setting()</slot>
+  <slot>event_save_setting_check()</slot>
+  <slot>event_reset_save_location()</slot>
+  <slot>event_choose_background_img(QString)</slot>
+  <slot>event_open_background_dir()</slot>
+  <slot>event_open_plugin_dir()</slot>
  </slots>
 </ui>

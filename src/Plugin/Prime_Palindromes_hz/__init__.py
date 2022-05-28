@@ -1,29 +1,32 @@
 """打表法，空间换时间"""
 import hpyculator as hpyc
+import math
 
+NAME = "回文质数"
+VERSION = "V2.0.0"
+AUTHOR = "HowieHz"
 PLUGIN_METADATA = {
-    "input_mode": hpyc.FLOAT,
-    "id": "Prime_Palindromes_fix",  # ID,插件标识符,需要和文件名一致（必须）
-    "option_name": "回文质数_fixV1.0.1 by HowieHz",  # 选项名-在选择算法列表中（必须）
-    "version": "V1.0.1",  # 版本号（必须）
-    "save_name": "小于等于",  # 文件保存项目名-在输出（必须）
-    "quantifier": "的回文质数",  # 文件保存量词-在输入后面(可选)
+    "input_mode": hpyc.NUM,
+    "id": "Prime_Palindromes_hz",  # ID,插件标识符,需要和文件名一致（必须）
+    "option": f"{NAME}{VERSION} by {AUTHOR}",  # 选项名-在选择算法列表中（必须）
+    "version": VERSION,  # 版本号（必须）
+    "tag": ["category:Mathematical calculations"],
+    "save_name": "",  # 文件保存项目名-在输出（必须）
+    "quantifier": "以内的回文质数",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
-    "output_name": "回文质数",  # 选择此项后输出的名字（必须）
-    "author": "HowieHz",  # 作者(可选)
-    "help": """
-    输入数字n ，输出 >=0且<=n 回文质数
+    "output_name": NAME,  # 选择此项后输出的名字（必须）
+    "author": AUTHOR,  # 作者(可选)
+    "help": """\
+    输入数字n(n为正整数),输出 >=0且<=n 回文质数
 
-    对于输入小于等于100000000的数 有着绝佳的性能
+    对于输入小于100030001的数 有着绝佳的性能
             """,  # 帮助和说明(可选)
     "output_end": "",  # 输出小尾巴(可选)
     "return_mode": hpyc.NO_RETURN_SINGLE_FUNCTION,
-    "use_quantifier": hpyc.OFF,
     "fullwidth_symbol": hpyc.ON,  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
 }
 
 answer_list = (
-    0,
     2,
     3,
     5,
@@ -808,20 +811,86 @@ answer_list = (
 )
 
 
-def on_calculate(inp, do_what):
-    if inp > 100000000:
-        if do_what == "output":
-            hpyc.output("我开摆了，这么大的数你还是找其他插件吧")
+def hw_builder(scope):
+    """
+    回文生成器 小范围需要对11特判
+
+    :param scope: 范围，假如终值是1300 这个值应该是12；假如终值是13121 这个值应该是130；假如终值是13131 这个值应该是131；假如终值是312213 这个值应该是1312
+    :return:
+    """
+    for i in range(10003, scope + 1):
+        temp = i
+        reversal = 0  # 最后得到一个倒序数字 123得321
+        while temp > 0:
+            reversal = reversal * 10 + temp % 10  # 左移一位并且去temp最后一位
+            temp //= 10  # temp去掉最后一位
+        # 输入123 左边是12000 reversal是321 加起来就是12321
+        yield (i // 10) * (10 ** (int(math.log10(i)) + 1)) + reversal
+
+
+def scope_builder(num):
+    """
+    范围生成器，给hw_builder用的
+    逻辑是奇数位的如122得12(121)  121得12(121)  120得11(111)  13333得133(13331)
+    偶数位因为没有回文质数如1222得99(999)  999999得999(99999)  1221得99(999)
+
+    :param num:
+    :return:
+    """
+    num_len = int(math.log10(num)) + 1  # 获取数字位数
+    if num_len % 2:  # 奇数位
+        ret = int(num / 10 ** ((num_len + 1) / 2 - 1))
+        if int(str(ret) + str(ret)[-2::-1]) <= num:
+            return int(num / 10 ** ((num_len + 1) / 2 - 1))
         else:
-            hpyc.write_without_flush("我开摆了，这么大的数你还是找其他插件吧")
-        return
-    if do_what == "save":
-        for i in answer_list:
-            if i > inp:
-                return
-            hpyc.write_without_flush(i)
+            return int(num / 10 ** ((num_len + 1) / 2 - 1) - 1)
+    else:  # 偶数位
+        return int(9 * (1 - 10 ** (num_len / 2)) / -9)  # 9*(10**0+10**1+10**2)
+
+
+def is_prime(num):
+    """
+    判断是否是质数 小范围的话要2，3特判
+
+    :param num:
+    :return:
+    """
+    if (num % 6 != 1) and (num % 6 != 5):
+        return False
+    for i in range(5, int(num**0.5) + 1, 6):
+        if (num % i == 0) or (num % (i + 2) == 0):
+            return False
+    return True
+
+
+def select_table(inp: int):
+    """
+    读表
+
+    :param inp:
+    :return:
+    """
+    for i in answer_list:
+        if i <= inp:
+            yield i
+
+
+def on_calculate(inp: int, do_what):
+    if do_what == "output":
+        output = hpyc.output
     else:
-        for i in answer_list:
-            if i > inp:
-                return
-            hpyc.output(i)
+        output = hpyc.write_without_flush
+
+    if inp >= 100030001:
+        for answer in answer_list:  # 直接输出100030001以内
+            output(answer)
+
+        for num in hw_builder(scope_builder(inp)):
+            if is_prime(num):  # 是否质数
+                output(num)
+    else:  # <=100030001遍历表 输出
+        for answer in select_table(inp):
+            output(answer)
+
+
+# 超过2的64次方的特判

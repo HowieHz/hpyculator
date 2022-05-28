@@ -1,19 +1,15 @@
 from .version import VERSION  # 版本号导入
 
-TODO = """\
-更新展望(咕咕咕):
-clear"""
+ABOUT = f"<h3>HpyCulator {VERSION}</h3>"
+"<p>" + _("此为AGPL协议的开源项目") + "</p>"
+"<p>" + _("项目地址：") + "https://github.com/HowieHz/hpyculator</p>"
+"<p>" + _("软件文档：") + "https:///hpyculator.readthedocs.io/</p>"
 
-ABOUT = f"""
-<h3>HpyCulator {VERSION}</h3>
-<p>此为AGPL协议的开源项目</p>
-<p>项目地址：https://github.com/HowieHz/hpyculator</p>
-<p>软件文档：https:///hpyculator.readthedocs.io/</p>
-"""
-
-START_SHOW = f"""\
-高拓展性计算器 hpyculator {VERSION}
-作者：HowieHz
+START_SHOW = (
+    _("高拓展性计算器")
+    + f" hpyculator {VERSION}\n"
+    + _(
+        """作者：HowieHz
 
 测试版本注释：只要修改background_img目录下的background1.png文件为你要的背景文件就好了
 
@@ -22,32 +18,58 @@ START_SHOW = f"""\
     然后在上方输入框输入你要计算的项数（行数）
     之后在左侧选择计算核心
 
-
-使用前必读:
+使用前必读：
     0.建议保存到文件，这样不会内屏输出导致卡死，再不济也开启输出优化
     1.“保存”会将结果保存到程序所在目录下 "Output" 文件夹内
-    2.设置行(项)数较大请选择保存到文件，算的不久，但是导出很久，可以看看任务管理器，不同插件性能（读写速度和）不同，要看插件作者的水平
-    3.默认插件保存位置为程序同目录下的 "Plugin" 文件夹内
+    2.设置行(项)数较大请选择保存到文件，运算时间较长，可以通过查看任务管理器确认程序是否假死，不同插件性能（读写性能和运算性能）不同
+    3.默认插件保存位置为程序同目录下的 "Plugin" 文件夹内，可通过设置页面打开
+    4.输入" :tag "进入tag搜索模式，如" :tag 我是tag1 我是tag2 我是tag3 "，查看可用tag请下拉
 
 交流群694413711，欢迎反馈bug，提出建议
 
-已在github开源
+已在github开源：
     地址：https://github.com/HowieHz/hpyculator
     软件文档：https:///hpyculator.readthedocs.io/
 
 hpyculator的名字来历：
     high extensibility calculator base on python
 
+可用tag："""
+    )
+)
 
+# Added － 这里记录新增加了哪些功能／接口
+# Changed － 功能／接口变更
+# Deprecated － 不建议使用的功能／接口，将来会删掉
+# Removed － 之前不建议使用的功能／接口，这次真的删掉了
+# Fixed － 这里记录解决了哪些问题
+# Others － 这里记录性能优化和安全性增强等改进。
 
-
-
-
-悄悄说:在输入栏输入update_log之后点击运算就可以看更新日志了
-"""
-
-UPDATE_LOG = """\
+CHANGELOG = """\
 更新日志:
+20220528
+v1.6.0
+Added
+    i18n -> en语言支持
+    tag系统，可以使用tag进行搜索了
+    新增插件若干
+    可切换背景图片
+    插件元数据tag项
+Changed
+    插件元数据option_name -> option
+    插件元数据author现支持多作者
+    文档示例更新
+Removed
+    移除无用插件
+    插件元数据use_quantifier项
+Fixed
+    修复插件无法正常运行的bug
+Others
+    代码风格修订
+
+v1.5.0
+重绘ui
+
 1.4.1-1.4.2
 修改文档和说明
 

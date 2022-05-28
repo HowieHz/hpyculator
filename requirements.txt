@@ -1,5 +1,4 @@
-jpype1
-hpyculator>=1.4.5
-pyside6
-mypy
-pytest
+hpyculator>=1.4.9
+PySide6
+pywin32
+toml

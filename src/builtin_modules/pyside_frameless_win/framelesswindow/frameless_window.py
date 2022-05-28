@@ -2,12 +2,13 @@
 import os
 from ctypes import POINTER, cast
 
-from PySide6.QtCore import QCoreApplication, QEvent, Qt
-from PySide6.QtGui import QCursor, QMouseEvent
-from PySide6.QtWidgets import QWidget, QMainWindow
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QCursor
+from PySide6.QtWidgets import QWidget
 
 from ctypes.wintypes import MSG
-import win32api, win32gui
+import win32api
+import win32gui
 from win32.lib import win32con
 from ..windoweffect import MINMAXINFO, NCCALCSIZE_PARAMS, WindowEffect
 
@@ -20,9 +21,10 @@ from ..windoweffect import MINMAXINFO, NCCALCSIZE_PARAMS, WindowEffect
 #     # from utils.linux_utils import LinuxMoveResize
 #     pass  # sip没有找到在pyside6下对应的模块，故砍去
 
+
 class FramelessWindowBase(QWidget):
-# class FramelessWindowBase(QMainWindow):
-    """ Frameless window """
+    # class FramelessWindowBase(QMainWindow):
+    """Frameless window"""
 
     BORDER_WIDTH = 5
 
@@ -33,19 +35,19 @@ class FramelessWindowBase(QWidget):
         self.resize(500, 500)
 
     def resizeEvent(self, e):
-        """ Adjust the width and icon of title bar """
+        """Adjust the width and icon of title bar"""
         super().resizeEvent(e)
         # self.titleBar.resize(self.width(), self.titleBar.height())
         # self.titleBar.maxBtn.setMaxState(
         #     self._isWindowMaximized(int(self.winId())))
 
     def _isWindowMaximized(self, hWnd):
-        """ Determine whether the window is maximized """
+        """Determine whether the window is maximized"""
         return self.isMaximized()
 
 
 class WindowsFramelessWindow(FramelessWindowBase):
-    """ Frameless window for Windows system """
+    """Frameless window for Windows system"""
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -53,8 +55,12 @@ class WindowsFramelessWindow(FramelessWindowBase):
         self.windowEffect = WindowEffect()
 
         # remove window border
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowSystemMenuHint |
-                            Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
+        self.setWindowFlags(
+            Qt.FramelessWindowHint
+            | Qt.WindowSystemMenuHint
+            | Qt.WindowMinimizeButtonHint
+            | Qt.WindowMaximizeButtonHint
+        )
 
         # add DWM shadow and window animation
         self.windowEffect.addWindowAnimation(self.winId())
@@ -64,7 +70,7 @@ class WindowsFramelessWindow(FramelessWindowBase):
         self.windowHandle().screenChanged.connect(self.__onScreenChanged)
 
     def nativeEvent(self, eventType, message):
-        """ Handle the Windows message """
+        """Handle the Windows message"""
         msg = MSG.from_address(message.__int__())
         if msg.message == win32con.WM_NCHITTEST:
             pos = QCursor.pos()
@@ -108,8 +114,8 @@ class WindowsFramelessWindow(FramelessWindowBase):
 
                 # get the monitor info
                 __monitorInfo = win32api.GetMonitorInfo(monitor)
-                monitor_rect = __monitorInfo['Monitor']
-                work_area = __monitorInfo['Work']
+                monitor_rect = __monitorInfo["Monitor"]
+                work_area = __monitorInfo["Work"]
 
                 # convert lParam to MINMAXINFO pointer
                 info = cast(msg.lParam, POINTER(MINMAXINFO)).contents
@@ -137,7 +143,7 @@ class WindowsFramelessWindow(FramelessWindowBase):
         return windowPlacement[1] == win32con.SW_MAXIMIZE
 
     def __monitorNCCALCSIZE(self, msg):
-        """ Adjust the size of window """
+        """Adjust the size of window"""
         monitor = win32api.MonitorFromWindow(msg.hWnd)
 
         # If the display information is not saved, return directly
@@ -148,58 +154,22 @@ class WindowsFramelessWindow(FramelessWindowBase):
 
         # adjust the size of window
         params = cast(msg.lParam, POINTER(NCCALCSIZE_PARAMS)).contents
-        params.rgrc[0].left = self.__monitorInfo['Work'][0]
-        params.rgrc[0].top = self.__monitorInfo['Work'][1]
-        params.rgrc[0].right = self.__monitorInfo['Work'][2]
-        params.rgrc[0].bottom = self.__monitorInfo['Work'][3]
+        params.rgrc[0].left = self.__monitorInfo["Work"][0]
+        params.rgrc[0].top = self.__monitorInfo["Work"][1]
+        params.rgrc[0].right = self.__monitorInfo["Work"][2]
+        params.rgrc[0].bottom = self.__monitorInfo["Work"][3]
 
     def __onScreenChanged(self):
         hWnd = int(self.windowHandle().winId())
-        win32gui.SetWindowPos(hWnd, None, 0, 0, 0, 0, win32con.SWP_NOMOVE |
-                              win32con.SWP_NOSIZE | win32con.SWP_FRAMECHANGED)
-
-class UnixFramelessWindow(FramelessWindowBase):
-    """ Frameless window for Unix system """
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
-        QCoreApplication.instance().installEventFilter(self)
-
-    def eventFilter(self, obj, event):
-        et = event.type()
-        if et != QEvent.MouseButtonPress and et != QEvent.MouseMove:
-            return False
-
-        edges = Qt.Edges()
-        pos = QMouseEvent(event).windowPos().toPoint()
-        if pos.x() < self.BORDER_WIDTH:
-            edges |= Qt.LeftEdge
-        if pos.x() >= self.width()-self.BORDER_WIDTH:
-            edges |= Qt.RightEdge
-        if pos.y() < self.BORDER_WIDTH:
-            edges |= Qt.TopEdge
-        if pos.y() >= self.height()-self.BORDER_WIDTH:
-            edges |= Qt.BottomEdge
-
-        # change cursor
-        if et == QEvent.MouseMove and self.windowState() == Qt.WindowNoState:
-            if edges in (Qt.LeftEdge | Qt.TopEdge, Qt.RightEdge | Qt.BottomEdge):
-                self.setCursor(Qt.SizeFDiagCursor)
-            elif edges in (Qt.RightEdge | Qt.TopEdge, Qt.LeftEdge | Qt.BottomEdge):
-                self.setCursor(Qt.SizeBDiagCursor)
-            elif edges in (Qt.TopEdge, Qt.BottomEdge):
-                self.setCursor(Qt.SizeVerCursor)
-            elif edges in (Qt.LeftEdge, Qt.RightEdge):
-                self.setCursor(Qt.SizeHorCursor)
-            else:
-                self.setCursor(Qt.ArrowCursor)
-
-        elif et == QEvent.MouseButtonPress and edges:
-            LinuxMoveResize.starSystemResize(self, event.globalPos(), edges)
-
-        return super().eventFilter(obj, event)
+        win32gui.SetWindowPos(
+            hWnd,
+            None,
+            0,
+            0,
+            0,
+            0,
+            win32con.SWP_NOMOVE | win32con.SWP_NOSIZE | win32con.SWP_FRAMECHANGED,
+        )
 
 
-# FramelessWindow = WindowsFramelessWindow if os.name == "nt" else UnixFramelessWindow
 FramelessWindow = WindowsFramelessWindow

@@ -1,15 +1,19 @@
 import hpyculator as hpyc
 
+NAME = "n进制加法"
+AUTHOR = "HowieHz"
+VERSION = "V1.2.2"
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
-    "id": "baseN_plus",  # ID,插件标识符,需要和文件名一致（必须）
-    "option_name": "n进制加法v1.2.1 by HowieHz",  # 选项名-在选择算法列表中（必须）
-    "version": "v1.2.1",  # 版本号（必须）
+    "id": "baseN_plus_hz",  # ID,插件标识符,需要和文件名一致（必须）
+    "option": f"{NAME}{VERSION} by {AUTHOR}",  # 选项名-在选择算法列表中（必须）
+    "version": VERSION,  # 版本号（必须）
+    "tag": ["category:Mathematical calculations"],
     "save_name": "",  # 文件保存项目名-在输出（必须）
-    "quantifier": "",  # 文件保存量词-在输入后面(可选)
+    "quantifier": "进制下的相加所得",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
-    "output_name": "",  # 选择此项后输出的名字（必须）
-    "author": "HowieHz",  # 作者(可选)
+    "output_name": NAME,  # 选择此项后输出的名字（必须）
+    "author": AUTHOR,  # 作者(可选)
     "help": """
 
     给定两个 C（2≤C≤64）进制数 A,B,输出A+B，输出的数是个C进制数
@@ -19,32 +23,32 @@ PLUGIN_METADATA = {
 
 输入格式
     A,B,C
+    (数字间用空格或逗号分隔)
 
 输出格式
     N
 
 输入输出样例
-    输入 #1
+    输入 #1 意思：10进制下10+10
         10,10,10
 
     输出 #1
         20
 
-    输入 #2
-        63,63,64
+    输入 #2 意思：64进制下63+63
+        63 63 64
 
     输出 #2
         c6
 
-    输入 #3
-        89,89ac,16
+    输入 #3 意思：16进制下89+89ac
+        89，89ac，16
 
     输出 #3
         8a35
             """,  # 帮助和说明(可选)
     "output_end": "",  # 输出小尾巴(可选)
     "return_mode": hpyc.NO_RETURN_SINGLE_FUNCTION,
-    "use_quantifier": hpyc.OFF,
     "fullwidth_symbol": hpyc.OFF,
 }
 
@@ -118,7 +122,16 @@ def on_calculate(data: str, todo) -> None:
         "-": 62,
         "_": 63,
     }
-    a, b, c = data.strip().split(",")
+    try:
+        if "," in data:
+            a, b, c = data.strip().split(",")
+        elif "，" in data:
+            a, b, c = data.strip().split("，")
+        else:
+            a, b, c = data.strip().split()
+    except ValueError:
+        hpyc.output("请按格式输入！！！")
+        return
     n = int(c.strip())  # n是多少进制
 
     if n > 36:  # 小于36的直接int，大于36小于64的解析

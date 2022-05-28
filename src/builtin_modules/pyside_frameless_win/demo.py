@@ -8,12 +8,10 @@ from framelesswindow import FramelessWindow
 
 
 class Window(FramelessWindow):
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.label = QLabel(self)
         self.label.setScaledContents(True)
-        self.label.setPixmap(QPixmap("resource/images/shoko.png"))
         self.setWindowTitle("PyQt Frameless Window")
         self.setStyleSheet("background:white")
         # self.titleBar.raise_()
@@ -24,15 +22,15 @@ class Window(FramelessWindow):
         length = min(self.width(), self.height())
         self.label.resize(length, length)
         self.label.move(
-            self.width() // 2 - length // 2,
-            self.height() // 2 - length // 2
+            self.width() // 2 - length // 2, self.height() // 2 - length // 2
         )
 
 
 if __name__ == "__main__":
     # enable dpi scale
     QApplication.setHighDpiScaleFactorRoundingPolicy(
-        Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+        Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
+    )
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
