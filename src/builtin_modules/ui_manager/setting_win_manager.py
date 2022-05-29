@@ -33,7 +33,7 @@ class SettingWinApp(QDialog):
 
         # 读取保存选项状态设置
         if "is_save_check_box_status" in dict_setting:
-            self.ui.check_is_save_check_box.setChecked(
+            self.ui.check_is_save_check_box_status.setChecked(
                 dict_setting["is_save_check_box_status"]
             )
 
@@ -56,7 +56,7 @@ class SettingWinApp(QDialog):
         dict_setting["output_dir_path"] = self.ui.output_save_location.toPlainText()
         dict_setting[
             "is_save_check_box_status"
-        ] = self.ui.check_is_save_check_box.isChecked()
+        ] = self.ui.check_is_save_check_box_status.isChecked()
         with open(self.SETTING_FILE_PATH, "w+", encoding="utf-8") as setting_file:
             toml.dump(dict_setting, setting_file)
 
