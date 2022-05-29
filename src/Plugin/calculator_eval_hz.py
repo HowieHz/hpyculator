@@ -101,7 +101,18 @@ PLUGIN_METADATA = {
 
 def on_calculate(data, do_what: str):
     output = hpyc.output if do_what == "output" else hpyc.write  # 输出内容只需要用output就好了
-    _list_char_check = ["import","system","rf","rm","str","exec","eval",";","'",'"']
+    _list_char_check = [
+        "import",
+        "system",
+        "rf",
+        "rm",
+        "str",
+        "exec",
+        "eval",
+        ";",
+        "'",
+        '"',
+    ]
     for _char in _list_char_check:
         if _char in data:
             output("检测到非法字符")
