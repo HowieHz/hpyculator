@@ -38,35 +38,46 @@ hpyculator的名字来历：
     )
 )
 
-# Added － 这里记录新增加了哪些功能／接口
+# Added － 新增加的功能／接口
 # Changed － 功能／接口变更
-# Deprecated － 不建议使用的功能／接口，将来会删掉
-# Removed － 之前不建议使用的功能／接口，这次真的删掉了
-# Fixed － 这里记录解决了哪些问题
-# Others － 这里记录性能优化和安全性增强等改进。
+# Deprecated － 不建议使用的功能／接口，将来会删除
+# Removed － 已删除的功能／接口
+# Fixed － 解决的问题
+# Others － 性能优化和安全性增强等改进
 
 CHANGELOG = """\
 更新日志:
+20220529
+v1.6.0-fix.1
+    
+    Fixed
+        控件名错误的bug
+
 20220528
 v1.6.0
-Added
-    i18n -> en语言支持
-    tag系统，可以使用tag进行搜索了
-    新增插件若干
-    可切换背景图片
-    插件元数据tag项
-    可切换是否自动换行
-Changed
-    插件元数据option_name -> option
-    插件元数据author现支持多作者
-    文档示例更新
-Removed
-    移除无用插件
-    插件元数据use_quantifier项
-Fixed
-    修复插件无法正常运行的bug
-Others
-    代码风格修订
+
+    Added
+        i18n -> en语言支持
+        tag系统，可以使用tag进行搜索了
+        新增插件若干
+        可切换背景图片
+        插件元数据tag项
+        可切换是否自动换行
+        
+    Changed
+        插件元数据option_name -> option
+        插件元数据author现支持多作者
+        文档示例更新
+        
+    Removed
+        移除无用插件
+        插件元数据use_quantifier项
+        
+    Fixed
+        修复插件无法正常运行的bug
+        
+    Others
+        代码风格修订
 
 v1.5.0
 重绘ui
