@@ -94,4 +94,5 @@ version
 物理计算Physical computations
 换算工具Unit conversion
 还有其他Other
+category:Mathematical calculations
 """
