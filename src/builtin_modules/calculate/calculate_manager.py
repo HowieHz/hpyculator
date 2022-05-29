@@ -109,8 +109,12 @@ class CalculationThread(Thread):
         inputbox_data = self.inputbox_data
         calculation_mode = self.calculation_mode
         # instance_plugin_manager.initPlugin()  # 多进程用
-        plugin_attributes = instance_plugin_manager.getPluginAttributes(self.user_selection_id)  # 插件属性字典
-        selected_plugin = instance_plugin_manager.getPluginInstance(self.user_selection_id)
+        plugin_attributes = instance_plugin_manager.getPluginAttributes(
+            self.user_selection_id
+        )  # 插件属性字典
+        selected_plugin = instance_plugin_manager.getPluginInstance(
+            self.user_selection_id
+        )
 
         def _baseCalculate():
             """基础的计算模式"""
