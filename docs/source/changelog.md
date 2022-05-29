@@ -9,6 +9,7 @@ v1.6.0
         新增插件若干
         可切换背景图片
         插件元数据tag项
+        可切换是否自动换行
     Changed
         插件元数据option_name -> option
         插件元数据author现支持多作者
