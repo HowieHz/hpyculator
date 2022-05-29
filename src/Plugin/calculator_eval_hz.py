@@ -6,19 +6,19 @@ NAME = "计算器(基于eval)"
 AUTHOR = "HowieHz" or ["作者1", "作者2"]
 VERSION = "V1.0.0"
 PLUGIN_METADATA = {
-    'input_mode': hpyc.STRING,  # 输入模式，STRING为传入字符串,NUM为传入int,FLOAT为传入float(传入的作为main函数的开始计算值)
-    'id': 'calculator_eval_hz',  # 插件标识符,需要和文件名一致
-    "option": f"{NAME}{VERSION} by {', '.join(AUTHOR) if isinstance(AUTHOR, list) else AUTHOR}",  # 选项名-在选择算法列表中（必须）
-    'version': VERSION,  # 版本号
-    'tag': ["category:Mathematical calculations"],
-
-    'save_name': "",  # 文件保存名
-    'quantifier': "的计算结果",  # 文件保存量词
-
-    'output_start': "",  # 输出头
-    'output_name': NAME,  # 选择此项后输出的名字
-    'author': AUTHOR,  # 作者
-    'help': """\
+    # 输入模式，STRING为传入字符串,NUM为传入int,FLOAT为传入float(传入的作为main函数的开始计算值)
+    "input_mode": hpyc.STRING,
+    "id": "calculator_eval_hz",  # 插件标识符,需要和文件名一致
+    # 选项名-在选择算法列表中（必须）
+    "option": f"{NAME}{VERSION} by {', '.join(AUTHOR) if isinstance(AUTHOR, list) else AUTHOR}",
+    "version": VERSION,  # 版本号
+    "tag": ["category:Mathematical calculations"],
+    "save_name": "",  # 文件保存名
+    "quantifier": "的计算结果",  # 文件保存量词
+    "output_start": "",  # 输出头
+    "output_name": NAME,  # 选择此项后输出的名字
+    "author": AUTHOR,  # 作者
+    "help": """\
 输入格式
     若干数学符号和数字的组合
     
@@ -93,10 +93,9 @@ PLUGIN_METADATA = {
     not	    not x	布尔"非" - 如果 x 为 True，返回 False;如果 x 为 False，它返回 True
 
                 """,  # 帮助和说明
-    'output_end': "",  # 输出小尾巴
-
-    'return_mode': hpyc.NO_RETURN_SINGLE_FUNCTION,
-    "fullwidth_symbol": hpyc.OFF  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
+    "output_end": "",  # 输出小尾巴
+    "return_mode": hpyc.NO_RETURN_SINGLE_FUNCTION,
+    "fullwidth_symbol": hpyc.OFF,  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
 }
 
 
@@ -133,4 +132,3 @@ def on_calculate(data, do_what: str):
         output("检测到非法字符")
         return
     output(eval(data))
-

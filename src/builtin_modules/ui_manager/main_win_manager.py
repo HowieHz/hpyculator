@@ -626,9 +626,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             _set_matched_item = set()  # 匹配上的插件名
             _tags = _search_keyword.split()[1:]  # 用户输入的tag
             # tag和选项名的映射表_list_plugin_tag_option [((tag1,tag2),name),((tag1,tag2),name)]
-            _list_plugin_tag_option = (
-                instance_plugin_manager.getAllPluginTagOption()
-            )
+            _list_plugin_tag_option = instance_plugin_manager.getAllPluginTagOption()
             # 单项 tag和选项名_tag_and_option ((tag1,tag2),name)
             for _tag_and_option in _list_plugin_tag_option:
                 if _tagCheck(_tags, _tag_and_option):
