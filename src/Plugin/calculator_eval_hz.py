@@ -4,7 +4,7 @@ from math import *
 
 NAME = "计算器(基于eval)"
 AUTHOR = "HowieHz" or ["作者1", "作者2"]
-VERSION = "V1.0.0"
+VERSION = "V1.0.1"
 PLUGIN_METADATA = {
     # 输入模式，STRING为传入字符串,NUM为传入int,FLOAT为传入float(传入的作为main函数的开始计算值)
     "input_mode": hpyc.STRING,
@@ -22,7 +22,7 @@ PLUGIN_METADATA = {
 输入格式
     若干数学符号和数字的组合
 
-(注：已做危险关键字过滤)
+(注：eval已做危险关键字过滤)
 
 支持列表(refer to https://www.runoob.com/python3/python3-basic-operators.html):
 
@@ -112,6 +112,9 @@ def on_calculate(data, do_what: str):
         ";",
         "'",
         '"',
+        "lambda",
+        "__import__",
+        "os",
     ]
     for _char in _list_char_check:
         if _char in data:
