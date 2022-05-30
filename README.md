@@ -57,9 +57,7 @@ hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法�
 
 文档中文版由HowieHz编写
 
-## 联系方式
-
-[可通过b站私信联系](https://space.bilibili.com/176670190)
+## 其他
 
 欢迎提issue和pr
 
