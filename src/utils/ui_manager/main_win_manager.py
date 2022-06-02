@@ -14,7 +14,7 @@ from ..ui import Ui_MainWin
 from hpyculator.hpysignal import instance_main_win_signal
 
 # 窗口管理类（用于管理设置的窗口）
-from .setting_win_manager import SettingWinApp
+from .settings_win_manager import SettingsWinApp
 from .about_win_manager import AboutWinApp
 
 # refer to https://github.com/zhiyiYo/PyQt-Frameless-Window
@@ -60,9 +60,7 @@ class MainWinApp(FramelessWindow):
             if background_img_path.is_file():
                 self.bg_img = QPixmap(background_img_path)
         else:
-            background_img_path = pathlib.Path(background_dir_path).joinpath(
-                "default.png"
-            )
+            background_img_path = pathlib.Path(background_dir_path).joinpath("default.png")
             instance_settings_file.add("background_img", "default.png")
             if background_img_path.is_file():
                 self.bg_img = QPixmap(background_img_path)
@@ -487,8 +485,8 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 
         :return:
         """
-        self.setting_win = SettingWinApp()  # 绑定子窗口
-        self.setting_win.exec()
+        self.settings_win = SettingsWinApp()  # 绑定子窗口
+        self.settings_win.exec()
 
         # 读取新设置
         self.OUTPUT_DIR_PATH = instance_settings_file.read("output_dir_path")

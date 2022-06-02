@@ -3,17 +3,18 @@ import os
 # pyside6
 from PySide6.QtWidgets import QMessageBox, QDialog
 
-from ..ui import Ui_SettingWin  # 从init导
+from ..ui import Ui_SettingsWin  # 从init导
 from ..document import VERSION  # 版本号导入
 from ..settings import instance_settings_file  # 导入实例
 
 
-class SettingWinApp(QDialog):
+class SettingsWinApp(QDialog):
     """设置窗口的操作"""
+
     def __init__(self):
         """设置窗口，是主窗口的子窗口"""
         super().__init__()
-        self.ui = Ui_SettingWin()  # 实例化ui
+        self.ui = Ui_SettingsWin()  # 实例化ui
         self.ui.setupUi(self)  # 初始化ui，不初始化不显示
 
         self.setWindowTitle(_("设置") + "  Hpyculator" + _("版本") + f"{VERSION}")  # 设置标题
@@ -36,7 +37,7 @@ class SettingWinApp(QDialog):
         if instance_settings_file.exists("background_img"):
             self.ui.combo_background.setCurrentText(instance_settings_file.read("background_img"))
 
-    def eventSaveSetting(self):
+    def eventSaveSettings(self):
         """
         按下保存按钮之后的事件
 
@@ -49,7 +50,7 @@ class SettingWinApp(QDialog):
         )
         self.close()
 
-    def eventCancelSetting(self):
+    def eventCancelSettings(self):
         self.close()
 
     def eventSaveCheckBoxStatus(self):
@@ -63,10 +64,9 @@ class SettingWinApp(QDialog):
         instance_settings_file.modify(key="output_dir_path", value=self.OUTPUT_DIR_PATH)
         self.ui.output_save_location.setPlainText(self.OUTPUT_DIR_PATH)
 
-    @staticmethod
-    def eventChooseBackgroundImg(qstring):
+    def eventChooseBackgroundImg(self, int_):
         """选择背景图片"""
-        instance_settings_file.modify(key="background_img", value=qstring)
+        instance_settings_file.modify(key="background_img", value=self.ui.combo_background.currentText())
 
     @staticmethod
     def eventOpenBackgroundDir():

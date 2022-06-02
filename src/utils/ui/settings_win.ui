@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SettingWin</class>
- <widget class="QDialog" name="SettingWin">
+ <class>SettingsWin</class>
+ <widget class="QDialog" name="SettingsWin">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -904,8 +904,8 @@ QCheckBox::indicator:unchecked {
   <connection>
    <sender>button_save_setting</sender>
    <signal>clicked()</signal>
-   <receiver>SettingWin</receiver>
-   <slot>eventSaveSetting()</slot>
+   <receiver>SettingsWin</receiver>
+   <slot>eventSaveSettings()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>385</x>
@@ -920,8 +920,8 @@ QCheckBox::indicator:unchecked {
   <connection>
    <sender>button_cancel</sender>
    <signal>clicked()</signal>
-   <receiver>SettingWin</receiver>
-   <slot>eventCancelSetting()</slot>
+   <receiver>SettingsWin</receiver>
+   <slot>eventCancelSettings()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>534</x>
@@ -936,7 +936,7 @@ QCheckBox::indicator:unchecked {
   <connection>
    <sender>check_is_save_check_box_status</sender>
    <signal>clicked()</signal>
-   <receiver>SettingWin</receiver>
+   <receiver>SettingsWin</receiver>
    <slot>eventSaveCheckBoxStatus()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -952,7 +952,7 @@ QCheckBox::indicator:unchecked {
   <connection>
    <sender>button_reset_save_location</sender>
    <signal>clicked()</signal>
-   <receiver>SettingWin</receiver>
+   <receiver>SettingsWin</receiver>
    <slot>eventResetSaveLocation()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -967,9 +967,9 @@ QCheckBox::indicator:unchecked {
   </connection>
   <connection>
    <sender>combo_background</sender>
-   <signal>currentTextChanged(QString)</signal>
-   <receiver>SettingWin</receiver>
-   <slot>eventChooseBackgroundImg(QString)</slot>
+   <signal>activated(int)</signal>
+   <receiver>SettingsWin</receiver>
+   <slot>eventChooseBackgroundImg(int)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>279</x>
@@ -984,7 +984,7 @@ QCheckBox::indicator:unchecked {
   <connection>
    <sender>button_open_background_dir</sender>
    <signal>clicked()</signal>
-   <receiver>SettingWin</receiver>
+   <receiver>SettingsWin</receiver>
    <slot>eventOpenBackgroundDir()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1000,7 +1000,7 @@ QCheckBox::indicator:unchecked {
   <connection>
    <sender>button_open_plugin_dir</sender>
    <signal>clicked()</signal>
-   <receiver>SettingWin</receiver>
+   <receiver>SettingsWin</receiver>
    <slot>eventOpenPluginDir()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1015,11 +1015,11 @@ QCheckBox::indicator:unchecked {
   </connection>
  </connections>
  <slots>
-  <slot>eventSaveSetting()</slot>
-  <slot>eventCancelSetting()</slot>
+  <slot>eventSaveSettings()</slot>
+  <slot>eventCancelSettings()</slot>
   <slot>eventSaveCheckBoxStatus()</slot>
   <slot>eventResetSaveLocation()</slot>
-  <slot>eventChooseBackgroundImg(QString)</slot>
+  <slot>eventChooseBackgroundImg(int)</slot>
   <slot>eventOpenBackgroundDir()</slot>
   <slot>eventOpenPluginDir()</slot>
  </slots>
