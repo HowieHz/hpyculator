@@ -1,30 +1,24 @@
-# i18n
+"""入口文件"""
+# 易于打包加几句
+# import numba
+
+# import jpype
 import argparse
 import dbm
 import hpyculator
 import sys
 from PySide6.QtWidgets import QApplication
 from utils import CreateApp
+
+# i18n
 import gettext
 import os
-
 langs = ["en"]
 for lang in langs:
     gettext.install(lang, localedir=os.path.join(".", "utils", "locale"))
-
-
 #  from utils.ui_manager.test_window_effect import testWinApp
-
 # pyside6导入
-
-
 # from utils.ui import main_window_resource_rc
-
-# 易于打包加几句
-# import numba
-
-# import jpype
-
 # sys.path.append(os.path.join(os.getcwd(),"bin"))
 
 if __name__ == "__main__":
