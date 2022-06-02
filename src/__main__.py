@@ -1,4 +1,10 @@
 # i18n
+import argparse
+import dbm
+import hpyculator
+import sys
+from PySide6.QtWidgets import QApplication
+from utils import CreateApp
 import gettext
 import os
 
@@ -6,24 +12,18 @@ langs = ["en"]
 for lang in langs:
     gettext.install(lang, localedir=os.path.join(".", "utils", "locale"))
 
-from utils import CreateApp
 
 #  from utils.ui_manager.test_window_effect import testWinApp
 
 # pyside6导入
-from PySide6.QtWidgets import QApplication
 
-import sys
 
 # from utils.ui import main_window_resource_rc
 
 # 易于打包加几句
 # import numba
-import hpyculator
 
 # import jpype
-import dbm
-import argparse
 
 # sys.path.append(os.path.join(os.getcwd(),"bin"))
 

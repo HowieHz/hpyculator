@@ -6,10 +6,13 @@ from typing import Any
 
 class TomlSettingsFileObject(SettingsFileObject):
     """toml类型的文件对象"""
-    def __init__(self,
-                 settings_dir_path: str,
-                 settings_file_name: str = "settings",
-                 settings_file_format: str = "toml"):
+
+    def __init__(
+        self,
+        settings_dir_path: str,
+        settings_file_name: str = "settings",
+        settings_file_format: str = "toml",
+    ):
         """
         读取一个文件，初始化文件对象
 

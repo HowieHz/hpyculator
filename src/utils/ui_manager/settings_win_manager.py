@@ -33,9 +33,13 @@ class SettingsWinApp(QDialog):
         # 背景图片选择框初始化
         self.background_dir_path = os.path.join(".", "background_img")
         self.ui.combo_background.clear()  # 清空选框
-        self.ui.combo_background.addItems(os.listdir(self.background_dir_path))  # 相对入口文件位置
+        self.ui.combo_background.addItems(
+            os.listdir(self.background_dir_path)
+        )  # 相对入口文件位置
         if instance_settings_file.exists("background_img"):
-            self.ui.combo_background.setCurrentText(instance_settings_file.read("background_img"))
+            self.ui.combo_background.setCurrentText(
+                instance_settings_file.read("background_img")
+            )
 
     def eventSaveSettings(self):
         """
@@ -43,8 +47,13 @@ class SettingsWinApp(QDialog):
 
         :return:
         """
-        instance_settings_file.modify(key="output_dir_path", value=self.ui.output_save_location.toPlainText())
-        instance_settings_file.modify(key="is_save_check_box_status", value=self.ui.check_is_save_check_box_status.isChecked())
+        instance_settings_file.modify(
+            key="output_dir_path", value=self.ui.output_save_location.toPlainText()
+        )
+        instance_settings_file.modify(
+            key="is_save_check_box_status",
+            value=self.ui.check_is_save_check_box_status.isChecked(),
+        )
         QMessageBox.information(
             self, _("保存完成"), _("保存完成\n部分设置将在重新启动后生效"), QMessageBox.Ok
         )
@@ -66,7 +75,9 @@ class SettingsWinApp(QDialog):
 
     def eventChooseBackgroundImg(self, int_):
         """选择背景图片"""
-        instance_settings_file.modify(key="background_img", value=self.ui.combo_background.currentText())
+        instance_settings_file.modify(
+            key="background_img", value=self.ui.combo_background.currentText()
+        )
 
     @staticmethod
     def eventOpenBackgroundDir():
