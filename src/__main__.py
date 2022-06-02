@@ -13,6 +13,7 @@ from utils import CreateApp
 # i18n
 import gettext
 import os
+
 langs = ["en"]
 for lang in langs:
     gettext.install(lang, localedir=os.path.join(".", "utils", "locale"))
