@@ -7,7 +7,7 @@ class SettingsFileObject(ABC):
     def __init__(self,
                  settings_dir_path: str,
                  settings_file_name: str = "settings",
-                 settings_file_format: str = "toml"):
+                 settings_file_format: str = ""):
         """
         读取一个文件laod
 
@@ -24,9 +24,10 @@ class SettingsFileObject(ABC):
         # 初始化设置文件位置
         self._settings_file_path = str(os.path.join(settings_dir_path, f"{settings_file_name}.{settings_file_format}"))
 
-        # # 初始化文件并打开文件
+        # 初始化文件
         # # self._file_stream = open(self._settings_file_path, mode="w+", buffering=-1, encoding="utf-8")
-        # self._settings_file_stream = open(self._settings_file_path, mode="w+", encoding="utf-8")
+        self._settings_file_stream = open(self._settings_file_path, mode="a+", encoding="utf-8")
+        self._settings_file_stream.close()
 
     @abstractmethod
     def add(self, key: str, value: Any):
