@@ -17,6 +17,7 @@ dict_settings_file_object = {
 
 class SettingsManager:
     """设置文件管理类"""
+
     def __init__(self):
         """初始化设置文件管理"""
         self._settings_dir_path = str(os.path.join(os.getcwd(), "Setting"))  # 初始化设置目录
@@ -27,10 +28,12 @@ class SettingsManager:
         # 检查对应文件是否存在
         # 每次操作完不关闭文件流，就flush一次
 
-    def load(self,
-             settings_dir_path: str = "",
-             settings_file_name: str = "hpyculator_setting",
-             settings_file_format: str = "toml"):
+    def load(
+        self,
+        settings_dir_path: str = "",
+        settings_file_name: str = "hpyculator_setting",
+        settings_file_format: str = "toml",
+    ):
         """
         加载一个设置文件对象
 
@@ -41,9 +44,9 @@ class SettingsManager:
         """
         if not settings_dir_path:
             settings_dir_path = self._settings_dir_path
-        return dict_settings_file_object[settings_file_format](settings_dir_path,
-                                                               settings_file_name,
-                                                               settings_file_format)
+        return dict_settings_file_object[settings_file_format](
+            settings_dir_path, settings_file_name, settings_file_format
+        )
         # settings_dir_path = self._settings_dir_path
         # return TomlSettingsFileObject(settings_dir_path,
         #                               settings_file_name,

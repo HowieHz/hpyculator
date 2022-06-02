@@ -23,7 +23,7 @@ from ..pyside_frameless_win.framelesswindow import FramelessWindow
 
 class MainWinApp(FramelessWindow):
     def __init__(
-            self, setting_file_path, output_dir_path, plugin_dir_path, background_dir_path
+        self, setting_file_path, output_dir_path, plugin_dir_path, background_dir_path
     ):
         """
         主窗口程序类
@@ -60,7 +60,9 @@ class MainWinApp(FramelessWindow):
             if background_img_path.is_file():
                 self.bg_img = QPixmap(background_img_path)
         else:
-            background_img_path = pathlib.Path(background_dir_path).joinpath("default.png")
+            background_img_path = pathlib.Path(background_dir_path).joinpath(
+                "default.png"
+            )
             instance_settings_file.add("background_img", "default.png")
             if background_img_path.is_file():
                 self.bg_img = QPixmap(background_img_path)
@@ -185,31 +187,39 @@ class MainWinApp(FramelessWindow):
 
         if instance_settings_file.exists("is_save_check_box_status"):
             # 是否保存设置
-            self.is_save_check_box_status = instance_settings_file.read("is_save_check_box_status")
+            self.is_save_check_box_status = instance_settings_file.read(
+                "is_save_check_box_status"
+            )
             if self.is_save_check_box_status:  # 当保存check状态 所要读取和设置的控件 以及这个设置项不存在时的初始化
                 for sequence in _default_state:
                     if instance_settings_file.exists(sequence[0]):
-                        sequence[2].setChecked(instance_settings_file.read(sequence[0]))  # 根据数据设置选项状态
+                        sequence[2].setChecked(
+                            instance_settings_file.read(sequence[0])
+                        )  # 根据数据设置选项状态
                     else:
-                        instance_settings_file.add(key=sequence[0], value=sequence[1])  # 初始化设置文件中对应的项
+                        instance_settings_file.add(
+                            key=sequence[0], value=sequence[1]
+                        )  # 初始化设置文件中对应的项
                         sequence[2].setChecked(sequence[1])  # 初始化控件
             else:  # 当不保存check状态 设置控件状态
                 for sequence in _default_state:
                     sequence[2].setChecked(sequence[1])  # 初始化控件
         else:
             # 第一遍启动初始化设置
-            instance_settings_file.add(key="is_save_check_box_status", value=False)  # 默认不保存按键状态
+            instance_settings_file.add(
+                key="is_save_check_box_status", value=False
+            )  # 默认不保存按键状态
             self.is_save_check_box_status = False  # 默认不保存按键状态
             for sequence in _default_state:
                 sequence[2].setChecked(sequence[1])  # 初始化控件
 
     def eventStartCalculation(
-            self,
-            test_input=None,
-            test_input_mode=None,
-            test_calculation_mode=None,
-            test_selection_id=None,
-            test_output_dir_path=None,
+        self,
+        test_input=None,
+        test_input_mode=None,
+        test_calculation_mode=None,
+        test_selection_id=None,
+        test_output_dir_path=None,
     ) -> None:
         """
         输入检查，启动计算线程
@@ -490,7 +500,9 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 
         # 读取新设置
         self.OUTPUT_DIR_PATH = instance_settings_file.read("output_dir_path")
-        self.is_save_check_box_status = instance_settings_file.read("is_save_check_box_status")
+        self.is_save_check_box_status = instance_settings_file.read(
+            "is_save_check_box_status"
+        )
 
         self.initCheck()  # 初始化checkbox
 
