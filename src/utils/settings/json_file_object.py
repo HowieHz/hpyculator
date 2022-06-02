@@ -40,7 +40,6 @@ class JsonSettingsFileObject(SettingsFileObject):
         with open(self._settings_file_path, mode="w+", encoding="utf-8") as f:
             settings_dict[key] = value
             json.dump(settings_dict, f)
-        return
 
     def read(self, key: str) -> Any:
         """
