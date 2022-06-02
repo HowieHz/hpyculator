@@ -47,7 +47,7 @@ CHANGELOG = """\
 更新日志:
 20220529
 v1.6.0-fix.1
-    
+
     Fixed
         控件名错误的bug
 
@@ -61,19 +61,19 @@ v1.6.0
         可切换背景图片
         插件元数据tag项
         可切换是否自动换行
-        
+
     Changed
         插件元数据option_name -> option
         插件元数据author现支持多作者
         文档示例更新
-        
+
     Removed
         移除无用插件
         插件元数据use_quantifier项
-        
+
     Fixed
         修复插件无法正常运行的bug
-        
+
     Others
         代码风格修订
 
