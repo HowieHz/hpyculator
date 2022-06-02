@@ -3,12 +3,12 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/docs/source/index.rst" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/Log/log.txt" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/builtin_modules/document/docs.pot" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/builtin_modules/document/locale/docs.pot" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/builtin_modules/locale/document_docs.pot" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/builtin_modules/ui_manager/about_win_manager.pot" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/builtin_modules/ui_manager/locale/about_win_manager.pot" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/builtin_modules/ui_manager/main_win_manager.pot" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/builtin_modules/ui_manager/setting_win_manager.pot" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/utils/document/docs.pot" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/utils/document/locale/docs.pot" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/utils/locale/document_docs.pot" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/utils/ui_manager/about_win_manager.pot" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/utils/ui_manager/locale/about_win_manager.pot" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/utils/ui_manager/main_win_manager.pot" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/utils/ui_manager/setting_win_manager.pot" charset="UTF-8" />
   </component>
 </project>

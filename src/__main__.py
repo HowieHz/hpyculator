@@ -1,6 +1,6 @@
-from builtin_modules import CreateApp
+from utils import CreateApp
 
-#  from builtin_modules.ui_manager.test_window_effect import testWinApp
+#  from utils.ui_manager.test_window_effect import testWinApp
 
 # pyside6导入
 from PySide6.QtWidgets import QApplication
@@ -8,7 +8,7 @@ from PySide6.QtWidgets import QApplication
 import sys
 import os
 
-# from builtin_modules.ui import main_window_resource_rc
+# from utils.ui import main_window_resource_rc
 
 # 易于打包加几句
 # import numba
@@ -23,7 +23,7 @@ import gettext
 
 langs = ["en"]
 for lang in langs:
-    gettext.install(lang, localedir=os.path.join(".", "builtin_modules", "locale"))
+    gettext.install(lang, localedir=os.path.join(".", "utils", "locale"))
 
 # sys.path.append(os.path.join(os.getcwd(),"bin"))
 
@@ -48,6 +48,7 @@ if __name__ == "__main__":
 # todo 动画
 # todo 默认插件里面放一份没有numba的，带numba作为拓展包提供给用
 # todo 统一读写设置文件的api
+# todo setting -> settings
 
 # 命名规范v1.0.0
 # 1类：hello_world 变量，文件名(xswl.txt)全部小写，使用下划线连接

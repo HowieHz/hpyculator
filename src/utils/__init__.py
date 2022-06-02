@@ -37,22 +37,12 @@ class CreateApp:
         return list_instance_main_window
 
 
-def checkSettingPath():
+def checkSettingFile():
     """
     设置文件路径检查
 
     :return: setting_file_path
     """
-    setting_dir_path = str(os.path.join(os.getcwd(), "Setting"))  # 初始化设置目录
-    setting_file_path = str(os.path.join(setting_dir_path, "hpyculator_setting.toml"))
-    # 初始化设置文件位置
-    # 检查存放设置文件的文件夹是否存在
-    if not os.path.exists(setting_dir_path):
-        os.makedirs(setting_dir_path)
-
-    if not os.path.isfile(setting_file_path):
-        open(setting_file_path, "w", encoding="utf-8")  # 初始化文件
-
     return setting_file_path
 
 

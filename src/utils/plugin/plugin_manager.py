@@ -13,7 +13,7 @@ class PluginManager:
         # Plugin目录下读取到的有__init__.py的文件夹
         self._dict_plugin_option_id: Dict[str, str] = {}  # 选项名和实际文件名(ID)的映射表
         # 选项名和实际文件名(ID)的映射表 [([tag1,tag2],name),([tag1,tag2],name)]
-        self._list_plugin_tag_option: List[tuple[list[str], str]] = []
+        self._list_alL_plugin_tag_option: List[tuple[list[str], str]] = []
         self._dict_loaded_plugin: Dict[str] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
 
     def _initPluginSingerFile(self, plugin_files_name) -> None:
@@ -45,7 +45,7 @@ class PluginManager:
                     tag_list.extend(
                         (f"id:{_METADATA['id']}", f"version:{_METADATA['version']}")
                     )  # 版本号，id
-                    self._list_plugin_tag_option.append(
+                    self._list_alL_plugin_tag_option.append(
                         (tag_list, _METADATA["option"])
                     )  # tag对应选项名
                 except ImportError as e:
@@ -81,7 +81,7 @@ class PluginManager:
                 tag_list.extend(
                     (f"id:{_METADATA['id']}", f"version:{_METADATA['version']}")
                 )  # 版本号，id
-                self._list_plugin_tag_option.append(
+                self._list_alL_plugin_tag_option.append(
                     (tag_list, _METADATA["option"])
                 )  # tag对应选项名
             except ImportError as e:
@@ -140,7 +140,7 @@ class PluginManager:
         :param user_selection_id:
         :return: [list]attributes of plugin
         """
-        plugin_attributes = {}  # 读取好的属性放在这里
+        _plugin_attributes = {}  # 读取好的属性放在这里
 
         # PLUGIN_METADATA暂时储存着插件的元数据
         _METADATA = self._dict_loaded_plugin[user_selection_id].PLUGIN_METADATA
@@ -158,13 +158,13 @@ class PluginManager:
             "version",
             "tag",
         ]:
-            plugin_attributes[_metadata_item] = (
+            _plugin_attributes[_metadata_item] = (
                 _METADATA[_metadata_item] if _metadata_item in _METADATA else hpyc.OFF
             )
 
-        if plugin_attributes["fullwidth_symbol"] == hpyc.ON:  # 处理全角转换
-            plugin_attributes["help"] = (
-                plugin_attributes["help"]
+        if _plugin_attributes["fullwidth_symbol"] == hpyc.ON:  # 处理全角转换
+            _plugin_attributes["help"] = (
+                _plugin_attributes["help"]
                 .replace(",", "，")
                 .replace(".", "。")
                 .replace("'", "‘")
@@ -173,7 +173,7 @@ class PluginManager:
                 .replace(")", "）")
             )
 
-        return plugin_attributes
+        return _plugin_attributes
 
     def getPluginInstance(self, user_selection_id) -> importlib.import_module:
         """
@@ -184,15 +184,17 @@ class PluginManager:
         """
         return self._dict_loaded_plugin[user_selection_id]
 
-    def getAllPluginTagOption(self) -> list[tuple[list[str], str]]:
+    @property
+    def list_alL_plugin_tag_option(self) -> list[tuple[list[str], str]]:
         """
         获取所有插件的tag，tag对应插件选项名
 
         :return:
         """
-        return self._list_plugin_tag_option
+        return self._list_alL_plugin_tag_option
 
-    def getOptionIdDict(self) -> dict[str, str]:
+    @property
+    def option_id_dict(self) -> dict[str, str]:
         """
         获取插件选项名和id的映射表
 

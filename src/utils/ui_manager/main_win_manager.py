@@ -134,7 +134,7 @@ class MainWinApp(FramelessWindow):
 
         # 加载tag系统
         # tag和选项名的映射表_list_plugin_tag_option [([tag1,tag2],name),([tag1,tag2],name)]
-        _list_plugin_tag_option = instance_plugin_manager.getAllPluginTagOption()
+        _list_plugin_tag_option = instance_plugin_manager.list_alL_plugin_tag_option
         _set_tags = set()  # _set_tags里面有所有的tag
         for _tags_and_option in _list_plugin_tag_option:
             for _tag in _tags_and_option[0]:
@@ -314,7 +314,7 @@ class MainWinApp(FramelessWindow):
         :return: None
         """
         self.plugin_option_id_dict = (
-            instance_plugin_manager.getOptionIdDict()
+            instance_plugin_manager.option_id_dict
         )  # 选项名映射id（文件或文件夹名）
         self.selection_list = self.plugin_option_id_dict.keys()  # 选项名列表
         self.ui.list_choices_plugin.addItems(self.selection_list)  # 选项名添加到ui上
@@ -605,15 +605,15 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         :return: None
         """
 
-        def _tagCheck(tags: list[str], tag_and_option: tuple[tuple[str], str]) -> bool:
+        def _tagCheck(tags: list[str], tags_and_option: tuple[tuple[str], str]) -> bool:
             """
             检查此项是否符合tag
 
             :param tags: 用户输入的tag ["tag1","tag2"]
-            :param tag_and_option: 单项 tag和选项名_tag_and_option ((tag1,tag2),name)
+            :param tags_and_option: tag和选项名 tags_and_option ((tag1,tag2),name)
             :return:
             """
-            return all((_tag in tag_and_option[0]) for _tag in tags)
+            return all((_tag in tags_and_option[0]) for _tag in tags)
 
         _search_keyword = self.ui.search_plugin.toPlainText()
 
@@ -626,11 +626,11 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             _set_matched_item = set()  # 匹配上的插件名
             _tags = _search_keyword.split()[1:]  # 用户输入的tag
             # tag和选项名的映射表_list_plugin_tag_option [((tag1,tag2),name),((tag1,tag2),name)]
-            _list_plugin_tag_option = instance_plugin_manager.getAllPluginTagOption()
-            # 单项 tag和选项名_tag_and_option ((tag1,tag2),name)
-            for _tag_and_option in _list_plugin_tag_option:
-                if _tagCheck(_tags, _tag_and_option):
-                    _set_matched_item.add(_tag_and_option[1])
+            _list_plugin_tag_option = instance_plugin_manager.list_alL_plugin_tag_option
+            # 单项 tag和选项名_tags_and_option ((tag1,tag2),name)
+            for _tags_and_option in _list_plugin_tag_option:
+                if _tagCheck(_tags, _tags_and_option):
+                    _set_matched_item.add(_tags_and_option[1])
 
             self.ui.list_choices_plugin.addItems(_set_matched_item)  # 匹配的添加到选框
             return None
