@@ -1,4 +1,3 @@
-import toml
 import sys
 import pathlib
 import locale
@@ -6,6 +5,7 @@ import hpyculator as hpyc
 from .. import document as doc
 from ..plugin import instance_plugin_manager  # 插件管理
 from ..calculate import CalculationManager  # 计算管理
+from ..settings import instance_settings_file  # 设置文件实例
 
 # pyside6 ui signal导入
 from PySide6.QtGui import QTextCursor, QGuiApplication, QBrush, QPalette, QPixmap
@@ -14,7 +14,7 @@ from ..ui import Ui_MainWin
 from hpyculator.hpysignal import instance_main_win_signal
 
 # 窗口管理类（用于管理设置的窗口）
-from .setting_win_manager import SettingWinApp
+from .settings_win_manager import SettingsWinApp
 from .about_win_manager import AboutWinApp
 
 # refer to https://github.com/zhiyiYo/PyQt-Frameless-Window
@@ -23,7 +23,7 @@ from ..pyside_frameless_win.framelesswindow import FramelessWindow
 
 class MainWinApp(FramelessWindow):
     def __init__(
-        self, setting_file_path, output_dir_path, plugin_dir_path, background_dir_path
+            self, setting_file_path, output_dir_path, plugin_dir_path, background_dir_path
     ):
         """
         主窗口程序类
@@ -48,78 +48,22 @@ class MainWinApp(FramelessWindow):
 
         self.move_fix = False  # 一个窗口全屏之后，拖动，窗口会回到正常大小，且指针和在窗口长度和比值和原来一致,True的话就进行校正
 
-        _default_state = [
-            # 键名 初始化状态 对应check控件
-            ("is_save", False, self.ui.check_save),
-            (
-                "output_optimization",
-                True,
-                self.ui.check_output_optimization,
-            ),
-            (
-                "output_lock_maximums",
-                True,
-                self.ui.check_output_lock_maximums,
-            ),
-            (
-                "auto_wrap",
-                True,
-                self.ui.check_auto_wrap,
-            ),
-        ]
+        self.initCheck()  # 初始化checkbox
 
-        # 读取设置文件-按钮状态和输出目录  check控件初始化
-
-        dict_setting = toml.load(self.SETTING_FILE_PATH)
-        if "is_save_check_box_status" in dict_setting:
-            # 是否保存设置
-            self.is_save_check_box_status = dict_setting["is_save_check_box_status"]
-            if self.is_save_check_box_status:  # 当保存check状态 所要读取和设置的控件 以及这个设置项不存在时的初始化
-                for sequence in _default_state:
-                    if sequence[0] in dict_setting:
-                        sequence[2].setChecked(dict_setting[sequence[0]])  # 根据数据设置选项状态
-                    else:
-                        dict_setting[sequence[0]] = sequence[1]  # 初始化设置文件中对应的项
-                        sequence[2].setChecked(sequence[1])  # 初始化控件
-                with open(
-                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-                ) as setting_file:  # 写入配置文件
-                    toml.dump(dict_setting, setting_file)
-            else:  # 当不保存check状态 设置控件状态
-                for sequence in _default_state:
-                    sequence[2].setChecked(sequence[1])  # 初始化控件
-        else:
-            # 第一遍启动初始化设置
-            dict_setting["is_save_check_box_status"] = False  # 默认不保存按键状态
-            self.is_save_check_box_status = False  # 默认不保存按键状态
-            for sequence in _default_state:
-                sequence[2].setChecked(sequence[1])  # 初始化控件
-            with open(
-                self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-            ) as setting_file:  # 写入配置文件
-                toml.dump(dict_setting, setting_file)
-
-        dict_setting = toml.load(self.SETTING_FILE_PATH)
         # 初始化背景图片
-        if "background_img" in dict_setting:
+        if instance_settings_file.exists("background_img"):
             # noinspection PyTypeChecker
             background_img_path = pathlib.Path(background_dir_path).joinpath(
-                dict_setting["background_img"]
+                instance_settings_file.read("background_img")
             )
             # print(pathlib.Path().cwd())
             if background_img_path.is_file():
                 self.bg_img = QPixmap(background_img_path)
         else:
-            background_img_path = pathlib.Path(background_dir_path).joinpath(
-                "default.png"
-            )
-            dict_setting["background_img"] = "default.png"
+            background_img_path = pathlib.Path(background_dir_path).joinpath("default.png")
+            instance_settings_file.add("background_img", "default.png")
             if background_img_path.is_file():
                 self.bg_img = QPixmap(background_img_path)
-            with open(
-                self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-            ) as setting_file:  # 写入配置文件
-                toml.dump(dict_setting, setting_file)
 
         self.is_thread_running = [False]  # 防止反复启动计算线程
 
@@ -134,7 +78,7 @@ class MainWinApp(FramelessWindow):
 
         # 加载tag系统
         # tag和选项名的映射表_list_plugin_tag_option [([tag1,tag2],name),([tag1,tag2],name)]
-        _list_plugin_tag_option = instance_plugin_manager.getAllPluginTagOption()
+        _list_plugin_tag_option = instance_plugin_manager.list_alL_plugin_tag_option
         _set_tags = set()  # _set_tags里面有所有的tag
         for _tags_and_option in _list_plugin_tag_option:
             for _tag in _tags_and_option[0]:
@@ -211,13 +155,61 @@ class MainWinApp(FramelessWindow):
         instance_main_win_signal.set_start_button_state.connect(_setStartButtonState)
         instance_main_win_signal.set_output_box_cursor.connect(_setOutputBoxCursor)
 
+    def initCheck(self):
+        """
+        初始化check box
+
+        :return:
+        """
+        _default_state = [
+            # 键名 初始化状态 对应check控件
+            ("is_save", False, self.ui.check_save),
+            (
+                "output_optimization",
+                True,
+                self.ui.check_output_optimization,
+            ),
+            (
+                "output_lock_maximums",
+                True,
+                self.ui.check_output_lock_maximums,
+            ),
+            (
+                "auto_wrap",
+                True,
+                self.ui.check_auto_wrap,
+            ),
+        ]
+
+        # 读取设置文件-按钮状态和输出目录  check控件初始化
+
+        if instance_settings_file.exists("is_save_check_box_status"):
+            # 是否保存设置
+            self.is_save_check_box_status = instance_settings_file.read("is_save_check_box_status")
+            if self.is_save_check_box_status:  # 当保存check状态 所要读取和设置的控件 以及这个设置项不存在时的初始化
+                for sequence in _default_state:
+                    if instance_settings_file.exists(sequence[0]):
+                        sequence[2].setChecked(instance_settings_file.read(sequence[0]))  # 根据数据设置选项状态
+                    else:
+                        instance_settings_file.add(key=sequence[0], value=sequence[1])  # 初始化设置文件中对应的项
+                        sequence[2].setChecked(sequence[1])  # 初始化控件
+            else:  # 当不保存check状态 设置控件状态
+                for sequence in _default_state:
+                    sequence[2].setChecked(sequence[1])  # 初始化控件
+        else:
+            # 第一遍启动初始化设置
+            instance_settings_file.add(key="is_save_check_box_status", value=False)  # 默认不保存按键状态
+            self.is_save_check_box_status = False  # 默认不保存按键状态
+            for sequence in _default_state:
+                sequence[2].setChecked(sequence[1])  # 初始化控件
+
     def eventStartCalculation(
-        self,
-        test_input=None,
-        test_input_mode=None,
-        test_calculation_mode=None,
-        test_selection_id=None,
-        test_output_dir_path=None,
+            self,
+            test_input=None,
+            test_input_mode=None,
+            test_calculation_mode=None,
+            test_selection_id=None,
+            test_output_dir_path=None,
     ) -> None:
         """
         输入检查，启动计算线程
@@ -314,7 +306,7 @@ class MainWinApp(FramelessWindow):
         :return: None
         """
         self.plugin_option_id_dict = (
-            instance_plugin_manager.getOptionIdDict()
+            instance_plugin_manager.option_id_dict
         )  # 选项名映射id（文件或文件夹名）
         self.selection_list = self.plugin_option_id_dict.keys()  # 选项名列表
         self.ui.list_choices_plugin.addItems(self.selection_list)  # 选项名添加到ui上
@@ -493,15 +485,17 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 
         :return:
         """
-        self.setting_win = SettingWinApp()  # 绑定子窗口
-        self.setting_win.exec()
+        self.settings_win = SettingsWinApp()  # 绑定子窗口
+        self.settings_win.exec()
 
         # 读取新设置
-        dict_setting = toml.load(self.SETTING_FILE_PATH)
-        self.OUTPUT_DIR_PATH = dict_setting["output_dir_path"]
-        self.is_save_check_box_status = dict_setting["is_save_check_box_status"]
+        self.OUTPUT_DIR_PATH = instance_settings_file.read("output_dir_path")
+        self.is_save_check_box_status = instance_settings_file.read("is_save_check_box_status")
+
+        self.initCheck()  # 初始化checkbox
+
         background_img_path = pathlib.Path(self.background_dir_path).joinpath(
-            dict_setting["background_img"]
+            instance_settings_file.read("background_img")
         )
         if background_img_path.is_file():
             self.bg_img = QPixmap(background_img_path)
@@ -514,12 +508,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         :return: None
         """
         if self.is_save_check_box_status:  # 保存check设置
-            dict_setting = toml.load(self.SETTING_FILE_PATH)
-            dict_setting["is_save"] = self.ui.check_save.isChecked()
-            with open(
-                self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-            ) as setting_file:  # 写入配置文件
-                toml.dump(dict_setting, setting_file)
+            instance_settings_file.modify("is_save", self.ui.check_save.isChecked())
 
     def eventOutputOptimizationCheck(self) -> None:
         """
@@ -529,22 +518,12 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         """
         if self.ui.check_output_optimization.isChecked():
             if self.is_save_check_box_status:  # 保存check设置
-                dict_setting = toml.load(self.SETTING_FILE_PATH)
-                dict_setting["output_optimization"] = True
-                with open(
-                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-                ) as setting_file:  # 写入配置文件
-                    toml.dump(dict_setting, setting_file)
+                instance_settings_file.modify("output_optimization", True)
         else:
             self.ui.check_output_lock_maximums.setChecked(False)
             if self.is_save_check_box_status:  # 保存check设置
-                dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
-                dict_setting["output_lock_maximums"] = False
-                dict_setting["output_optimization"] = False
-                with open(
-                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-                ) as setting_file:  # 写入配置文件
-                    toml.dump(dict_setting, setting_file)
+                instance_settings_file.modify("output_lock_maximums", False)
+                instance_settings_file.modify("output_optimization", False)
 
     def eventOutputLockMaximumsCheck(self) -> None:
         """
@@ -555,21 +534,11 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         if self.ui.check_output_lock_maximums.isChecked():
             self.ui.check_output_optimization.setChecked(True)
             if self.is_save_check_box_status:  # 保存check设置
-                dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
-                dict_setting["output_optimization"] = True
-                dict_setting["output_lock_maximums"] = True  # True
-                with open(
-                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-                ) as setting_file:  # 写入配置文件
-                    toml.dump(dict_setting, setting_file)
+                instance_settings_file.modify("output_optimization", True)
+                instance_settings_file.modify("output_lock_maximums", True)
         else:
             if self.is_save_check_box_status:  # 保存check设置
-                dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
-                dict_setting["output_lock_maximums"] = False  # False
-                with open(
-                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-                ) as setting_file:  # 写入配置文件
-                    toml.dump(dict_setting, setting_file)
+                instance_settings_file.modify("output_lock_maximums", False)
 
     def eventAutoWrapCheck(self) -> None:
         """
@@ -579,22 +548,12 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         """
         if self.ui.check_auto_wrap.isChecked():
             if self.is_save_check_box_status:  # 保存check设置
-                dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
-                dict_setting["auto_wrap"] = True  # True
-                with open(
-                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-                ) as setting_file:  # 写入配置文件
-                    toml.dump(dict_setting, setting_file)
+                instance_settings_file.modify("auto_wrap", True)
             self.ui.output_box.setLineWrapMode(self.ui.output_box.WidgetWidth)
             self.ui.input_box.setLineWrapMode(self.ui.input_box.WidgetWidth)
         else:
             if self.is_save_check_box_status:  # 保存check设置
-                dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
-                dict_setting["auto_wrap"] = False  # False
-                with open(
-                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-                ) as setting_file:  # 写入配置文件
-                    toml.dump(dict_setting, setting_file)
+                instance_settings_file.modify("auto_wrap", False)
             self.ui.output_box.setLineWrapMode(self.ui.output_box.NoWrap)
             self.ui.input_box.setLineWrapMode(self.ui.input_box.NoWrap)
 
@@ -605,15 +564,15 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         :return: None
         """
 
-        def _tagCheck(tags: list[str], tag_and_option: tuple[tuple[str], str]) -> bool:
+        def _tagCheck(tags: list[str], tags_and_option: tuple[tuple[str], str]) -> bool:
             """
             检查此项是否符合tag
 
             :param tags: 用户输入的tag ["tag1","tag2"]
-            :param tag_and_option: 单项 tag和选项名_tag_and_option ((tag1,tag2),name)
+            :param tags_and_option: tag和选项名 tags_and_option ((tag1,tag2),name)
             :return:
             """
-            return all((_tag in tag_and_option[0]) for _tag in tags)
+            return all((_tag in tags_and_option[0]) for _tag in tags)
 
         _search_keyword = self.ui.search_plugin.toPlainText()
 
@@ -626,11 +585,11 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             _set_matched_item = set()  # 匹配上的插件名
             _tags = _search_keyword.split()[1:]  # 用户输入的tag
             # tag和选项名的映射表_list_plugin_tag_option [((tag1,tag2),name),((tag1,tag2),name)]
-            _list_plugin_tag_option = instance_plugin_manager.getAllPluginTagOption()
-            # 单项 tag和选项名_tag_and_option ((tag1,tag2),name)
-            for _tag_and_option in _list_plugin_tag_option:
-                if _tagCheck(_tags, _tag_and_option):
-                    _set_matched_item.add(_tag_and_option[1])
+            _list_plugin_tag_option = instance_plugin_manager.list_alL_plugin_tag_option
+            # 单项 tag和选项名_tags_and_option ((tag1,tag2),name)
+            for _tags_and_option in _list_plugin_tag_option:
+                if _tagCheck(_tags, _tags_and_option):
+                    _set_matched_item.add(_tags_and_option[1])
 
             self.ui.list_choices_plugin.addItems(_set_matched_item)  # 匹配的添加到选框
             return None

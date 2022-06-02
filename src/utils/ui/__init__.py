@@ -1,3 +1,3 @@
 from .main_win import Ui_MainWin
-from .setting_win import Ui_SettingWin
+from .settings_win import Ui_SettingsWin
 from .about_win import Ui_AboutWin

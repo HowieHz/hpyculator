@@ -15,7 +15,7 @@
 # #
 #     # 调用api
 #     hWnd = HWND(int(self.winId()))  # 直接HWND(self.winId())会报错
-#     cdll.LoadLibrary(r'builtin_modules\ui_manager\Aero\aeroDll.dll').setBlur(hWnd)  # dll和脚本放在同一个目录下会报错找不到dll
+#     cdll.LoadLibrary(r'utils\ui_manager\Aero\aeroDll.dll').setBlur(hWnd)  # dll和脚本放在同一个目录下会报错找不到dll
 #     #出自 https://www.cnblogs.com/zhiyiYo/p/14643855.html
 # #
 # #

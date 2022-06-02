@@ -1,5 +1,5 @@
-from ..builtin_modules.calculate import CalculationManager
-from ..builtin_modules import CreateApp
+from ..utils.calculate import CalculationManager
+from ..utils import CreateApp
 import hpyculator as hpyc
 import pytest
 import os

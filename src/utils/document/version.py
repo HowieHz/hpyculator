@@ -1,16 +1,9 @@
 import os
 
-# i18n
-import gettext
-
-langs = ["en"]
-for lang in langs:
-    gettext.install(lang, localedir=os.path.join("..", "locale"))
-
 RAW_VERSION = "1.6.0"  # todo 发布的时候改版本号 和更新日志
 
 if "w" in RAW_VERSION:
-    VERSION = RAW_VERSION + _("  开发版")
+    VERSION = RAW_VERSION + "  DEV"
 else:
     VERSION = RAW_VERSION
 

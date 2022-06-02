@@ -1,4 +1,4 @@
-from ..builtin_modules import CreateApp
+from ..utils import CreateApp
 from hpyculator.hpysignal import instance_main_win_signal
 import sys
 import os
@@ -22,7 +22,7 @@ class TestAllManager:
                 output_dir_path
                 == (
                     str(
-                        os.path.join(os.getcwd(), "Setting", "hpyculator_setting.toml")
+                        os.path.join(os.getcwd(), "Setting", "hpyculator_setting.json")
                     ),
                     str(os.path.join(os.getcwd(), "Output")),
                 )

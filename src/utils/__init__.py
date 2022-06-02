@@ -1,6 +1,8 @@
+"""运行主程序和主程序的一些初始化"""
 import os
 import toml
 from typing import Optional
+from .settings import instance_settings_file
 
 # from .log import LogManager  # 日志管理 初始化
 from .plugin import instance_plugin_manager  # 插件管理
@@ -8,6 +10,7 @@ from .ui_manager import MainWinApp  # 窗口管理类（用于管理设置的窗
 
 
 class CreateApp:
+    """运行主程序和主程序的一些初始化"""
     def __init__(self, instance_num: Optional[int] = 1):
         """
         创建app
@@ -17,8 +20,9 @@ class CreateApp:
         self.instance_num = instance_num
 
     def run(self):
+        """运行主程序"""
         # TODO 路径检查需重构，默认路径改传参
-        SETTING_FILE_PATH = checkSettingPath()
+        SETTING_FILE_PATH = instance_settings_file.setting_file_path
         OUTPUT_DIR_PATH = checkOutputPath(SETTING_FILE_PATH)  # 输出路径检查
         BACKGROUND_IMG_DIR_PATH = checkBackgroundImgPath(SETTING_FILE_PATH)  # 背景图片路径检查
         PLUGIN_DIR_PATH = pluginCheck(SETTING_FILE_PATH)  # 插件加载
@@ -37,25 +41,6 @@ class CreateApp:
         return list_instance_main_window
 
 
-def checkSettingPath():
-    """
-    设置文件路径检查
-
-    :return: setting_file_path
-    """
-    setting_dir_path = str(os.path.join(os.getcwd(), "Setting"))  # 初始化设置目录
-    setting_file_path = str(os.path.join(setting_dir_path, "hpyculator_setting.toml"))
-    # 初始化设置文件位置
-    # 检查存放设置文件的文件夹是否存在
-    if not os.path.exists(setting_dir_path):
-        os.makedirs(setting_dir_path)
-
-    if not os.path.isfile(setting_file_path):
-        open(setting_file_path, "w", encoding="utf-8")  # 初始化文件
-
-    return setting_file_path
-
-
 def checkOutputPath(setting_file_path):
     """
     检查输出目录
@@ -63,13 +48,11 @@ def checkOutputPath(setting_file_path):
     :param setting_file_path: 设置文件存放目录
     :return: output_dir_path
     """
-    dict_setting = toml.load(setting_file_path)
-    if "output_dir_path" in dict_setting:
-        output_dir_path = dict_setting["output_dir_path"]
+    if instance_settings_file.exists("output_dir_path"):
+        output_dir_path = instance_settings_file.read("output_dir_path")
     else:
         output_dir_path = str(os.path.join(os.getcwd(), "Output"))
-        with open(setting_file_path, "a+", encoding="utf-8") as setting_file:
-            toml.dump({"output_dir_path": output_dir_path}, setting_file)
+        instance_settings_file.add(key="output_dir_path",value=output_dir_path)
         # print(f"输出文件保存位置:{output_dir_path}")
 
     # 检查输出文件夹是否存在
@@ -86,15 +69,11 @@ def checkBackgroundImgPath(setting_file_path):
     :return: background_img_dir_path
     """
     # 从设置文件读取输出目录
-    dict_setting = toml.load(setting_file_path)
-    if "background_img_dir_path" in dict_setting:
-        background_img_dir_path = dict_setting["background_img_dir_path"]
+    if instance_settings_file.exists("background_img_dir_path"):
+        background_img_dir_path = instance_settings_file.read("background_img_dir_path")
     else:
         background_img_dir_path = str(os.path.join(os.getcwd(), "background_img"))
-        with open(setting_file_path, "a+", encoding="utf-8") as setting_file:
-            toml.dump(
-                {"background_img_dir_path": background_img_dir_path}, setting_file
-            )
+        instance_settings_file.add(key="background_img_dir_path",value=background_img_dir_path)
 
     # 检查输出文件夹是否存在
     if not os.path.exists(background_img_dir_path):
@@ -111,13 +90,11 @@ def pluginCheck(setting_file_path):
     :return: 存放插件的文件夹路径
     """
     # 从设置文件读取插件目录
-    dict_setting = toml.load(setting_file_path)
-    if "plugin_dir_path" in dict_setting:
-        plugin_dir_path = dict_setting["plugin_dir_path"]
+    if instance_settings_file.exists("plugin_dir_path"):
+        plugin_dir_path = instance_settings_file.read("plugin_dir_path")
     else:
         plugin_dir_path = str(os.path.join(os.getcwd(), "Plugin"))
-        with open(setting_file_path, "a+", encoding="utf-8") as setting_file:
-            toml.dump({"plugin_dir_path": plugin_dir_path}, setting_file)
+        instance_settings_file.add(key="plugin_dir_path",value=plugin_dir_path)
 
     # 检查模块文件夹是否存在
     if not os.path.exists(plugin_dir_path):
