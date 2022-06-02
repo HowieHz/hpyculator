@@ -11,8 +11,6 @@ START_SHOW = (
     + _(
         """作者：HowieHz
 
-测试版本注释：只要修改background_img目录下的background1.png文件为你要的背景文件就好了
-
 使用方法：
     首先选择你要计算的东西
     然后在上方输入框输入你要计算的项数（行数）
