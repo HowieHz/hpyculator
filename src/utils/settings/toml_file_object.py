@@ -34,7 +34,6 @@ class TomlSettingsFileObject(SettingsFileObject):
         with open(self._settings_file_path, mode="w+", encoding="utf-8") as f:
             settings_dict[key] = value
             f.write(toml.dumps(settings_dict))
-        return
 
     def read(self, key: str) -> Any:
         """
