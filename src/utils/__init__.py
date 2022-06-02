@@ -1,6 +1,8 @@
+"""运行主程序和主程序的一些初始化"""
 import os
 import toml
 from typing import Optional
+from .settings import instance_settings_file
 
 # from .log import LogManager  # 日志管理 初始化
 from .plugin import instance_plugin_manager  # 插件管理
@@ -8,6 +10,7 @@ from .ui_manager import MainWinApp  # 窗口管理类（用于管理设置的窗
 
 
 class CreateApp:
+    """运行主程序和主程序的一些初始化"""
     def __init__(self, instance_num: Optional[int] = 1):
         """
         创建app
@@ -17,8 +20,9 @@ class CreateApp:
         self.instance_num = instance_num
 
     def run(self):
+        """运行主程序"""
         # TODO 路径检查需重构，默认路径改传参
-        SETTING_FILE_PATH = checkSettingPath()
+        SETTING_FILE_PATH = instance_settings_file.setting_file_path
         OUTPUT_DIR_PATH = checkOutputPath(SETTING_FILE_PATH)  # 输出路径检查
         BACKGROUND_IMG_DIR_PATH = checkBackgroundImgPath(SETTING_FILE_PATH)  # 背景图片路径检查
         PLUGIN_DIR_PATH = pluginCheck(SETTING_FILE_PATH)  # 插件加载
@@ -35,15 +39,6 @@ class CreateApp:
             )  # 实例化主窗口
             list_instance_main_window[_].show()
         return list_instance_main_window
-
-
-def checkSettingFile():
-    """
-    设置文件路径检查
-
-    :return: setting_file_path
-    """
-    return setting_file_path
 
 
 def checkOutputPath(setting_file_path):

@@ -1,3 +1,11 @@
+# i18n
+import gettext
+import os
+
+langs = ["en"]
+for lang in langs:
+    gettext.install(lang, localedir=os.path.join(".", "utils", "locale"))
+
 from utils import CreateApp
 
 #  from utils.ui_manager.test_window_effect import testWinApp
@@ -6,7 +14,6 @@ from utils import CreateApp
 from PySide6.QtWidgets import QApplication
 
 import sys
-import os
 
 # from utils.ui import main_window_resource_rc
 
@@ -17,13 +24,6 @@ import hpyculator
 # import jpype
 import dbm
 import argparse
-
-# i18n
-import gettext
-
-langs = ["en"]
-for lang in langs:
-    gettext.install(lang, localedir=os.path.join(".", "utils", "locale"))
 
 # sys.path.append(os.path.join(os.getcwd(),"bin"))
 

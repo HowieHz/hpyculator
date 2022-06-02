@@ -1,15 +1,15 @@
-import toml
 import os
-import pathlib
 
 # pyside6
 from PySide6.QtWidgets import QMessageBox, QDialog
 
 from ..ui import Ui_SettingWin  # 从init导
 from ..document import VERSION  # 版本号导入
+from ..settings import instance_settings_file  # 导入实例
 
 
 class SettingWinApp(QDialog):
+    """设置窗口的操作"""
     def __init__(self):
         """设置窗口，是主窗口的子窗口"""
         super().__init__()
@@ -18,33 +18,23 @@ class SettingWinApp(QDialog):
 
         self.setWindowTitle(_("设置") + "  Hpyculator" + _("版本") + f"{VERSION}")  # 设置标题
 
-        # 初始化设置目录
-        self.SETTING_DIR_PATH = str(os.path.join(os.getcwd(), "Setting"))
-        self.SETTING_FILE_PATH = str(
-            os.path.join(self.SETTING_DIR_PATH, "hpyculator_setting.toml")
-        )
-
-        # 从设置文件读取插件目录
-        dict_setting = toml.load(self.SETTING_FILE_PATH)
-        if "output_dir_path" in dict_setting:
+        if instance_settings_file.exists("output_dir_path"):
             # 读取目录设置
-            self.OUTPUT_DIR_PATH = dict_setting["output_dir_path"]
+            self.OUTPUT_DIR_PATH = instance_settings_file.read("output_dir_path")
             self.ui.output_save_location.setPlainText(self.OUTPUT_DIR_PATH)
 
         # 读取保存选项状态设置
-        if "is_save_check_box_status" in dict_setting:
+        if instance_settings_file.exists("is_save_check_box_status"):
             self.ui.check_is_save_check_box_status.setChecked(
-                dict_setting["is_save_check_box_status"]
+                instance_settings_file.read("is_save_check_box_status")
             )
 
         # 背景图片选择框初始化
         self.background_dir_path = os.path.join(".", "background_img")
         self.ui.combo_background.clear()  # 清空选框
-        self.ui.combo_background.addItems(
-            os.listdir(self.background_dir_path)
-        )  # 相对入口文件位置
-        if "background_img" in dict_setting:
-            self.ui.combo_background.setCurrentText(dict_setting["background_img"])
+        self.ui.combo_background.addItems(os.listdir(self.background_dir_path))  # 相对入口文件位置
+        if instance_settings_file.exists("background_img"):
+            self.ui.combo_background.setCurrentText(instance_settings_file.read("background_img"))
 
     def eventSaveSetting(self):
         """
@@ -52,14 +42,8 @@ class SettingWinApp(QDialog):
 
         :return:
         """
-        dict_setting = toml.load(self.SETTING_FILE_PATH)
-        dict_setting["output_dir_path"] = self.ui.output_save_location.toPlainText()
-        dict_setting[
-            "is_save_check_box_status"
-        ] = self.ui.check_is_save_check_box_status.isChecked()
-        with open(self.SETTING_FILE_PATH, "w+", encoding="utf-8") as setting_file:
-            toml.dump(dict_setting, setting_file)
-
+        instance_settings_file.modify(key="output_dir_path", value=self.ui.output_save_location.toPlainText())
+        instance_settings_file.modify(key="is_save_check_box_status", value=self.ui.check_is_save_check_box_status.isChecked())
         QMessageBox.information(
             self, _("保存完成"), _("保存完成\n部分设置将在重新启动后生效"), QMessageBox.Ok
         )
@@ -75,39 +59,29 @@ class SettingWinApp(QDialog):
 
     def eventResetSaveLocation(self):
         """重置保存路径"""
-        dict_setting = toml.load(self.SETTING_FILE_PATH)
-        dict_setting["output_dir_path"] = self.OUTPUT_DIR_PATH = os.path.join(
-            os.getcwd(), "Output"
-        )
+        self.OUTPUT_DIR_PATH = os.path.join(os.getcwd(), "Output")
+        instance_settings_file.modify(key="output_dir_path", value=self.OUTPUT_DIR_PATH)
         self.ui.output_save_location.setPlainText(self.OUTPUT_DIR_PATH)
-        with open(
-            self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-        ) as setting_file:  # 写入配置文件
-            toml.dump(dict_setting, setting_file)
 
-    def eventChooseBackgroundImg(self, qstring):
+    @staticmethod
+    def eventChooseBackgroundImg(qstring):
         """选择背景图片"""
-        dict_setting = toml.load(self.SETTING_FILE_PATH)
-        dict_setting["background_img"] = qstring
-        with open(
-            self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-        ) as setting_file:  # 写入配置文件
-            toml.dump(dict_setting, setting_file)
+        instance_settings_file.modify(key="background_img", value=qstring)
 
-    def eventOpenBackgroundDir(self):
+    @staticmethod
+    def eventOpenBackgroundDir():
         """
         打开存储背景图片的文件夹
 
         :return:
         """
-        dict_setting = toml.load(self.SETTING_FILE_PATH)
-        os.system(f'explorer {dict_setting["background_img_dir_path"]}')
+        os.system(f'explorer {instance_settings_file.read("background_img_dir_path")}')
 
-    def eventOpenPluginDir(self):
+    @staticmethod
+    def eventOpenPluginDir():
         """
         打开储存插件的文件架
 
         :return:
         """
-        dict_setting = toml.load(self.SETTING_FILE_PATH)
-        os.system(f'explorer {dict_setting["plugin_dir_path"]}')
+        os.system(f'explorer {instance_settings_file.read("plugin_dir_path")}')
