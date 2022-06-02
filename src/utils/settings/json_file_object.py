@@ -6,6 +6,7 @@ from typing import Any
 
 class JsonSettingsFileObject(SettingsFileObject):
     """json类型的文件对象"""
+
     def __init__(self,
                  settings_dir_path: str,
                  settings_file_name: str = "settings",
@@ -18,6 +19,12 @@ class JsonSettingsFileObject(SettingsFileObject):
         :param settings_file_format: 设置文件后缀
         """
         super().__init__(settings_dir_path, settings_file_name, settings_file_format)
+        try:
+            with open(self._settings_file_path, mode="r", encoding="utf-8") as f:
+                json.load(f)
+        except json.decoder.JSONDecodeError:
+            with open(self._settings_file_path, mode="w+", encoding="utf-8") as f:
+                f.write("{}")
 
     def add(self, key: str, value: Any = None):
         """
@@ -30,7 +37,7 @@ class JsonSettingsFileObject(SettingsFileObject):
         settings_dict = self.readAll()
         with open(self._settings_file_path, mode="w+", encoding="utf-8") as f:
             settings_dict[key] = value
-            f.write(json.dumps(settings_dict))
+            json.dump(settings_dict, f)
         return
 
     def read(self, key: str) -> Any:
@@ -52,7 +59,7 @@ class JsonSettingsFileObject(SettingsFileObject):
         :return:
         """
         with open(self._settings_file_path, mode="r", encoding="utf-8") as f:
-            settings_dict = json.loads(f.read())
+            settings_dict = json.load(f)
         return settings_dict
 
     def delete(self, key: str) -> None:
@@ -67,7 +74,7 @@ class JsonSettingsFileObject(SettingsFileObject):
         settings_dict = self.readAll()
         with open(self._settings_file_path, mode="w+", encoding="utf-8") as f:
             settings_dict.pop(key)
-            f.write(json.dumps(settings_dict))
+            json.dump(settings_dict, f)
         return
 
     def modify(self, key: str, value: Any) -> None:
@@ -83,7 +90,7 @@ class JsonSettingsFileObject(SettingsFileObject):
         settings_dict = self.readAll()
         with open(self._settings_file_path, mode="w+", encoding="utf-8") as f:
             settings_dict[key] = value
-            f.write(json.dumps(settings_dict))
+            json.dump(settings_dict, f)
         return
 
     def exists(self, key: str) -> bool:
@@ -94,7 +101,7 @@ class JsonSettingsFileObject(SettingsFileObject):
         :return:
         """
         with open(self._settings_file_path, mode="r", encoding="utf-8") as f:
-            is_exists = key in json.loads(f.read())
+            is_exists = key in json.load(f)
         return is_exists
 
     @property

@@ -39,12 +39,12 @@ class SettingsManager:
         :param settings_file_format: 设置文件的类型（后缀）
         :return:
         """
-        # if not settings_dir_path:
-        #     settings_dir_path = self._settings_dir_path
-        # return dict_settings_file_object[settings_file_format](settings_dir_path,
-        #                                                        settings_file_name,
-        #                                                        settings_file_format)
-        settings_dir_path = self._settings_dir_path
-        return TomlSettingsFileObject(settings_dir_path,
-                                      settings_file_name,
-                                      settings_file_format)
+        if not settings_dir_path:
+            settings_dir_path = self._settings_dir_path
+        return dict_settings_file_object[settings_file_format](settings_dir_path,
+                                                               settings_file_name,
+                                                               settings_file_format)
+        # settings_dir_path = self._settings_dir_path
+        # return TomlSettingsFileObject(settings_dir_path,
+        #                               settings_file_name,
+        #                               settings_file_format)
