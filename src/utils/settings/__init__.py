@@ -2,4 +2,4 @@
 from .settings_file_manager import SettingsManager
 
 instance_settings_manager = SettingsManager()
-instance_settings_file = instance_settings_manager.load()  # 单例
+instance_settings_file = instance_settings_manager.load(settings_file_format="json")  # 单例

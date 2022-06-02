@@ -1,4 +1,3 @@
-import toml
 import sys
 import pathlib
 import locale
@@ -6,6 +5,7 @@ import hpyculator as hpyc
 from .. import document as doc
 from ..plugin import instance_plugin_manager  # 插件管理
 from ..calculate import CalculationManager  # 计算管理
+from ..settings import instance_settings_file  # 设置文件实例
 
 # pyside6 ui signal导入
 from PySide6.QtGui import QTextCursor, QGuiApplication, QBrush, QPalette, QPixmap
@@ -23,7 +23,7 @@ from ..pyside_frameless_win.framelesswindow import FramelessWindow
 
 class MainWinApp(FramelessWindow):
     def __init__(
-        self, setting_file_path, output_dir_path, plugin_dir_path, background_dir_path
+            self, setting_file_path, output_dir_path, plugin_dir_path, background_dir_path
     ):
         """
         主窗口程序类
@@ -70,41 +70,31 @@ class MainWinApp(FramelessWindow):
 
         # 读取设置文件-按钮状态和输出目录  check控件初始化
 
-        dict_setting = toml.load(self.SETTING_FILE_PATH)
-        if "is_save_check_box_status" in dict_setting:
+        if instance_settings_file.exists("is_save_check_box_status"):
             # 是否保存设置
-            self.is_save_check_box_status = dict_setting["is_save_check_box_status"]
+            self.is_save_check_box_status = instance_settings_file.read("is_save_check_box_status")
             if self.is_save_check_box_status:  # 当保存check状态 所要读取和设置的控件 以及这个设置项不存在时的初始化
                 for sequence in _default_state:
-                    if sequence[0] in dict_setting:
-                        sequence[2].setChecked(dict_setting[sequence[0]])  # 根据数据设置选项状态
+                    if instance_settings_file.exists(sequence[0]):
+                        sequence[2].setChecked(instance_settings_file.read(sequence[0]))  # 根据数据设置选项状态
                     else:
-                        dict_setting[sequence[0]] = sequence[1]  # 初始化设置文件中对应的项
+                        instance_settings_file.modify(key=sequence[0], value=sequence[1])  # 初始化设置文件中对应的项
                         sequence[2].setChecked(sequence[1])  # 初始化控件
-                with open(
-                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-                ) as setting_file:  # 写入配置文件
-                    toml.dump(dict_setting, setting_file)
             else:  # 当不保存check状态 设置控件状态
                 for sequence in _default_state:
                     sequence[2].setChecked(sequence[1])  # 初始化控件
         else:
             # 第一遍启动初始化设置
-            dict_setting["is_save_check_box_status"] = False  # 默认不保存按键状态
+            instance_settings_file.add(key="is_save_check_box_status", value=False)  # 默认不保存按键状态
             self.is_save_check_box_status = False  # 默认不保存按键状态
             for sequence in _default_state:
                 sequence[2].setChecked(sequence[1])  # 初始化控件
-            with open(
-                self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-            ) as setting_file:  # 写入配置文件
-                toml.dump(dict_setting, setting_file)
 
-        dict_setting = toml.load(self.SETTING_FILE_PATH)
         # 初始化背景图片
-        if "background_img" in dict_setting:
+        if instance_settings_file.exists("background_img"):
             # noinspection PyTypeChecker
             background_img_path = pathlib.Path(background_dir_path).joinpath(
-                dict_setting["background_img"]
+                instance_settings_file.read("background_img")
             )
             # print(pathlib.Path().cwd())
             if background_img_path.is_file():
@@ -113,13 +103,9 @@ class MainWinApp(FramelessWindow):
             background_img_path = pathlib.Path(background_dir_path).joinpath(
                 "default.png"
             )
-            dict_setting["background_img"] = "default.png"
+            instance_settings_file.add("background_img", "default.png")
             if background_img_path.is_file():
                 self.bg_img = QPixmap(background_img_path)
-            with open(
-                self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-            ) as setting_file:  # 写入配置文件
-                toml.dump(dict_setting, setting_file)
 
         self.is_thread_running = [False]  # 防止反复启动计算线程
 
@@ -212,12 +198,12 @@ class MainWinApp(FramelessWindow):
         instance_main_win_signal.set_output_box_cursor.connect(_setOutputBoxCursor)
 
     def eventStartCalculation(
-        self,
-        test_input=None,
-        test_input_mode=None,
-        test_calculation_mode=None,
-        test_selection_id=None,
-        test_output_dir_path=None,
+            self,
+            test_input=None,
+            test_input_mode=None,
+            test_calculation_mode=None,
+            test_selection_id=None,
+            test_output_dir_path=None,
     ) -> None:
         """
         输入检查，启动计算线程
@@ -497,11 +483,10 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         self.setting_win.exec()
 
         # 读取新设置
-        dict_setting = toml.load(self.SETTING_FILE_PATH)
-        self.OUTPUT_DIR_PATH = dict_setting["output_dir_path"]
-        self.is_save_check_box_status = dict_setting["is_save_check_box_status"]
+        self.OUTPUT_DIR_PATH = instance_settings_file.read("output_dir_path")
+        self.is_save_check_box_status = instance_settings_file.read("is_save_check_box_status")
         background_img_path = pathlib.Path(self.background_dir_path).joinpath(
-            dict_setting["background_img"]
+            instance_settings_file.read("background_img")
         )
         if background_img_path.is_file():
             self.bg_img = QPixmap(background_img_path)
@@ -514,12 +499,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         :return: None
         """
         if self.is_save_check_box_status:  # 保存check设置
-            dict_setting = toml.load(self.SETTING_FILE_PATH)
-            dict_setting["is_save"] = self.ui.check_save.isChecked()
-            with open(
-                self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-            ) as setting_file:  # 写入配置文件
-                toml.dump(dict_setting, setting_file)
+            instance_settings_file.modify("is_save", self.ui.check_save.isChecked())
 
     def eventOutputOptimizationCheck(self) -> None:
         """
@@ -529,22 +509,12 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         """
         if self.ui.check_output_optimization.isChecked():
             if self.is_save_check_box_status:  # 保存check设置
-                dict_setting = toml.load(self.SETTING_FILE_PATH)
-                dict_setting["output_optimization"] = True
-                with open(
-                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-                ) as setting_file:  # 写入配置文件
-                    toml.dump(dict_setting, setting_file)
+                instance_settings_file.modify("output_optimization", True)
         else:
             self.ui.check_output_lock_maximums.setChecked(False)
             if self.is_save_check_box_status:  # 保存check设置
-                dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
-                dict_setting["output_lock_maximums"] = False
-                dict_setting["output_optimization"] = False
-                with open(
-                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-                ) as setting_file:  # 写入配置文件
-                    toml.dump(dict_setting, setting_file)
+                instance_settings_file.modify("output_lock_maximums", False)
+                instance_settings_file.modify("output_optimization", False)
 
     def eventOutputLockMaximumsCheck(self) -> None:
         """
@@ -555,21 +525,11 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         if self.ui.check_output_lock_maximums.isChecked():
             self.ui.check_output_optimization.setChecked(True)
             if self.is_save_check_box_status:  # 保存check设置
-                dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
-                dict_setting["output_optimization"] = True
-                dict_setting["output_lock_maximums"] = True  # True
-                with open(
-                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-                ) as setting_file:  # 写入配置文件
-                    toml.dump(dict_setting, setting_file)
+                instance_settings_file.modify("output_optimization", True)
+                instance_settings_file.modify("output_lock_maximums", True)
         else:
             if self.is_save_check_box_status:  # 保存check设置
-                dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
-                dict_setting["output_lock_maximums"] = False  # False
-                with open(
-                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-                ) as setting_file:  # 写入配置文件
-                    toml.dump(dict_setting, setting_file)
+                instance_settings_file.modify("output_lock_maximums", False)
 
     def eventAutoWrapCheck(self) -> None:
         """
@@ -579,22 +539,12 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         """
         if self.ui.check_auto_wrap.isChecked():
             if self.is_save_check_box_status:  # 保存check设置
-                dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
-                dict_setting["auto_wrap"] = True  # True
-                with open(
-                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-                ) as setting_file:  # 写入配置文件
-                    toml.dump(dict_setting, setting_file)
+                instance_settings_file.modify("auto_wrap", True)
             self.ui.output_box.setLineWrapMode(self.ui.output_box.WidgetWidth)
             self.ui.input_box.setLineWrapMode(self.ui.input_box.WidgetWidth)
         else:
             if self.is_save_check_box_status:  # 保存check设置
-                dict_setting = toml.load(self.SETTING_FILE_PATH)  # 读取设置文件
-                dict_setting["auto_wrap"] = False  # False
-                with open(
-                    self.SETTING_FILE_PATH, "w+", encoding="utf-8"
-                ) as setting_file:  # 写入配置文件
-                    toml.dump(dict_setting, setting_file)
+                instance_settings_file.modify("auto_wrap", False)
             self.ui.output_box.setLineWrapMode(self.ui.output_box.NoWrap)
             self.ui.input_box.setLineWrapMode(self.ui.input_box.NoWrap)
 

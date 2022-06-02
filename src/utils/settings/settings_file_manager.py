@@ -5,11 +5,13 @@
 # todo yaml
 
 from .toml_file_object import TomlSettingsFileObject
+from .json_file_object import JsonSettingsFileObject
 
 import os
 
 dict_settings_file_object = {
-    "toml": TomlSettingsFileObject
+    "toml": TomlSettingsFileObject,
+    "json": JsonSettingsFileObject,
 }
 
 
@@ -37,17 +39,12 @@ class SettingsManager:
         :param settings_file_format: 设置文件的类型（后缀）
         :return:
         """
-        if not settings_dir_path:
-            settings_dir_path = self._settings_dir_path
-        return dict_settings_file_object[settings_file_format](settings_dir_path,
-                                                               settings_file_name,
-                                                               settings_file_format)
-    # def load(self,
-    #          settings_dir_path: str = "",
-    #          settings_file_name: str = "hpyculator_setting",
-    #          settings_file_format: str = "toml"):
-    #     if not settings_dir_path:
-    #         settings_dir_path = self._settings_dir_path
-    #     return TomlSettingsFileObject(settings_dir_path,
-    #                                   settings_file_name,
-    #                                   settings_file_format)
+        # if not settings_dir_path:
+        #     settings_dir_path = self._settings_dir_path
+        # return dict_settings_file_object[settings_file_format](settings_dir_path,
+        #                                                        settings_file_name,
+        #                                                        settings_file_format)
+        settings_dir_path = self._settings_dir_path
+        return TomlSettingsFileObject(settings_dir_path,
+                                      settings_file_name,
+                                      settings_file_format)
