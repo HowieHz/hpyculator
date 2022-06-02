@@ -46,7 +46,6 @@ class SettingsFileObject(ABC):
         :param value:
         :return:
         """
-        pass
 
     @abstractmethod
     def read(self, key: str):
@@ -66,7 +65,6 @@ class SettingsFileObject(ABC):
 
         :return:
         """
-        pass
 
     @abstractmethod
     def delete(self, key: str):
