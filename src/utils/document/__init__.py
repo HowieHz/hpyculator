@@ -1,10 +1,10 @@
-# i18n
 from . import tags
 from . import version
 from . import docs
 import gettext
 import os
 
+# i18n
 langs = ["en"]
 for lang in langs:
     gettext.install(lang, localedir=os.path.join(".", "utils", "locale"))
