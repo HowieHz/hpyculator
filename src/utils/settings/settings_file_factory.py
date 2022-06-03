@@ -15,7 +15,7 @@ dict_settings_file_object = {
 }
 
 
-class SettingsManager:
+class SettingsFactory:
     """设置文件管理类"""
 
     def __init__(self):
