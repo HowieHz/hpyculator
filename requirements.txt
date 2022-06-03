@@ -1,4 +1,7 @@
-hpyculator>=1.4.9
+hpyculator>1.4.8
 PySide6
 pywin32
 toml
+numba
+numpy
+pyyaml

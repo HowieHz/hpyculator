@@ -1,17 +1,17 @@
 """管理设置文件"""
-# todo xml
-# todo ini
-# todo json
-# todo yaml
+# xml X
+# ini X
 
 from .toml_file_object import TomlSettingsFileObject
 from .json_file_object import JsonSettingsFileObject
+from .yaml_file_object import YamlSettingsFileObject
 
 import os
 
 dict_settings_file_object = {
     "toml": TomlSettingsFileObject,
     "json": JsonSettingsFileObject,
+    "yaml": YamlSettingsFileObject,
 }
 
 
