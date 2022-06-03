@@ -22,7 +22,7 @@ class YamlSettingsFileObject(SettingsFileObject):
         """
         super().__init__(settings_dir_path, settings_file_name, settings_file_format)
         with open(self._settings_file_path, mode="r+", encoding="utf-8") as f:
-            if yaml.load(f,Loader=yaml.FullLoader) is None:
+            if yaml.load(f, Loader=yaml.FullLoader) is None:
                 yaml.dump({}, f)
 
     def add(self, key: str, value: Any = None):
@@ -57,7 +57,7 @@ class YamlSettingsFileObject(SettingsFileObject):
         :return:
         """
         with open(self._settings_file_path, mode="r", encoding="utf-8") as f:
-            settings_dict = yaml.load(f,Loader=yaml.FullLoader)
+            settings_dict = yaml.load(f, Loader=yaml.FullLoader)
         return settings_dict
 
     def delete(self, key: str) -> None:
@@ -99,7 +99,7 @@ class YamlSettingsFileObject(SettingsFileObject):
         :return:
         """
         with open(self._settings_file_path, mode="r", encoding="utf-8") as f:
-            is_exists = key in yaml.load(f,Loader=yaml.FullLoader)
+            is_exists = key in yaml.load(f, Loader=yaml.FullLoader)
         return is_exists
 
     @property

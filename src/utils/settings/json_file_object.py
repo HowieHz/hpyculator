@@ -39,7 +39,9 @@ class JsonSettingsFileObject(SettingsFileObject):
         settings_dict = self.readAll()
         with open(self._settings_file_path, mode="w+", encoding="utf-8") as f:
             settings_dict[key] = value
-            json.dump(settings_dict, f, sort_keys=True, indent=4, separators=(',', ': '))
+            json.dump(
+                settings_dict, f, sort_keys=True, indent=4, separators=(",", ": ")
+            )
 
     def read(self, key: str) -> Any:
         """
@@ -75,7 +77,9 @@ class JsonSettingsFileObject(SettingsFileObject):
         settings_dict = self.readAll()
         with open(self._settings_file_path, mode="w+", encoding="utf-8") as f:
             settings_dict.pop(key)
-            json.dump(settings_dict, f, sort_keys=True, indent=4, separators=(',', ': '))
+            json.dump(
+                settings_dict, f, sort_keys=True, indent=4, separators=(",", ": ")
+            )
         return
 
     def modify(self, key: str, value: Any) -> None:
@@ -91,7 +95,9 @@ class JsonSettingsFileObject(SettingsFileObject):
         settings_dict = self.readAll()
         with open(self._settings_file_path, mode="w+", encoding="utf-8") as f:
             settings_dict[key] = value
-            json.dump(settings_dict, f, sort_keys=True, indent=4, separators=(',', ': '))
+            json.dump(
+                settings_dict, f, sort_keys=True, indent=4, separators=(",", ": ")
+            )
         return
 
     def exists(self, key: str) -> bool:
