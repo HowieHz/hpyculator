@@ -237,9 +237,6 @@ class MainWinApp(FramelessWindow):
         else:
             input_data = self.ui.input_box.toPlainText()  # 没有就从输入框获取
             # 输入检查
-            if input_data == "update_log":  # update_log检测
-                self.ui.output_box.setPlainText(doc.CHANGELOG)
-                return
             if input_data == "":  # 是否输入检测
                 self.ui.output_box.setPlainText(
                     _(
