@@ -5,6 +5,7 @@
     <option name="excludedDirectories">
       <list>
         <option value="$PROJECT_DIR$/src/builtin_modules/ui" />
+        <option value="$PROJECT_DIR$/src/utils/pyside_frameless_win" />
       </list>
     </option>
   </component>
