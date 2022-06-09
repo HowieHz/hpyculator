@@ -7,6 +7,7 @@ from functools import partial  # 偏函数真好用
 from hpyculator.hpysignal import instance_main_win_signal
 import hpyculator as hpyc
 from typing import Any
+import traceback
 
 # from multiprocessing import Process
 
@@ -76,6 +77,7 @@ class CalculationManager:
             instance_main_win_signal.set_output_box.emit(
                 f"输入转换发生错误:{str(e)}\n\n请检查输入格式"
             )
+            traceback.print_exc()
             return None  # 缺省 转换错误就none
         return data
 
@@ -297,6 +299,7 @@ class CalculationThread(Thread):
             instance_main_win_signal.set_output_box.emit(
                 f"插件运算发生错误：{str(e)}\n\n请检查输入格式"
             )
+            traceback.print_exc()
         instance_main_win_signal.set_output_box_cursor.emit("end")  # 光标设到文本框尾部
         instance_main_win_signal.set_start_button_text.emit("计算")  # 设置按钮字
         instance_main_win_signal.set_start_button_state.emit(True)  # 启用按钮

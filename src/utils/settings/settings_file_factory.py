@@ -31,7 +31,7 @@ class SettingsFactory:
     def load(
         self,
         settings_dir_path: str = "",
-        settings_file_name: str = "hpyculator_setting",
+        settings_file_name: str = "settings",
         settings_file_format: str = "toml",
     ):
         """

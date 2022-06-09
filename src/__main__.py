@@ -40,7 +40,7 @@ if __name__ == "__main__":
 # todo 重写无边框窗体
 # todo 学习snipaste的设置界面
 # todo 动画
-# todo 缓存结果模式
+# todo 缓存结果模式 不是@cache
 
 # 命名规范v1.0.0
 # 1类：hello_world 变量，文件名(xswl.txt)全部小写，使用下划线连接
