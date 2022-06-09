@@ -41,7 +41,7 @@ def on_calculate(inp: str):
         return "请按照格式输入"
     # if inp in table:
     #     return table[inp]
-    return 2 ** inp
+    return 2**inp
     # make_table(inp)
 
 
