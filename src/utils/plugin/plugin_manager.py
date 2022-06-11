@@ -74,6 +74,10 @@ class PluginManager:
                 except ImportError:  # 其他的导入问题
                     traceback.print_exc()
                     continue
+                except Exception as e:
+                    print(f"init_file_plugin inside Exception:{e}")
+                    traceback.print_exc()
+                    continue
 
                 self._loadPluginMetadata(name)
 
@@ -85,6 +89,10 @@ class PluginManager:
             except ModuleNotFoundError:  # 插件缺少依赖(ImportError包括ModuleNotFoundError)
                 continue
             except ImportError:  # 其他的导入问题
+                traceback.print_exc()
+                continue
+            except Exception as e:
+                print(f"init_dir_plugin inside Exception:{e}")
                 traceback.print_exc()
                 continue
 
@@ -122,13 +130,7 @@ class PluginManager:
         # 去除空值
         dirs_in_plugin_dir = [_ for _ in dirs_in_plugin_dir if _ != ""]
 
-        try:
-            self._initPlugin(files_in_plugin_dir, dirs_in_plugin_dir)  # 导入单文件插件和文件夹插件
-        except Exception as e:
-            print(f"init_plugin outside Exception:{e}")
-            traceback.print_exc()
-
-        return None
+        self._initPlugin(files_in_plugin_dir, dirs_in_plugin_dir)  # 导入单文件插件和文件夹插件
 
     def getPluginAttributes(self, user_selection_id) -> dict:
         """
