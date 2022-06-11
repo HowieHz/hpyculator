@@ -8,21 +8,23 @@
     Fixed － 解决的问题
     Others － 性能优化和安全性增强等改进
 
-1.6.1 草稿（已完成的部分，可以在dev版体验）
+20220611
+v1.6.1 
 
     Added
         添加多种设置文件格式支持（json，toml，yaml）
     Changed
         默认设置文件格式从toml更改为json
     Removed
-        软件内置的更新日志
-        输入框输入update_log显示更新日志
+        移除软件内置的更新日志
+        移除输入框输入update_log显示更新日志
     Others
         修改文档描述
+        修改计算后输出时间统计格式和使用函数
 
 20220529
 v1.6.0-fix.1
-    
+
     Fixed
         控件名错误的bug 
     Deprecated
