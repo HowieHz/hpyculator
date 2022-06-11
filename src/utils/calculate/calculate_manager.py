@@ -281,7 +281,6 @@ class CalculationThread(Thread):
                 f"={time_spent/10_0000_0000}秒\n"
                 f"={time_spent/600_0000_0000}分钟\n\n"
                 f"已启用输出优化"
-                ""
             )  # 输出本次计算时间
 
         def _calculateBaseMode():
