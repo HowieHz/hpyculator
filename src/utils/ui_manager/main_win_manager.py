@@ -336,7 +336,10 @@ class MainWinApp(FramelessWindow):
 
         :return:
         """
-        if not self.bg_img:
+        try:
+            if not self.bg_img:
+                return
+        except AttributeError:  # 无self.bg_img
             return
 
         def _adaptBackground(image):

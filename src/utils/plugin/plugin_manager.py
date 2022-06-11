@@ -17,11 +17,49 @@ class PluginManager:
         self._list_alL_plugin_tag_option: List[tuple[list[str], str]] = []
         self._dict_loaded_plugin: Dict[str] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
 
-    def _initPluginSingerFile(self, plugin_files_name) -> None:
+    def _loadPluginMetadata(self, name):
         """
-        导入指定单文件插件
+        加载插件元数据
+
+        :param name: 插件名
+        :return:
+        """
+        try:
+            # PLUGIN_METADATA暂时储存着插件的元数据
+            _METADATA = self._dict_loaded_plugin[name].PLUGIN_METADATA
+        except AttributeError:  # 比如说缺少PLUGIN_METADATA
+            # traceback.print_exc()
+            return
+
+        try:
+            # 读取模块元数据，添加gui选项
+            self._dict_plugin_option_id[_METADATA["option"]] = _METADATA["id"]
+
+            tag_list = _METADATA["tag"] if "tag" in _METADATA else []
+            tag_list.extend(
+                ["author:" + i for i in _METADATA["author"]]
+                if isinstance(_METADATA["author"], list)
+                else ["author:" + _METADATA["author"]]
+            )  # 作者列表或单个作者
+            tag_list.extend(
+                (f"id:{_METADATA['id']}", f"version:{_METADATA['version']}")
+            )  # 版本号，id
+            self._list_alL_plugin_tag_option.append(
+                (tag_list, _METADATA["option"])
+            )  # tag对应选项名
+        except KeyError:  # 比如说缺少PLUGIN_METADATA
+            # traceback.print_exc()
+            return
+        except Exception as e:
+            print(f"init_plugin_folder inside Exception:{str(e)}")
+            traceback.print_exc()
+
+    def _initPlugin(self, plugin_files_name, plugin_dirs_name) -> None:
+        """
+        导入指定单文件插件和文件夹插件
 
         :param plugin_files_name: 插件文件名列表，如[aasd,2asd,31qq]
+        :param plugin_files_name: 文件夹插件名列表，如["a","b","c"]
         :return: None
         """
         # print(f"去掉.py后缀的文件名 {list(plugin_files_name)}")
@@ -31,72 +69,34 @@ class PluginManager:
                     self._dict_loaded_plugin[name] = importlib.import_module(
                         f"Plugin.{name}"
                     )
-
-                    # PLUGIN_METADATA暂时储存着插件的元数据
-                    _METADATA = self._dict_loaded_plugin[name].PLUGIN_METADATA
-                    # 读取模块元数据，添加gui选项
-                    self._dict_plugin_option_id[_METADATA["option"]] = _METADATA["id"]
-
-                    tag_list = _METADATA["tag"] if "tag" in _METADATA else []
-                    tag_list.extend(
-                        ["author:" + i for i in _METADATA["author"]]
-                        if isinstance(_METADATA["author"], list)
-                        else ["author:" + _METADATA["author"]]
-                    )  # 作者列表或单个作者
-                    tag_list.extend(
-                        (f"id:{_METADATA['id']}", f"version:{_METADATA['version']}")
-                    )  # 版本号，id
-                    self._list_alL_plugin_tag_option.append(
-                        (tag_list, _METADATA["option"])
-                    )  # tag对应选项名
-                except ImportError:
+                except ModuleNotFoundError:  # 插件缺少依赖(ImportError包括ModuleNotFoundError)
+                    continue
+                except ImportError:  # 其他的导入问题
                     traceback.print_exc()
-                except AttributeError:  # 比如说缺少PLUGIN_METADATA
-                    # traceback.print_exc()
-                    pass
+                    continue
                 except Exception as e:
-                    print(f"init_plugin_singer_file inside Exception:{str(e)}")
+                    print(f"init_file_plugin inside Exception:{e}")
                     traceback.print_exc()
+                    continue
 
-    def _initPluginFolder(self, plugin_files_name) -> None:
-        """
-        导入指定文件夹插件
+                self._loadPluginMetadata(name)
 
-        :param plugin_files_name: 文件夹插件名列表，如["a","b","c"]
-        :return: None
-        """
-        # print(f"读取到的文件夹插件:{plugin_files_name}")
-        for name in plugin_files_name:
+        for name in plugin_dirs_name:
             try:
                 self._dict_loaded_plugin[name] = importlib.import_module(
                     f".{name}.__init__", package="Plugin"
                 )
-
-                # PLUGIN_METADATA暂时储存着插件的元数据
-                _METADATA = self._dict_loaded_plugin[name].PLUGIN_METADATA
-                # 读取模块元数据，添加gui选项
-                self._dict_plugin_option_id[_METADATA["option"]] = _METADATA["id"]
-
-                tag_list = _METADATA["tag"] if "tag" in _METADATA else []
-                tag_list.extend(
-                    ["author:" + i for i in _METADATA["author"]]
-                    if isinstance(_METADATA["author"], list)
-                    else ["author:" + _METADATA["author"]]
-                )  # 作者列表或单个作者
-                tag_list.extend(
-                    (f"id:{_METADATA['id']}", f"version:{_METADATA['version']}")
-                )  # 版本号，id
-                self._list_alL_plugin_tag_option.append(
-                    (tag_list, _METADATA["option"])
-                )  # tag对应选项名
-            except ImportError:
+            except ModuleNotFoundError:  # 插件缺少依赖(ImportError包括ModuleNotFoundError)
+                continue
+            except ImportError:  # 其他的导入问题
                 traceback.print_exc()
-            except AttributeError:  # 比如说缺少PLUGIN_METADATA
-                # traceback.print_exc()
-                pass
+                continue
             except Exception as e:
-                print(f"init_plugin_folder inside Exception:{str(e)}")
+                print(f"init_dir_plugin inside Exception:{e}")
                 traceback.print_exc()
+                continue
+
+            self._loadPluginMetadata(name)
 
     def initPlugin(self, path, plugin_suffix=".py") -> None:
         """
@@ -130,25 +130,13 @@ class PluginManager:
         # 去除空值
         dirs_in_plugin_dir = [_ for _ in dirs_in_plugin_dir if _ != ""]
 
-        try:
-            self._initPluginSingerFile(files_in_plugin_dir)  # 导入单文件插件
-        except Exception as e:
-            print(f"init_plugin_singer_file outside Exception:{e}")
-            traceback.print_exc()
-
-        try:
-            self._initPluginFolder(dirs_in_plugin_dir)  # 导入文件插件
-        except Exception as e:
-            print(f"init_plugin_folder outside Exception:{e}")
-            traceback.print_exc()
-
-        return None
+        self._initPlugin(files_in_plugin_dir, dirs_in_plugin_dir)  # 导入单文件插件和文件夹插件
 
     def getPluginAttributes(self, user_selection_id) -> dict:
         """
         读取指定id的插件属性
 
-        :param user_selection_id:
+        :param user_selection_id: 插件的id
         :return: [list]attributes of plugin
         """
         _plugin_attributes = {}  # 读取好的属性放在这里
@@ -190,7 +178,7 @@ class PluginManager:
         """
         获取指定id的插件对象
 
-        :param user_selection_id:
+        :param user_selection_id: 插件的id
         :return: A instance of plugin
         """
         return self._dict_loaded_plugin[user_selection_id]
