@@ -28,6 +28,8 @@
       <excludeFolder url="file://$MODULE_DIR$/src/use_for_packing/PythonJava混合编程支持" />
       <excludeFolder url="file://$MODULE_DIR$/src/use_for_packing/所需文件" />
       <excludeFolder url="file://$MODULE_DIR$/.mypy_cache" />
+      <excludeFolder url="file://$MODULE_DIR$/src/use_for_packing/可选文件" />
+      <excludeFolder url="file://$MODULE_DIR$/src/use_for_packing/必须文件" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.9 (hpyculator)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
