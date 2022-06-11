@@ -3,6 +3,7 @@ import sys
 import importlib
 import hpyculator as hpyc
 from typing import List, Dict
+import traceback
 
 # 这样才可以导入上层包哈哈
 sys.path.append(os.path.join(sys.path[0], ".."))
@@ -25,7 +26,7 @@ class PluginManager:
         """
         # print(f"去掉.py后缀的文件名 {list(plugin_files_name)}")
         for name in plugin_files_name:
-            if name:  # 跳过空位
+            if name:  # 跳过空位，有名字才读取
                 try:
                     self._dict_loaded_plugin[name] = importlib.import_module(
                         f"Plugin.{name}"
@@ -48,10 +49,14 @@ class PluginManager:
                     self._list_alL_plugin_tag_option.append(
                         (tag_list, _METADATA["option"])
                     )  # tag对应选项名
-                except ImportError as e:
-                    print(f"init_plugin_singer_file inside Exception:{str(e)}")
+                except ImportError:
+                    traceback.print_exc()
+                except AttributeError:  # 比如说缺少PLUGIN_METADATA
+                    # traceback.print_exc()
+                    pass
                 except Exception as e:
                     print(f"init_plugin_singer_file inside Exception:{str(e)}")
+                    traceback.print_exc()
 
     def _initPluginFolder(self, plugin_files_name) -> None:
         """
@@ -84,10 +89,14 @@ class PluginManager:
                 self._list_alL_plugin_tag_option.append(
                     (tag_list, _METADATA["option"])
                 )  # tag对应选项名
-            except ImportError as e:
-                print(f"init_plugin_folder inside Exception:{str(e)}")
+            except ImportError:
+                traceback.print_exc()
+            except AttributeError:  # 比如说缺少PLUGIN_METADATA
+                # traceback.print_exc()
+                pass
             except Exception as e:
                 print(f"init_plugin_folder inside Exception:{str(e)}")
+                traceback.print_exc()
 
     def initPlugin(self, path, plugin_suffix=".py") -> None:
         """
@@ -125,11 +134,13 @@ class PluginManager:
             self._initPluginSingerFile(files_in_plugin_dir)  # 导入单文件插件
         except Exception as e:
             print(f"init_plugin_singer_file outside Exception:{e}")
+            traceback.print_exc()
 
         try:
             self._initPluginFolder(dirs_in_plugin_dir)  # 导入文件插件
         except Exception as e:
             print(f"init_plugin_folder outside Exception:{e}")
+            traceback.print_exc()
 
         return None
 

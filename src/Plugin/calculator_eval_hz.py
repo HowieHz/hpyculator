@@ -4,7 +4,7 @@ from math import *
 
 NAME = "计算器(基于eval)"
 AUTHOR = "HowieHz" or ["作者1", "作者2"]
-VERSION = "V1.0.1"
+VERSION = "V1.0.2"
 PLUGIN_METADATA = {
     # 输入模式，STRING为传入字符串,NUM为传入int,FLOAT为传入float(传入的作为main函数的开始计算值)
     "input_mode": hpyc.STRING,
@@ -99,7 +99,7 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(data, do_what: str):
+def on_calculate(data: str, do_what: str):
     output = hpyc.output if do_what == "output" else hpyc.write  # 输出内容只需要用output就好了
     _list_char_check = [
         "import",
@@ -115,9 +115,16 @@ def on_calculate(data, do_what: str):
         "lambda",
         "__import__",
         "os",
+        "，",
+        "{",
+        "}",
     ]
     for _char in _list_char_check:
         if _char in data:
             output("检测到非法字符")
             return
-    output(eval(data))
+    try:
+        output(eval(data))
+    except SyntaxError:
+        output("检测到不支持的字符")
+        return

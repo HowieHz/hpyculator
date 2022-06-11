@@ -110,12 +110,7 @@ class MainWinApp(FramelessWindow):
                 self.ui.output_box.appendPlainText(f"        {_tag}")  # 添加特殊tag
 
     def bindSignalWithSlots(self) -> None:
-        """
-        绑定信号和槽
-
-        :return:
-        """
-
+        """绑定信号和槽"""
         # self.ui.___ACTION___.triggered.connect(___FUNCTION___)
         # self.ui.___BUTTON___.clicked.connect(___FUNCTION___)
         # self.ui.___COMBO_BOX___.currentIndexChanged.connect(___FUNCTION___)
@@ -163,8 +158,8 @@ class MainWinApp(FramelessWindow):
 
         :return:
         """
-        _default_state = [
-            # 键名 初始化状态 对应check控件
+        _default_state = (
+            # 0键名 1初始化状态 2对应check控件
             ("is_save", False, self.ui.check_save),
             (
                 "output_optimization",
@@ -181,7 +176,7 @@ class MainWinApp(FramelessWindow):
                 True,
                 self.ui.check_auto_wrap,
             ),
-        ]
+        )
 
         # 读取设置文件-按钮状态和输出目录  check控件初始化
 
@@ -237,9 +232,6 @@ class MainWinApp(FramelessWindow):
         else:
             input_data = self.ui.input_box.toPlainText()  # 没有就从输入框获取
             # 输入检查
-            if input_data == "update_log":  # update_log检测
-                self.ui.output_box.setPlainText(doc.CHANGELOG)
-                return
             if input_data == "":  # 是否输入检测
                 self.ui.output_box.setPlainText(
                     _(

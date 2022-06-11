@@ -7,6 +7,7 @@ from functools import partial  # 偏函数真好用
 from hpyculator.hpysignal import instance_main_win_signal
 import hpyculator as hpyc
 from typing import Any
+import traceback
 
 # from multiprocessing import Process
 
@@ -76,6 +77,7 @@ class CalculationManager:
             instance_main_win_signal.set_output_box.emit(
                 f"输入转换发生错误:{str(e)}\n\n请检查输入格式"
             )
+            traceback.print_exc()
             return None  # 缺省 转换错误就none
         return data
 
@@ -120,7 +122,7 @@ class CalculationThread(Thread):
             """基础的计算模式"""
             calculate_fun = selected_plugin.on_calculate
 
-            time_before_calculate = time.perf_counter()  # 储存开始时间
+            time_before_calculate = time.perf_counter_ns()  # 储存开始时间
 
             if plugin_attribute_return_mode == hpyc.RETURN_ONCE:
                 result = str(calculate_fun(inputbox_data))
@@ -147,14 +149,14 @@ class CalculationThread(Thread):
                 calculate_fun(inputbox_data)
             else:
                 pass
-            return time.perf_counter() - time_before_calculate  # 储存结束时间
+            return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
 
         def _calculateWithSave(filepath_name):
             """计算+保存模式"""
             # filepath_name - 储存保存到哪个文件里 路径+文件名
 
             calculate_fun = selected_plugin.on_calculate
-            time_before_calculate = time.perf_counter()  # 储存开始时间
+            time_before_calculate = time.perf_counter_ns()  # 储存开始时间
 
             with open(filepath_name, "w", encoding="utf-8") as filestream:
                 if plugin_attribute_return_mode == hpyc.RETURN_ONCE:  # 分布输出和一次输出
@@ -181,7 +183,7 @@ class CalculationThread(Thread):
                 else:
                     pass
 
-            return time.perf_counter() - time_before_calculate  # 储存结束时间
+            return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
 
         def _calculateWithOutputOptimization(limit=False):
             """
@@ -194,7 +196,7 @@ class CalculationThread(Thread):
             with tempfile.TemporaryFile(
                 "w+t", encoding="utf-8", errors="ignore"
             ) as filestream:
-                time_before_calculate = time.perf_counter()  # 储存开始时间
+                time_before_calculate = time.perf_counter_ns()  # 储存开始时间
 
                 try:
                     if plugin_attribute_return_mode == hpyc.RETURN_ONCE:  # 分布输出和一次输出
@@ -237,7 +239,7 @@ class CalculationThread(Thread):
                         for line in _quickTraverseFile(filestream):
                             instance_main_win_signal.append_output_box.emit(line)
 
-            return time.perf_counter() - time_before_calculate  # 储存结束时间
+            return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
 
         def _quickTraverseFile(file, chunk_size=8192) -> Iterator:
             """
@@ -260,7 +262,12 @@ class CalculationThread(Thread):
             time_spent = _calculateWithSave(filepath_name)
             # 以下是计算后工作
             instance_main_win_signal.append_output_box.emit(
-                f"""\n\n本次计算+保存花费了{time_spent:.6f}秒\n\n计算结果已保存在 {filepath_name} """
+                f"\n\n"
+                f"本次计算+保存花费了"
+                f"{time_spent}纳秒\n"
+                f"={time_spent/10_0000_0000}秒\n"
+                f"={time_spent/600_0000_0000}分钟\n\n"
+                f"计算结果已保存在 {filepath_name}"
             )  # 输出本次计算时间
 
         def _calculateOptimizationMode(limit=False):
@@ -268,7 +275,12 @@ class CalculationThread(Thread):
             time_spent = _calculateWithOutputOptimization(limit)
             # 以下是计算后工作
             instance_main_win_signal.append_output_box.emit(
-                f"""\n\n本次计算+输出花费了{time_spent:.6f}秒\n\n已启用输出优化"""
+                f"\n\n"
+                f"本次计算+输出花费了"
+                f"{time_spent}纳秒\n"
+                f"={time_spent/10_0000_0000}秒\n"
+                f"={time_spent/600_0000_0000}分钟\n\n"
+                f"已启用输出优化"
             )  # 输出本次计算时间
 
         def _calculateBaseMode():
@@ -276,7 +288,11 @@ class CalculationThread(Thread):
             time_spent = _baseCalculate()
             # 以下是计算后工作
             instance_main_win_signal.append_output_box.emit(
-                f"\n\n本次计算+输出花费了{time_spent:.6f}秒\n"
+                f"\n\n"
+                f"本次计算+输出花费了"
+                f"{time_spent}纳秒\n"
+                f"={time_spent/10_0000_0000}秒\n"
+                f"={time_spent/600_0000_0000}分钟\n\n"
             )  # 输出本次计算时间
 
         # ------------------------------------------这些ui逻辑需外移
@@ -297,6 +313,7 @@ class CalculationThread(Thread):
             instance_main_win_signal.set_output_box.emit(
                 f"插件运算发生错误：{str(e)}\n\n请检查输入格式"
             )
+            traceback.print_exc()
         instance_main_win_signal.set_output_box_cursor.emit("end")  # 光标设到文本框尾部
         instance_main_win_signal.set_start_button_text.emit("计算")  # 设置按钮字
         instance_main_win_signal.set_start_button_state.emit(True)  # 启用按钮

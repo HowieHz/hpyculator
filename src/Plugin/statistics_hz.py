@@ -94,7 +94,7 @@ def on_calculate(inp):
     最大值:{np.max(list_num)}
     最小值:{np.min(list_num)}
     极差(全距)(最大值-最小值):{np.max(list_num) - np.min(list_num)}
-    
+
     总体方差:{np.var(list_num)}
     样本方差:{np.var(list_num, ddof=1)}
     标准差(均方差):{np.std(list_num)}
