@@ -56,4 +56,3 @@ hpyculator的名字来历：
 CHANGELOG = """\
 https://hpyculator.readthedocs.io/
 """
-
