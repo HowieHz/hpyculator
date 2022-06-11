@@ -69,7 +69,8 @@ class PluginManager:
                     self._dict_loaded_plugin[name] = importlib.import_module(
                         f"Plugin.{name}"
                     )
-                except ModuleNotFoundError:  # 插件缺少依赖(ImportError包括ModuleNotFoundError)
+                # 插件缺少依赖(ImportError包括ModuleNotFoundError)
+                except ModuleNotFoundError:
                     continue
                 except ImportError:  # 其他的导入问题
                     traceback.print_exc()
@@ -86,7 +87,8 @@ class PluginManager:
                 self._dict_loaded_plugin[name] = importlib.import_module(
                     f".{name}.__init__", package="Plugin"
                 )
-            except ModuleNotFoundError:  # 插件缺少依赖(ImportError包括ModuleNotFoundError)
+            # 插件缺少依赖(ImportError包括ModuleNotFoundError)
+            except ModuleNotFoundError:
                 continue
             except ImportError:  # 其他的导入问题
                 traceback.print_exc()
