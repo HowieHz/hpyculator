@@ -32,7 +32,7 @@ class AboutWinApp(QDialog):
         s = qstring
         if s == _("开屏介绍"):
             self.ui.output_doc.setText(doc.START_SHOW)
-        elif s == _("开屏介绍"):
+        elif s == _("更新日志"):
             self.ui.output_doc.setText(doc.CHANGELOG)
         elif s == _("关于"):
             # self.ui.output_doc.setText("<img src='..\\ui\\icons\\ico.ico'>")

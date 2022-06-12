@@ -28,7 +28,7 @@ class PluginManager:
             # PLUGIN_METADATA暂时储存着插件的元数据
             _METADATA = self._dict_loaded_plugin[name].PLUGIN_METADATA
         except AttributeError:  # 比如说缺少PLUGIN_METADATA
-            # traceback.print_exc()
+            traceback.print_exc()
             return
 
         try:
@@ -48,7 +48,7 @@ class PluginManager:
                 (tag_list, _METADATA["option"])
             )  # tag对应选项名
         except KeyError:  # 比如说缺少PLUGIN_METADATA
-            # traceback.print_exc()
+            traceback.print_exc()
             return
         except Exception as e:
             print(f"init_plugin_folder inside Exception:{str(e)}")
@@ -71,6 +71,7 @@ class PluginManager:
                     )
                 # 插件缺少依赖(ImportError包括ModuleNotFoundError)
                 except ModuleNotFoundError:
+                    traceback.print_exc()
                     continue
                 except ImportError:  # 其他的导入问题
                     traceback.print_exc()
@@ -89,6 +90,7 @@ class PluginManager:
                 )
             # 插件缺少依赖(ImportError包括ModuleNotFoundError)
             except ModuleNotFoundError:
+                traceback.print_exc()
                 continue
             except ImportError:  # 其他的导入问题
                 traceback.print_exc()
