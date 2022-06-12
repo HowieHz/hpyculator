@@ -15,7 +15,7 @@ hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法�
 
 欢迎提pr和issue
   
->本项目基于python3.9构建
+>本项目基于python3.10构建
   
 #### 免责声明
 

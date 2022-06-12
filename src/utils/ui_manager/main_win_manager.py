@@ -187,11 +187,11 @@ class MainWinApp(FramelessWindow):
             )
             if self.is_save_check_box_status:  # 当保存check状态 所要读取和设置的控件 以及这个设置项不存在时的初始化
                 for sequence in _default_state:
-                    if instance_settings_file.exists(sequence[0]):
+                    if instance_settings_file.exists(sequence[0]):  # 存在这个键就读取
                         sequence[2].setChecked(
                             instance_settings_file.read(sequence[0])
                         )  # 根据数据设置选项状态
-                    else:
+                    else:  # 不存在就初始化
                         instance_settings_file.add(
                             key=sequence[0], value=sequence[1]
                         )  # 初始化设置文件中对应的项
@@ -227,14 +227,11 @@ class MainWinApp(FramelessWindow):
         :return:
         """
         # 输入数据
-        if test_input:
-            input_data = test_input  # 有就录入测试数据
-        else:
-            input_data = self.ui.input_box.toPlainText()  # 没有就从输入框获取
-            # 输入检查
-            if input_data == "":  # 是否输入检测
-                self.ui.output_box.setPlainText(
-                    _(
+        input_data = test_input if test_input else self.ui.input_box.toPlainText()  # 有就录入测试数据 没有就从输入框获取
+        # 输入检查
+        if input_data == "":  # 是否输入检测
+            self.ui.output_box.setPlainText(
+                _(
                         """                                                  ↑
                                                   ↑上面的就是输入框了
 不输要算什么我咋知道要算啥子嘞     ↑
@@ -243,56 +240,42 @@ class MainWinApp(FramelessWindow):
 请在上面的框输入需要被处理的数据
 
 如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）"""
-                    )
                 )
-                return
+            )
+            return
 
         # 选择的插件id
-        if test_selection_id:
-            user_selection_id = test_selection_id
-        else:
-            user_selection_id = (
-                self.user_selection_id
-            )  # 被用户选择的插件，这个插件的id为user_selection_id
-            if self.ui.list_choices_plugin.currentItem() is None:  # 是否选择检测
-                self.ui.output_box.setPlainText(
-                    _(
+        user_selection_id = test_selection_id if test_selection_id else self.user_selection_id   # 被用户选择的插件，这个插件的id为user_selection_id
+        if self.ui.list_choices_plugin.currentItem() is None:  # 是否选择检测
+            self.ui.output_box.setPlainText(
+                _(
                         """\n\n
 不选要算什么我咋知道要算啥子嘞
 
 请在左侧选择运算核心
           ↓
 ← ← ←"""
-                    )
                 )
-                return
+            )
+            return
 
         # 输入转换类型
-        if test_input_mode:
-            input_mode = test_input_mode  # 有就录入测试数据
-        else:
-            # 没有就从属性列表获取
-            input_mode = self.selected_plugin_attributes["input_mode"]
+        input_mode = test_input_mode if test_input_mode else self.selected_plugin_attributes["input_mode"]  # 有就录入测试数据 没有就从属性列表获取
 
         # 计算运行模式
-        if test_calculation_mode:
-            calculation_mode = test_calculation_mode  # 有就录入测试数据
-        else:
+        def _getCalculationMode(test_calculation_mode):
+            if test_calculation_mode:
+                return test_calculation_mode  # 有就录入测试数据
             if self.ui.check_save.isChecked():  # 检测保存按钮的状态判断是否保存
-                calculation_mode = "calculate_save"
-            else:  # 选择不保存才输出结果
-                if self.ui.check_output_optimization.isChecked():
-                    if self.ui.check_output_lock_maximums.isChecked():
-                        calculation_mode = "calculate_o_l"  # l=limit
-                    else:
-                        calculation_mode = "calculate_o"
-                else:
-                    calculation_mode = "calculate"
+                return "calculate_save"
+            if not self.ui.check_output_optimization.isChecked():
+                return "calculate"
+            if self.ui.check_output_lock_maximums.isChecked():
+                return "calculate_o_l"  # l=limit
+            return "calculate_o"
+        calculation_mode = _getCalculationMode(test_calculation_mode)
 
-        if test_output_dir_path:
-            output_dir_path = test_output_dir_path
-        else:
-            output_dir_path = self.OUTPUT_DIR_PATH
+        output_dir_path = test_output_dir_path if test_output_dir_path else self.OUTPUT_DIR_PATH
         # 以上是计算前工作
         # print("启动计算")
         calculate_manager = CalculationManager()
@@ -372,10 +355,7 @@ class MainWinApp(FramelessWindow):
 
         :return:
         """
-        if self.isMaximized():
-            self.showNormal()
-        else:
-            self.showMaximized()
+        self.showNormal() if self.isMaximized() else self.showMaximized()
 
     def mouseDoubleClickEvent(self, event) -> None:
         """
@@ -504,8 +484,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         background_img_path = pathlib.Path(self.background_dir_path).joinpath(
             instance_settings_file.read("background_img")
         )
-        if background_img_path.is_file():
-            self.bg_img = QPixmap(background_img_path)
+        self.bg_img = QPixmap(background_img_path) if background_img_path.is_file() else ""
         self.drawBackground()
 
     def eventSaveCheck(self) -> None:
@@ -523,14 +502,15 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 
         :return: None
         """
-        if self.ui.check_output_optimization.isChecked():
-            if self.is_save_check_box_status:  # 保存check设置
-                instance_settings_file.modify("output_optimization", True)
-        else:
-            self.ui.check_output_lock_maximums.setChecked(False)
-            if self.is_save_check_box_status:  # 保存check设置
-                instance_settings_file.modify("output_lock_maximums", False)
-                instance_settings_file.modify("output_optimization", False)
+        if self.ui.check_output_optimization.isChecked() and self.is_save_check_box_status:  # 保存check设置 并且是True选择
+            instance_settings_file.modify("output_optimization", True)
+            return
+
+        # 关联最大限制选择项
+        self.ui.check_output_lock_maximums.setChecked(False)
+        if self.is_save_check_box_status:  # 保存check设置
+            instance_settings_file.modify("output_lock_maximums", False)
+            instance_settings_file.modify("output_optimization", False)
 
     def eventOutputLockMaximumsCheck(self) -> None:
         """
@@ -538,14 +518,16 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 
         :return: None
         """
-        if self.ui.check_output_lock_maximums.isChecked():
-            self.ui.check_output_optimization.setChecked(True)
-            if self.is_save_check_box_status:  # 保存check设置
-                instance_settings_file.modify("output_optimization", True)
-                instance_settings_file.modify("output_lock_maximums", True)
-        else:
-            if self.is_save_check_box_status:  # 保存check设置
-                instance_settings_file.modify("output_lock_maximums", False)
+        if not self.ui.check_output_lock_maximums.isChecked() and self.is_save_check_box_status:  # 保存check设置 并且是Flase选择
+            instance_settings_file.modify("output_lock_maximums", False)
+            return
+
+        # 关联最大优化输出选项
+        self.ui.check_output_optimization.setChecked(True)
+        if self.is_save_check_box_status:  # 保存check设置
+            instance_settings_file.modify("output_optimization", True)
+            instance_settings_file.modify("output_lock_maximums", True)
+
 
     def eventAutoWrapCheck(self) -> None:
         """
@@ -553,14 +535,12 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 
         :return:
         """
+        if self.is_save_check_box_status:  # 保存check设置
+            instance_settings_file.modify("auto_wrap", self.ui.check_auto_wrap.isChecked())
         if self.ui.check_auto_wrap.isChecked():
-            if self.is_save_check_box_status:  # 保存check设置
-                instance_settings_file.modify("auto_wrap", True)
             self.ui.output_box.setLineWrapMode(self.ui.output_box.WidgetWidth)
             self.ui.input_box.setLineWrapMode(self.ui.input_box.WidgetWidth)
         else:
-            if self.is_save_check_box_status:  # 保存check设置
-                instance_settings_file.modify("auto_wrap", False)
             self.ui.output_box.setLineWrapMode(self.ui.output_box.NoWrap)
             self.ui.input_box.setLineWrapMode(self.ui.input_box.NoWrap)
 

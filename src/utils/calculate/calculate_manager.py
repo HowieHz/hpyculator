@@ -65,14 +65,15 @@ class CalculationManager:
         :return: 转换后的数据
         """
         try:
-            if to_type == hpyc.STRING:
-                data = str(data)
-            elif to_type == hpyc.FLOAT:
-                data = float(data)
-            elif to_type == hpyc.NUM:
-                data = int(data)
-            else:
-                data = None  # 缺省 转换不存在的类型就none
+            match to_type:
+                case hpyc.STRING:
+                    data = str(data)
+                case hpyc.FLOAT:
+                    data = float(data)
+                case hpyc.NUM:
+                    data = int(data)
+                case _:
+                    data = None  # 缺省 转换不存在的类型就none
         except Exception as e:
             instance_main_win_signal.set_output_box.emit(
                 f"输入转换发生错误:{str(e)}\n\n请检查输入格式"
@@ -124,31 +125,30 @@ class CalculationThread(Thread):
 
             time_before_calculate = time.perf_counter_ns()  # 储存开始时间
 
-            if plugin_attribute_return_mode == hpyc.RETURN_ONCE:
-                result = str(calculate_fun(inputbox_data))
-                instance_main_win_signal.append_output_box.emit(
-                    str(result) + "\n"
-                )  # 结果为str，直接输出
-            elif plugin_attribute_return_mode == hpyc.RETURN_LIST:  # 算一行输出一行
-                result = calculate_fun(inputbox_data)
-                for result_process in result:
+            match plugin_attribute_return_mode:
+                case hpyc.RETURN_ONCE:
+                    result = str(calculate_fun(inputbox_data))
                     instance_main_win_signal.append_output_box.emit(
-                        str(result_process) + "\\n"
-                    )  # 算一行输出一行
-            elif (
-                plugin_attribute_return_mode == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE
-            ):  # 算一行输出一行，但是没有换行
-                result = calculate_fun(inputbox_data)
-                for result_process in result:  # 计算
-                    instance_main_win_signal.append_output_box.emit(
-                        str(result_process)
-                    )  # 算一行输出一行
-            elif plugin_attribute_return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                calculate_fun(inputbox_data, "output")
-            elif plugin_attribute_return_mode == hpyc.NO_RETURN:
-                calculate_fun(inputbox_data)
-            else:
-                pass
+                        str(result) + "\n"
+                    )  # 结果为str，直接输出
+                case hpyc.RETURN_LIST:  # 算一行输出一行
+                    result = calculate_fun(inputbox_data)
+                    for result_process in result:
+                        instance_main_win_signal.append_output_box.emit(
+                            str(result_process) + "\\n"
+                        )  # 算一行输出一行
+                case hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
+                    result = calculate_fun(inputbox_data)
+                    for result_process in result:  # 计算
+                        instance_main_win_signal.append_output_box.emit(
+                            str(result_process)
+                        )  # 算一行输出一行
+                case hpyc.NO_RETURN_SINGLE_FUNCTION:
+                    calculate_fun(inputbox_data, "output")
+                case hpyc.NO_RETURN:
+                    calculate_fun(inputbox_data)
+                case _:
+                    pass
             return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
 
         def _calculateWithSave(filepath_name):
@@ -159,29 +159,28 @@ class CalculationThread(Thread):
             time_before_calculate = time.perf_counter_ns()  # 储存开始时间
 
             with open(filepath_name, "w", encoding="utf-8") as filestream:
-                if plugin_attribute_return_mode == hpyc.RETURN_ONCE:  # 分布输出和一次输出
-                    result = calculate_fun(inputbox_data)
-                    filestream.write(str(result) + "\n")
-                elif plugin_attribute_return_mode == hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
-                    result = calculate_fun(inputbox_data)
-                    for result_process in result:  # 计算
-                        filestream.write(str(result_process) + "\\n")
-                        filestream.flush()  # 算出来就存进去
-                elif (
-                    plugin_attribute_return_mode == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE
-                ):  # 算一行输出一行，但是没有换行
-                    result = calculate_fun(inputbox_data)
-                    for result_process in result:  # 计算
-                        filestream.write(str(result_process))
-                        filestream.flush()  # 算出来就存进去
-                elif plugin_attribute_return_mode == hpyc.NO_RETURN:
-                    hpyc.setIoInstance(filestream)
-                    selected_plugin.on_calculate_with_save(inputbox_data)
-                elif plugin_attribute_return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                    hpyc.setIoInstance(filestream)
-                    calculate_fun(inputbox_data, "save")
-                else:
-                    pass
+                match plugin_attribute_return_mode:
+                    case hpyc.RETURN_ONCE:  # 分布输出和一次输出
+                        result = calculate_fun(inputbox_data)
+                        filestream.write(str(result) + "\n")
+                    case hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
+                        result = calculate_fun(inputbox_data)
+                        for result_process in result:  # 计算
+                            filestream.write(str(result_process) + "\\n")
+                            filestream.flush()  # 算出来就存进去
+                    case hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
+                        result = calculate_fun(inputbox_data)
+                        for result_process in result:  # 计算
+                            filestream.write(str(result_process))
+                            filestream.flush()  # 算出来就存进去
+                    case hpyc.NO_RETURN:
+                        hpyc.setIoInstance(filestream)
+                        selected_plugin.on_calculate_with_save(inputbox_data)
+                    case hpyc.NO_RETURN_SINGLE_FUNCTION:
+                        hpyc.setIoInstance(filestream)
+                        calculate_fun(inputbox_data, "save")
+                    case _:
+                        pass
 
             return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
 
@@ -199,32 +198,28 @@ class CalculationThread(Thread):
                 time_before_calculate = time.perf_counter_ns()  # 储存开始时间
 
                 try:
-                    if plugin_attribute_return_mode == hpyc.RETURN_ONCE:  # 分布输出和一次输出
-                        result = calculate_fun(inputbox_data)
-                        filestream.write(str(result) + "\n")
-                    elif (
-                        plugin_attribute_return_mode == hpyc.RETURN_LIST
-                    ):  # 算一行输出一行，但是没有换行
-                        result = calculate_fun(inputbox_data)
-                        for result_process in result:  # 计算
-                            filestream.write(str(result_process) + "\\n")
-                            filestream.flush()  # 算出来就存进去
-                    elif (
-                        plugin_attribute_return_mode
-                        == hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE
-                    ):  # 算一行输出一行，但是没有换行
-                        result = calculate_fun(inputbox_data)
-                        for result_process in result:  # 计算
-                            filestream.write(str(result_process))
-                            filestream.flush()  # 算出来就存进去
-                    elif plugin_attribute_return_mode == hpyc.NO_RETURN_SINGLE_FUNCTION:
-                        hpyc.setIoInstance(filestream)
-                        calculate_fun(inputbox_data, "save")
-                    elif plugin_attribute_return_mode == hpyc.NO_RETURN:
-                        hpyc.setIoInstance(filestream)
-                        selected_plugin.on_calculate_with_save(inputbox_data)
-                    else:
-                        pass
+                    match plugin_attribute_return_mode:
+                        case hpyc.RETURN_ONCE:  # 分布输出和一次输出
+                            result = calculate_fun(inputbox_data)
+                            filestream.write(str(result) + "\n")
+                        case hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
+                            result = calculate_fun(inputbox_data)
+                            for result_process in result:  # 计算
+                                filestream.write(str(result_process) + "\\n")
+                                filestream.flush()  # 算出来就存进去
+                        case hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
+                            result = calculate_fun(inputbox_data)
+                            for result_process in result:  # 计算
+                                filestream.write(str(result_process))
+                                filestream.flush()  # 算出来就存进去
+                        case hpyc.NO_RETURN_SINGLE_FUNCTION:
+                            hpyc.setIoInstance(filestream)
+                            calculate_fun(inputbox_data, "save")
+                        case hpyc.NO_RETURN:
+                            hpyc.setIoInstance(filestream)
+                            selected_plugin.on_calculate_with_save(inputbox_data)
+                        case _:
+                            pass
                 finally:
                     filestream.seek(0)  # 将文件指针移到开始处，准备读取文件
                     if limit:
@@ -301,14 +296,15 @@ class CalculationThread(Thread):
         instance_main_win_signal.clear_output_box.emit()  # 清空输出框
         plugin_attribute_return_mode = plugin_attributes["return_mode"]
         try:
-            if calculation_mode == "calculate_save":
-                _calculateSaveMode(self.output_dir_path)
-            elif calculation_mode == "calculate_o":
-                _calculateOptimizationMode()
-            elif calculation_mode == "calculate_o_l":
-                _calculateOptimizationMode(limit=True)
-            elif calculation_mode == "calculate":
-                _calculateBaseMode()
+            match calculation_mode:
+                case "calculate_save":
+                    _calculateSaveMode(self.output_dir_path)
+                case "calculate_o":
+                    _calculateOptimizationMode()
+                case "calculate_o_l":
+                    _calculateOptimizationMode(limit=True)
+                case "calculate":
+                    _calculateBaseMode()
         except Exception as e:
             instance_main_win_signal.set_output_box.emit(
                 f"插件运算发生错误：{str(e)}\n\n请检查输入格式"

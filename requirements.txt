@@ -1,7 +1,9 @@
-hpyculator>1.4.8
+hpyculator>1.4.9
 PySide6
 pywin32
+jpype1
 toml
 numba
 numpy
 pyyaml
+
