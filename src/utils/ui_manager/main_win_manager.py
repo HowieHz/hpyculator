@@ -111,31 +111,6 @@ class MainWinApp(FramelessWindow):
 
     def bindSignalWithSlots(self) -> None:
         """绑定信号和槽"""
-        # self.ui.___ACTION___.triggered.connect(___FUNCTION___)
-        # self.ui.___BUTTON___.clicked.connect(___FUNCTION___)
-        # self.ui.___COMBO_BOX___.currentIndexChanged.connect(___FUNCTION___)
-        # self.ui.___SPIN_BOX___.valueChanged.connect(___FUNCTION___)
-        # 自定义信号.属性名.connect(___FUNCTION___)
-        # my_signal.setProgressBar.connect(self.set_progress_bar)
-        # my_signal.setResult.connect(self.set_result)
-        def _appendOutput(msg: str) -> None:
-            self.ui.output_box.appendPlainText(msg)
-
-        def _clearOutput() -> None:
-            self.ui.output_box.clear()
-
-        def _setOutput(msg: str) -> None:
-            self.ui.output_box.setPlainText(msg)
-
-        def _getOutput() -> None:
-            hpyc.setOutPutData(self.ui.output_box.toPlainText())
-
-        def _setStartButtonText(msg: str) -> None:
-            self.ui.button_start.setText(msg)
-
-        def _setStartButtonState(state: bool) -> None:
-            self.ui.button_start.setEnabled(state)
-
         def _setOutputBoxCursor(where: str) -> None:  # 目前只有end
             _cursor = self.ui.output_box.textCursor()
             _cursor_state_map = {"end": QTextCursor.End}
@@ -144,12 +119,14 @@ class MainWinApp(FramelessWindow):
             self.ui.output_box.setTextCursor(_cursor)
 
         # 自定义信号绑定函数
-        instance_main_win_signal.append_output_box.connect(_appendOutput)
-        instance_main_win_signal.set_output_box.connect(_setOutput)
-        instance_main_win_signal.clear_output_box.connect(_clearOutput)
-        instance_main_win_signal.get_output_box.connect(_getOutput)
-        instance_main_win_signal.set_start_button_text.connect(_setStartButtonText)
-        instance_main_win_signal.set_start_button_state.connect(_setStartButtonState)
+        instance_main_win_signal.append_output_box.connect(lambda msg: self.ui.output_box.appendPlainText(msg))
+        instance_main_win_signal.set_output_box.connect(lambda msg: self.ui.output_box.setPlainText(msg))
+        instance_main_win_signal.clear_output_box.connect(lambda: self.ui.output_box.clear())
+        instance_main_win_signal.get_output_box.connect(lambda: hpyc.setOutPutData(self.ui.output_box.toPlainText()))
+
+        instance_main_win_signal.set_start_button_text.connect(lambda msg: self.ui.button_start.setText(msg))
+        instance_main_win_signal.set_start_button_state.connect(lambda state: self.ui.button_start.setEnabled(state))
+
         instance_main_win_signal.set_output_box_cursor.connect(_setOutputBoxCursor)
 
     def initCheck(self):
@@ -262,10 +239,10 @@ class MainWinApp(FramelessWindow):
         # 输入转换类型
         input_mode = test_input_mode if test_input_mode else self.selected_plugin_attributes["input_mode"]  # 有就录入测试数据 没有就从属性列表获取
 
-        # 计算运行模式
-        def _getCalculationMode(test_calculation_mode):
-            if test_calculation_mode:
-                return test_calculation_mode  # 有就录入测试数据
+        # 获取计算模式
+        def _getCalculationMode(calculation_mode):
+            if calculation_mode:
+                return calculation_mode  # 有就录入测试数据
             if self.ui.check_save.isChecked():  # 检测保存按钮的状态判断是否保存
                 return "calculate_save"
             if not self.ui.check_output_optimization.isChecked():
@@ -298,7 +275,7 @@ class MainWinApp(FramelessWindow):
 
     def resizeEvent(self, event) -> None:
         """
-        窗口大小改变时间 实现自适应背景图片
+        窗口大小改变 实现自适应背景图片
 
         :param event:
         :return:
@@ -509,8 +486,10 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         # 关联最大限制选择项
         self.ui.check_output_lock_maximums.setChecked(False)
         if self.is_save_check_box_status:  # 保存check设置
+            (
             instance_settings_file.modify("output_lock_maximums", False)
-            instance_settings_file.modify("output_optimization", False)
+                                  .modify("output_optimization", False)
+            )
 
     def eventOutputLockMaximumsCheck(self) -> None:
         """
@@ -525,8 +504,10 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         # 关联最大优化输出选项
         self.ui.check_output_optimization.setChecked(True)
         if self.is_save_check_box_status:  # 保存check设置
+            (
             instance_settings_file.modify("output_optimization", True)
-            instance_settings_file.modify("output_lock_maximums", True)
+                                  .modify("output_lock_maximums", True)
+            )
 
 
     def eventAutoWrapCheck(self) -> None:

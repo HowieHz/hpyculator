@@ -2,7 +2,6 @@ import os
 import sys
 import importlib
 import hpyculator as hpyc
-from typing import List, Dict
 import traceback
 
 # 这样才可以导入上层包哈哈
@@ -12,10 +11,10 @@ sys.path.append(os.path.join(sys.path[0], ".."))
 class PluginManager:
     def __init__(self):
         # Plugin目录下读取到的有__init__.py的文件夹
-        self._dict_plugin_option_id: Dict[str, str] = {}  # 选项名和实际文件名(ID)的映射表
+        self._dict_plugin_option_id: dict[str, str] = {}  # 选项名和实际文件名(ID)的映射表
         # 选项名和实际文件名(ID)的映射表 [([tag1,tag2],name),([tag1,tag2],name)]
-        self._list_alL_plugin_tag_option: List[tuple[list[str], str]] = []
-        self._dict_loaded_plugin: Dict[str] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
+        self._list_alL_plugin_tag_option: list[tuple[list[str], str]] = []
+        self._dict_loaded_plugin: dict[str] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
 
     def _loadPluginMetadata(self, name):
         """
@@ -58,7 +57,7 @@ class PluginManager:
         """
         导入指定单文件插件和文件夹插件
 
-        :param plugin_files_name: 插件文件名列表，如[aasd,2asd,31qq]
+        :param plugin_files_name: 插件文件名列表，如[asd,2asd,31qq]
         :param plugin_files_name: 文件夹插件名列表，如["a","b","c"]
         :return: None
         """

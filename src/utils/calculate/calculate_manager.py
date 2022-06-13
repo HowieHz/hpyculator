@@ -1,35 +1,30 @@
-import datetime
-import time
-from threading import Thread
-import tempfile
 import os
-from functools import partial  # 偏函数真好用
-from hpyculator.hpysignal import instance_main_win_signal
-import hpyculator as hpyc
-from typing import Any
+import time
+import datetime
+import tempfile
 import traceback
+import hpyculator as hpyc
+from threading import Thread
+from functools import partial  # 偏函数真好用
+from typing import Any, Iterator
+from ..plugin import instance_plugin_manager
+from hpyculator.hpysignal import instance_main_win_signal
+
 
 # from multiprocessing import Process
-
-from typing import Iterator
-
-from ..plugin import instance_plugin_manager
-
-
 # TODO 用了多进程之后main_win_signal的实例化效果消失
-
 
 class CalculationManager:
     def __init__(self):
         """计算管理"""
 
     def start(
-        self,
-        inputbox_data: str,
-        plugin_attribute_input_mode: int,
-        calculation_mode: str,
-        user_selection_id: str,
-        output_dir_path: str,
+            self,
+            inputbox_data: str,
+            plugin_attribute_input_mode: int,
+            calculation_mode: str,
+            user_selection_id: str,
+            output_dir_path: str,
     ):
         """
         启动计算线程
@@ -85,11 +80,11 @@ class CalculationManager:
 
 class CalculationThread(Thread):
     def __init__(
-        self,
-        inputbox_data: Any,
-        calculation_mode: str,
-        user_selection_id: str,
-        output_dir_path: str,
+            self,
+            inputbox_data: Any,
+            calculation_mode: str,
+            user_selection_id: str,
+            output_dir_path: str,
     ):
         """
         计算线程
@@ -193,7 +188,7 @@ class CalculationThread(Thread):
             """
             calculate_fun = selected_plugin.on_calculate
             with tempfile.TemporaryFile(
-                "w+t", encoding="utf-8", errors="ignore"
+                    "w+t", encoding="utf-8", errors="ignore"
             ) as filestream:
                 time_before_calculate = time.perf_counter_ns()  # 储存开始时间
 
@@ -245,49 +240,25 @@ class CalculationThread(Thread):
             :return: 读取到的字节
             """
             for chunk in iter(
-                partial(file.read, chunk_size), ""
+                    partial(file.read, chunk_size), ""
             ):  # 用readline的话，读到换行符就会直接停止读取，不会读取到8192B，会增加读取次数
                 yield chunk
 
-        def _calculateSaveMode(output_dir_path):
-            """调用计算并保存的模式"""
-            filename = f"{datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S')} {plugin_attributes['save_name']}{str(inputbox_data)}{plugin_attributes['quantifier']}"
+        def _outputSpentTime(time_spent_ns: int = 0, prefix: str = "", suffix: str = ""):
+            """
 
-            filepath_name = os.path.join(output_dir_path, f"{filename}.txt")
-            time_spent = _calculateWithSave(filepath_name)
-            # 以下是计算后工作
+            :param time_spent_ns: 所花费的时间（单位ns）
+            :param prefix: 前缀
+            :param suffix: 后缀
+            :return:
+            """
             instance_main_win_signal.append_output_box.emit(
                 f"\n\n"
-                f"本次计算+保存花费了"
-                f"{time_spent}纳秒\n"
-                f"={time_spent/10_0000_0000}秒\n"
-                f"={time_spent/600_0000_0000}分钟\n\n"
-                f"计算结果已保存在 {filepath_name}"
-            )  # 输出本次计算时间
-
-        def _calculateOptimizationMode(limit=False):
-            """调用计算+输出优化的模式"""
-            time_spent = _calculateWithOutputOptimization(limit)
-            # 以下是计算后工作
-            instance_main_win_signal.append_output_box.emit(
-                f"\n\n"
-                f"本次计算+输出花费了"
-                f"{time_spent}纳秒\n"
-                f"={time_spent/10_0000_0000}秒\n"
-                f"={time_spent/600_0000_0000}分钟\n\n"
-                f"已启用输出优化"
-            )  # 输出本次计算时间
-
-        def _calculateBaseMode():
-            """调用基础计算模式"""
-            time_spent = _baseCalculate()
-            # 以下是计算后工作
-            instance_main_win_signal.append_output_box.emit(
-                f"\n\n"
-                f"本次计算+输出花费了"
-                f"{time_spent}纳秒\n"
-                f"={time_spent/10_0000_0000}秒\n"
-                f"={time_spent/600_0000_0000}分钟\n\n"
+                f"{prefix}"
+                f"{time_spent_ns}ns\n"
+                f"={time_spent_ns / 10_0000_0000}s\n"
+                f"={time_spent_ns / 600_0000_0000}min\n\n"
+                f"{suffix}"
             )  # 输出本次计算时间
 
         # ------------------------------------------这些ui逻辑需外移
@@ -298,13 +269,20 @@ class CalculationThread(Thread):
         try:
             match calculation_mode:
                 case "calculate_save":
-                    _calculateSaveMode(self.output_dir_path)
+                    filename = f"{datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S')} {plugin_attributes['save_name']}{str(inputbox_data)}{plugin_attributes['quantifier']}"
+
+                    filepath_name = os.path.join(self.output_dir_path, f"{filename}.txt")
+                    time_spent = _calculateWithSave(filepath_name)
+                    _outputSpentTime(time_spent, "本次计算+保存花费了", f"计算结果已保存在 {filepath_name}")  # 输出本次计算时间
                 case "calculate_o":
-                    _calculateOptimizationMode()
+                    time_spent = _calculateWithOutputOptimization(limit=False)
+                    _outputSpentTime(time_spent, "本次计算+输出花费了", "已启用输出优化")  # 输出本次计算时间
                 case "calculate_o_l":
-                    _calculateOptimizationMode(limit=True)
+                    time_spent = _calculateWithOutputOptimization(limit=True)
+                    _outputSpentTime(time_spent, "本次计算+输出花费了", "已启用输出优化")  # 输出本次计算时间
                 case "calculate":
-                    _calculateBaseMode()
+                    time_spent = _baseCalculate()
+                    _outputSpentTime(time_spent, "本次计算+输出花费了")  # 输出本次计算时间
         except Exception as e:
             instance_main_win_signal.set_output_box.emit(
                 f"插件运算发生错误：{str(e)}\n\n请检查输入格式"
