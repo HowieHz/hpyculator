@@ -23,7 +23,7 @@ from ..pyside_frameless_win.framelesswindow import FramelessWindow
 
 class MainWinApp(FramelessWindow):
     def __init__(
-        self, setting_file_path, output_dir_path, plugin_dir_path, background_dir_path
+            self, setting_file_path, output_dir_path, plugin_dir_path, background_dir_path
     ):
         """
         主窗口程序类
@@ -111,6 +111,7 @@ class MainWinApp(FramelessWindow):
 
     def bindSignalWithSlots(self) -> None:
         """绑定信号和槽"""
+
         def _setOutputBoxCursor(where: str) -> None:  # 目前只有end
             _cursor = self.ui.output_box.textCursor()
             _cursor_state_map = {"end": QTextCursor.End}
@@ -186,12 +187,12 @@ class MainWinApp(FramelessWindow):
                 sequence[2].setChecked(sequence[1])  # 初始化控件
 
     def eventStartCalculation(
-        self,
-        test_input=None,
-        test_input_mode=None,
-        test_calculation_mode=None,
-        test_selection_id=None,
-        test_output_dir_path=None,
+            self,
+            test_input=None,
+            test_input_mode=None,
+            test_calculation_mode=None,
+            test_selection_id=None,
+            test_output_dir_path=None,
     ) -> None:
         """
         输入检查，启动计算线程
@@ -209,7 +210,7 @@ class MainWinApp(FramelessWindow):
         if input_data == "":  # 是否输入检测
             self.ui.output_box.setPlainText(
                 _(
-                        """                                                  ↑
+                    """                                                  ↑
                                                   ↑上面的就是输入框了
 不输要算什么我咋知道要算啥子嘞     ↑
          → → → → → → → → → →  ↑
@@ -222,11 +223,11 @@ class MainWinApp(FramelessWindow):
             return
 
         # 选择的插件id
-        user_selection_id = test_selection_id if test_selection_id else self.user_selection_id   # 被用户选择的插件，这个插件的id为user_selection_id
+        user_selection_id = test_selection_id if test_selection_id else self.user_selection_id  # 被用户选择的插件，这个插件的id为user_selection_id
         if self.ui.list_choices_plugin.currentItem() is None:  # 是否选择检测
             self.ui.output_box.setPlainText(
                 _(
-                        """\n\n
+                    """\n\n
 不选要算什么我咋知道要算啥子嘞
 
 请在左侧选择运算核心
@@ -250,6 +251,7 @@ class MainWinApp(FramelessWindow):
             if self.ui.check_output_lock_maximums.isChecked():
                 return "calculate_o_l"  # l=limit
             return "calculate_o"
+
         calculation_mode = _getCalculationMode(test_calculation_mode)
 
         output_dir_path = test_output_dir_path if test_output_dir_path else self.OUTPUT_DIR_PATH
@@ -486,10 +488,10 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         # 关联最大限制选择项
         self.ui.check_output_lock_maximums.setChecked(False)
         if self.is_save_check_box_status:  # 保存check设置
-            (
-            instance_settings_file.modify("output_lock_maximums", False)
-                                  .modify("output_optimization", False)
-            )
+            (instance_settings_file
+             .modify("output_lock_maximums", False)
+             .modify("output_optimization", False)
+             )
 
     def eventOutputLockMaximumsCheck(self) -> None:
         """
@@ -504,11 +506,10 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         # 关联最大优化输出选项
         self.ui.check_output_optimization.setChecked(True)
         if self.is_save_check_box_status:  # 保存check设置
-            (
-            instance_settings_file.modify("output_optimization", True)
-                                  .modify("output_lock_maximums", True)
-            )
-
+            (instance_settings_file
+             .modify("output_optimization", True)
+             .modify("output_lock_maximums", True)
+             )
 
     def eventAutoWrapCheck(self) -> None:
         """

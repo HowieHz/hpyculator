@@ -47,13 +47,10 @@ class SettingsWinApp(QDialog):
 
         :return:
         """
-        instance_settings_file.modify(
-            key="output_dir_path", value=self.ui.output_save_location.toPlainText()
-        )
-        instance_settings_file.modify(
-            key="is_save_check_box_status",
-            value=self.ui.check_is_save_check_box_status.isChecked(),
-        )
+        (instance_settings_file
+         .modify(key="output_dir_path", value=self.ui.output_save_location.toPlainText())
+         .modify(key="is_save_check_box_status", value=self.ui.check_is_save_check_box_status.isChecked())
+         )
         QMessageBox.information(
             self, _("保存完成"), _("保存完成\n部分设置将在重新启动后生效"), QMessageBox.Ok
         )
