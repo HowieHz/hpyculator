@@ -92,22 +92,25 @@ class MainWinApp(FramelessWindow):
         )  # {"special_tag1":{"tag1","tag2"}, "special_tag2":{"tag1","tag2"}, "special_tag3":{"tag1","tag2"}, "special_tag4":{"tag1","tag2"}}
         for _special_tag in special_tags:  # 初始化特殊tag的set
             _dict_set_tags[_special_tag] = set()
+
         for _tag in _set_tags:  # _set_tags里面有所有的tag
             for _special_tag in special_tags:  # 读取并分类特殊tag
                 if _tag[: len(_special_tag)] == _special_tag:  # 满足特殊tag
                     _dict_set_tags[_special_tag].add(_tag)  # 分到对应的类别
                     break
             else:  # 没break的就是普通tag，直接添加
-                self.ui.output_box.appendPlainText(f"    {_tag}")  # 添加普通tag
-        for _special_tag in special_tags:
-            if locale.getdefaultlocale()[0] in doc.tags.SPECIAL_TAGS_TRANSLATOR:
+                self.ui.output_box.appendPlainText(f"    {_tag}")  # 输出普通tag
+
+        for _special_tag in special_tags:  # 输出特殊tag
+            if locale.getdefaultlocale()[0] in doc.tags.SPECIAL_TAGS_TRANSLATOR:  # tag标题i18n并输出
                 self.ui.output_box.appendPlainText(
                     f"    {doc.tags.SPECIAL_TAGS_TRANSLATOR[locale.getdefaultlocale()[0]][_special_tag]}"
-                )  # 特殊tag分类标题
+                )
             else:
-                self.ui.output_box.appendPlainText(f"    {_special_tag}")  # 特殊tag分类标题
+                self.ui.output_box.appendPlainText(f"    {_special_tag}")  # 输出无i18n的特殊tag标题
+
             for _tag in _dict_set_tags[_special_tag]:
-                self.ui.output_box.appendPlainText(f"        {_tag}")  # 添加特殊tag
+                self.ui.output_box.appendPlainText(f"        {_tag}")  # 输出特殊tag
 
     def bindSignalWithSlots(self) -> None:
         """绑定信号和槽"""
@@ -138,7 +141,11 @@ class MainWinApp(FramelessWindow):
         """
         _default_state = (
             # 0键名 1初始化状态 2对应check控件
-            ("is_save", False, self.ui.check_save),
+            (
+                "is_save",
+                False,
+                self.ui.check_save
+            ),
             (
                 "output_optimization",
                 True,
@@ -269,6 +276,7 @@ class MainWinApp(FramelessWindow):
 
         :return: None
         """
+        self.ui.list_choices_plugin.clear()
         self.plugin_option_id_dict = (
             instance_plugin_manager.option_id_dict
         )  # 选项名映射id（文件或文件夹名）
@@ -499,7 +507,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 
         :return: None
         """
-        if not self.ui.check_output_lock_maximums.isChecked() and self.is_save_check_box_status:  # 保存check设置 并且是Flase选择
+        if not self.ui.check_output_lock_maximums.isChecked() and self.is_save_check_box_status:  # 保存check设置 并且是False选择
             instance_settings_file.modify("output_lock_maximums", False)
             return
 
@@ -519,6 +527,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         """
         if self.is_save_check_box_status:  # 保存check设置
             instance_settings_file.modify("auto_wrap", self.ui.check_auto_wrap.isChecked())
+
         if self.ui.check_auto_wrap.isChecked():
             self.ui.output_box.setLineWrapMode(self.ui.output_box.WidgetWidth)
             self.ui.input_box.setLineWrapMode(self.ui.input_box.WidgetWidth)
