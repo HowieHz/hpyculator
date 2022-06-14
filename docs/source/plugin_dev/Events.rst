@@ -7,7 +7,7 @@
 
     文件夹插件调用 ``文件夹名\__init_.py``\内的 ``on_calculate``\函数和 `on_calculate_with_save``\函数
 
-    （注：当 ``return_mode``\为NO_RETURN_SINGLE_FUNCTION，只调用 ``on_calculate``\函数）
+    （注：当 ``return_mode``\为RETURN_……或NO_RETURN_SINGLE_FUNCTION，只调用 ``on_calculate``\函数）
 
 当 ``return_mode``\为RETURN_……
 -----------------------------------

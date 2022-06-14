@@ -126,13 +126,13 @@ class CalculationThread(Thread):
                     instance_main_win_signal.append_output_box.emit(
                         str(result) + "\n"
                     )  # 结果为str，直接输出
-                case hpyc.RETURN_LIST:  # 算一行输出一行
+                case hpyc.RETURN_ITERABLE:  # 算一行输出一行
                     result = calculate_fun(inputbox_data)
                     for result_process in result:
                         instance_main_win_signal.append_output_box.emit(
                             str(result_process) + "\\n"
                         )  # 算一行输出一行
-                case hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
+                case hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
                     result = calculate_fun(inputbox_data)
                     for result_process in result:  # 计算
                         instance_main_win_signal.append_output_box.emit(
@@ -158,12 +158,12 @@ class CalculationThread(Thread):
                     case hpyc.RETURN_ONCE:  # 分布输出和一次输出
                         result = calculate_fun(inputbox_data)
                         filestream.write(str(result) + "\n")
-                    case hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
+                    case hpyc.RETURN_ITERABLE:  # 算一行输出一行，但是没有换行
                         result = calculate_fun(inputbox_data)
                         for result_process in result:  # 计算
                             filestream.write(str(result_process) + "\\n")
                             filestream.flush()  # 算出来就存进去
-                    case hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
+                    case hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
                         result = calculate_fun(inputbox_data)
                         for result_process in result:  # 计算
                             filestream.write(str(result_process))
@@ -197,12 +197,12 @@ class CalculationThread(Thread):
                         case hpyc.RETURN_ONCE:  # 分布输出和一次输出
                             result = calculate_fun(inputbox_data)
                             filestream.write(str(result) + "\n")
-                        case hpyc.RETURN_LIST:  # 算一行输出一行，但是没有换行
+                        case hpyc.RETURN_ITERABLE:  # 算一行输出一行，但是没有换行
                             result = calculate_fun(inputbox_data)
                             for result_process in result:  # 计算
                                 filestream.write(str(result_process) + "\\n")
                                 filestream.flush()  # 算出来就存进去
-                        case hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
+                        case hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
                             result = calculate_fun(inputbox_data)
                             for result_process in result:  # 计算
                                 filestream.write(str(result_process))
