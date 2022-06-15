@@ -695,7 +695,8 @@ class Ui_SettingsWin(object):
         self.check_is_save_check_box_status.setObjectName(
             "check_is_save_check_box_status"
         )
-        self.check_is_save_check_box_status.setGeometry(QRect(210, 330, 177, 21))
+        self.check_is_save_check_box_status.setGeometry(
+            QRect(210, 330, 177, 21))
         font4 = QFont()
         font4.setFamilies(["\u66f4\u7eb1\u9ed1\u4f53 SC"])
         font4.setPointSize(12)
@@ -742,7 +743,8 @@ class Ui_SettingsWin(object):
             "}"
         )
         self.button_open_background_dir = QPushButton(SettingsWin)
-        self.button_open_background_dir.setObjectName("button_open_background_dir")
+        self.button_open_background_dir.setObjectName(
+            "button_open_background_dir")
         self.button_open_background_dir.setGeometry(QRect(540, 160, 81, 41))
         self.button_open_background_dir.setFont(font)
         self.label_7 = QLabel(SettingsWin)
@@ -761,7 +763,8 @@ class Ui_SettingsWin(object):
         self.label_2.setGeometry(QRect(50, 90, 161, 49))
         self.label_2.setFont(font2)
         self.button_reset_save_location = QPushButton(SettingsWin)
-        self.button_reset_save_location.setObjectName("button_reset_save_location")
+        self.button_reset_save_location.setObjectName(
+            "button_reset_save_location")
         self.button_reset_save_location.setGeometry(QRect(210, 270, 148, 39))
         self.button_reset_save_location.setFont(font)
         self.label_5 = QLabel(SettingsWin)
@@ -778,11 +781,13 @@ class Ui_SettingsWin(object):
         self.button_reset_save_location.clicked.connect(
             SettingsWin.eventResetSaveLocation
         )
-        self.combo_background.activated.connect(SettingsWin.eventChooseBackgroundImg)
+        self.combo_background.activated.connect(
+            SettingsWin.eventChooseBackgroundImg)
         self.button_open_background_dir.clicked.connect(
             SettingsWin.eventOpenBackgroundDir
         )
-        self.button_open_plugin_dir.clicked.connect(SettingsWin.eventOpenPluginDir)
+        self.button_open_plugin_dir.clicked.connect(
+            SettingsWin.eventOpenPluginDir)
 
         QMetaObject.connectSlotsByName(SettingsWin)
 
@@ -793,7 +798,8 @@ class Ui_SettingsWin(object):
             QCoreApplication.translate("SettingsWin", "Dialog", None)
         )
         self.button_cancel.setText(
-            QCoreApplication.translate("SettingsWin", "\u53d6\u6d88\u4fee\u6539", None)
+            QCoreApplication.translate(
+                "SettingsWin", "\u53d6\u6d88\u4fee\u6539", None)
         )
         self.button_save_setting.setText(
             QCoreApplication.translate("SettingsWin", "\u4fdd\u5b58", None)

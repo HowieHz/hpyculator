@@ -51,7 +51,8 @@ def checkOutputPath():
         output_dir_path = instance_settings_file.read("output_dir_path")
     else:
         output_dir_path = str(os.path.join(os.getcwd(), "Output"))
-        instance_settings_file.add(key="output_dir_path", value=output_dir_path)
+        instance_settings_file.add(
+            key="output_dir_path", value=output_dir_path)
         # print(f"输出文件保存位置:{output_dir_path}")
 
     # 检查输出文件夹是否存在
@@ -69,9 +70,11 @@ def checkBackgroundImgPath():
     """
     # 从设置文件读取输出目录
     if instance_settings_file.exists("background_img_dir_path"):
-        background_img_dir_path = instance_settings_file.read("background_img_dir_path")
+        background_img_dir_path = instance_settings_file.read(
+            "background_img_dir_path")
     else:
-        background_img_dir_path = str(os.path.join(os.getcwd(), "background_img"))
+        background_img_dir_path = str(
+            os.path.join(os.getcwd(), "background_img"))
         instance_settings_file.add(
             key="background_img_dir_path", value=background_img_dir_path
         )
@@ -94,7 +97,8 @@ def pluginCheck():
         plugin_dir_path = instance_settings_file.read("plugin_dir_path")
     else:
         plugin_dir_path = str(os.path.join(os.getcwd(), "Plugin"))
-        instance_settings_file.add(key="plugin_dir_path", value=plugin_dir_path)
+        instance_settings_file.add(
+            key="plugin_dir_path", value=plugin_dir_path)
 
     # 检查模块文件夹是否存在
     if not os.path.exists(plugin_dir_path):

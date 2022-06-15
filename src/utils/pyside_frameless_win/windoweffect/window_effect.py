@@ -76,7 +76,8 @@ class WindowEffect:
         # matte animation
         animationId = DWORD(animationId)
         # window shadow
-        accentFlags = DWORD(0x20 | 0x40 | 0x80 | 0x100) if isEnableShadow else DWORD(0)
+        accentFlags = DWORD(0x20 | 0x40 | 0x80 |
+                            0x100) if isEnableShadow else DWORD(0)
         self.accentPolicy.AccentState = (
             ACCENT_STATE.ACCENT_ENABLE_ACRYLICBLURBEHIND.value
         )

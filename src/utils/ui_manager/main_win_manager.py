@@ -87,7 +87,8 @@ class MainWinApp(FramelessWindow):
         # 关于gui显示内容的初始化
         self.flushListChoicesPlugin()
         self.ui.output_box.setPlainText(doc.START_SHOW)  # 开启的展示
-        self.ui.search_plugin.setPlaceholderText(doc.SEARCH_INPUT_BOX_TIPS)  # 灰色背景提示字符
+        self.ui.search_plugin.setPlaceholderText(
+            doc.SEARCH_INPUT_BOX_TIPS)  # 灰色背景提示字符
         self.ui.search_plugin.clear()  # 不清空不显示灰色背景
         self.ui.input_box.setFocus()  # 设置焦点
 
@@ -126,7 +127,8 @@ class MainWinApp(FramelessWindow):
                 )  # 输出无i18n的特殊tag标题
 
             for _tag in _dict_set_tags[_special_tag]:
-                self.ui.output_box.appendPlainText(f"        {_tag}")  # 输出特殊tag
+                self.ui.output_box.appendPlainText(
+                    f"        {_tag}")  # 输出特殊tag
 
     def bindSignalWithSlots(self) -> None:
         """绑定信号和槽"""
@@ -146,15 +148,22 @@ class MainWinApp(FramelessWindow):
             self.ui.output_box.setTextCursor(_cursor)
 
         # 自定义信号绑定函数
-        instance_main_win_signal.append_output_box.connect(self.ui.output_box.appendPlainText)
-        instance_main_win_signal.set_output_box.connect(self.ui.output_box.setPlainText)
-        instance_main_win_signal.clear_output_box.connect(self.ui.output_box.clear)
-        instance_main_win_signal.get_output_box.connect(lambda: hpyc.setOutPutData(self.ui.output_box.toPlainText()))
+        instance_main_win_signal.append_output_box.connect(
+            self.ui.output_box.appendPlainText)
+        instance_main_win_signal.set_output_box.connect(
+            self.ui.output_box.setPlainText)
+        instance_main_win_signal.clear_output_box.connect(
+            self.ui.output_box.clear)
+        instance_main_win_signal.get_output_box.connect(
+            lambda: hpyc.setOutPutData(self.ui.output_box.toPlainText()))
 
-        instance_main_win_signal.set_start_button_text.connect(self.ui.button_start.setText)
-        instance_main_win_signal.set_start_button_state.connect(self.ui.button_start.setEnabled)
+        instance_main_win_signal.set_start_button_text.connect(
+            self.ui.button_start.setText)
+        instance_main_win_signal.set_start_button_state.connect(
+            self.ui.button_start.setEnabled)
 
-        instance_main_win_signal.set_output_box_cursor.connect(_setOutputBoxCursor)
+        instance_main_win_signal.set_output_box_cursor.connect(
+            _setOutputBoxCursor)
 
     def initCheck(self) -> None:
         """
@@ -204,7 +213,8 @@ class MainWinApp(FramelessWindow):
                         instance_settings_file.add(
                             key=sequence.settings_key, value=sequence.default_state
                         )  # 初始化设置文件中对应的项
-                        sequence.widget.setChecked(sequence.default_state)  # 初始化控件
+                        sequence.widget.setChecked(
+                            sequence.default_state)  # 初始化控件
             else:  # 当不保存check状态 设置控件状态
                 for sequence in _default_state:
                     sequence.widget.setChecked(sequence.default_state)  # 初始化控件
@@ -432,7 +442,8 @@ class MainWinApp(FramelessWindow):
         :return: None
         """
         # print(f"选中的选项名{item.text()}")
-        self.user_selection_id = str(self.plugin_option_id_dict[item.text()])  # 转换成ID
+        self.user_selection_id = str(
+            self.plugin_option_id_dict[item.text()])  # 转换成ID
         self.selected_plugin_attributes = (
             _METADATA
         ) = instance_plugin_manager.getPluginAttributes(self.user_selection_id)
@@ -499,7 +510,8 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         :return: None
         """
         if self.is_save_check_box_status:  # 保存check设置
-            instance_settings_file.modify("is_save", self.ui.check_save.isChecked())
+            instance_settings_file.modify(
+                "is_save", self.ui.check_save.isChecked())
 
     def eventOutputOptimizationCheck(self) -> None:
         """
@@ -519,8 +531,8 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         if self.is_save_check_box_status:  # 保存check设置
             (
                 instance_settings_file
-                    .modify("output_lock_maximums", False)
-                    .modify("output_optimization", False)
+                .modify("output_lock_maximums", False)
+                .modify("output_optimization", False)
             )
 
     def eventOutputLockMaximumsCheck(self) -> None:
@@ -541,8 +553,8 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         if self.is_save_check_box_status:  # 保存check设置
             (
                 instance_settings_file
-                    .modify("output_optimization", True)
-                    .modify("output_lock_maximums", True)
+                .modify("output_optimization", True)
+                .modify("output_lock_maximums", True)
             )
 
     def eventAutoWrapCheck(self) -> None:
