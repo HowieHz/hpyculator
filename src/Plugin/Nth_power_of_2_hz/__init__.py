@@ -1,5 +1,3 @@
-from typing import Optional
-
 import hpyculator as hpyc
 
 VERSION = "V1.0.1"

@@ -1,6 +1,5 @@
 import hpyculator as hpyc
 import numpy as np
-from decimal import Decimal
 
 VERSION = "V1.1.0"
 PLUGIN_METADATA = {

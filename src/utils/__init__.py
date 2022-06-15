@@ -1,6 +1,5 @@
 """运行主程序和主程序的一些初始化"""
 import os
-import toml
 from typing import Optional
 from .settings import instance_settings_file
 
@@ -24,9 +23,9 @@ class CreateApp:
         """运行主程序"""
         # TODO 路径检查需重构，默认路径改传参
         SETTING_FILE_PATH = instance_settings_file.setting_file_path
-        OUTPUT_DIR_PATH = checkOutputPath(SETTING_FILE_PATH)  # 输出路径检查
-        BACKGROUND_IMG_DIR_PATH = checkBackgroundImgPath(SETTING_FILE_PATH)  # 背景图片路径检查
-        PLUGIN_DIR_PATH = pluginCheck(SETTING_FILE_PATH)  # 插件加载
+        OUTPUT_DIR_PATH = checkOutputPath()  # 输出路径检查
+        BACKGROUND_IMG_DIR_PATH = checkBackgroundImgPath()  # 背景图片路径检查
+        PLUGIN_DIR_PATH = pluginCheck()  # 插件加载
 
         list_instance_main_window = []
         for _ in range(self.instance_num):
@@ -42,11 +41,10 @@ class CreateApp:
         return list_instance_main_window
 
 
-def checkOutputPath(setting_file_path):
+def checkOutputPath():
     """
     检查输出目录
 
-    :param setting_file_path: 设置文件存放目录
     :return: output_dir_path
     """
     if instance_settings_file.exists("output_dir_path"):
@@ -63,7 +61,7 @@ def checkOutputPath(setting_file_path):
     return output_dir_path
 
 
-def checkBackgroundImgPath(setting_file_path):
+def checkBackgroundImgPath():
     """
     背景图片路径检查
 
@@ -85,11 +83,10 @@ def checkBackgroundImgPath(setting_file_path):
     return background_img_dir_path
 
 
-def pluginCheck(setting_file_path):
+def pluginCheck():
     """
     加载插件
 
-    :param setting_file_path: 设置文件的文木
     :return: 存放插件的文件夹路径
     """
     # 从设置文件读取插件目录
