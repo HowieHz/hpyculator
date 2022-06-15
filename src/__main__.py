@@ -64,7 +64,7 @@ if __name__ == "__main__":
 # 列表控件 list_功能
 # 下拉选择控件 combo_功能
 
-#how to locale 从py生成pot文件
+# how to locale 从py生成pot文件
 # python C:\dev\python310\Tools\locale\pygettext.py -d __init__ __init__.py
 # mgsfmt.py来编译pot文件生成mo文件
 
