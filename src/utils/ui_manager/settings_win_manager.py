@@ -6,6 +6,7 @@ from PySide6.QtWidgets import QMessageBox, QDialog
 from ..ui import Ui_SettingsWin  # 从init导
 from ..document import VERSION  # 版本号导入
 from ..settings import instance_settings_file  # 导入实例
+from .. import document as doc
 
 
 class SettingsWinApp(QDialog):
@@ -17,7 +18,7 @@ class SettingsWinApp(QDialog):
         self.ui = Ui_SettingsWin()  # 实例化ui
         self.ui.setupUi(self)  # 初始化ui，不初始化不显示
 
-        self.setWindowTitle(_("设置") + "  Hpyculator" + _("版本") + f"{VERSION}")  # 设置标题
+        self.setWindowTitle(f"{doc.SETTINGS_LITERAL} Hpyculator {doc.VERSION_LITERAL}{VERSION}")  # 设置标题
 
         if instance_settings_file.exists("output_dir_path"):
             # 读取目录设置
@@ -52,7 +53,7 @@ class SettingsWinApp(QDialog):
          .modify(key="is_save_check_box_status", value=self.ui.check_is_save_check_box_status.isChecked())
          )
         QMessageBox.information(
-            self, _("保存完成"), _("保存完成\n部分设置将在重新启动后生效"), QMessageBox.Ok
+            self, doc.SAVED_LITERAL, doc.SAVED_TIPS, QMessageBox.Ok
         )
         self.close()
 

@@ -13,30 +13,32 @@ class AboutWinApp(QDialog):
         self.ui = Ui_AboutWin()
         self.ui.setupUi(self)
 
-        self.setWindowTitle(_("关于 hpyculator"))
+        self.setWindowTitle(doc.ABOUT_HPYCULATOR_LITERAL)
 
-        self.ui.combo_doc.addItems([_("开屏介绍"),
-                                    _("更新日志"),
-                                    _("关于"),
+        self.ui.combo_doc.addItems([doc.INTRODUCTION_LITERAL,
+                                    doc.CHANGELOG_LITERAL,
+                                    doc.ABOUT_LITERAL,
                                     ])
 
+        self.ui.button_check_update.setText(doc.CHECK_UPDATE_LITERAL)
+
     def eventChooseShow(self, qstring):
-        # match qstring:
-        #     case _("开屏介绍"):
-        #         self.ui.output_doc.setText(doc.START_SHOW)
-        #     case _("更新日志"):
-        #         self.ui.output_doc.setText(doc.CHANGELOG)
-        #     case _("关于"):
-        #         # self.ui.output_doc.setText("<img src='..\\ui\\icons\\ico.ico'>")
-        #         self.ui.output_doc.setText(doc.ABOUT)
-        s = qstring
-        if s == _("开屏介绍"):
-            self.ui.output_doc.setText(doc.START_SHOW)
-        elif s == _("更新日志"):
-            self.ui.output_doc.setText(doc.CHANGELOG)
-        elif s == _("关于"):
-            # self.ui.output_doc.setText("<img src='..\\ui\\icons\\ico.ico'>")
-            self.ui.output_doc.setText(doc.ABOUT)
+        match qstring:
+            case doc.INTRODUCTION_LITERAL:
+                self.ui.output_doc.setText(doc.START_SHOW)
+            case doc.CHANGELOG_LITERAL:
+                self.ui.output_doc.setText(doc.CHANGELOG)
+            case doc.ABOUT_LITERAL:
+                # self.ui.output_doc.setText("<img src='..\\ui\\icons\\ico.ico'>")
+                self.ui.output_doc.setText(doc.ABOUT)
+        # s = qstring
+        # if s == doc.INTRODUCTION_LITERAL:
+        #     self.ui.output_doc.setText(doc.START_SHOW)
+        # elif s == doc.CHANGELOG_LITERAL:
+        #     self.ui.output_doc.setText(doc.CHANGELOG)
+        # elif s == doc.ABOUT_LITERAL:
+        #     # self.ui.output_doc.setText("<img src='..\\ui\\icons\\ico.ico'>")
+        #     self.ui.output_doc.setText(doc.ABOUT)
 
     @staticmethod
     def eventCheckUpdate():

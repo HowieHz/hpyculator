@@ -9,13 +9,8 @@ import sys
 from PySide6.QtWidgets import QApplication
 from utils import CreateApp
 
-# i18n
+# locale
 import gettext
-import os
-
-langs = ["en"]
-for lang in langs:
-    gettext.install(lang, localedir=os.path.join(".", "utils", "locale"))
 #  from utils.ui_manager.test_window_effect import testWinApp
 # pyside6导入
 # from utils.ui import main_window_resource_rc
@@ -41,6 +36,7 @@ if __name__ == "__main__":
 # todo 学习snipaste的设置界面
 # todo 动画
 # todo 缓存结果模式 不是@cache
+# todo 把槽函数外移，在程序里面connect
 
 # 命名规范v1.0.0
 # 1类：hello_world 变量，文件名(xswl.txt)全部小写，使用下划线连接
@@ -68,7 +64,9 @@ if __name__ == "__main__":
 # 列表控件 list_功能
 # 下拉选择控件 combo_功能
 
-# python C:\dev\python39\Tools\i18n\pygettext.py -d about_win_manager about_win_manager.py
+#how to locale 从py生成pot文件
+# python C:\dev\python310\Tools\locale\pygettext.py -d __init__ __init__.py
+# mgsfmt.py来编译pot文件生成mo文件
 
 # 配置文件操作指南
 # 初始化： a+open  然后初始化单项
