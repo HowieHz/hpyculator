@@ -130,7 +130,6 @@ class MainWinApp(FramelessWindow):
 
     def bindSignalWithSlots(self) -> None:
         """绑定信号和槽"""
-
         # self.ui.___ACTION___.triggered.connect(___FUNCTION___)
         # self.ui.___BUTTON___.clicked.connect(___FUNCTION___)
         # self.ui.___COMBO_BOX___.currentIndexChanged.connect(___FUNCTION___)
@@ -163,7 +162,6 @@ class MainWinApp(FramelessWindow):
 
         :return:
         """
-
         # 初始化控件
         _default_state = (
             default_widget_state(
