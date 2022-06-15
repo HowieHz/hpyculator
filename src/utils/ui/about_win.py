@@ -722,7 +722,8 @@ class Ui_AboutWin(object):
     # setupUi
 
     def retranslateUi(self, AboutWin):
-        AboutWin.setWindowTitle(QCoreApplication.translate("AboutWin", "Dialog", None))
+        AboutWin.setWindowTitle(
+            QCoreApplication.translate("AboutWin", "Dialog", None))
         self.label_2.setText(
             QCoreApplication.translate(
                 "AboutWin",
@@ -731,10 +732,12 @@ class Ui_AboutWin(object):
             )
         )
         self.label.setText(
-            QCoreApplication.translate("AboutWin", "\u5173\u4e8ehpycacular", None)
+            QCoreApplication.translate(
+                "AboutWin", "\u5173\u4e8ehpycacular", None)
         )
         self.button_check_update.setText(
-            QCoreApplication.translate("AboutWin", "\u68c0\u67e5\u66f4\u65b0", None)
+            QCoreApplication.translate(
+                "AboutWin", "\u68c0\u67e5\u66f4\u65b0", None)
         )
 
     # retranslateUi

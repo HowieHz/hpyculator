@@ -22,7 +22,8 @@ class TestAllManager:
                 output_dir_path
                 == (
                     str(
-                        os.path.join(os.getcwd(), "Setting", "hpyculator_setting.json")
+                        os.path.join(os.getcwd(), "Setting",
+                                     "hpyculator_setting.json")
                     ),
                     str(os.path.join(os.getcwd(), "Output")),
                 )

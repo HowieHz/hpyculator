@@ -133,7 +133,8 @@ class PluginManager:
         # 去除空值
         dirs_in_plugin_dir = [_ for _ in dirs_in_plugin_dir if _ != ""]
 
-        self._initPlugin(files_in_plugin_dir, dirs_in_plugin_dir)  # 导入单文件插件和文件夹插件
+        self._initPlugin(files_in_plugin_dir,
+                         dirs_in_plugin_dir)  # 导入单文件插件和文件夹插件
 
     def getPluginAttributes(self, user_selection_id) -> dict:
         """
