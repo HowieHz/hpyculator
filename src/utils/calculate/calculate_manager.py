@@ -9,6 +9,7 @@ from functools import partial  # 偏函数真好用
 from typing import Any, Iterator
 from ..plugin import instance_plugin_manager
 from hpyculator.hpysignal import instance_main_win_signal
+from .. import document as doc
 
 
 # from multiprocessing import Process
@@ -70,9 +71,7 @@ class CalculationManager:
                 case _:
                     data = None  # 缺省 转换不存在的类型就none
         except Exception as e:
-            instance_main_win_signal.set_output_box.emit(
-                f"输入转换发生错误:{str(e)}\n\n请检查输入格式"
-            )
+            instance_main_win_signal.set_output_box.emit(doc.TYPE_CONVERSION_ERROR_LITERAL%str(e))
             traceback.print_exc()
             return None  # 缺省 转换错误就none
         return data
@@ -221,9 +220,7 @@ class CalculationThread(Thread):
                         for times, line in enumerate(_quickTraverseFile(filestream)):
                             instance_main_win_signal.append_output_box.emit(line)
                             if times >= 128:
-                                instance_main_win_signal.append_output_box.emit(
-                                    "\n\n输出上限：检测到输出数据过大，请使用保存到文件防止卡死"
-                                )
+                                instance_main_win_signal.append_output_box.emit(doc.REACHED_OUTPUT_LIMIT_LITERAL)
                                 break
                     else:
                         for line in _quickTraverseFile(filestream):
@@ -262,7 +259,7 @@ class CalculationThread(Thread):
             )  # 输出本次计算时间
 
         # ------------------------------------------这些ui逻辑需外移
-        instance_main_win_signal.set_start_button_text.emit("计算程序正在运行中，请耐心等待")
+        instance_main_win_signal.set_start_button_text.emit(doc.CALCULATION_PROGRAM_IS_RUNNING_LITERAL)
         instance_main_win_signal.set_start_button_state.emit(False)  # 防止按钮反复触发
         instance_main_win_signal.clear_output_box.emit()  # 清空输出框
         plugin_attribute_return_mode = plugin_attributes["return_mode"]
@@ -273,21 +270,19 @@ class CalculationThread(Thread):
 
                     filepath_name = os.path.join(self.output_dir_path, f"{filename}.txt")
                     time_spent = _calculateWithSave(filepath_name)
-                    _outputSpentTime(time_spent, "本次计算+保存花费了", f"计算结果已保存在 {filepath_name}")  # 输出本次计算时间
+                    _outputSpentTime(time_spent, doc.THIS_CALCULATION_AND_SAVING_TOOK_LITERAL, f"{doc.SAVED_IN_LITERAL} {filepath_name}")  # 输出本次计算时间
                 case "calculate_o":
                     time_spent = _calculateWithOutputOptimization(limit=False)
-                    _outputSpentTime(time_spent, "本次计算+输出花费了", "已启用输出优化")  # 输出本次计算时间
+                    _outputSpentTime(time_spent, doc.THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL, doc.OUTPUT_OPTIMIZATION_ENABLED_LITERAL)  # 输出本次计算时间
                 case "calculate_o_l":
                     time_spent = _calculateWithOutputOptimization(limit=True)
-                    _outputSpentTime(time_spent, "本次计算+输出花费了", "已启用输出优化")  # 输出本次计算时间
+                    _outputSpentTime(time_spent, doc.THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL, doc.OUTPUT_OPTIMIZATION_ENABLED_LITERAL)  # 输出本次计算时间
                 case "calculate":
                     time_spent = _baseCalculate()
-                    _outputSpentTime(time_spent, "本次计算+输出花费了")  # 输出本次计算时间
+                    _outputSpentTime(time_spent, doc.THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL)  # 输出本次计算时间
         except Exception as e:
-            instance_main_win_signal.set_output_box.emit(
-                f"插件运算发生错误：{str(e)}\n\n请检查输入格式"
-            )
+            instance_main_win_signal.set_output_box.emit(doc.PLUGIN_CALCULATION_ERROR_LITERAL%str(e))
             traceback.print_exc()
         instance_main_win_signal.set_output_box_cursor.emit("end")  # 光标设到文本框尾部
-        instance_main_win_signal.set_start_button_text.emit("计算")  # 设置按钮字
+        instance_main_win_signal.set_start_button_text.emit(doc.CALCULATION_LITERAL)  # 设置按钮字
         instance_main_win_signal.set_start_button_state.emit(True)  # 启用按钮

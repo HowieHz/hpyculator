@@ -1,5 +1,3 @@
-import os
-
 RAW_VERSION = "1.6.1"  # todo 发布的时候改版本号 和更新日志
 
 if "w" in RAW_VERSION:

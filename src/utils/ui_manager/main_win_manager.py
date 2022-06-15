@@ -2,6 +2,8 @@ import sys
 import pathlib
 import locale
 import hpyculator as hpyc
+from dataclasses import dataclass
+from typing import Any
 from .. import document as doc
 from ..plugin import instance_plugin_manager  # 插件管理
 from ..calculate import CalculationManager  # 计算管理
@@ -19,6 +21,18 @@ from .about_win_manager import AboutWinApp
 
 # refer to https://github.com/zhiyiYo/PyQt-Frameless-Window
 from ..pyside_frameless_win.framelesswindow import FramelessWindow
+
+
+@dataclass
+class default_widget_state:
+    """
+    settings_key 设置文件键名
+    default_state 初始化状态
+    widget 控件对象
+    """
+    settings_key: str
+    default_state: bool
+    widget: Any
 
 
 class MainWinApp(FramelessWindow):
@@ -72,9 +86,7 @@ class MainWinApp(FramelessWindow):
         # 关于gui显示内容的初始化
         self.flushListChoicesPlugin()
         self.ui.output_box.setPlainText(doc.START_SHOW)  # 开启的展示
-        self.ui.search_plugin.setPlaceholderText(
-            _("输入字符自动进行搜索\n清空搜索框显示全部插件")
-        )  # 灰色背景提示字符
+        self.ui.search_plugin.setPlaceholderText(doc.SEARCH_INPUT_BOX_TIPS)  # 灰色背景提示字符
         self.ui.search_plugin.clear()  # 不清空不显示灰色背景
         self.ui.input_box.setFocus()  # 设置焦点
 
@@ -115,6 +127,14 @@ class MainWinApp(FramelessWindow):
     def bindSignalWithSlots(self) -> None:
         """绑定信号和槽"""
 
+        # self.ui.___ACTION___.triggered.connect(___FUNCTION___)
+        # self.ui.___BUTTON___.clicked.connect(___FUNCTION___)
+        # self.ui.___COMBO_BOX___.currentIndexChanged.connect(___FUNCTION___)
+        # self.ui.___SPIN_BOX___.valueChanged.connect(___FUNCTION___)
+        # 自定义信号.属性名.connect(___FUNCTION___)
+        # my_signal.setProgressBar.connect(self.set_progress_bar)
+        # my_signal.setResult.connect(self.set_result)
+
         def _setOutputBoxCursor(where: str) -> None:  # 目前只有end
             _cursor = self.ui.output_box.textCursor()
             _cursor_state_map = {"end": QTextCursor.End}
@@ -133,34 +153,19 @@ class MainWinApp(FramelessWindow):
 
         instance_main_win_signal.set_output_box_cursor.connect(_setOutputBoxCursor)
 
-    def initCheck(self):
+    def initCheck(self) -> None:
         """
         初始化check box
 
         :return:
         """
+
+        # 初始化控件
         _default_state = (
-            # 0键名 1初始化状态 2对应check控件
-            (
-                "is_save",
-                False,
-                self.ui.check_save
-            ),
-            (
-                "output_optimization",
-                True,
-                self.ui.check_output_optimization,
-            ),
-            (
-                "output_lock_maximums",
-                True,
-                self.ui.check_output_lock_maximums,
-            ),
-            (
-                "auto_wrap",
-                True,
-                self.ui.check_auto_wrap,
-            ),
+            default_widget_state(settings_key="is_save", default_state=False, widget=self.ui.check_save),
+            default_widget_state(settings_key="output_optimization", default_state=True, widget=self.ui.check_output_optimization),
+            default_widget_state(settings_key="output_lock_maximums", default_state=True, widget=self.ui.check_output_lock_maximums),
+            default_widget_state(settings_key="auto_wrap", default_state=True, widget=self.ui.check_auto_wrap),
         )
 
         # 读取设置文件-按钮状态和输出目录  check控件初始化
@@ -172,18 +177,18 @@ class MainWinApp(FramelessWindow):
             )
             if self.is_save_check_box_status:  # 当保存check状态 所要读取和设置的控件 以及这个设置项不存在时的初始化
                 for sequence in _default_state:
-                    if instance_settings_file.exists(sequence[0]):  # 存在这个键就读取
-                        sequence[2].setChecked(
-                            instance_settings_file.read(sequence[0])
+                    if instance_settings_file.exists(sequence.settings_key):  # 存在这个键就读取
+                        sequence.widget.setChecked(
+                            instance_settings_file.read(sequence.settings_key)
                         )  # 根据数据设置选项状态
                     else:  # 不存在就初始化
                         instance_settings_file.add(
-                            key=sequence[0], value=sequence[1]
+                            key=sequence.settings_key, value=sequence.default_state
                         )  # 初始化设置文件中对应的项
-                        sequence[2].setChecked(sequence[1])  # 初始化控件
+                        sequence.widget.setChecked(sequence.default_state)  # 初始化控件
             else:  # 当不保存check状态 设置控件状态
                 for sequence in _default_state:
-                    sequence[2].setChecked(sequence[1])  # 初始化控件
+                    sequence.widget.setChecked(sequence.default_state)  # 初始化控件
         else:
             # 第一遍启动初始化设置
             instance_settings_file.add(
@@ -191,7 +196,7 @@ class MainWinApp(FramelessWindow):
             )  # 默认不保存按键状态
             self.is_save_check_box_status = False  # 默认不保存按键状态
             for sequence in _default_state:
-                sequence[2].setChecked(sequence[1])  # 初始化控件
+                sequence.widget.setChecked(sequence.default_state)  # 初始化控件
 
     def eventStartCalculation(
             self,
@@ -215,33 +220,13 @@ class MainWinApp(FramelessWindow):
         input_data = test_input if test_input else self.ui.input_box.toPlainText()  # 有就录入测试数据 没有就从输入框获取
         # 输入检查
         if input_data == "":  # 是否输入检测
-            self.ui.output_box.setPlainText(
-                _(
-                    """                                                  ↑
-                                                  ↑上面的就是输入框了
-不输要算什么我咋知道要算啥子嘞     ↑
-         → → → → → → → → → →  ↑
-         ↑
-请在上面的框输入需要被处理的数据
-
-如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）"""
-                )
-            )
+            self.ui.output_box.setPlainText(doc.USER_NO_INPUT)
             return
 
         # 选择的插件id
         user_selection_id = test_selection_id if test_selection_id else self.user_selection_id  # 被用户选择的插件，这个插件的id为user_selection_id
         if self.ui.list_choices_plugin.currentItem() is None:  # 是否选择检测
-            self.ui.output_box.setPlainText(
-                _(
-                    """\n\n
-不选要算什么我咋知道要算啥子嘞
-
-请在左侧选择运算核心
-          ↓
-← ← ←"""
-                )
-            )
+            self.ui.output_box.setPlainText(doc.USER_NO_CHOOSE)
             return
 
         # 输入转换类型
@@ -425,9 +410,7 @@ class MainWinApp(FramelessWindow):
 by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else _METADATA['author']}
 
 
-"""
-            + _("使用提示")
-            + f"""\
+{doc.TIPS_FOR_USE_LITERAL}
 {_METADATA["help"]}
 
 {_METADATA["output_end"]}"""

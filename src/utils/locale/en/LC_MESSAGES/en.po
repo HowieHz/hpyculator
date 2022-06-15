@@ -1,0 +1,245 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2022-06-15 18:01+0800\n"
+"PO-Revision-Date: 2022-06-15 18:09+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Generator: Poedit 3.1\n"
+
+#: __init__.py:23
+msgid "此为AGPL协议的开源项目"
+msgstr "This is an open source project of the AGPL license"
+
+#: __init__.py:24
+msgid "项目地址："
+msgstr "Project Address:"
+
+#: __init__.py:25
+msgid "软件文档："
+msgstr "Documentation:"
+
+#: __init__.py:28
+msgid "高拓展性计算器"
+msgstr "high extensibility calculator"
+
+#: __init__.py:30
+msgid ""
+"作者：HowieHz\n"
+"\n"
+"使用方法：\n"
+"    首先选择你要计算的东西\n"
+"    然后在上方输入框输入你要计算的项数（行数）\n"
+"    之后在左侧选择计算核心\n"
+"\n"
+"使用前必读：\n"
+"    0.建议保存到文件，这样不会内屏输出导致卡死，再不济也开"
+"启输出优化\n"
+"    1.“保存”会将结果保存到程序所在目录下 \"Output\" 文件夹"
+"内\n"
+"    2.设置行(项)数较大请选择保存到文件，运算时间较长，可以"
+"通过查看任务管理器确认程序是否假死，不同插件性能（读写性能"
+"和运算性能）不同\n"
+"    3.默认插件保存位置为程序同目录下的 \"Plugin\" 文件夹"
+"内，可通过设置页面打开\n"
+"    4.输入\" :tag \"进入tag搜索模式，如\" :tag 我是tag1 我"
+"是tag2 我是tag3 \"，查看可用tag请下拉\n"
+"\n"
+"交流群694413711，欢迎反馈bug，提出建议\n"
+"\n"
+"已在github开源：\n"
+"    地址：https://github.com/HowieHz/hpyculator\n"
+"    软件文档：https:///hpyculator.readthedocs.io/\n"
+"\n"
+"hpyculator的名字来历：\n"
+"    high extensibility calculator base on python\n"
+"\n"
+"可用tag："
+msgstr ""
+"Author: HowieHz\n"
+"\n"
+"Usage.\n"
+"    First select what you want to calculate\n"
+"    Then enter the number of items (rows) you want to "
+"calculate in the input box above\n"
+"    After that select the calculation core on the left "
+"side\n"
+"\n"
+"Must read before use.\n"
+"    0.It is recommended to save to a file, so that the "
+"inner screen output does not lead to jamming, and then "
+"not to turn on the output optimization\n"
+"    1.\"Save\" will save the results to the \"Output\" "
+"folder in the program directory\n"
+"    2.Set the number of lines (items) is larger, please "
+"choose to save to a file, computing time is longer, you "
+"can check the task manager to confirm whether the program "
+"false death, different plug-in performance (read and "
+"write performance and computing performance) different\n"
+"    3.The default plug-in save location for the program "
+"in the same directory of the \"Plugin\" folder, can be "
+"opened through the settings page\n"
+"    4.Enter \" :tag\" to enter the tag search mode, such "
+"as \" :tag I am tag1 I am tag2 I am tag3\", to see the "
+"available tags please scroll down\n"
+"\n"
+"Exchange group 694413711, welcome feedback bugs, "
+"suggestions\n"
+"\n"
+"Has been in the github open source: the\n"
+"    Address: https://github.com/HowieHz/hpyculator\n"
+"    Software documentation: https:///hpyculator."
+"readthedocs.io/\n"
+"\n"
+"The name of hpyculator comes from.\n"
+"    high extensibility calculator base on python\n"
+"\n"
+"Available tags."
+
+#: __init__.py:69
+msgid ""
+"                                                  ↑\n"
+"                                                  ↑上面的"
+"就是输入框了\n"
+"不输要算什么我咋知道要算啥子嘞     ↑\n"
+"         → → → → → → → → → →  ↑\n"
+"         ↑\n"
+"请在上面的框输入需要被处理的数据\n"
+"\n"
+"如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω "
+"·）"
+msgstr ""
+"Please enter the data you want to process\n"
+"If you forget the input format, just select the plugin "
+"again and it will be displayed（· ω ·）"
+
+#: __init__.py:78
+msgid ""
+"\n"
+"\n"
+"\n"
+"不选要算什么我咋知道要算啥子嘞\n"
+"\n"
+"请在左侧选择运算核心\n"
+"          ↓\n"
+"← ← ←"
+msgstr ""
+"\n"
+"Please select a plugin"
+
+#: __init__.py:85
+msgid "使用提示"
+msgstr "Tips"
+
+#: __init__.py:86
+msgid ""
+"输入字符自动进行搜索\n"
+"清空搜索框显示全部插件"
+msgstr ""
+"Enter characters to search automatically\n"
+"Clear the search box to display all plugins"
+
+#: __init__.py:87
+msgid "设置"
+msgstr "Setting"
+
+#: __init__.py:88
+msgid "版本"
+msgstr "version"
+
+#: __init__.py:89
+msgid "保存完成"
+msgstr "Save complete"
+
+#: __init__.py:90
+msgid ""
+"保存完成\n"
+"部分设置将在重新启动后生效"
+msgstr ""
+"Save complete\n"
+"Some settings will take effect after a restart"
+
+#: __init__.py:91
+msgid "关于 hpyculator"
+msgstr "About hpyculator"
+
+#: __init__.py:92
+msgid "开屏介绍"
+msgstr "Introduction"
+
+#: __init__.py:93
+msgid "更新日志"
+msgstr "Changelog"
+
+#: __init__.py:94
+msgid "关于"
+msgstr "About"
+
+#: __init__.py:95
+msgid "检查更新"
+msgstr "Get the latest version"
+
+#: __init__.py:96
+msgid ""
+"输入转换发生错误:%s \n"
+"\n"
+"请检查输入格式"
+msgstr ""
+"Input conversion error：%s \n"
+"\n"
+"Please check the input format"
+
+#: __init__.py:97
+msgid ""
+"\n"
+"\n"
+"输出上限：检测到输出数据过大，请使用保存到文件防止卡死"
+msgstr ""
+"\n"
+"\n"
+"Upper output limit: it is detected that the output data "
+"is too large. Please use save to file"
+
+#: __init__.py:98
+msgid "计算程序正在运行中，请耐心等待"
+msgstr "The computing program is running, please wait"
+
+#: __init__.py:99
+msgid "本次计算+保存花费了"
+msgstr "This calculation + saving cost"
+
+#: __init__.py:100
+msgid "本次计算+输出花费了"
+msgstr "This calculation + output cost"
+
+#: __init__.py:101
+msgid "已启用输出优化"
+msgstr "Output optimization enabled"
+
+#: __init__.py:102
+msgid "已保存在"
+msgstr "Saved in"
+
+#: __init__.py:103
+msgid ""
+"插件运算发生错误：%s \n"
+"\n"
+"请检查输入格式"
+msgstr ""
+"Plugin error:%s\n"
+"\n"
+"Please check the input format"
+
+#: __init__.py:104
+msgid "计算"
+msgstr "calculation"

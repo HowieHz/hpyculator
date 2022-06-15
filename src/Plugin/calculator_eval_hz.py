@@ -1,5 +1,4 @@
 import hpyculator as hpyc
-import ast
 from math import *
 
 NAME = "计算器(基于eval)"
