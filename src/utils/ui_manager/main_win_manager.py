@@ -38,7 +38,7 @@ class default_widget_state:
 
 class MainWinApp(FramelessWindow):
     def __init__(
-        self, setting_file_path, output_dir_path, plugin_dir_path, background_dir_path
+            self, setting_file_path, output_dir_path, plugin_dir_path, background_dir_path
     ):
         """
         主窗口程序类
@@ -147,21 +147,13 @@ class MainWinApp(FramelessWindow):
             self.ui.output_box.setTextCursor(_cursor)
 
         # 自定义信号绑定函数
-        instance_main_win_signal.append_output_box.connect(
-            self.ui.output_box.appendPlainText
-        )
+        instance_main_win_signal.append_output_box.connect(self.ui.output_box.appendPlainText)
         instance_main_win_signal.set_output_box.connect(self.ui.output_box.setPlainText)
         instance_main_win_signal.clear_output_box.connect(self.ui.output_box.clear)
-        instance_main_win_signal.get_output_box.connect(
-            lambda: hpyc.setOutPutData(self.ui.output_box.toPlainText())
-        )
+        instance_main_win_signal.get_output_box.connect(lambda: hpyc.setOutPutData(self.ui.output_box.toPlainText()))
 
-        instance_main_win_signal.set_start_button_text.connect(
-            self.ui.button_start.setText
-        )
-        instance_main_win_signal.set_start_button_state.connect(
-            self.ui.button_start.setEnabled
-        )
+        instance_main_win_signal.set_start_button_text.connect(self.ui.button_start.setText)
+        instance_main_win_signal.set_start_button_state.connect(self.ui.button_start.setEnabled)
 
         instance_main_win_signal.set_output_box_cursor.connect(_setOutputBoxCursor)
 
@@ -175,7 +167,9 @@ class MainWinApp(FramelessWindow):
         # 初始化控件
         _default_state = (
             default_widget_state(
-                settings_key="is_save", default_state=False, widget=self.ui.check_save
+                settings_key="is_save",
+                default_state=False,
+                widget=self.ui.check_save
             ),
             default_widget_state(
                 settings_key="output_optimization",
@@ -226,12 +220,12 @@ class MainWinApp(FramelessWindow):
                 sequence.widget.setChecked(sequence.default_state)  # 初始化控件
 
     def eventStartCalculation(
-        self,
-        test_input=None,
-        test_input_mode=None,
-        test_calculation_mode=None,
-        test_selection_id=None,
-        test_output_dir_path=None,
+            self,
+            test_input=None,
+            test_input_mode=None,
+            test_calculation_mode=None,
+            test_selection_id=None,
+            test_output_dir_path=None,
     ) -> None:
         """
         输入检查，启动计算线程
@@ -516,8 +510,8 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         :return: None
         """
         if (
-            self.ui.check_output_optimization.isChecked()
-            and self.is_save_check_box_status
+                self.ui.check_output_optimization.isChecked()
+                and self.is_save_check_box_status
         ):  # 保存check设置 并且是True选择
             instance_settings_file.modify("output_optimization", True)
             return
@@ -526,9 +520,9 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         self.ui.check_output_lock_maximums.setChecked(False)
         if self.is_save_check_box_status:  # 保存check设置
             (
-                instance_settings_file.modify("output_lock_maximums", False).modify(
-                    "output_optimization", False
-                )
+                instance_settings_file
+                    .modify("output_lock_maximums", False)
+                    .modify("output_optimization", False)
             )
 
     def eventOutputLockMaximumsCheck(self) -> None:
@@ -538,8 +532,8 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         :return: None
         """
         if (
-            not self.ui.check_output_lock_maximums.isChecked()
-            and self.is_save_check_box_status
+                not self.ui.check_output_lock_maximums.isChecked()
+                and self.is_save_check_box_status
         ):  # 保存check设置 并且是False选择
             instance_settings_file.modify("output_lock_maximums", False)
             return
@@ -548,9 +542,9 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         self.ui.check_output_optimization.setChecked(True)
         if self.is_save_check_box_status:  # 保存check设置
             (
-                instance_settings_file.modify("output_optimization", True).modify(
-                    "output_lock_maximums", True
-                )
+                instance_settings_file
+                    .modify("output_optimization", True)
+                    .modify("output_lock_maximums", True)
             )
 
     def eventAutoWrapCheck(self) -> None:
