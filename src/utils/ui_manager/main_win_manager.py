@@ -143,13 +143,13 @@ class MainWinApp(FramelessWindow):
             self.ui.output_box.setTextCursor(_cursor)
 
         # 自定义信号绑定函数
-        instance_main_win_signal.append_output_box.connect(lambda msg: self.ui.output_box.appendPlainText(msg))
-        instance_main_win_signal.set_output_box.connect(lambda msg: self.ui.output_box.setPlainText(msg))
-        instance_main_win_signal.clear_output_box.connect(lambda: self.ui.output_box.clear())
+        instance_main_win_signal.append_output_box.connect(self.ui.output_box.appendPlainText)
+        instance_main_win_signal.set_output_box.connect(self.ui.output_box.setPlainText)
+        instance_main_win_signal.clear_output_box.connect(self.ui.output_box.clear)
         instance_main_win_signal.get_output_box.connect(lambda: hpyc.setOutPutData(self.ui.output_box.toPlainText()))
 
-        instance_main_win_signal.set_start_button_text.connect(lambda msg: self.ui.button_start.setText(msg))
-        instance_main_win_signal.set_start_button_state.connect(lambda state: self.ui.button_start.setEnabled(state))
+        instance_main_win_signal.set_start_button_text.connect(self.ui.button_start.setText)
+        instance_main_win_signal.set_start_button_state.connect(self.ui.button_start.setEnabled)
 
         instance_main_win_signal.set_output_box_cursor.connect(_setOutputBoxCursor)
 
