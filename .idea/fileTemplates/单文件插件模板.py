@@ -29,5 +29,6 @@ PLUGIN_METADATA = {
     "fullwidth_symbol" : hpyc.OFF  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
     }
 
+
 def on_calculate(data,do_what:str):
     output = hpyc.output if do_what == "output" else hpyc.write  # 输出内容只需要用output就好了

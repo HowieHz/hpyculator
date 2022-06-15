@@ -18,11 +18,13 @@ class SettingsWinApp(QDialog):
         self.ui = Ui_SettingsWin()  # 实例化ui
         self.ui.setupUi(self)  # 初始化ui，不初始化不显示
 
-        self.setWindowTitle(f"{doc.SETTINGS_LITERAL} Hpyculator {doc.VERSION_LITERAL}{VERSION}")  # 设置标题
+        self.setWindowTitle(
+            f"{doc.SETTINGS_LITERAL} Hpyculator {doc.VERSION_LITERAL}{VERSION}")  # 设置标题
 
         if instance_settings_file.exists("output_dir_path"):
             # 读取目录设置
-            self.OUTPUT_DIR_PATH = instance_settings_file.read("output_dir_path")
+            self.OUTPUT_DIR_PATH = instance_settings_file.read(
+                "output_dir_path")
             self.ui.output_save_location.setPlainText(self.OUTPUT_DIR_PATH)
 
         # 读取保存选项状态设置
@@ -68,7 +70,8 @@ class SettingsWinApp(QDialog):
     def eventResetSaveLocation(self):
         """重置保存路径"""
         self.OUTPUT_DIR_PATH = os.path.join(os.getcwd(), "Output")
-        instance_settings_file.modify(key="output_dir_path", value=self.OUTPUT_DIR_PATH)
+        instance_settings_file.modify(
+            key="output_dir_path", value=self.OUTPUT_DIR_PATH)
         self.ui.output_save_location.setPlainText(self.OUTPUT_DIR_PATH)
 
     def eventChooseBackgroundImg(self, int_):
@@ -84,7 +87,8 @@ class SettingsWinApp(QDialog):
 
         :return:
         """
-        os.system(f'explorer {instance_settings_file.read("background_img_dir_path")}')
+        os.system(
+            f'explorer {instance_settings_file.read("background_img_dir_path")}')
 
     @staticmethod
     def eventOpenPluginDir():

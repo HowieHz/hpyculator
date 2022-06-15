@@ -1,4 +1,5 @@
 import hpyculator as hpyc
+from typing import Optional
 
 NAME = "高精度浮点数加法(基于字符串)"
 AUTHOR = "HowieHz"
@@ -33,7 +34,7 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(data: str):  # 输出到框体内
+def on_calculate(data: str) -> Optional[str, None]:  # 输出到框体内
     """计算函数"""
     try:
         if "," in data:
@@ -44,7 +45,7 @@ def on_calculate(data: str):  # 输出到框体内
             a, b = data.split()
     except ValueError:
         hpyc.output("请按格式输入！！！")
-        return
+        return None
     point_a = a.find(".")  # 获得a的小数点的索引
     if point_a == -1:
         point_a = len(a)

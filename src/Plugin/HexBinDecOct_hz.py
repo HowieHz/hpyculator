@@ -23,8 +23,7 @@ PLUGIN_METADATA = {
     8,10
     8
     10，2 
-    10 2
-                    """,
+    10 2""",
     "output_end": "",
     "return_mode": hpyc.NO_RETURN_SINGLE_FUNCTION,
     "fullwidth_symbol": hpyc.OFF,
