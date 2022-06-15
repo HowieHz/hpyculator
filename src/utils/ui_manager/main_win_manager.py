@@ -365,7 +365,10 @@ class MainWinApp(FramelessWindow):
 
         :return:
         """
-        self.showNormal() if self.isMaximized() else self.showMaximized()
+        if self.isMaximized():
+            self.showNormal()
+        else:
+            self.showMaximized()
 
     def mouseDoubleClickEvent(self, event) -> None:
         """
