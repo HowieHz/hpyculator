@@ -14,6 +14,13 @@ v1.6.2(草稿)
         迁移到3.10
         修改写法(if elif -> match case)
         优化嵌套结构
+    Changed
+        常量名修改:
+            hpyc.RETURN_LIST -> hpyc.RETURN_ITERABLE
+            hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE -> hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE
+    Deprecated
+        hpyc.RETURN_LIST
+        hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE
 
 20220611
 v1.6.1 

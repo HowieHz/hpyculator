@@ -7,8 +7,8 @@
 
 Example1:当``return_mode`` 为
 RETURN_ONCE,
-RETURN_LIST,
-RETURN_LIST_OUTPUT_IN_ONE_LINE,
+RETURN_ITERABLE,
+RETURN_ITERABLE_OUTPUT_IN_ONE_LINE,
 需要完成 ``on_calculate`` 函数
 
 Example2:当``return_mode`` ,NO_RETURN为完成 ``on_calculate`` 和 ``on_calculate_with_save`` 函数
