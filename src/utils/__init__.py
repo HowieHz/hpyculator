@@ -1,6 +1,5 @@
 """运行主程序和主程序的一些初始化"""
 import os
-from typing import Optional
 
 # from .log import LogManager  # 日志管理 初始化
 from .plugin import instance_plugin_manager  # 插件管理
@@ -11,7 +10,7 @@ from .ui_manager import MainWinApp  # 窗口管理类（用于管理设置的窗
 class CreateApp:
     """运行主程序和主程序的一些初始化"""
 
-    def __init__(self, instance_num: Optional[int] = 1):
+    def __init__(self, instance_num: int = 1):
         """
         创建app
 

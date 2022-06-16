@@ -35,7 +35,7 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(data: str) -> Optional[str, None]:  # 输出到框体内
+def on_calculate(data: str) -> Optional[str]:  # 输出到框体内
     """计算函数"""
     try:
         if "," in data:

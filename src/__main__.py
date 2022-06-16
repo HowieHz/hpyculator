@@ -56,9 +56,6 @@ if __name__ == "__main__":
 # list_ 列表特别标识
 # dict_ 字典特别标识
 
-# 吐槽
-# numba jax感觉两个差不多都用不了（但是插件可以用）
-#
 # 控件名命名规范v1.0.0
 # 按钮 button_功能
 # 输入输出框 input_/output_功能
