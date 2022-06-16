@@ -72,19 +72,18 @@ if __name__ == "__main__":
 # 初始化： a+open  然后初始化单项
 # 修改： load 修改 w+open dump
 # 初始化第二种： load 修改（因为是字典，不存在的项会自动初始化） w+open dump
-"""
-category
-computer_language
-depend
 
-author
-id
-version
-
-给插件加tag
-数学计算Mathematical calculations
-物理计算Physical computations
-换算工具Unit conversion
-还有其他Other
-category:Mathematical calculations
-"""
+# category
+# computer_language
+# depend
+#
+# author
+# id
+# version
+#
+# 给插件加tag
+# 数学计算Mathematical calculations
+# 物理计算Physical computations
+# 换算工具Unit conversion
+# 还有其他Other
+# category:Mathematical calculations
