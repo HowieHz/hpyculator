@@ -77,12 +77,12 @@ def on_calculate(inp: str):
         listc = range(a, b + 1)
         for i in listc:
             list_data.append(i)
-        for i in range(0, len(list)):
+        for i in range(0, len(listc)):
             q = int(list_data[i]) // 100  # 百位
             w = int(list_data[i]) // 10 % 10  # 十位
             e = int(list_data[i]) % 10  # 个位
             list_data[i] = str(q) + "." + str(w) + "." + str(e)
-        return list
+        return list_data
 
     aq, aw, ae = map(int, a.split("."))
     bq, bw, be = map(int, b.split("."))
