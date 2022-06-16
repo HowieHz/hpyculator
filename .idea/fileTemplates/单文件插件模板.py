@@ -30,5 +30,5 @@ PLUGIN_METADATA = {
     }
 
 
-def on_calculate(data,do_what:str):
+def on_calculate(data, do_what: str):
     output = hpyc.output if do_what == "output" else hpyc.write  # 输出内容只需要用output就好了
