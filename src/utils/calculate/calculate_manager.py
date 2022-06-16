@@ -16,17 +16,18 @@ from ..plugin import instance_plugin_manager
 # from multiprocessing import Process
 # TODO 用了多进程之后main_win_signal的实例化效果消失
 
+
 class CalculationManager:
     def __init__(self):
         """计算管理"""
 
     def start(
-            self,
-            inputbox_data: str,
-            plugin_attribute_input_mode: int,
-            calculation_mode: str,
-            user_selection_id: str,
-            output_dir_path: str,
+        self,
+        inputbox_data: str,
+        plugin_attribute_input_mode: int,
+        calculation_mode: str,
+        user_selection_id: str,
+        output_dir_path: str,
     ):
         """
         启动计算线程
@@ -39,8 +40,7 @@ class CalculationManager:
         :return:
         """
         # 输入转换
-        inputbox_data = self.typeConversion(
-            plugin_attribute_input_mode, inputbox_data)
+        inputbox_data = self.typeConversion(plugin_attribute_input_mode, inputbox_data)
         if inputbox_data is None:  # 转换发生错误
             return None
 
@@ -74,7 +74,8 @@ class CalculationManager:
                     data = None  # 缺省 转换不存在的类型就none
         except Exception as e:
             instance_main_win_signal.set_output_box.emit(
-                doc.TYPE_CONVERSION_ERROR_LITERAL % str(e))
+                doc.TYPE_CONVERSION_ERROR_LITERAL % str(e)
+            )
             traceback.print_exc()
             return None  # 缺省 转换错误就none
         return data
@@ -82,11 +83,11 @@ class CalculationManager:
 
 class CalculationThread(Thread):
     def __init__(
-            self,
-            inputbox_data: Any,
-            calculation_mode: str,
-            user_selection_id: str,
-            output_dir_path: str,
+        self,
+        inputbox_data: Any,
+        calculation_mode: str,
+        user_selection_id: str,
+        output_dir_path: str,
     ):
         """
         计算线程
@@ -190,7 +191,7 @@ class CalculationThread(Thread):
             """
             calculate_fun = selected_plugin.on_calculate
             with tempfile.TemporaryFile(
-                    "w+t", encoding="utf-8", errors="ignore"
+                "w+t", encoding="utf-8", errors="ignore"
             ) as filestream:
                 time_before_calculate = time.perf_counter_ns()  # 储存开始时间
 
@@ -214,24 +215,22 @@ class CalculationThread(Thread):
                             calculate_fun(inputbox_data, "save")
                         case hpyc.NO_RETURN:
                             hpyc.setIoInstance(filestream)
-                            selected_plugin.on_calculate_with_save(
-                                inputbox_data)
+                            selected_plugin.on_calculate_with_save(inputbox_data)
                         case _:
                             pass
                 finally:
                     filestream.seek(0)  # 将文件指针移到开始处，准备读取文件
                     if limit:
                         for times, line in enumerate(_quickTraverseFile(filestream)):
-                            instance_main_win_signal.append_output_box.emit(
-                                line)
+                            instance_main_win_signal.append_output_box.emit(line)
                             if times >= 128:
                                 instance_main_win_signal.append_output_box.emit(
-                                    doc.REACHED_OUTPUT_LIMIT_LITERAL)
+                                    doc.REACHED_OUTPUT_LIMIT_LITERAL
+                                )
                                 break
                     else:
                         for line in _quickTraverseFile(filestream):
-                            instance_main_win_signal.append_output_box.emit(
-                                line)
+                            instance_main_win_signal.append_output_box.emit(line)
 
             return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
 
@@ -244,11 +243,13 @@ class CalculationThread(Thread):
             :return: 读取到的字节
             """
             for chunk in iter(
-                    partial(file.read, chunk_size), ""
+                partial(file.read, chunk_size), ""
             ):  # 用readline的话，读到换行符就会直接停止读取，不会读取到8192B，会增加读取次数
                 yield chunk
 
-        def _outputSpentTime(time_spent_ns: int = 0, prefix: str = "", suffix: str = ""):
+        def _outputSpentTime(
+            time_spent_ns: int = 0, prefix: str = "", suffix: str = ""
+        ):
             """
 
             :param time_spent_ns: 所花费的时间（单位ns）
@@ -267,7 +268,8 @@ class CalculationThread(Thread):
 
         # ------------------------------------------这些ui逻辑需外移
         instance_main_win_signal.set_start_button_text.emit(
-            doc.CALCULATION_PROGRAM_IS_RUNNING_LITERAL)
+            doc.CALCULATION_PROGRAM_IS_RUNNING_LITERAL
+        )
         instance_main_win_signal.set_start_button_state.emit(False)  # 防止按钮反复触发
         instance_main_win_signal.clear_output_box.emit()  # 清空输出框
         plugin_attribute_return_mode = plugin_attributes["return_mode"]
@@ -277,27 +279,40 @@ class CalculationThread(Thread):
                     filename = f"{datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S')} {plugin_attributes['save_name']}{str(inputbox_data)}{plugin_attributes['quantifier']}"
 
                     filepath_name = os.path.join(
-                        self.output_dir_path, f"{filename}.txt")
+                        self.output_dir_path, f"{filename}.txt"
+                    )
                     time_spent = _calculateWithSave(filepath_name)
-                    _outputSpentTime(time_spent, doc.THIS_CALCULATION_AND_SAVING_TOOK_LITERAL,
-                                     f"{doc.SAVED_IN_LITERAL} {filepath_name}")  # 输出本次计算时间
+                    _outputSpentTime(
+                        time_spent,
+                        doc.THIS_CALCULATION_AND_SAVING_TOOK_LITERAL,
+                        f"{doc.SAVED_IN_LITERAL} {filepath_name}",
+                    )  # 输出本次计算时间
                 case "calculate_o":
                     time_spent = _calculateWithOutputOptimization(limit=False)
-                    _outputSpentTime(time_spent, doc.THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL,
-                                     doc.OUTPUT_OPTIMIZATION_ENABLED_LITERAL)  # 输出本次计算时间
+                    _outputSpentTime(
+                        time_spent,
+                        doc.THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL,
+                        doc.OUTPUT_OPTIMIZATION_ENABLED_LITERAL,
+                    )  # 输出本次计算时间
                 case "calculate_o_l":
                     time_spent = _calculateWithOutputOptimization(limit=True)
-                    _outputSpentTime(time_spent, doc.THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL,
-                                     doc.OUTPUT_OPTIMIZATION_ENABLED_LITERAL)  # 输出本次计算时间
+                    _outputSpentTime(
+                        time_spent,
+                        doc.THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL,
+                        doc.OUTPUT_OPTIMIZATION_ENABLED_LITERAL,
+                    )  # 输出本次计算时间
                 case "calculate":
                     time_spent = _baseCalculate()
                     _outputSpentTime(
-                        time_spent, doc.THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL)  # 输出本次计算时间
+                        time_spent, doc.THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL
+                    )  # 输出本次计算时间
         except Exception as e:
             instance_main_win_signal.set_output_box.emit(
-                doc.PLUGIN_CALCULATION_ERROR_LITERAL % str(e))
+                doc.PLUGIN_CALCULATION_ERROR_LITERAL % str(e)
+            )
             traceback.print_exc()
         instance_main_win_signal.set_output_box_cursor.emit("end")  # 光标设到文本框尾部
         instance_main_win_signal.set_start_button_text.emit(
-            doc.CALCULATION_LITERAL)  # 设置按钮字
+            doc.CALCULATION_LITERAL
+        )  # 设置按钮字
         instance_main_win_signal.set_start_button_state.emit(True)  # 启用按钮
