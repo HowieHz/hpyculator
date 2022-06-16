@@ -1,9 +1,10 @@
-from .. import document as doc
-from ..ui import Ui_AboutWin
 import webbrowser
 
 # pyside6
 from PySide6.QtWidgets import QDialog
+
+from .. import document as doc
+from ..ui import Ui_AboutWin
 
 
 class AboutWinApp(QDialog):

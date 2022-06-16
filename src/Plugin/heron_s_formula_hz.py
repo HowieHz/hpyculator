@@ -51,8 +51,7 @@ def on_calculate(inp: str, do_what):
     s = (p * (p - a) * (p - b) * (p - c)) ** 0.5
     if do_what == "output":
         hpyc.output(
-            "以" + str(a) + "," + str(b) + "," +
-            str(c) + "为边长的三角形的面积是:\n" + str(s)
+            "以" + str(a) + "," + str(b) + "," + str(c) + "为边长的三角形的面积是:\n" + str(s)
         )
     if do_what == "save":
         hpyc.write(str(s))

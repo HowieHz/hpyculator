@@ -1,5 +1,6 @@
-import hpyculator as hpyc
 from typing import Optional
+
+import hpyculator as hpyc
 
 NAME = "高精度浮点数加法(基于字符串)"
 AUTHOR = "HowieHz"
@@ -54,8 +55,8 @@ def on_calculate(data: str) -> Optional[str, None]:  # 输出到框体内
         point_b = len(b)
     integer_a = a[:point_a]
     integer_b = b[:point_b]
-    fractional_a = a[point_a + 1:]
-    fractional_b = b[point_b + 1:]
+    fractional_a = a[point_a + 1 :]
+    fractional_b = b[point_b + 1 :]
 
     # 整数补齐
     if len(integer_a) > len(integer_b):  # a的整数部分比较长，所以补b的整数部分

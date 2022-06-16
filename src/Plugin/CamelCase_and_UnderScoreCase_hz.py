@@ -68,8 +68,7 @@ def on_calculate(data, todo):
         text_uppercase_index.append(len(text_list_single))
         before_uppercase_index = 0
         for uppercase_index in text_uppercase_index:
-            word = "".join(
-                text_list_single[before_uppercase_index:uppercase_index])
+            word = "".join(text_list_single[before_uppercase_index:uppercase_index])
             text_list.append(word)
             before_uppercase_index = uppercase_index
     elif input_mode == "2":
@@ -84,8 +83,7 @@ def on_calculate(data, todo):
         text_uppercase_index.append(len(text_list_single))
         before_uppercase_index = 0
         for uppercase_index in text_uppercase_index:
-            word = "".join(
-                text_list_single[before_uppercase_index:uppercase_index])
+            word = "".join(text_list_single[before_uppercase_index:uppercase_index])
             text_list.append(word)
             before_uppercase_index = uppercase_index
         if text_list[0] == "":

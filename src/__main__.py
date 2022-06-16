@@ -4,13 +4,16 @@
 # import jpype
 import argparse
 import dbm
-import hpyculator
-import sys
-from PySide6.QtWidgets import QApplication
-from utils import CreateApp
 
 # locale
 import gettext
+import sys
+
+import hpyculator
+from PySide6.QtWidgets import QApplication
+
+from utils import CreateApp
+
 #  from utils.ui_manager.test_window_effect import testWinApp
 # pyside6导入
 # from utils.ui import main_window_resource_rc

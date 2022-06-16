@@ -1,15 +1,15 @@
 # coding:utf-8
 import os
 from ctypes import POINTER, cast
+from ctypes.wintypes import MSG
 
+import win32api
+import win32gui
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QCursor
 from PySide6.QtWidgets import QWidget
-
-from ctypes.wintypes import MSG
-import win32api
-import win32gui
 from win32.lib import win32con
+
 from ..windoweffect import MINMAXINFO, NCCALCSIZE_PARAMS, WindowEffect
 
 # if os.name == 'nt':

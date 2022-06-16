@@ -1,7 +1,8 @@
 """太好了，pj共荣"""
 import os
-import jpype
+
 import hpyculator as hpyc
+import jpype
 
 NAME = "高精度浮点数加法(基于Java)"
 VERSION = "V1.0.3"

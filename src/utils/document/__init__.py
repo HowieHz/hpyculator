@@ -1,8 +1,8 @@
-from . import tags
-from . import version
 import gettext
-import os
 import locale
+import os
+
+from . import tags, version
 
 # todo ui-i18n
 # how to locale 从py生成pot文件
@@ -18,15 +18,22 @@ import locale
 # languages	语言列表 不提供则在环境变量找 ‘LANGUAGE’, ‘LC_ALL’, ‘LC_MESSAGES’, ‘LANG’，找不到返回空列表
 # print(os.path.abspath(os.path.join(".", "utils", "locale")))
 if locale.getdefaultlocale()[0] == "zh_CN":
-    def _(_): return _
+
+    def _(_):
+        return _
+
 else:
     try:
         t = gettext.translation(
-            domain="i18n", localedir=os.path.join(".", "utils", "locale"))
+            domain="i18n", localedir=os.path.join(".", "utils", "locale")
+        )
         _ = t.gettext
     except FileNotFoundError:
-        t = gettext.translation(domain="i18n", localedir=os.path.join(
-            ".", "utils", "locale"), languages=['en'])
+        t = gettext.translation(
+            domain="i18n",
+            localedir=os.path.join(".", "utils", "locale"),
+            languages=["en"],
+        )
         _ = t.gettext
 # https://docs.python.org/zh-cn/3/library/gettext.html#internationalizing-your-programs-and-modules
 
@@ -79,21 +86,25 @@ CHANGELOG = """\
 https://hpyculator.readthedocs.io/
 """
 
-USER_NO_INPUT = _("""                                                  ↑
+USER_NO_INPUT = _(
+    """                                                  ↑
                                                   ↑上面的就是输入框了
 不输要算什么我咋知道要算啥子嘞     ↑
          → → → → → → → → → →  ↑
          ↑
 请在上面的框输入需要被处理的数据
 
-如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）""")
+如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）"""
+)
 
-USER_NO_CHOOSE = _("""\n\n
+USER_NO_CHOOSE = _(
+    """\n\n
 不选要算什么我咋知道要算啥子嘞
 
 请在左侧选择运算核心
           ↓
-← ← ←""")
+← ← ←"""
+)
 
 TIPS_FOR_USE_LITERAL = _("使用提示")
 SEARCH_INPUT_BOX_TIPS = _("输入字符自动进行搜索\n清空搜索框显示全部插件")

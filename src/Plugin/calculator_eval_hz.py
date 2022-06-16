@@ -1,5 +1,6 @@
-import hpyculator as hpyc
 from math import *
+
+import hpyculator as hpyc
 
 NAME = "计算器(基于eval)"
 AUTHOR = "HowieHz" or ["作者1", "作者2"]
