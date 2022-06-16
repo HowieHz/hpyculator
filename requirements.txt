@@ -6,4 +6,4 @@ toml
 numba
 numpy
 pyyaml
-
+black

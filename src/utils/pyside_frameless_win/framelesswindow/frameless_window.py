@@ -36,7 +36,7 @@ class FramelessWindowBase(QWidget):
 
     def _isWindowMaximized(self, hWnd):
         """Determine whether the window is maximized"""
-        return self.isMaximized()
+        return self.isMaximizWed()
 
 
 class WindowsFramelessWindow(FramelessWindowBase):
