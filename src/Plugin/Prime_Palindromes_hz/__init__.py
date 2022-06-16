@@ -1,6 +1,7 @@
 """打表法，空间换时间"""
-import hpyculator as hpyc
 import math
+
+import hpyculator as hpyc
 
 NAME = "回文质数"
 VERSION = "V2.0.0"

@@ -1,9 +1,11 @@
-from ..utils.calculate import CalculationManager
-from ..utils import CreateApp
-import hpyculator as hpyc
-import pytest
 import os
 from typing import Any
+
+import hpyculator as hpyc
+import pytest
+
+from ..utils import CreateApp
+from ..utils.calculate import CalculationManager
 
 
 class TestCalculationManager:

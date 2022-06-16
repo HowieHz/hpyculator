@@ -1,7 +1,8 @@
 """打表法，空间换时间"""
+import math
+
 import hpyculator as hpyc
 import numba
-import math
 
 NAME = "回文质数(使用即时编译技术)"
 VERSION = "V2.0.0"

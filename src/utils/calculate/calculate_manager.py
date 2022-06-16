@@ -1,16 +1,17 @@
-import os
-import time
 import datetime
+import os
 import tempfile
+import time
 import traceback
-import hpyculator as hpyc
-from threading import Thread
 from functools import partial  # 偏函数真好用
+from threading import Thread
 from typing import Any, Iterator
-from ..plugin import instance_plugin_manager
-from hpyculator.hpysignal import instance_main_win_signal
-from .. import document as doc
 
+import hpyculator as hpyc
+from hpyculator.hpysignal import instance_main_win_signal
+
+from .. import document as doc
+from ..plugin import instance_plugin_manager
 
 # from multiprocessing import Process
 # TODO 用了多进程之后main_win_signal的实例化效果消失

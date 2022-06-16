@@ -1,6 +1,7 @@
-import numba
-import hpyculator as hpyc
 from decimal import Decimal
+
+import hpyculator as hpyc
+import numba
 
 NAME = "是质数吗？(是素数吗？)"
 AUTHOR = "HowieHz"

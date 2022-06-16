@@ -18,9 +18,9 @@ from PySide6.QtCore import (
     QPoint,
     QRect,
     QSize,
+    Qt,
     QTime,
     QUrl,
-    Qt,
 )
 from PySide6.QtGui import (
     QBrush,
@@ -56,6 +56,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+
 from . import main_window_resource_rc
 
 
@@ -332,8 +333,7 @@ class Ui_MainWin(object):
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(1)
-        sizePolicy.setHeightForWidth(
-            self.label_3.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
         self.label_3.setSizePolicy(sizePolicy)
 
         self.horizontalLayout.addWidget(self.label_3)
@@ -384,8 +384,7 @@ class Ui_MainWin(object):
             "}"
         )
         icon1 = QIcon()
-        icon1.addFile(":/ico/icons/setting_icon.png",
-                      QSize(), QIcon.Normal, QIcon.On)
+        icon1.addFile(":/ico/icons/setting_icon.png", QSize(), QIcon.Normal, QIcon.On)
         self.button_setting.setIcon(icon1)
 
         self.horizontalLayout.addWidget(self.button_setting)
@@ -517,8 +516,7 @@ class Ui_MainWin(object):
         sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy5.setHorizontalStretch(3)
         sizePolicy5.setVerticalStretch(2)
-        sizePolicy5.setHeightForWidth(
-            self.input_box.sizePolicy().hasHeightForWidth())
+        sizePolicy5.setHeightForWidth(self.input_box.sizePolicy().hasHeightForWidth())
         self.input_box.setSizePolicy(sizePolicy5)
         self.input_box.setFont(font)
         self.input_box.setStyleSheet("")
@@ -552,8 +550,7 @@ class Ui_MainWin(object):
         sizePolicy6 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy6.setHorizontalStretch(3)
         sizePolicy6.setVerticalStretch(1)
-        sizePolicy6.setHeightForWidth(
-            self.check_save.sizePolicy().hasHeightForWidth())
+        sizePolicy6.setHeightForWidth(self.check_save.sizePolicy().hasHeightForWidth())
         self.check_save.setSizePolicy(sizePolicy6)
         self.check_save.setMinimumSize(QSize(0, 30))
         font1 = QFont()
@@ -573,8 +570,7 @@ class Ui_MainWin(object):
         self.verticalLayout_2.addItem(self.verticalSpacer_7)
 
         self.check_output_lock_maximums = QCheckBox(MainWin)
-        self.check_output_lock_maximums.setObjectName(
-            "check_output_lock_maximums")
+        self.check_output_lock_maximums.setObjectName("check_output_lock_maximums")
         sizePolicy7 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy7.setHorizontalStretch(1)
         sizePolicy7.setVerticalStretch(1)
@@ -598,8 +594,7 @@ class Ui_MainWin(object):
         self.verticalLayout_2.addItem(self.verticalSpacer_6)
 
         self.check_output_optimization = QCheckBox(MainWin)
-        self.check_output_optimization.setObjectName(
-            "check_output_optimization")
+        self.check_output_optimization.setObjectName("check_output_optimization")
         sizePolicy7.setHeightForWidth(
             self.check_output_optimization.sizePolicy().hasHeightForWidth()
         )
@@ -668,8 +663,7 @@ class Ui_MainWin(object):
         sizePolicy9 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy9.setHorizontalStretch(3)
         sizePolicy9.setVerticalStretch(5)
-        sizePolicy9.setHeightForWidth(
-            self.output_box.sizePolicy().hasHeightForWidth())
+        sizePolicy9.setHeightForWidth(self.output_box.sizePolicy().hasHeightForWidth())
         self.output_box.setSizePolicy(sizePolicy9)
         self.output_box.setFont(font)
         self.output_box.setStyleSheet("")
@@ -711,8 +705,7 @@ class Ui_MainWin(object):
     # setupUi
 
     def retranslateUi(self, MainWin):
-        MainWin.setWindowTitle(
-            QCoreApplication.translate("MainWin", "Form", None))
+        MainWin.setWindowTitle(QCoreApplication.translate("MainWin", "Form", None))
         self.label_3.setText("")
         self.button_about.setText("")
         self.button_setting.setText("")
@@ -802,12 +795,10 @@ class Ui_MainWin(object):
             )
         )
         self.check_auto_wrap.setText(
-            QCoreApplication.translate(
-                "MainWin", "\u81ea\u52a8\u6362\u884c", None)
+            QCoreApplication.translate("MainWin", "\u81ea\u52a8\u6362\u884c", None)
         )
         self.button_start.setText(
-            QCoreApplication.translate(
-                "MainWin", "\u5f00\u59cb\u8ba1\u7b97", None)
+            QCoreApplication.translate("MainWin", "\u5f00\u59cb\u8ba1\u7b97", None)
         )
         self.output_box.setPlainText(
             QCoreApplication.translate(
