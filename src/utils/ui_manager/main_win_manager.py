@@ -2,7 +2,7 @@ import locale
 import pathlib
 import sys
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Optional
 
 import hpyculator as hpyc
 from hpyculator.hpysignal import instance_main_win_signal
@@ -56,6 +56,7 @@ class MainWinApp(FramelessWindow):
         self.PLUGIN_DIR_PATH = plugin_dir_path
         self.user_selection_id: str = ""  # 用户选择的插件的文件名（id)
         self.background_dir_path = background_dir_path  # 用于存放背景图片的路径
+        self.is_save_check_box_status: Optional[bool] = None  # 是否保存按键状态
 
         super().__init__()
         self.ui = Ui_MainWin()  # UI类的实例化()
@@ -149,22 +150,24 @@ class MainWinApp(FramelessWindow):
 
         # 自定义信号绑定函数
         instance_main_win_signal.append_output_box.connect(
-            self.ui.output_box.appendPlainText
+            slot=self.ui.output_box.appendPlainText
         )
-        instance_main_win_signal.set_output_box.connect(self.ui.output_box.setPlainText)
-        instance_main_win_signal.clear_output_box.connect(self.ui.output_box.clear)
+        instance_main_win_signal.set_output_box.connect(
+            slot=self.ui.output_box.setPlainText
+        )
+        instance_main_win_signal.clear_output_box.connect(slot=self.ui.output_box.clear)
         instance_main_win_signal.get_output_box.connect(
-            lambda: hpyc.setOutPutData(self.ui.output_box.toPlainText())
+            slot=lambda: hpyc.setOutPutData(self.ui.output_box.toPlainText())
         )
 
         instance_main_win_signal.set_start_button_text.connect(
-            self.ui.button_start.setText
+            slot=self.ui.button_start.setText
         )
         instance_main_win_signal.set_start_button_state.connect(
-            self.ui.button_start.setEnabled
+            slot=self.ui.button_start.setEnabled
         )
 
-        instance_main_win_signal.set_output_box_cursor.connect(_setOutputBoxCursor)
+        instance_main_win_signal.set_output_box_cursor.connect(slot=_setOutputBoxCursor)
 
     def initCheck(self) -> None:
         """
@@ -196,17 +199,17 @@ class MainWinApp(FramelessWindow):
 
         # 读取设置文件-按钮状态和输出目录  check控件初始化
 
-        if instance_settings_file.exists("is_save_check_box_status"):
+        if instance_settings_file.exists(key="is_save_check_box_status"):
             # 是否保存设置
             self.is_save_check_box_status = instance_settings_file.read(
-                "is_save_check_box_status"
+                key="is_save_check_box_status"
             )
             if self.is_save_check_box_status:  # 当保存check状态 所要读取和设置的控件 以及这个设置项不存在时的初始化
                 for sequence in _default_state:
                     # 存在这个键就读取
-                    if instance_settings_file.exists(sequence.settings_key):
+                    if instance_settings_file.exists(key=sequence.settings_key):
                         sequence.widget.setChecked(
-                            instance_settings_file.read(sequence.settings_key)
+                            instance_settings_file.read(key=sequence.settings_key)
                         )  # 根据数据设置选项状态
                     else:  # 不存在就初始化
                         instance_settings_file.add(
@@ -289,7 +292,11 @@ class MainWinApp(FramelessWindow):
         # print("启动计算")
         calculate_manager = CalculationManager()
         calculate_manager.start(
-            input_data, input_mode, calculation_mode, user_selection_id, output_dir_path
+            inputbox_data=input_data,
+            plugin_attribute_input_mode=input_mode,
+            calculation_mode=calculation_mode,
+            user_selection_id=user_selection_id,
+            output_dir_path=output_dir_path,
         )  # 启动计算
         return
 
@@ -300,11 +307,9 @@ class MainWinApp(FramelessWindow):
         :return: None
         """
         self.ui.list_choices_plugin.clear()
-        self.plugin_option_id_dict = (
-            instance_plugin_manager.option_id_dict
-        )  # 选项名映射id（文件或文件夹名）
-        self.selection_list = self.plugin_option_id_dict.keys()  # 选项名列表
-        self.ui.list_choices_plugin.addItems(self.selection_list)  # 选项名添加到ui上
+        self.ui.list_choices_plugin.addItems(
+            instance_plugin_manager.option_id_dict.keys()
+        )  # 选项名添加到ui上 选项名映射id（文件或文件夹名）
 
     def resizeEvent(self, event) -> None:
         """
@@ -335,7 +340,7 @@ class MainWinApp(FramelessWindow):
         except AttributeError:  # 无self.bg_img
             return
 
-        def _adaptBackground(image):
+        def _adaptBackground(image: QPixmap):
             """自适应图片"""
             return image.scaled(
                 self.width(),
@@ -440,7 +445,9 @@ class MainWinApp(FramelessWindow):
         :return: None
         """
         # print(f"选中的选项名{item.text()}")
-        self.user_selection_id = str(self.plugin_option_id_dict[item.text()])  # 转换成ID
+        self.user_selection_id = str(
+            instance_plugin_manager.option_id_dict[item.text()]
+        )  # 转换成ID
         self.selected_plugin_attributes = (
             _METADATA
         ) = instance_plugin_manager.getPluginAttributes(self.user_selection_id)
@@ -507,7 +514,9 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         :return: None
         """
         if self.is_save_check_box_status:  # 保存check设置
-            instance_settings_file.modify("is_save", self.ui.check_save.isChecked())
+            instance_settings_file.modify(
+                key="is_save", value=self.ui.check_save.isChecked()
+            )
 
     def eventOutputOptimizationCheck(self) -> None:
         """
@@ -519,16 +528,16 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             self.ui.check_output_optimization.isChecked()
             and self.is_save_check_box_status
         ):  # 保存check设置 并且是True选择
-            instance_settings_file.modify("output_optimization", True)
+            instance_settings_file.modify(key="output_optimization", value=True)
             return
 
         # 关联最大限制选择项
         self.ui.check_output_lock_maximums.setChecked(False)
         if self.is_save_check_box_status:  # 保存check设置
             (
-                instance_settings_file.modify("output_lock_maximums", False).modify(
-                    "output_optimization", False
-                )
+                instance_settings_file.modify(
+                    key="output_lock_maximums", value=False
+                ).modify(key="output_optimization", value=False)
             )
 
     def eventOutputLockMaximumsCheck(self) -> None:
@@ -541,16 +550,16 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             not self.ui.check_output_lock_maximums.isChecked()
             and self.is_save_check_box_status
         ):  # 保存check设置 并且是False选择
-            instance_settings_file.modify("output_lock_maximums", False)
+            instance_settings_file.modify(key="output_lock_maximums", value=False)
             return
 
         # 关联最大优化输出选项
         self.ui.check_output_optimization.setChecked(True)
         if self.is_save_check_box_status:  # 保存check设置
             (
-                instance_settings_file.modify("output_optimization", True).modify(
-                    "output_lock_maximums", True
-                )
+                instance_settings_file.modify(
+                    key="output_optimization", value=True
+                ).modify(key="output_lock_maximums", value=True)
             )
 
     def eventAutoWrapCheck(self) -> None:
@@ -561,7 +570,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         """
         if self.is_save_check_box_status:  # 保存check设置
             instance_settings_file.modify(
-                "auto_wrap", self.ui.check_auto_wrap.isChecked()
+                key="auto_wrap", value=self.ui.check_auto_wrap.isChecked()
             )
 
         if self.ui.check_auto_wrap.isChecked():
@@ -607,7 +616,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 
             self.ui.list_choices_plugin.addItems(_set_matched_item)  # 匹配的添加到选框
             return None
-        for i in self.selection_list:  # 选出符合要求的
+        for i in instance_plugin_manager.option_id_dict.keys():  # 选出符合要求的
             if i.find(_search_keyword) == -1:  # 字符串方法，没找到指定子串就-1
                 continue
             self.ui.list_choices_plugin.addItem(i)
@@ -620,4 +629,6 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         :return: None
         """
         self.ui.list_choices_plugin.clear()
-        self.ui.list_choices_plugin.addItems(self.selection_list)
+        self.ui.list_choices_plugin.addItems(
+            instance_plugin_manager.option_id_dict.keys()
+        )

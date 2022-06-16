@@ -5,7 +5,7 @@ import time
 import traceback
 from functools import partial  # 偏函数真好用
 from threading import Thread
-from typing import Any, Iterator
+from typing import Generator, Union
 
 import hpyculator as hpyc
 from hpyculator.hpysignal import instance_main_win_signal
@@ -46,7 +46,10 @@ class CalculationManager:
 
         # 覆盖旧实例
         instance_calculate_thread = CalculationThread(
-            inputbox_data, calculation_mode, user_selection_id, output_dir_path
+            inputbox_data=inputbox_data,
+            calculation_mode=calculation_mode,
+            user_selection_id=user_selection_id,
+            output_dir_path=output_dir_path,
         )
 
         # 启动新实例
@@ -84,7 +87,7 @@ class CalculationManager:
 class CalculationThread(Thread):
     def __init__(
         self,
-        inputbox_data: Any,
+        inputbox_data: Union[str, float, int],
         calculation_mode: str,
         user_selection_id: str,
         output_dir_path: str,
@@ -106,7 +109,7 @@ class CalculationThread(Thread):
         self.user_selection_id = user_selection_id
         self.output_dir_path = output_dir_path
 
-    def run(self):
+    def run(self) -> None:
         inputbox_data = self.inputbox_data
         calculation_mode = self.calculation_mode
         # instance_plugin_manager.initPlugin()  # 多进程用
@@ -117,7 +120,7 @@ class CalculationThread(Thread):
             self.user_selection_id
         )
 
-        def _baseCalculate():
+        def _baseCalculate() -> int:
             """基础的计算模式"""
             calculate_fun = selected_plugin.on_calculate
 
@@ -149,14 +152,14 @@ class CalculationThread(Thread):
                     pass
             return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
 
-        def _calculateWithSave(filepath_name):
+        def _calculateWithSave(filepath: str) -> int:
             """计算+保存模式"""
-            # filepath_name - 储存保存到哪个文件里 路径+文件名
+            # filepath - 储存保存到哪个文件里 路径+文件名
 
             calculate_fun = selected_plugin.on_calculate
             time_before_calculate = time.perf_counter_ns()  # 储存开始时间
 
-            with open(filepath_name, "w", encoding="utf-8") as filestream:
+            with open(filepath, "w", encoding="utf-8") as filestream:
                 match plugin_attribute_return_mode:
                     case hpyc.RETURN_ONCE:  # 分布输出和一次输出
                         result = calculate_fun(inputbox_data)
@@ -182,7 +185,7 @@ class CalculationThread(Thread):
 
             return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
 
-        def _calculateWithOutputOptimization(limit=False):
+        def _calculateWithOutputOptimization(limit=False) -> int:
             """
             计算+输出优化的模式（先把结果存临时文件，再读取输出）
 
@@ -234,7 +237,7 @@ class CalculationThread(Thread):
 
             return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
 
-        def _quickTraverseFile(file, chunk_size=8192) -> Iterator:
+        def _quickTraverseFile(file: open, chunk_size: int = 8192) -> Generator:
             """
             较快，低占用读取文件，迭代器
 
@@ -249,7 +252,7 @@ class CalculationThread(Thread):
 
         def _outputSpentTime(
             time_spent_ns: int = 0, prefix: str = "", suffix: str = ""
-        ):
+        ) -> None:
             """
 
             :param time_spent_ns: 所花费的时间（单位ns）
