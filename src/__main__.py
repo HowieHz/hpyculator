@@ -1,20 +1,12 @@
 """入口文件"""
 # 易于打包加几句
-# import numba
-# import jpype
 import argparse
 import dbm
-
-# locale
-import gettext
-import sys
-
 import hpyculator
+import sys
 from PySide6.QtWidgets import QApplication
-
 from utils import CreateApp
 
-#  from utils.ui_manager.test_window_effect import testWinApp
 # pyside6导入
 # from utils.ui import main_window_resource_rc
 # sys.path.append(os.path.join(os.getcwd(),"bin"))
@@ -24,9 +16,6 @@ if __name__ == "__main__":
     instance_app = CreateApp()
     instance_app.run()
     sys.exit(app.exec())  # 避免程序执行到这一行后直接退出
-
-    # instance_app = testWinApp()
-    # sys.exit(app.exec())  # 避免程序执行到这一行后直接退出
 
 # todo debug qt.gui.imageio: libpng warning: iCCP: known incorrect sRGB profile
 # todo 1.可以分享脚本的平台（qq群也不错） 2.Github actions

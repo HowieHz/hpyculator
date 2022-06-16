@@ -272,9 +272,9 @@ class MainWinApp(FramelessWindow):
         )
 
         # 获取计算模式
-        def _getCalculationMode(calculation_mode):
-            if calculation_mode:
-                return calculation_mode  # 有就录入测试数据
+        def _getCalculationMode(mode):
+            if mode:
+                return mode  # 有就录入测试数据
             if self.ui.check_save.isChecked():  # 检测保存按钮的状态判断是否保存
                 return "calculate_save"
             if not self.ui.check_output_optimization.isChecked():
@@ -328,7 +328,7 @@ class MainWinApp(FramelessWindow):
         # )
         self.drawBackground()
 
-    def drawBackground(self):
+    def drawBackground(self) -> None:
         """
         绘制背景
 
