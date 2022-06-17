@@ -1,6 +1,7 @@
 #include <stdlib.h>
+
 int main()
 {
-    system("start .\\bin\\__main__.exe");
+    system(".\\bin\\start_hpyc.bat");
     return 0;
 }
