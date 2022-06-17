@@ -4,6 +4,8 @@ import argparse
 import dbm
 import hpyculator
 import sys
+
+# from PySide6 import QtWidgets, QtCore
 from PySide6.QtWidgets import QApplication
 from utils import CreateApp
 
@@ -12,9 +14,12 @@ from utils import CreateApp
 # sys.path.append(os.path.join(os.getcwd(),"bin"))
 
 if __name__ == "__main__":
+    # QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+    # QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
     app = QApplication(sys.argv)  # 启动一个应用
     instance_app = CreateApp()
-    instance_app.run()
+    mainwin = instance_app.run()
+    mainwin.show()
     sys.exit(app.exec())  # 避免程序执行到这一行后直接退出
 
 # todo debug qt.gui.imageio: libpng warning: iCCP: known incorrect sRGB profile
