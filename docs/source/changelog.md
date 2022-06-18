@@ -8,8 +8,10 @@
     Fixed － 解决的问题
     Others － 性能优化和安全性增强等改进
 
-v1.6.2(草稿)
-
+v1.6.2
+    
+    Added
+        在搜索tag的时候会显示可用tag
     Others
         迁移到3.10
         修改写法(if elif -> match case)

@@ -26,24 +26,18 @@ class CreateApp:
         BACKGROUND_IMG_DIR_PATH = checkBackgroundImgPath()  # 背景图片路径检查
         PLUGIN_DIR_PATH = pluginCheck()  # 插件加载
 
-        # list_instance_main_window = []
-        # for _ in range(self.instance_num):
-        #     list_instance_main_window.append(
-        #         MainWinApp(  # 启动实例
-        #             SETTING_FILE_PATH,
-        #             OUTPUT_DIR_PATH,
-        #             PLUGIN_DIR_PATH,
-        #             BACKGROUND_IMG_DIR_PATH,
-        #         )
-        #     )  # 实例化主窗口
-        #     list_instance_main_window[_].show()
-        # return list_instance_main_window
-        return MainWinApp(  # 启动实例
-            SETTING_FILE_PATH,
-            OUTPUT_DIR_PATH,
-            PLUGIN_DIR_PATH,
-            BACKGROUND_IMG_DIR_PATH,
-        )
+        list_instance_main_window = []
+        for _ in range(self.instance_num):
+            list_instance_main_window.append(
+                MainWinApp(  # 启动实例
+                    SETTING_FILE_PATH,
+                    OUTPUT_DIR_PATH,
+                    PLUGIN_DIR_PATH,
+                    BACKGROUND_IMG_DIR_PATH,
+                )
+            )  # 实例化主窗口
+            list_instance_main_window[_].show()
+        return list_instance_main_window
 
 
 def checkOutputPath():
