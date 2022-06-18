@@ -6,7 +6,8 @@ import traceback
 import hpyculator as hpyc
 
 # 这样才可以导入上层包哈哈
-sys.path.append(os.path.join(sys.path[0], ".."))
+# sys.path.append(os.path.join(sys.path[0], ".."))
+sys.path.append("..")
 
 
 class PluginManager:
