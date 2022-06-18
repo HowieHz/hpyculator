@@ -513,8 +513,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             jpype = importlib.import_module("jpype")  # 不直接用import是防止打包程序识别到
 
             if jpype.isJVMStarted():
-                print("xswl")
-                # jpype.shutdownJVM()
+                jpype.shutdownJVM()
 
         _check_modules = {"jpype": _exitJpype}
         for _module in _check_modules:
