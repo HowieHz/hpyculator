@@ -1,5 +1,7 @@
 import locale
 import pathlib
+import importlib
+import sys
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -152,7 +154,7 @@ class MainWinApp(FramelessWindow):
         # my_signal.setProgressBar.connect(self.set_progress_bar)
         # my_signal.setResult.connect(self.set_result)
 
-        self.ui.button_close.clicked.connect(self.closeEvent)
+        self.ui.button_close.clicked.connect(self.eventCloseMainWin)
         self.ui.button_start.clicked.connect(self.eventStartCalculation)
         self.ui.button_setting.clicked.connect(self.eventOpenSettingWin)
         self.ui.button_minimize.clicked.connect(self.eventMinimize)
@@ -500,9 +502,29 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 
     def closeEvent(self, event):
         """
-        重构退出函数，杀掉子进程残留
+        重构退出函数，处理可能导致子进程残留的模块
 
         :param event:
+        :return:
+        """
+
+        def _exitJpype():
+            # 退出流程，否则虚拟机不会退出，导致进程残留
+            jpype = importlib.import_module("jpype")  # 不直接用import是防止打包程序识别到
+
+            if jpype.isJVMStarted():
+                print("xswl")
+                # jpype.shutdownJVM()
+
+        _check_modules = {"jpype": _exitJpype}
+        for _module in _check_modules:
+            if _module in sys.modules:
+                _check_modules[_module]()  # 调用对应退出处理函数
+
+    def eventCloseMainWin(self) -> None:
+        """
+        关闭主窗口
+
         :return:
         """
         self.close()
