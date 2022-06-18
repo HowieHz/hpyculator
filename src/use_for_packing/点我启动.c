@@ -2,6 +2,6 @@
 
 int main()
 {
-    system(".\\bin\\start_hpyc.bat");
+    system(".\\bin\\NoWinRun.exe .\\bin\\start.bat");
     return 0;
 }
