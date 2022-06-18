@@ -14,7 +14,9 @@ from .. import document as doc
 from ..plugin import instance_plugin_manager
 
 # from multiprocessing import Process
+
 # TODO 用了多进程之后main_win_signal的实例化效果消失
+# TODO 将插件加载之类的和计算写在一起就可以了
 
 
 class CalculationManager:
@@ -102,6 +104,7 @@ class CalculationThread(Thread):
         :return:
         """
         Thread.__init__(self)
+        # Process.__init__(self)
         self.daemon = True  # 避免后台残留
 
         self.inputbox_data = inputbox_data

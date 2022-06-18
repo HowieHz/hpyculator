@@ -1,9 +1,7 @@
-hpyculator>1.4.9
+hpyculator>1.4.10
 PySide6
 pywin32
 jpype1
-toml
 numba
 numpy
-pyyaml
 black

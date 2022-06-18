@@ -1,32 +1,27 @@
 """入口文件"""
 # 易于打包加几句
-# import numba
-# import jpype
 import argparse
 import dbm
-
-# locale
-import gettext
 import sys
 
 import hpyculator
+
+# from PySide6 import QtWidgets, QtCore
 from PySide6.QtWidgets import QApplication
 
 from utils import CreateApp
 
-#  from utils.ui_manager.test_window_effect import testWinApp
 # pyside6导入
 # from utils.ui import main_window_resource_rc
 # sys.path.append(os.path.join(os.getcwd(),"bin"))
 
 if __name__ == "__main__":
+    # QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+    # QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
     app = QApplication(sys.argv)  # 启动一个应用
     instance_app = CreateApp()
-    instance_app.run()
+    list_apps = instance_app.run()
     sys.exit(app.exec())  # 避免程序执行到这一行后直接退出
-
-    # instance_app = testWinApp()
-    # sys.exit(app.exec())  # 避免程序执行到这一行后直接退出
 
 # todo debug qt.gui.imageio: libpng warning: iCCP: known incorrect sRGB profile
 # todo 1.可以分享脚本的平台（qq群也不错） 2.Github actions
@@ -40,6 +35,7 @@ if __name__ == "__main__":
 # todo 动画
 # todo 缓存结果模式 不是@cache
 # todo 把槽函数外移，在程序里面connect
+# todo 软件退出有残留
 
 # 命名规范v1.0.0
 # 1类：hello_world 变量，文件名(xswl.txt)全部小写，使用下划线连接

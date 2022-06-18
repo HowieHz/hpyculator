@@ -3,7 +3,10 @@
 
 本文档是 `hpyculator <https://github.com/HowieHz/hpyculator>`_ 的说明及帮助文档
 
-文档api版本 >=1.6.1
+文档api版本
+    模块 >= 1.4.12
+
+    主程序 >= 1.6.2
 
 .. image:: images/ico.ico
 

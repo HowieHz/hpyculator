@@ -63,8 +63,6 @@ msgid ""
 "\n"
 "hpyculator的名字来历：\n"
 "    high extensibility calculator base on python\n"
-"\n"
-"可用tag："
 msgstr ""
 "Author: HowieHz\n"
 "\n"
@@ -103,8 +101,6 @@ msgstr ""
 "\n"
 "The name of hpyculator comes from.\n"
 "    high extensibility calculator base on python\n"
-"\n"
-"Available tags."
 
 #: __init__.py:69
 msgid ""
@@ -243,3 +239,7 @@ msgstr ""
 #: __init__.py:104
 msgid "计算"
 msgstr "calculation"
+
+#: __init__.py:105
+msgid "可用tag："
+msgstr "Available tags:"

@@ -1,6 +1,7 @@
 #include <stdlib.h>
+
 int main()
 {
-    system("start .\\bin\\__main__.exe");
+    system(".\\bin\\NoWinRun.exe .\\bin\\start.bat");
     return 0;
 }

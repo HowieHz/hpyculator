@@ -89,12 +89,24 @@ class MainWinApp(FramelessWindow):
 
         # 关于gui显示内容的初始化
         self.flushListChoicesPlugin()
-        self.ui.output_box.setPlainText(doc.START_SHOW)  # 开启的展示
         self.ui.search_plugin.setPlaceholderText(doc.SEARCH_INPUT_BOX_TIPS)  # 灰色背景提示字符
         self.ui.search_plugin.clear()  # 不清空不显示灰色背景
         self.ui.input_box.setFocus()  # 设置焦点
 
-        # 加载tag系统
+        # 主输出框内容初始化
+        self.outputIntroduce()
+
+    def outputIntroduce(self) -> None:
+        self.ui.output_box.setPlainText(doc.START_SHOW)  # 开启的展示
+        self.outputAvailableTag()  # 展示可用tag
+
+    def outputAvailableTag(self) -> None:
+        """
+        展示可用tag
+
+        :return: None
+        """
+        self.ui.output_box.appendPlainText(f"\n{doc.AVAILABLE_TAGS_LITERAL}\n")
         # tag和选项名的映射表_list_plugin_tag_option [([tag1,tag2],name),([tag1,tag2],name)]
         _list_plugin_tag_option = instance_plugin_manager.list_alL_plugin_tag_option
         _set_tags = set()  # _set_tags里面有所有的tag
@@ -111,7 +123,7 @@ class MainWinApp(FramelessWindow):
 
         for _tag in _set_tags:  # _set_tags里面有所有的tag
             for _special_tag in special_tags:  # 读取并分类特殊tag
-                if _tag[: len(_special_tag)] == _special_tag:  # 满足特殊tag
+                if _tag[: len(_special_tag)] == _special_tag:  # 检查tag开头是否是特殊tag
                     _dict_set_tags[_special_tag].add(_tag)  # 分到对应的类别
                     break
             else:  # 没break的就是普通tag，直接添加
@@ -143,7 +155,7 @@ class MainWinApp(FramelessWindow):
 
         def _setOutputBoxCursor(where: str) -> None:  # 目前只有end
             _cursor = self.ui.output_box.textCursor()
-            _cursor_state_map = {"end": QTextCursor.End}
+            _cursor_state_map = {"end": QTextCursor.End, "start": QTextCursor.Start}
             _cursor.movePosition(_cursor_state_map[where])
             # https://doc.qt.io/qtforpython-5/PySide2/QtGui/QTextCursor.html#PySide2.QtGui.PySide2.QtGui.QTextCursor.MoveOperation
             self.ui.output_box.setTextCursor(_cursor)
@@ -272,9 +284,9 @@ class MainWinApp(FramelessWindow):
         )
 
         # 获取计算模式
-        def _getCalculationMode(calculation_mode):
-            if calculation_mode:
-                return calculation_mode  # 有就录入测试数据
+        def _getCalculationMode(mode):
+            if mode:
+                return mode  # 有就录入测试数据
             if self.ui.check_save.isChecked():  # 检测保存按钮的状态判断是否保存
                 return "calculate_save"
             if not self.ui.check_output_optimization.isChecked():
@@ -328,7 +340,7 @@ class MainWinApp(FramelessWindow):
         # )
         self.drawBackground()
 
-    def drawBackground(self):
+    def drawBackground(self) -> None:
         """
         绘制背景
 
@@ -605,6 +617,9 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 
         self.ui.list_choices_plugin.clear()  # 清空选择栏
         if _search_keyword[:4] == ":tag" or _search_keyword[:4] == "：tag":  # 进入tag搜索模式
+            self.ui.output_box.clear()  # 清空输出框
+            self.outputAvailableTag()  # 显示可用tag
+            instance_main_win_signal.set_output_box_cursor.emit("start")  # 设置光标到输入框开头
             _set_matched_item = set()  # 匹配上的插件名
             _tags = _search_keyword.split()[1:]  # 用户输入的tag
             # tag和选项名的映射表_list_plugin_tag_option [((tag1,tag2),name),((tag1,tag2),name)]
@@ -616,6 +631,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 
             self.ui.list_choices_plugin.addItems(_set_matched_item)  # 匹配的添加到选框
             return None
+
         for i in instance_plugin_manager.option_id_dict.keys():  # 选出符合要求的
             if i.find(_search_keyword) == -1:  # 字符串方法，没找到指定子串就-1
                 continue
@@ -624,7 +640,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 
     def eventSearchCancel(self) -> None:
         """
-        取消搜索结果，显示全部插件
+        取消搜索结果，显示全部插件，显示介绍
 
         :return: None
         """
@@ -632,3 +648,4 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         self.ui.list_choices_plugin.addItems(
             instance_plugin_manager.option_id_dict.keys()
         )
+        self.outputIntroduce()

@@ -70,8 +70,7 @@ START_SHOW = (
 
 hpyculator的名字来历：
     high extensibility calculator base on python
-
-可用tag："""
+"""
     )
 )
 
@@ -126,3 +125,4 @@ OUTPUT_OPTIMIZATION_ENABLED_LITERAL = _("已启用输出优化")
 SAVED_IN_LITERAL = _("已保存在")
 PLUGIN_CALCULATION_ERROR_LITERAL = _("插件运算发生错误：%s \n\n请检查输入格式")
 CALCULATION_LITERAL = _("计算")
+AVAILABLE_TAGS_LITERAL = _("可用tag：")
