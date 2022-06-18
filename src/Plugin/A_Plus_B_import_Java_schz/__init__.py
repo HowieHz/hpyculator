@@ -3,6 +3,7 @@ import os
 
 import hpyculator as hpyc
 import jpype
+import atexit
 
 NAME = "高精度浮点数加法(基于Java)"
 VERSION = "V1.0.3"
@@ -79,3 +80,4 @@ def on_calculate(data, todo):
     else:
         hpyc.write(jpype.JClass("com.shacha.Main").main(a, b))
     # jpype.shutdownJVM() Shutdown must be called from main thread
+    atexit.register(jpype.shutdownJVM)  # 退出执行函数，否则虚拟机不会退出，导致退出残留
