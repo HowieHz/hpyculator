@@ -64,24 +64,23 @@ class PluginManager:
         """
         # print(f"去掉.py后缀的文件名 {list(plugin_files_name)}")
         for name in plugin_files_name:
-            if name:  # 跳过空位，有名字才读取
-                try:
-                    self._dict_loaded_plugin[name] = importlib.import_module(
-                        f"Plugin.{name}"
-                    )
-                # 插件缺少依赖(ImportError包括ModuleNotFoundError)
-                except ModuleNotFoundError:
-                    traceback.print_exc()
-                    continue
-                except ImportError:  # 其他的导入问题
-                    traceback.print_exc()
-                    continue
-                except Exception as e:
-                    print(f"init_file_plugin inside Exception:{e}")
-                    traceback.print_exc()
-                    continue
+            try:
+                self._dict_loaded_plugin[name] = importlib.import_module(
+                    f"Plugin.{name}"
+                )
+            # 插件缺少依赖(ImportError包括ModuleNotFoundError)
+            except ModuleNotFoundError:
+                traceback.print_exc()
+                continue
+            except ImportError:  # 其他的导入问题
+                traceback.print_exc()
+                continue
+            except Exception as e:
+                print(f"init_file_plugin inside Exception:{e}")
+                traceback.print_exc()
+                continue
 
-                self._loadPluginMetadata(name)
+            self._loadPluginMetadata(name)
 
         for name in plugin_dirs_name:
             try:
