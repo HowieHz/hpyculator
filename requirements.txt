@@ -1,4 +1,4 @@
-hpyculator>1.4.10
+hpyculator>=1.4.12
 PySide6
 pywin32
 jpype1

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-# Form generated from reading UI file 'main_win.ui'
+## Form generated from reading UI file 'main_win.ui'
 ##
-# Created by: Qt User Interface Compiler version 6.3.0
+## Created by: Qt User Interface Compiler version 6.3.0
 ##
-# WARNING! All changes made in this file will be lost when recompiling UI file!
+## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
 from PySide6.QtCore import (
@@ -18,9 +18,9 @@ from PySide6.QtCore import (
     QPoint,
     QRect,
     QSize,
-    Qt,
     QTime,
     QUrl,
+    Qt,
 )
 from PySide6.QtGui import (
     QBrush,
@@ -56,7 +56,6 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
-
 from . import main_window_resource_rc
 
 
@@ -683,22 +682,6 @@ class Ui_MainWin(object):
         self.gridLayout.addLayout(self.verticalLayout_4, 0, 0, 1, 1)
 
         self.retranslateUi(MainWin)
-        self.button_close.clicked.connect(MainWin.eventQuit)
-        self.button_minimize.clicked.connect(MainWin.eventMinimize)
-        self.button_maximum.clicked.connect(MainWin.eventMaximize)
-        self.button_about.clicked.connect(MainWin.eventOpenAboutWin)
-        self.button_setting.clicked.connect(MainWin.eventOpenSettingWin)
-        self.search_plugin.textChanged.connect(MainWin.eventSearch)
-        self.list_choices_plugin.itemClicked.connect(MainWin.eventChooseOption)
-        self.button_start.clicked.connect(MainWin.eventStartCalculation)
-        self.check_output_optimization.clicked.connect(
-            MainWin.eventOutputOptimizationCheck
-        )
-        self.check_output_lock_maximums.clicked.connect(
-            MainWin.eventOutputLockMaximumsCheck
-        )
-        self.check_save.clicked.connect(MainWin.eventSaveCheck)
-        self.check_auto_wrap.clicked.connect(MainWin.eventAutoWrapCheck)
 
         QMetaObject.connectSlotsByName(MainWin)
 

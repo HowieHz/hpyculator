@@ -1,6 +1,5 @@
 import locale
 import pathlib
-import sys
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -152,6 +151,27 @@ class MainWinApp(FramelessWindow):
         # 自定义信号.属性名.connect(___FUNCTION___)
         # my_signal.setProgressBar.connect(self.set_progress_bar)
         # my_signal.setResult.connect(self.set_result)
+
+        self.ui.button_close.clicked.connect(self.closeEvent)
+        self.ui.button_start.clicked.connect(self.eventStartCalculation)
+        self.ui.button_setting.clicked.connect(self.eventOpenSettingWin)
+        self.ui.button_minimize.clicked.connect(self.eventMinimize)
+        self.ui.button_maximum.clicked.connect(self.eventMaximize)
+        self.ui.button_about.clicked.connect(self.eventOpenAboutWin)
+
+        self.ui.check_save.clicked.connect(self.eventSaveCheck)
+        self.ui.check_output_optimization.clicked.connect(
+            self.eventOutputOptimizationCheck
+        )
+        self.ui.check_output_lock_maximums.clicked.connect(
+            self.eventOutputLockMaximumsCheck
+        )
+        self.ui.check_auto_wrap.clicked.connect(self.eventAutoWrapCheck)
+
+        self.ui.search_plugin.textChanged.connect(self.eventSearch)
+        self.ui.list_choices_plugin.currentItemChanged.connect(
+            lambda _: self.eventChooseOption(_)
+        )  # _: QListWidgetItem*
 
         def _setOutputBoxCursor(where: str) -> None:  # 目前只有end
             _cursor = self.ui.output_box.textCursor()
@@ -457,6 +477,8 @@ class MainWinApp(FramelessWindow):
         :return: None
         """
         # print(f"选中的选项名{item.text()}")
+        if item is None:  # 刷新列表的时候选中的item是None
+            return
         self.user_selection_id = str(
             instance_plugin_manager.option_id_dict[item.text()]
         )  # 转换成ID
@@ -476,14 +498,14 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 {_METADATA["output_end"]}"""
         )
 
-    def eventQuit(self) -> None:
+    def closeEvent(self, event):
         """
-        退出程序
+        重构退出函数，杀掉子进程残留
 
+        :param event:
         :return:
         """
         self.close()
-        sys.exit(0)
 
     def eventOpenAboutWin(self) -> None:
         """
