@@ -22,6 +22,7 @@ v1.6.2
             hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE -> hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE
     Fixed
         翻译不正确显示的问题
+        退出残留问题
     Deprecated
         hpyc.RETURN_LIST
         hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE
