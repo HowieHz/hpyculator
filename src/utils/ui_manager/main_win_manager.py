@@ -1,6 +1,6 @@
+import importlib
 import locale
 import pathlib
-import importlib
 import sys
 from dataclasses import dataclass
 from typing import Any, Optional
