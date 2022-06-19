@@ -108,8 +108,10 @@ class MainWinApp(FramelessWindow):
         :return: None
         """
         self.ui.output_box.appendPlainText(f"\n{doc.AVAILABLE_TAGS_LITERAL}\n")
-        # tag和选项名的映射表_list_plugin_tag_option [([tag1,tag2],name),([tag1,tag2],name)]
-        _list_plugin_tag_option = instance_plugin_manager.list_alL_plugin_tag_option
+        # tag和选项名的映射表_list_plugin_tag_option [(plugin1_tags: list, plugin1_option), (plugin2_tags: list, plugin2_option)]
+        _list_plugin_tag_option: (
+            list[tuple[list[str], str]]
+        ) = instance_plugin_manager.list_alL_plugin_tag_option
         _set_tags = set()  # _set_tags里面有所有的tag
         for _tags_and_option in _list_plugin_tag_option:
             for _tag in _tags_and_option[0]:
@@ -642,15 +644,17 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         :return: None
         """
 
-        def _tagCheck(tags: list[str], tags_and_option: tuple[tuple[str], str]) -> bool:
+        def _tagCheck(user_tags: list[str], plugin_tags: tuple[str]) -> bool:
             """
             检查此项是否符合tag
 
-            :param tags: 用户输入的tag ["tag1","tag2"]
-            :param tags_and_option: tag和选项名 tags_and_option ((tag1,tag2),name)
+            :param user_tags: 用户输入的tag ["tag1","tag2"]
+            :param plugin_tags: 插件的tag  (tag1,tag2)
             :return:
             """
-            return all((_tag in tags_and_option[0]) for _tag in tags)
+            return all(
+                (user_tag in plugin_tags) for user_tag in user_tags
+            )  # 检查用户输入的tags是否是插件的tags的子集
 
         _search_keyword = self.ui.search_plugin.toPlainText()
 
@@ -663,14 +667,18 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             self.ui.output_box.clear()  # 清空输出框
             self.outputAvailableTag()  # 显示可用tag
             instance_main_win_signal.set_output_box_cursor.emit("start")  # 设置光标到输入框开头
+
             _set_matched_item = set()  # 匹配上的插件名
-            _tags = _search_keyword.split()[1:]  # 用户输入的tag
-            # tag和选项名的映射表_list_plugin_tag_option [((tag1,tag2),name),((tag1,tag2),name)]
-            _list_plugin_tag_option = instance_plugin_manager.list_alL_plugin_tag_option
-            # 单项 tag和选项名_tags_and_option ((tag1,tag2),name)
-            for _tags_and_option in _list_plugin_tag_option:
-                if _tagCheck(_tags, _tags_and_option):
-                    _set_matched_item.add(_tags_and_option[1])
+            _, *user_tags = _search_keyword.split()  # 第一项是:tag, 剩下的是用户输入的tag
+
+            # instance_plugin_manager.list_alL_plugin_tag_option 单项 tag和选项名_tags_and_option ((tag1,tag2),name)
+            for _tags_and_option in instance_plugin_manager.list_alL_plugin_tag_option:
+                if _tagCheck(
+                    user_tags, _tags_and_option[0]
+                ):  # _tags_and_option[0] -> plugin_tags
+                    _set_matched_item.add(
+                        _tags_and_option[1]
+                    )  # _tags_and_option[1] -> plugin_option
 
             self.ui.list_choices_plugin.addItems(_set_matched_item)  # 匹配的添加到选框
             return None
@@ -691,4 +699,4 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         self.ui.list_choices_plugin.addItems(
             instance_plugin_manager.option_id_dict.keys()
         )
-        self.outputIntroduce()
+        self.outputIntroduce()  # 输出介绍
