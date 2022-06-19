@@ -41,7 +41,7 @@ hpyculator 在 `pypi <https://pypi.org/project/hpyculator>`__ 中可用。它可
 
 .. code-block:: bash
 
-    pip install mcdreforged --upgrade
+    pip install hpyculator --upgrade
 
 同样，如果直连速度不畅，你可以使用清华镜像源来加速 hpyculator 的更新：
 
