@@ -6,7 +6,7 @@
 
 1.从github的 `releases <https://github.com/HowieHz/hpyculator/releases>`__\下载最新版本.zip
 
-2.解压，双击目录下的__main__.exe
+2.解压，双击目录下的 点我启动.exe
 
 3.去插件市场（建设中，先用着内置插件）下点插件就能愉快的使用了
 
