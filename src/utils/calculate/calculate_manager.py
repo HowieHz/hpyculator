@@ -139,12 +139,12 @@ class CalculationThread(Thread):
                     result = calculate_fun(inputbox_data)
                     for result_process in result:
                         instance_main_win_signal.append_output_box.emit(
-                            str(result_process) + "\\n"
+                            str(result_process)
                         )  # 算一行输出一行
                 case hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
                     result = calculate_fun(inputbox_data)
                     for result_process in result:  # 计算
-                        instance_main_win_signal.append_output_box.emit(
+                        instance_main_win_signal.insert_output_box.emit(
                             str(result_process)
                         )  # 算一行输出一行
                 case hpyc.NO_RETURN_SINGLE_FUNCTION:
@@ -162,7 +162,12 @@ class CalculationThread(Thread):
             calculate_fun = selected_plugin.on_calculate
             time_before_calculate = time.perf_counter_ns()  # 储存开始时间
 
-            with open(filepath, "w", encoding="utf-8") as filestream:
+            with open(
+                filepath,
+                mode="w",
+                buffering=1073741824,  # 1,073,741,824B = 1024MB  给插件足够的内存做缓冲区，也避免插件使得电脑内存爆炸
+                encoding="utf-8",
+            ) as filestream:  # buffering为-1的时候其实就是8192，现在显式的写出来
                 match plugin_attribute_return_mode:
                     case hpyc.RETURN_ONCE:  # 分布输出和一次输出
                         result = calculate_fun(inputbox_data)
@@ -170,13 +175,13 @@ class CalculationThread(Thread):
                     case hpyc.RETURN_ITERABLE:  # 算一行输出一行，但是没有换行
                         result = calculate_fun(inputbox_data)
                         for result_process in result:  # 计算
-                            filestream.write(str(result_process) + "\\n")
-                            filestream.flush()  # 算出来就存进去
+                            filestream.write(str(result_process) + "\n")
+                        filestream.flush()  # 算出来最后存进去
                     case hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
                         result = calculate_fun(inputbox_data)
                         for result_process in result:  # 计算
                             filestream.write(str(result_process))
-                            filestream.flush()  # 算出来就存进去
+                        filestream.flush()  # 算出来最后存进去
                     case hpyc.NO_RETURN:
                         hpyc.setIoInstance(filestream)
                         selected_plugin.on_calculate_with_save(inputbox_data)
@@ -197,7 +202,10 @@ class CalculationThread(Thread):
             """
             calculate_fun = selected_plugin.on_calculate
             with tempfile.TemporaryFile(
-                "w+t", encoding="utf-8", errors="ignore"
+                mode="w+t",
+                buffering=1073741824,  # 1,073,741,824B = 1024MB  给插件足够的内存做缓冲区，也避免插件使得电脑内存爆炸
+                encoding="utf-8",
+                errors="ignore",
             ) as filestream:
                 time_before_calculate = time.perf_counter_ns()  # 储存开始时间
 
@@ -209,13 +217,13 @@ class CalculationThread(Thread):
                         case hpyc.RETURN_ITERABLE:  # 算一行输出一行，但是没有换行
                             result = calculate_fun(inputbox_data)
                             for result_process in result:  # 计算
-                                filestream.write(str(result_process) + "\\n")
-                                filestream.flush()  # 算出来就存进去
+                                filestream.write(str(result_process) + "\n")
+                            filestream.flush()  # 算出来最后存进去
                         case hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
                             result = calculate_fun(inputbox_data)
                             for result_process in result:  # 计算
                                 filestream.write(str(result_process))
-                                filestream.flush()  # 算出来就存进去
+                            filestream.flush()  # 算出来最后存进去
                         case hpyc.NO_RETURN_SINGLE_FUNCTION:
                             hpyc.setIoInstance(filestream)
                             calculate_fun(inputbox_data, "save")

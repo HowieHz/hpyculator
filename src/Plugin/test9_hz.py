@@ -1,6 +1,6 @@
 import hpyculator as hpyc
 
-VERSION = "V1.0.2"
+VERSION = "V1.0.3"
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
     "id": "test9_hz",  # ID,插件标识符
@@ -31,15 +31,17 @@ def on_calculate(
     num = int(num)
     need_write = ""
     need_write_len = 0
-    for _ in range(num):
-        need_write += "⑨\n"
-        need_write_len += 1
-        if need_write_len >= 100000000:
-            hpyc.write_without_flush(need_write)
-            hpyc.flush()
-            need_write = ""
-            need_write_len = 0
     if do_what == "output":
         hpyc.output(need_write)
+        for _ in range(num):
+            hpyc.output("⑨")
     else:
+        for _ in range(num):
+            need_write += "⑨\n"
+            need_write_len += 1
+            if need_write_len >= 1000000000:
+                hpyc.write_without_flush(need_write)
+                hpyc.flush()
+                need_write = ""
+                need_write_len = 0
         hpyc.write(need_write)

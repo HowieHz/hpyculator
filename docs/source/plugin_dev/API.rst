@@ -1,23 +1,28 @@
 函数
 ===========
 
-write
+output_without_line_break
 -------------------
 
-    第一个参数是要写入的东西，
+    第一个参数是要输出的东西
 
-    第二个参数可选参数 为输入后缀，默认为换行符
-
-效果是将指定数据写入硬盘
-
-缺点： `flush <API.html#flush>`__\函数的开销太大了，如果只用 `write <API.html#write>`__\函数内存开销最小，但是时间开销最大
-
-    （n系列内置插件的写法就是只用 `write <API.html#write>`__\）
+效果是将指定数据打印在输出窗口上，不会换行
+分两个函数的原因是调用函数不同，output的性能会优于output_without_line_break
 
 .. code-block:: python
 
-    def write(anything,end="\n"): -> None
+    def output_without_line_break(anything) -> None:
 
+output
+-------------------
+
+    第一个参数是要输出的东西
+
+效果是将指定数据打印在输出窗口上，会自动添加换行符
+
+.. code-block:: python
+
+    def output(anything): -> None
 
 write_without_flush
 --------------------------------------
@@ -26,18 +31,11 @@ write_without_flush
 
     第二个参数可选参数 为输入后缀，默认为换行符
 
-效果是将指定数据写入内存（要将这些数据写入硬盘需要使用 `flush <API.html#flush>`__\函数）
-
-    和 `write <API.html#write>`__\函数的区别是写入内存后不写入硬盘，
-
-    可以做到多少行写入一次的操作（fix系列内置插件的写法就是这样）
-
-    （找到多少行写入一次是最优的需要插件作者不断调试，反复尝试，才能找到最优点。致敬每一位负责的开发者）
+效果是将指定数据写入缓冲区（要将这些数据立即硬盘需要使用 `flush <API.html#flush>`__\函数）
 
 .. code-block:: python
 
     def write_without_flush(anything,end="\n"): -> None
-
 
 flush
 --------------------------------------
@@ -46,22 +44,26 @@ flush
 
 搭配 `write_without_flush <API.html#write-without-flush>`__\函数使用
 
-效果是将 内存里的待写入硬盘的数据 写入 硬盘"""
+效果是将缓冲区的待写入硬盘的数据写入硬盘
+缓冲区最大为1,073,741,824B(1024MB)，缓冲区内数据量超过1024MB程序会自动调用flush
+这是为了避免插件作者使用write_without_flush忘记flush导致电脑内存占用极高
 
 .. code-block:: python
 
     def flush(): -> None
 
-
-output
+write
 -------------------
 
-    第一个参数是要输出的东西，
+    第一个参数是要写入的东西，
 
-    第二个参数是后缀，默认为换行符
+    第二个参数可选参数 为输入后缀，默认为换行符
 
-效果是将指定数据打印在输出窗口上
+效果是将指定数据写入硬盘（等效 write_without_flush + flush）
+
+缺点： `flush <API.html#flush>`__\函数非常耗时，导致这个函数运行较慢
 
 .. code-block:: python
 
-    def output(anything,end="\n"): -> None
+    def write(anything,end="\n"): -> None
+

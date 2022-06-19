@@ -8,14 +8,27 @@
     Fixed － 解决的问题
     Others － 性能优化和安全性增强等改进
 
+v1.6.3(草稿)
+
+    Added
+        添加了output_without_line_break函数
+    Fixed
+        hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE无法正常工作的错误
+        test9_hz不正常工作的错误（表现为输出错误）
+        output文档描述错误
+        插件可能导致内存占用极大的特性（修复了文件缓冲不可控的问题）
+        修复了插件缓冲和实际缓冲不符的问题
+    Removed
+        hpyc.RETURN_LIST
+        hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE
+    Others
+        代码性能，结构优化，并补充注释
+    
+
 v1.6.2
     
     Added
         在搜索tag的时候会显示可用tag
-    Others
-        迁移到3.10
-        修改写法(if elif -> match case)
-        优化嵌套结构
     Changed
         常量名修改:
             hpyc.RETURN_LIST -> hpyc.RETURN_ITERABLE
@@ -28,6 +41,9 @@ v1.6.2
         hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE
     Others
         文字归档到一个文件，易于翻译和管理
+        迁移到3.10
+        修改写法(if elif -> match case)
+        优化嵌套结构
 
 20220611
 v1.6.1 

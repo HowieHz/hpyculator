@@ -179,7 +179,11 @@ class MainWinApp(FramelessWindow):
 
         def _setOutputBoxCursor(where: str) -> None:  # 目前只有end
             _cursor = self.ui.output_box.textCursor()
-            _cursor_state_map = {"end": QTextCursor.End, "start": QTextCursor.Start}
+            _cursor_state_map = {
+                "end": QTextCursor.End,
+                "start": QTextCursor.Start,
+                "up": QTextCursor.Up,
+            }
             _cursor.movePosition(_cursor_state_map[where])
             # https://doc.qt.io/qtforpython-5/PySide2/QtGui/QTextCursor.html#PySide2.QtGui.PySide2.QtGui.QTextCursor.MoveOperation
             self.ui.output_box.setTextCursor(_cursor)
@@ -187,7 +191,10 @@ class MainWinApp(FramelessWindow):
         # 自定义信号绑定函数
         instance_main_win_signal.append_output_box.connect(
             slot=self.ui.output_box.appendPlainText
-        )
+        )  # 输出前会添加换行符
+        instance_main_win_signal.insert_output_box.connect(
+            slot=self.ui.output_box.insertPlainText
+        )  # 输出前不会添加换行符
         instance_main_win_signal.set_output_box.connect(
             slot=self.ui.output_box.setPlainText
         )
