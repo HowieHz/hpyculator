@@ -2,6 +2,7 @@ import importlib
 import os
 import sys
 import traceback
+from types import ModuleType
 
 import hpyculator as hpyc
 
@@ -15,7 +16,7 @@ class PluginManager:
         self._dict_plugin_option_id: dict[str, str] = {}  # 选项名和实际文件名(ID)的映射表
         # 选项名和实际文件名(ID)的映射表 [([tag1,tag2],name),([tag1,tag2],name)]
         self._list_alL_plugin_tag_option: list[tuple[list[str], str]] = []
-        self._dict_loaded_plugin: dict[str] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
+        self._dict_loaded_plugin: dict[str, ModuleType] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
 
     def _loadPluginMetadata(self, name):
         """
@@ -177,7 +178,7 @@ class PluginManager:
 
         return _plugin_attributes
 
-    def getPluginInstance(self, user_selection_id) -> importlib.import_module:
+    def getPluginInstance(self, user_selection_id) -> ModuleType:
         """
         获取指定id的插件对象
 
