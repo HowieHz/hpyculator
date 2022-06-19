@@ -56,4 +56,33 @@ hpyculator 在 `pypi <https://pypi.org/project/hpyculator>`__ 中可用。它可
 开发者（程序）
 ---------------------
 
-目前__main__.py是项目入口，Doc.py是一堆常量，Version.py是全局版本号
+目前__main__.py是项目入口
+
+src文件夹下
+    Plugin里面存放的是内置插件
+
+    background_img文件夹里面是内置的背景图
+
+    test内是单元测试
+
+    use_for_packing内存放的是用于打包，启动的工具
+
+    utils内是主要代码
+
+src/utils文件夹下
+    calculate -> 调用插件计算
+
+    document -> 常量存放
+
+    locale -> i18n
+
+    plugin -> 插件管理，插件加载
+
+    pyside_frameless_win -> 无边框ui
+
+    settings -> 管理设置文件
+
+    ui -> ui
+
+    ui_manager -> 管理ui，大部分程序逻辑
+
