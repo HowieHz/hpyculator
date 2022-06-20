@@ -17,9 +17,7 @@ class PluginManager:
         self._dict_plugin_option_id: dict[str, str] = {}  # 选项名和实际文件名(ID)的映射表
         # 选项名和实际文件名(ID)的映射表 [([tag1,tag2],name),([tag1,tag2],name)]
         self._list_alL_plugin_tag_option: list[tuple[list[str], str]] = []
-        self._dict_loaded_plugin: dict[
-            str, ModuleType
-        ] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
+        self._dict_loaded_plugin: dict[str, ModuleType] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
 
     def _loadPluginMetadata(self, name):
         """
@@ -45,12 +43,8 @@ class PluginManager:
                 if isinstance(_METADATA["author"], list)
                 else ["author:" + _METADATA["author"]]
             )  # 作者列表或单个作者
-            tag_list.extend(
-                (f"id:{_METADATA['id']}", f"version:{_METADATA['version']}")
-            )  # 版本号，id
-            self._list_alL_plugin_tag_option.append(
-                (tag_list, _METADATA["option"])
-            )  # tag对应选项名
+            tag_list.extend((f"id:{_METADATA['id']}", f"version:{_METADATA['version']}"))  # 版本号，id
+            self._list_alL_plugin_tag_option.append((tag_list, _METADATA["option"]))  # tag对应选项名
         except KeyError:  # 缺少了一项，因为这些项都是必选项，没就直接return不加载了
             traceback.print_exc()
             return
@@ -66,9 +60,7 @@ class PluginManager:
         # print(f"去掉.py后缀的文件名 {list(plugin_files_name)}")
         for name in plugin_files_name:
             try:
-                self._dict_loaded_plugin[name] = importlib.import_module(
-                    f"Plugin.{name}"
-                )
+                self._dict_loaded_plugin[name] = importlib.import_module(f"Plugin.{name}")
             # 插件缺少依赖(ImportError包括ModuleNotFoundError)
             except ModuleNotFoundError:
                 traceback.print_exc()
@@ -81,9 +73,7 @@ class PluginManager:
 
         for name in plugin_dirs_name:
             try:
-                self._dict_loaded_plugin[name] = importlib.import_module(
-                    f".{name}.__init__", package="Plugin"
-                )
+                self._dict_loaded_plugin[name] = importlib.import_module(f".{name}.__init__", package="Plugin")
             # 插件缺少依赖(ImportError包括ModuleNotFoundError)
             except ModuleNotFoundError:
                 traceback.print_exc()
@@ -123,8 +113,7 @@ class PluginManager:
             for _ in map(
                 lambda name: name  # 都满足就加入加载列表
                 if (
-                    os.path.isdir(os.path.join(path, name))
-                    and os.path.isfile(os.path.join(path, name, "__init__.py"))
+                    os.path.isdir(os.path.join(path, name)) and os.path.isfile(os.path.join(path, name, "__init__.py"))
                 )  # 检查是否是文件夹 检查是否是文件夹内是否有__init__.py文件
                 else "",  # 不满足就置空
                 things_in_plugin_dir,
@@ -159,9 +148,7 @@ class PluginManager:
             "version",
             "tag",
         ):
-            _plugin_attributes[_metadata_item] = (
-                _METADATA[_metadata_item] if _metadata_item in _METADATA else hpyc.OFF
-            )
+            _plugin_attributes[_metadata_item] = _METADATA[_metadata_item] if _metadata_item in _METADATA else hpyc.OFF
 
         if _plugin_attributes["fullwidth_symbol"] == hpyc.ON:  # 处理全角转换
             _plugin_attributes["help"] = (
