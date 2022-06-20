@@ -8,7 +8,7 @@
     Fixed － 解决的问题
     Others － 性能优化和安全性增强等改进
 
-v1.6.3(草稿)
+v1.6.3
 
     Added
         添加了output_without_line_break函数
