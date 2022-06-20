@@ -10,7 +10,7 @@
 ![GitHub all releases](https://img.shields.io/github/downloads/HowieHz/hpyculator/total)
 ![GitHub repo size](https://img.shields.io/github/repo-size/HowieHz/hpyculator)
 
->这是一个基于python的高拓展性计算器
+**这是一个基于python的高拓展性计算器**
 
 hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法太累了，要是能像加载Minecraft的mod一样加载算法就好了” 这样的想法
 
@@ -19,7 +19,13 @@ hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法�
 欢迎提pr和issue
   
 >本项目基于python3.10构建
-  
+
+### 使用场景
+
+1.多功能工具箱
+
+2.我写了一个小工具，这时候只需要添加一个包含一些数据的字典和一个函数，就可以把它变成一个hpyculator插件来使用
+
 #### 免责声明
 
     这款计算器的使用体验很大程度上取决于插件作者水平，请正确选择插件，以免出现电脑内存爆炸等事件
