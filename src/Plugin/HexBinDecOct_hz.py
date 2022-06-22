@@ -1,12 +1,12 @@
 import hpyculator as hpyc
 
-VERSION = "V1.0.2"
+VERSION = "V1.0.3"
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
     "id": "HexBinDecOct_hz",  # ID，插件标识符，需要和文件名一致
     "option": f"进制转换{VERSION} by HowieHz",  # 选项名-在选择算法列表中
     "version": VERSION,  # 版本号
-    "tag": ["category:Mathematical calculations"],
+    "tag": ["category:Mathematical-calculations"],
     "save_name": "",  # 文件保存项目名-在输出
     "quantifier": "的进制转换结果",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
@@ -33,23 +33,22 @@ PLUGIN_METADATA = {
 
 def on_calculate(data: str, todo):
     """计算函数"""
-    try:
-        if "," in data:
-            num, b = data.split(",")
-        elif "，" in data:
-            num, b = data.split("，")
-        else:
-            num, b = data.split()
-    except ValueError:
-        num = data
-        b = "10"
-    if b == "2":
+    for pattern in [",", "，", " "]:
+        if pattern in data:
+            num, base, *_ = data.split(pattern)
+            break
+    else:
+        hpyc.output("请按格式输入！！！")
+        return
+    base = base or "10"  # 初始化
+
+    if base == "2":
         num = int(num, 2)
-    elif b == "8":
+    elif base == "8":
         num = int(num, 8)
-    elif b == "10":
+    elif base == "10":
         num = int(num)
-    elif b == "16":
+    elif base == "16":
         num = int(num, 16)
     else:
         hpyc.output("目前不支持该进制的输入\n\n*做信息题是吧，自己算")

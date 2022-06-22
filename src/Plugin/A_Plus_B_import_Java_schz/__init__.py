@@ -5,7 +5,7 @@ import hpyculator as hpyc
 import jpype
 
 NAME = "高精度浮点数加法(基于Java)"
-VERSION = "V1.0.3"
+VERSION = "V1.0.4"
 AUTHOR = ["shacha086", "HowieHz"]
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
@@ -14,7 +14,7 @@ PLUGIN_METADATA = {
     "option": f"{NAME}{VERSION} by {', '.join(AUTHOR) if isinstance(AUTHOR,list) else AUTHOR}",
     "version": VERSION,  # 版本号（必须）
     "tag": [
-        "category:Mathematical calculations",
+        "category:Mathematical-calculations",
         "computer_language:java",
         "depend:jpype",
     ],
@@ -56,16 +56,13 @@ r"""
     """
 
 
-def on_calculate(data, todo):
+def on_calculate(data: str, todo: str):
     """计算函数"""
-    try:
-        if "," in data:
-            a, b = data.split(",")
-        elif "，" in data:
-            a, b = data.split("，")
-        else:
-            a, b = data.split()
-    except ValueError:
+    for pattern in [",", "，", " "]:
+        if pattern in data:
+            a, b, *_ = data.split(pattern)
+            break
+    else:
         hpyc.output("请按格式输入！！！")
         return
     jar_path = str(os.path.abspath(__file__))[:-11] + "A+Bproj.jar"

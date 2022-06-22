@@ -6,7 +6,7 @@ PLUGIN_METADATA = {
     "id": "Nth_power_of_2_hz",
     "option": f"2的n次方{VERSION} by HowieHz",
     "version": VERSION,
-    "tag": ["category:Mathematical calculations", "cache"],
+    "tag": ["category:Mathematical-calculations", "cache"],
     "save_name": "2的",
     "quantifier": "次方",
     "output_start": "",

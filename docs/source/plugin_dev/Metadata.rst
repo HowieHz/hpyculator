@@ -1,11 +1,29 @@
 元数据
 =================
 
-这是一段示例元数据，
+这是元数据字典各键值的类型要求
 
-请替换掉{}的部分
+具体说明请看 `参数会影响什么`_ 一节
 
-具体说明和区别请看 `参数会影响什么`_ 一节
+.. code-block:: python
+
+    class MetadataDict(TypedDict, total=False):
+        input_mode: str
+        id: str
+        option: str
+        version: str
+        tag: list | str
+        save_name: str
+        quantifier: str
+        output_start: str
+        output_name: str
+        author: str | list
+        help: str
+        output_end: str
+        return_mode: int
+        fullwidth_symbol: int
+
+这是一段示例元数据
 
 .. code-block:: python
 
@@ -84,6 +102,7 @@
 
     """标签tag支持的形式
     1. 列表，如：["标签1","标签2"] ["标签1"]
+    2. 字符串，如："标签"
     """
 
     """会被特殊识别的标签
@@ -96,58 +115,58 @@
 
 ``return_mode`` 参数讲解
 ----------------------------------------------------------------------------
-    ``import hpyculator as hpyc``
+``import hpyculator as hpyc``
 
-    方案0  -> hpyc.RETURN_ONCE
+方案0  -> hpyc.RETURN_ONCE
 
-    方案1  -> hpyc.RETURN_ITERABLE
+方案1  -> hpyc.RETURN_ITERABLE
 
-    方案2  -> hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE
+方案2  -> hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE
 
-    方案3  -> hpyc.NO_RETURN
+方案3  -> hpyc.NO_RETURN
 
-    方案4  -> hpyc.NO_RETURN_SINGLE_FUNCTION
+方案4  -> hpyc.NO_RETURN_SINGLE_FUNCTION
 
-    由主程序控制读写和内屏输出，这两个方案的区别是，
+由主程序控制读写和内屏输出，这两个方案的区别是，
 
-    方案0是on_calculate函数return的对象 直接输出，比如输出一个字符串
+方案0是on_calculate函数return的对象 直接输出，比如输出一个字符串
 
-    方案1是on_calculate函数return的对象 迭代输出，比如把一个列表的每一项依次输出
+方案1是on_calculate函数return的对象 迭代输出，比如把一个列表的每一项依次输出
 
-        .. code-block:: python
+    .. code-block:: python
 
-            #return的值是[1,2,3,4]
-            #输出和保存则是
-            """
-            1
-            2
-            3
-            4
-            """
+        #return的值是[1,2,3,4]
+        #输出和保存则是
+        """
+        1
+        2
+        3
+        4
+        """
 
-    方案2和方案1的区别是，每次输出之后不换行
+方案2和方案1的区别是，每次输出之后不换行
 
-        .. code-block:: python
+    .. code-block:: python
 
-            #return的值是[1,2,3,4]
-            #输出和保存则是
-            """
-            1234
-            """
+        #return的值是[1,2,3,4]
+        #输出和保存则是
+        """
+        1234
+        """
 
-    很显然，当用户输入数值比较大的时候，
+很显然，当用户输入数值比较大的时候，
 
-    多项数组会迅速占用用户内存，导致死机等后果
+多项数组会迅速占用用户内存，导致死机等后果
 
-    保存的时候所有东西会先写入用户内存，最后再保存到硬盘
+保存的时候所有东西会先写入用户内存，最后再保存到硬盘
 
-    好处是此方案保存是最快的
-    （输出也是，但是内存堆积太多再输出容易卡住输出框）
+好处是此方案保存是最快的
+（输出也是，但是内存堆积太多再输出容易卡住输出框）
 
-    为了解决内存爆炸的问题，方案3和4孕育而生
+为了解决内存爆炸的问题，方案3和4孕育而生
 
-    方案3和方案4给与了插件作者调整输出时机和保存时机
+方案3和方案4给与了插件作者调整输出时机和保存时机
 
-    方案3中，程序仅仅是把参数传给 ``on_calculate`` 函数和 ``on_calculate_with_save``函数 ，然后需要使用 `output <API.html#output>`_\， `write <API.html#write>`_\， `flush <API.html#flush>`_\等函数自己调节输出到文本框，写入内存，写入硬盘的时机
+方案3中，程序仅仅是把参数传给 ``on_calculate`` 函数和 ``on_calculate_with_save``函数 ，然后需要使用 `output <API.html#output>`_\， `write <API.html#write>`_\， `flush <API.html#flush>`_\等函数自己调节输出到文本框，写入内存，写入硬盘的时机
 
-    方案3分成两个函数不够高效，于是出现了方案4，会多传入一个参数(请看插件事件一节)，来告知插件究竟是保存还是输出到内屏
+方案3分成两个函数不够高效，于是出现了方案4，会多传入一个参数(请看插件事件一节)，来告知插件究竟是保存还是输出到内屏

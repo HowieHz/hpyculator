@@ -8,6 +8,16 @@
     Fixed － 解决的问题
     Others － 性能优化和安全性增强等改进
 
+v1.6.4（草稿）
+    
+    Changed
+        文档更新，对于元数据进行了更详细的说明
+        插件更新
+    Others
+        代码性能优化（尽可能多的使用元组）
+        结构优化，并补充注释，类型表示
+        引入mypy进行静态类型检查
+
 v1.6.3
 
     Added
@@ -22,7 +32,7 @@ v1.6.3
         hpyc.RETURN_LIST
         hpyc.RETURN_LIST_OUTPUT_IN_ONE_LINE
     Others
-        代码性能，结构优化，并补充注释
+        代码性能优化，结构优化，并补充注释
 
 v1.6.2
 

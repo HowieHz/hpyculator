@@ -6,7 +6,7 @@ PLUGIN_METADATA = {
     "id": "yang_hui_s_triangle_hz",  # ID,插件标识符,需要和文件名一致（必须）
     "option": f"杨辉三角{VERSION} by HowieHz",  # 选项名-在选择算法列表中（必须）
     "version": VERSION,  # 版本号（必须）
-    "tag": ["category:Mathematical calculations"],
+    "tag": "category:Mathematical-calculations",
     "save_name": "杨辉三角",  # 文件保存项目名-在输出（必须）
     "quantifier": "行",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
@@ -21,7 +21,7 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(num, do_what):  # 返回一个列表
+def on_calculate(num: int, do_what: str) -> None:  # 返回一个列表
     if do_what == "output":
         output = hpyc.output
     else:

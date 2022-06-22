@@ -12,7 +12,7 @@ PLUGIN_METADATA = {
     # 选项名-在选择算法列表中（必须）
     "option": f"{NAME}{VERSION} by {', '.join(AUTHOR) if isinstance(AUTHOR, list) else AUTHOR}",
     "version": VERSION,  # 版本号
-    "tag": ["category:Mathematical calculations"],
+    "tag": ["category:Mathematical-calculations"],
     "save_name": "",  # 文件保存名
     "quantifier": "的计算结果",  # 文件保存量词
     "output_start": "",  # 输出头

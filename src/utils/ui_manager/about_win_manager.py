@@ -16,14 +16,17 @@ class AboutWinApp(QDialog):
 
         self.setWindowTitle(doc.ABOUT_HPYCULATOR_LITERAL)
 
-        self.ui.combo_doc.addItems([doc.INTRODUCTION_LITERAL,
-                                    doc.CHANGELOG_LITERAL,
-                                    doc.ABOUT_LITERAL,
-                                    ])
+        self.ui.combo_doc.addItems(
+            [
+                doc.INTRODUCTION_LITERAL,
+                doc.CHANGELOG_LITERAL,
+                doc.ABOUT_LITERAL,
+            ]
+        )
 
         self.ui.button_check_update.setText(doc.CHECK_UPDATE_LITERAL)
 
-    def eventChooseShow(self, qstring):
+    def eventChooseShow(self, qstring) -> None:
         match qstring:
             case doc.INTRODUCTION_LITERAL:
                 self.ui.output_doc.setText(doc.START_SHOW)
@@ -42,6 +45,6 @@ class AboutWinApp(QDialog):
         #     self.ui.output_doc.setText(doc.ABOUT)
 
     @staticmethod
-    def eventCheckUpdate():
+    def eventCheckUpdate() -> None:
         """检查更新"""
         webbrowser.open("https://github.com/HowieHz/hpyculator/releases")

@@ -8,7 +8,7 @@ PLUGIN_METADATA = {
     "id": "CamelCase_and_UnderScoreCase_hz",  # ID,插件标识符,需要和文件名一致（必须）
     "option": f"{NAME}{VERSION} by {AUTHOR}",  # 选项名-在选择算法列表中（必须）
     "version": VERSION,  # 版本号（必须）
-    "tag": ["category:Mathematical calculations"],
+    "tag": ["category:Mathematical-calculations"],
     "save_name": "",  # 文件保存项目名-在输出（必须）
     "quantifier": "的转换结果",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
@@ -42,14 +42,11 @@ PLUGIN_METADATA = {
 
 def on_calculate(data, todo):
     """计算函数"""
-    try:
-        if "," in data:
-            text, input_mode, output_mode = data.split(",")
-        elif "，" in data:
-            text, input_mode, output_mode = data.split("，")
-        else:
-            text, input_mode, output_mode = data.split()
-    except ValueError:
+    for pattern in [",", "，", " "]:
+        if pattern in data:
+            text, input_mode, output_mode, *_ = data.split(pattern)
+            break
+    else:
         hpyc.output("请按格式输入！！！")
         return
     text_list = []  # 存放单词组

@@ -4,13 +4,13 @@ import hpyculator as hpyc
 
 NAME = "高精度浮点数加法(基于字符串)"
 AUTHOR = "HowieHz"
-VERSION = "V1.0.3"
+VERSION = "V1.0.4"
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
     "id": "A_Plus_B_String_hz",  # ID,插件标识符,需要和文件名一致
     "option": f"{NAME} by {AUTHOR}",  # 选项名-在选择算法列表中
     "version": VERSION,  # 版本号
-    "tag": ["category:Mathematical calculations"],
+    "tag": ["category:Mathematical-calculations"],
     "save_name": "",  # 文件保存项目名-在输出
     "quantifier": "相加所得",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
@@ -37,16 +37,12 @@ PLUGIN_METADATA = {
 
 def on_calculate(data: str) -> Optional[str]:  # 输出到框体内
     """计算函数"""
-    try:
-        if "," in data:
-            a, b = data.split(",")
-        elif "，" in data:
-            a, b = data.split("，")
-        else:
-            a, b = data.split()
-    except ValueError:
-        hpyc.output("请按格式输入！！！")
-        return None
+    for pattern in [",", "，", " "]:
+        if pattern in data:
+            a, b, *_ = data.split(pattern)
+            break
+    else:
+        return "请按格式输入！！！"
     point_a = a.find(".")  # 获得a的小数点的索引
     if point_a == -1:
         point_a = len(a)

@@ -44,7 +44,7 @@ class SettingsWinApp(QDialog):
                 instance_settings_file.read("background_img")
             )
 
-    def eventSaveSettings(self):
+    def eventSaveSettings(self) -> None:
         """
         按下保存按钮之后的事件
 
@@ -61,28 +61,28 @@ class SettingsWinApp(QDialog):
         QMessageBox.information(self, doc.SAVED_LITERAL, doc.SAVED_TIPS, QMessageBox.Ok)
         self.close()
 
-    def eventCancelSettings(self):
+    def eventCancelSettings(self) -> None:
         self.close()
 
-    def eventSaveCheckBoxStatus(self):
+    def eventSaveCheckBoxStatus(self) -> None:
         """
         占位用，因为都是最后统一读取写入设置文件的
         """
 
-    def eventResetSaveLocation(self):
+    def eventResetSaveLocation(self) -> None:
         """重置保存路径"""
         self.OUTPUT_DIR_PATH = os.path.join(os.getcwd(), "Output")
         instance_settings_file.modify(key="output_dir_path", value=self.OUTPUT_DIR_PATH)
         self.ui.output_save_location.setPlainText(self.OUTPUT_DIR_PATH)
 
-    def eventChooseBackgroundImg(self, int_):
+    def eventChooseBackgroundImg(self, int_) -> None:
         """选择背景图片"""
         instance_settings_file.modify(
             key="background_img", value=self.ui.combo_background.currentText()
         )
 
     @staticmethod
-    def eventOpenBackgroundDir():
+    def eventOpenBackgroundDir() -> None:
         """
         打开存储背景图片的文件夹
 
@@ -91,7 +91,7 @@ class SettingsWinApp(QDialog):
         os.system(f'explorer {instance_settings_file.read("background_img_dir_path")}')
 
     @staticmethod
-    def eventOpenPluginDir():
+    def eventOpenPluginDir() -> None:
         """
         打开储存插件的文件架
 

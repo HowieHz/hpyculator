@@ -1,12 +1,12 @@
 import hpyculator as hpyc
 
-VERSION = "V1.0.0"
+VERSION = "V1.0.1"
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
     "id": "Nth_power_of_n_hz",
     "option": f"x的n次方(幂运算) {VERSION} by HowieHz",
     "version": VERSION,
-    "tag": ["category:Mathematical calculations"],
+    "tag": ["category:Mathematical-calculations"],
     "save_name": "",
     "quantifier": "次幂",
     "output_start": "",
@@ -32,15 +32,13 @@ PLUGIN_METADATA = {
 
 def on_calculate(inp):
     """计算函数"""
-    try:
-        if "," in inp:
-            x, n = inp.split(",")
-        elif "，" in inp:
-            x, n = inp.split("，")
-        else:
-            x, n = inp.split()
-        n = float(n) if "." in n else int(n)
-        x = float(x) if "." in x else int(x)
-    except ValueError:
-        return "请按照格式输入"
+    for pattern in [",", "，", " "]:
+        if pattern in data:
+            x, n, *_ = map(
+                lambda num: float(num) if "." in n else int(num), data.split(pattern)
+            )
+            break
+    else:
+        hpyc.output("请按格式输入！！！")
+        return
     return x**n

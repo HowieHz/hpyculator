@@ -1,4 +1,5 @@
 import hpyculator as hpyc
+from typing import Optional
 
 VERSION = "V1.0.1"
 PLUGIN_METADATA = {
@@ -51,24 +52,15 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(inp: str):
+def on_calculate(inp: str) -> list | str:
     """计算函数"""
-    try:
-        if "," in inp:
-            a, b, c = inp.split(",")
-        elif "，" in inp:
-            a, b, c = inp.split("，")
-        else:
-            a, b, c = inp.split()
-    except ValueError:
-        c = ""
-        if "," in inp:
-            a, b = inp.split(",")
-        elif "，" in inp:
-            a, b = inp.split("，")
-        else:
-            a, b = inp.split()
-    if c == "mode2":
+    for pattern in [",", "，", " "]:
+        if pattern in data:
+            a, b, mode, *_ = inp.split(pattern)
+            break
+    else:
+        return "请按格式输入！！！"
+    if mode == "mode2":
         list_data = []
         aq, aw, ae = map(str, a.split("."))
         bq, bw, be = map(str, b.split("."))

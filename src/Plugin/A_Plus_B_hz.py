@@ -2,13 +2,13 @@ import hpyculator as hpyc
 
 NAME = "整数加法"
 AUTHOR = "HowieHz"
-VERSION = "V1.2.2"
+VERSION = "V1.2.3"
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,  # 输入模式
     "id": "A_Plus_B_hz",  # ID,插件标识符,需要和文件名一致（必须）
     "option": f"{NAME}{VERSION} by {AUTHOR}",  # 选项名-在选择算法列表中（必须）
     "version": VERSION,  # 版本号（必须）
-    "tag": ["category:Mathematical calculations"],
+    "tag": ["category:Mathematical-calculations"],
     "save_name": "",  # 文件保存项目名-在输出（必须）
     "quantifier": "相加所得",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
@@ -33,13 +33,10 @@ PLUGIN_METADATA = {
 
 def on_calculate(data: str):
     """计算函数"""
-    try:
-        if "," in data:
-            ret = sum(map(int, data.split(",")))
-        elif "，" in data:
-            ret = sum(map(int, data.split("，")))
-        else:
-            ret = sum(map(int, data.split()))
-    except ValueError:
+    for pattern in [",", "，", " "]:
+        if pattern in data:
+            ret = sum(map(int, data.split(pattern)))
+            break
+    else:
         return "请按格式输入！！！"
     return ret

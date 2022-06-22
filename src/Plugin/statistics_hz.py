@@ -1,13 +1,13 @@
 import hpyculator as hpyc
 import numpy as np
 
-VERSION = "V1.1.0"
+VERSION = "V1.1.1"
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
     "id": "statistics_hz",
     "option": f"数列统计 {VERSION} by HowieHz",
     "version": VERSION,
-    "tag": ["category:Mathematical calculations"],
+    "tag": ["category:Mathematical-calculations"],
     "save_name": "数列统计",
     "quantifier": "",
     "output_start": "",
@@ -56,7 +56,7 @@ PLUGIN_METADATA = {
 #     """
 
 
-def mode(num_list):
+def mode(num_list) -> list:
     """
     统计一个数列里面数字的出现次数
 
@@ -72,14 +72,14 @@ def mode(num_list):
     return sorted(how.items(), key=lambda key_value: (key_value[1], key_value[0]))
 
 
-def on_calculate(inp):
+def on_calculate(data: str) -> str:
     """计算函数"""
-    if "," in inp:
-        num = inp.split(",")
-    elif "，" in inp:
-        num = inp.split("，")
+    for pattern in [",", "，", " "]:
+        if pattern in data:
+            num: list = data.split(pattern)
+            break
     else:
-        num = inp.split()
+        num = [data]  # 单值
 
     list_num = np.array(sorted(map(int, num)))
 

@@ -11,7 +11,7 @@ PLUGIN_METADATA = {
     "id": "is_prime_hz",
     "option": f"{NAME}{VERSION} by {AUTHOR}",
     "version": VERSION,
-    "tag": ["category:Mathematical calculations"],
+    "tag": ["category:Mathematical-calculations"],
     "save_name": "",
     "quantifier": "的质数鉴定结果",
     "output_start": "",

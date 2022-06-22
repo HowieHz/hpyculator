@@ -1,4 +1,4 @@
-SPECIAL_TAGS = (
+SPECIAL_TAGS: tuple[str, ...] = (
     "category:",
     "author:",
     "computer_language:",
@@ -6,7 +6,7 @@ SPECIAL_TAGS = (
     "depend:",
     "id:",
 )
-SPECIAL_TAGS_TRANSLATOR = {
+SPECIAL_TAGS_TRANSLATOR: dict[str, dict[str, str]] = {
     "zh_CN": {
         "category:": "用途/类别/使用场景：",
         "author:": "作者：",

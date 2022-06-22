@@ -37,14 +37,14 @@ else:
         _ = t.gettext
 # https://docs.python.org/zh-cn/3/library/gettext.html#internationalizing-your-programs-and-modules
 
-VERSION = version.VERSION
+VERSION: str = version.VERSION
 
-ABOUT = f"""<h3>HpyCulator {VERSION}</h3>
+ABOUT: str = f"""<h3>HpyCulator {VERSION}</h3>
 <p>{_("此为AGPL协议的开源项目")}</p>
 <p>{_("项目地址：")}https://github.com/HowieHz/hpyculator</p>
 <p>{_("软件文档：")}https:///hpyculator.readthedocs.io/</p>"""
 
-START_SHOW = (
+START_SHOW: str = (
     _("高拓展性计算器")
     + f" hpyculator {VERSION}\n"
     + _(
@@ -81,11 +81,11 @@ hpyculator的名字来历：
 # Fixed － 解决的问题
 # Others － 性能优化和安全性增强等改进
 
-CHANGELOG = """\
+CHANGELOG: str = """\
 https://hpyculator.readthedocs.io/
 """
 
-USER_NO_INPUT = _(
+USER_NO_INPUT: str = _(
     """                                                  ↑
                                                   ↑上面的就是输入框了
 不输要算什么我咋知道要算啥子嘞     ↑
@@ -96,7 +96,7 @@ USER_NO_INPUT = _(
 如果忘记了输入格式，只要再次选择运算核心就会显示了（· ω ·）"""
 )
 
-USER_NO_CHOOSE = _(
+USER_NO_CHOOSE: str = _(
     """\n\n
 不选要算什么我咋知道要算啥子嘞
 
@@ -105,24 +105,24 @@ USER_NO_CHOOSE = _(
 ← ← ←"""
 )
 
-TIPS_FOR_USE_LITERAL = _("使用提示")
-SEARCH_INPUT_BOX_TIPS = _("输入字符自动进行搜索\n清空搜索框显示全部插件")
-SETTINGS_LITERAL = _("设置")
-VERSION_LITERAL = _("版本")
-SAVED_LITERAL = _("保存完成")
-SAVED_TIPS = _("保存完成\n部分设置将在重新启动后生效")
-ABOUT_HPYCULATOR_LITERAL = _("关于 hpyculator")
-INTRODUCTION_LITERAL = _("开屏介绍")
-CHANGELOG_LITERAL = _("更新日志")
-ABOUT_LITERAL = _("关于")
-CHECK_UPDATE_LITERAL = _("检查更新")
-TYPE_CONVERSION_ERROR_LITERAL = _("输入转换发生错误:%s \n\n请检查输入格式")
-REACHED_OUTPUT_LIMIT_LITERAL = _("\n\n输出上限：检测到输出数据过大，请使用保存到文件防止卡死")
-CALCULATION_PROGRAM_IS_RUNNING_LITERAL = _("计算程序正在运行中，请耐心等待")
-THIS_CALCULATION_AND_SAVING_TOOK_LITERAL = _("本次计算+保存花费了")
-THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL = _("本次计算+输出花费了")
-OUTPUT_OPTIMIZATION_ENABLED_LITERAL = _("已启用输出优化")
-SAVED_IN_LITERAL = _("已保存在")
-PLUGIN_CALCULATION_ERROR_LITERAL = _("插件运算发生错误：%s \n\n请检查输入格式")
-CALCULATION_LITERAL = _("计算")
-AVAILABLE_TAGS_LITERAL = _("可用tag：")
+TIPS_FOR_USE_LITERAL: str = _("使用提示")
+SEARCH_INPUT_BOX_TIPS: str = _("输入字符自动进行搜索\n清空搜索框显示全部插件")
+SETTINGS_LITERAL: str = _("设置")
+VERSION_LITERAL: str = _("版本")
+SAVED_LITERAL: str = _("保存完成")
+SAVED_TIPS: str = _("保存完成\n部分设置将在重新启动后生效")
+ABOUT_HPYCULATOR_LITERAL: str = _("关于 hpyculator")
+INTRODUCTION_LITERAL: str = _("开屏介绍")
+CHANGELOG_LITERAL: str = _("更新日志")
+ABOUT_LITERAL: str = _("关于")
+CHECK_UPDATE_LITERAL: str = _("检查更新")
+TYPE_CONVERSION_ERROR_LITERAL: str = _("输入转换发生错误:%s \n\n请检查输入格式")
+REACHED_OUTPUT_LIMIT_LITERAL: str = _("\n\n输出上限：检测到输出数据过大，请使用保存到文件防止卡死")
+CALCULATION_PROGRAM_IS_RUNNING_LITERAL: str = _("计算程序正在运行中，请耐心等待")
+THIS_CALCULATION_AND_SAVING_TOOK_LITERAL: str = _("本次计算+保存花费了")
+THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL: str = _("本次计算+输出花费了")
+OUTPUT_OPTIMIZATION_ENABLED_LITERAL: str = _("已启用输出优化")
+SAVED_IN_LITERAL: str = _("已保存在")
+PLUGIN_CALCULATION_ERROR_LITERAL: str = _("插件运算发生错误：%s \n\n请检查输入格式")
+CALCULATION_LITERAL: str = _("计算")
+AVAILABLE_TAGS_LITERAL: str = _("可用tag：")

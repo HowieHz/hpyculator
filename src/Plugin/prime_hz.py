@@ -10,7 +10,7 @@ PLUGIN_METADATA = {
     "id": "prime_hz",  # 插件标识符,需要和文件名一致
     "option": f"{NAME}{VERSION} by {AUTHOR}",  # 选项名-在选择算法列表中
     "version": VERSION,  # 版本号
-    "tag": ["category:Mathematical calculations"],
+    "tag": ["category:Mathematical-calculations"],
     "save_name": "",  # 文件保存名
     "quantifier": "",  # 文件保存量词
     "output_start": "",  # 输出头

@@ -2,13 +2,13 @@ import hpyculator as hpyc
 
 NAME = "n进制加法"
 AUTHOR = "HowieHz"
-VERSION = "V1.2.2"
+VERSION = "V1.2.3"
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
     "id": "baseN_plus_hz",  # ID,插件标识符,需要和文件名一致（必须）
     "option": f"{NAME}{VERSION} by {AUTHOR}",  # 选项名-在选择算法列表中（必须）
     "version": VERSION,  # 版本号（必须）
-    "tag": ["category:Mathematical calculations"],
+    "tag": ["category:Mathematical-calculations"],
     "save_name": "",  # 文件保存项目名-在输出（必须）
     "quantifier": "进制下的相加所得",  # 文件保存量词-在输入后面(可选)
     "output_start": "",  # 输出头(可选)
@@ -122,14 +122,11 @@ def on_calculate(data: str, todo) -> None:
         "-": 62,
         "_": 63,
     }
-    try:
-        if "," in data:
-            a, b, c = data.strip().split(",")
-        elif "，" in data:
-            a, b, c = data.strip().split("，")
-        else:
-            a, b, c = data.strip().split()
-    except ValueError:
+    for pattern in [",", "，", " "]:
+        if pattern in data:
+            a, b, c, *_ = data.strip().split(pattern)
+            break
+    else:
         hpyc.output("请按格式输入！！！")
         return
     n = int(c.strip())  # n是多少进制

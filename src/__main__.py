@@ -37,6 +37,8 @@ if __name__ == "__main__":
 # todo 把槽函数外移，在程序里面connect
 # todo 写test!!! 主程序和模块
 # todo 文件输入
+# todo 使插件可以获得文件的绝对路径
+# todo 打表模式
 
 
 ## 更新方向
@@ -89,8 +91,8 @@ if __name__ == "__main__":
 # version
 #
 # 给插件加tag
-# 数学计算Mathematical calculations
+# 数学计算Mathematical-calculations
 # 物理计算Physical computations
 # 换算工具Unit conversion
 # 还有其他Other
-# category:Mathematical calculations
+# category:Mathematical-calculations

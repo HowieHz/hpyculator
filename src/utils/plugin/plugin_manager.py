@@ -2,8 +2,9 @@ import importlib
 import os
 import sys
 import traceback
+from pathlib import Path
 from types import ModuleType
-from typing import Union
+from typing import Optional, Generator, Any, TypedDict
 
 import hpyculator as hpyc
 
@@ -11,15 +12,35 @@ import hpyculator as hpyc
 sys.path.append(os.path.join(sys.path[0], ".."))
 
 
+# 插件元数据数据类型
+class MetadataDict(TypedDict, total=False):
+    input_mode: str
+    id: str
+    option: str
+    version: str
+    tag: list | str
+    save_name: str
+    quantifier: str
+    output_start: str
+    output_name: str
+    author: str | list
+    help: str
+    output_end: str
+    return_mode: int
+    fullwidth_symbol: int
+
+
 class PluginManager:
     def __init__(self):
         # Plugin目录下读取到的有__init__.py的文件夹
         self._dict_plugin_option_id: dict[str, str] = {}  # 选项名和实际文件名(ID)的映射表
         # 选项名和实际文件名(ID)的映射表 [([tag1,tag2],name),([tag1,tag2],name)]
-        self._list_alL_plugin_tag_option: list[tuple[list[str], str]] = []
-        self._dict_loaded_plugin: dict[str, ModuleType] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
+        self._list_alL_plugin_tag_option: tuple[tuple[tuple[str, ...], str], ...] = ()
+        self._dict_loaded_plugin: dict[
+            str, ModuleType
+        ] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
 
-    def _loadPluginMetadata(self, name):
+    def _loadPluginMetadata(self, name: str):
         """
         加载插件元数据
 
@@ -28,7 +49,7 @@ class PluginManager:
         """
         try:
             # PLUGIN_METADATA暂时储存着插件的元数据
-            _METADATA = self._dict_loaded_plugin[name].PLUGIN_METADATA
+            _METADATA: MetadataDict = self._dict_loaded_plugin[name].PLUGIN_METADATA
         except AttributeError:  # 比如说缺少PLUGIN_METADATA
             traceback.print_exc()
             return
@@ -37,19 +58,41 @@ class PluginManager:
             # 读取模块元数据，添加gui选项
             self._dict_plugin_option_id[_METADATA["option"]] = _METADATA["id"]
 
-            tag_list = _METADATA["tag"] if "tag" in _METADATA else []
-            tag_list.extend(
-                ["author:" + i for i in _METADATA["author"]]
-                if isinstance(_METADATA["author"], list)
-                else ["author:" + _METADATA["author"]]
-            )  # 作者列表或单个作者
-            tag_list.extend((f"id:{_METADATA['id']}", f"version:{_METADATA['version']}"))  # 版本号，id
-            self._list_alL_plugin_tag_option.append((tag_list, _METADATA["option"]))  # tag对应选项名
+            tag_list: tuple[str, ...] = (
+                (
+                    (
+                        (_METADATA["tag"],)  # 是字符串就转换为元组追加
+                        if isinstance(_METADATA["tag"], str)  # 是tag列表还是tag字符串
+                        else tuple(_METADATA["tag"])  # 是列表就转换为列表追加
+                    )
+                    if "tag" in _METADATA  # 检查是否有tag这个键
+                    else ()  # 没有返回空
+                )
+                + (
+                    tuple(["author:" + i for i in _METADATA["author"]])  # 作者列表转换成元组追加
+                    if isinstance(_METADATA["author"], list)  # 是作者名还是作者列表
+                    else ("author:" + _METADATA["author"],)  # 作者名转换为元组追加
+                )
+            ) + (
+                f"id:{_METADATA['id']}",  # id
+                f"version:{_METADATA['version']}",  # 版本号
+            )
+
+            self._list_alL_plugin_tag_option += (
+                (
+                    tag_list,
+                    _METADATA["option"],
+                ),
+            )  # tag对应选项名
         except KeyError:  # 缺少了一项，因为这些项都是必选项，没就直接return不加载了
             traceback.print_exc()
             return
 
-    def _importPlugin(self, plugin_files_name, plugin_dirs_name) -> None:
+    def _importPlugin(
+        self,
+        plugin_files_name: list[str] | Generator[str, None, None],
+        plugin_dirs_name: list[str] | Generator[str, None, None],
+    ) -> None:
         """
         导入指定单文件插件和文件夹插件
 
@@ -60,7 +103,9 @@ class PluginManager:
         # print(f"去掉.py后缀的文件名 {list(plugin_files_name)}")
         for name in plugin_files_name:
             try:
-                self._dict_loaded_plugin[name] = importlib.import_module(f"Plugin.{name}")
+                self._dict_loaded_plugin[name] = importlib.import_module(
+                    f"Plugin.{name}"
+                )
             # 插件缺少依赖(ImportError包括ModuleNotFoundError)
             except ModuleNotFoundError:
                 traceback.print_exc()
@@ -73,7 +118,9 @@ class PluginManager:
 
         for name in plugin_dirs_name:
             try:
-                self._dict_loaded_plugin[name] = importlib.import_module(f".{name}.__init__", package="Plugin")
+                self._dict_loaded_plugin[name] = importlib.import_module(
+                    f".{name}.__init__", package="Plugin"
+                )
             # 插件缺少依赖(ImportError包括ModuleNotFoundError)
             except ModuleNotFoundError:
                 traceback.print_exc()
@@ -84,7 +131,7 @@ class PluginManager:
 
             self._loadPluginMetadata(name)
 
-    def initPlugin(self, path, plugin_suffix=".py") -> None:
+    def initPlugin(self, path: str, plugin_suffix: str = ".py") -> None:
         """
         导入插件
 
@@ -96,10 +143,10 @@ class PluginManager:
         things_in_plugin_dir = os.listdir(path)
 
         # 从所有读取的文件和文件夹中挑选出.py为后缀的文件
-        files_in_plugin_dir = (
+        files_in_plugin_dir: Generator[str, Any, Any] = (
             _
             for _ in map(
-                lambda name: name.split(".")[0]  # 后缀是.py 就提取文件名
+                lambda name: name.removesuffix(plugin_suffix)  # 后缀是.py 就提取文件名
                 if name.endswith(plugin_suffix)  # 检查文件名后缀是否是.py
                 else "",  # 后缀不是.py 就把这项置空
                 things_in_plugin_dir,
@@ -108,12 +155,13 @@ class PluginManager:
         )  # 去除空值
 
         # 从所有读取的文件和文件夹中挑选出文件夹
-        dirs_in_plugin_dir = (
+        dirs_in_plugin_dir: Generator[str, Any, Any] = (
             _
             for _ in map(
                 lambda name: name  # 都满足就加入加载列表
                 if (
-                    os.path.isdir(os.path.join(path, name)) and os.path.isfile(os.path.join(path, name, "__init__.py"))
+                    os.path.isdir(os.path.join(path, name))
+                    and os.path.isfile(os.path.join(path, name, "__init__.py"))
                 )  # 检查是否是文件夹 检查是否是文件夹内是否有__init__.py文件
                 else "",  # 不满足就置空
                 things_in_plugin_dir,
@@ -148,7 +196,9 @@ class PluginManager:
             "version",
             "tag",
         ):
-            _plugin_attributes[_metadata_item] = _METADATA[_metadata_item] if _metadata_item in _METADATA else hpyc.OFF
+            _plugin_attributes[_metadata_item] = (
+                _METADATA[_metadata_item] if _metadata_item in _METADATA else hpyc.OFF
+            )
 
         if _plugin_attributes["fullwidth_symbol"] == hpyc.ON:  # 处理全角转换
             _plugin_attributes["help"] = (
@@ -173,7 +223,7 @@ class PluginManager:
         return self._dict_loaded_plugin[user_selection_id]
 
     @property
-    def list_alL_plugin_tag_option(self) -> list[tuple[list[str], str]]:
+    def list_alL_plugin_tag_option(self) -> tuple[tuple[tuple[str, ...], str], ...]:
         """
         获取所有插件的tag，tag对应插件选项名
         [(plugin1_tags: list, plugin1_option), (plugin2_tags: list, plugin2_option)]
