@@ -5,3 +5,11 @@ jpype1
 numba
 numpy
 black
+
+pytest
+pytest-assume
+pytest-cov
+pytest-html
+pytest-metadata
+pytest-ordering
+pytest-sugar
