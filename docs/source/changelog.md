@@ -10,7 +10,11 @@
 
 v1.6.4（草稿）
     
+    Added
+        打表模式，每次输出后添加一个","
+        common_factor_hz，pluperfect_digital_invariant_hz插件
     Changed
+        内置文档对于打表模式做出了解释
         文档更新，对于元数据进行了更详细的说明
         插件更新
     Others
