@@ -39,6 +39,8 @@ if __name__ == "__main__":
 # todo 文件输入
 # todo 使插件可以获得文件的绝对路径
 # todo 打表模式
+# todo 分离出core
+# todo 创建cli应用程序
 
 
 ## 更新方向

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1145</width>
-    <height>893</height>
+    <height>926</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -662,7 +662,7 @@ background:red;
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>20</width>
-                 <height>13</height>
+                 <height>5</height>
                 </size>
                </property>
               </spacer>
@@ -710,7 +710,7 @@ background:red;
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>20</width>
-                 <height>13</height>
+                 <height>5</height>
                 </size>
                </property>
               </spacer>
@@ -754,7 +754,7 @@ background:red;
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>20</width>
-                 <height>13</height>
+                 <height>5</height>
                 </size>
                </property>
               </spacer>
@@ -783,7 +783,7 @@ background:red;
                 <string notr="true"/>
                </property>
                <property name="text">
-                <string>内框输出性能优化</string>
+                <string>输出前先保存在临时文件中</string>
                </property>
               </widget>
              </item>
@@ -798,7 +798,7 @@ background:red;
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>20</width>
-                 <height>13</height>
+                 <height>5</height>
                 </size>
                </property>
               </spacer>
@@ -842,10 +842,38 @@ background:red;
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>13</width>
-                 <height>20</height>
+                 <height>5</height>
                 </size>
                </property>
               </spacer>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="check_make_container">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>1</horstretch>
+                 <verstretch>1</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>更纱黑体 UI SC</family>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>打表模式</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>

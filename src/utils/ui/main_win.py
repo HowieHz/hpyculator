@@ -63,7 +63,7 @@ class Ui_MainWin(object):
     def setupUi(self, MainWin):
         if not MainWin.objectName():
             MainWin.setObjectName("MainWin")
-        MainWin.resize(1145, 893)
+        MainWin.resize(1145, 926)
         MainWin.setStyleSheet(
             "/*QMainWindow{\n"
             "background-image: url(:/background/images/background3.png);\n"
@@ -539,7 +539,7 @@ class Ui_MainWin(object):
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.verticalSpacer_8 = QSpacerItem(
-            20, 13, QSizePolicy.Minimum, QSizePolicy.Fixed
+            20, 5, QSizePolicy.Minimum, QSizePolicy.Fixed
         )
 
         self.verticalLayout_2.addItem(self.verticalSpacer_8)
@@ -563,7 +563,7 @@ class Ui_MainWin(object):
         self.verticalLayout_2.addWidget(self.check_save)
 
         self.verticalSpacer_7 = QSpacerItem(
-            20, 13, QSizePolicy.Minimum, QSizePolicy.Fixed
+            20, 5, QSizePolicy.Minimum, QSizePolicy.Fixed
         )
 
         self.verticalLayout_2.addItem(self.verticalSpacer_7)
@@ -587,7 +587,7 @@ class Ui_MainWin(object):
         self.verticalLayout_2.addWidget(self.check_output_lock_maximums)
 
         self.verticalSpacer_6 = QSpacerItem(
-            20, 13, QSizePolicy.Minimum, QSizePolicy.Fixed
+            20, 5, QSizePolicy.Minimum, QSizePolicy.Fixed
         )
 
         self.verticalLayout_2.addItem(self.verticalSpacer_6)
@@ -605,7 +605,7 @@ class Ui_MainWin(object):
         self.verticalLayout_2.addWidget(self.check_output_optimization)
 
         self.verticalSpacer_10 = QSpacerItem(
-            20, 13, QSizePolicy.Minimum, QSizePolicy.Fixed
+            20, 5, QSizePolicy.Minimum, QSizePolicy.Fixed
         )
 
         self.verticalLayout_2.addItem(self.verticalSpacer_10)
@@ -623,10 +623,22 @@ class Ui_MainWin(object):
         self.verticalLayout_2.addWidget(self.check_auto_wrap)
 
         self.verticalSpacer_5 = QSpacerItem(
-            13, 20, QSizePolicy.Minimum, QSizePolicy.Fixed
+            13, 5, QSizePolicy.Minimum, QSizePolicy.Fixed
         )
 
         self.verticalLayout_2.addItem(self.verticalSpacer_5)
+
+        self.check_make_container = QCheckBox(MainWin)
+        self.check_make_container.setObjectName("check_make_container")
+        sizePolicy7.setHeightForWidth(
+            self.check_make_container.sizePolicy().hasHeightForWidth()
+        )
+        self.check_make_container.setSizePolicy(sizePolicy7)
+        self.check_make_container.setMinimumSize(QSize(0, 30))
+        self.check_make_container.setFont(font2)
+        self.check_make_container.setStyleSheet("")
+
+        self.verticalLayout_2.addWidget(self.check_make_container)
 
         self.horizontalLayout_3.addLayout(self.verticalLayout_2)
 
@@ -774,11 +786,16 @@ class Ui_MainWin(object):
         )
         self.check_output_optimization.setText(
             QCoreApplication.translate(
-                "MainWin", "\u5185\u6846\u8f93\u51fa\u6027\u80fd\u4f18\u5316", None
+                "MainWin",
+                "\u8f93\u51fa\u524d\u5148\u4fdd\u5b58\u5728\u4e34\u65f6\u6587\u4ef6\u4e2d",
+                None,
             )
         )
         self.check_auto_wrap.setText(
             QCoreApplication.translate("MainWin", "\u81ea\u52a8\u6362\u884c", None)
+        )
+        self.check_make_container.setText(
+            QCoreApplication.translate("MainWin", "\u6253\u8868\u6a21\u5f0f", None)
         )
         self.button_start.setText(
             QCoreApplication.translate("MainWin", "\u5f00\u59cb\u8ba1\u7b97", None)

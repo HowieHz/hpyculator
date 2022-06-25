@@ -41,7 +41,11 @@ class default_widget_state:
 
 class MainWinApp(FramelessWindow):
     def __init__(
-        self, setting_file_path, output_dir_path, plugin_dir_path, background_dir_path
+        self,
+        setting_file_path: str,
+        output_dir_path: str,
+        plugin_dir_path: str,
+        background_dir_path: str,
     ):
         """
         主窗口程序类
@@ -52,22 +56,23 @@ class MainWinApp(FramelessWindow):
         :param background_dir_path:  用于存放背景图片的路径
         """
         # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
-        self.SETTING_FILE_PATH = setting_file_path
-        self.OUTPUT_DIR_PATH = output_dir_path
-        self.PLUGIN_DIR_PATH = plugin_dir_path
+        self.SETTING_FILE_PATH: str = setting_file_path
+        self.OUTPUT_DIR_PATH: str = output_dir_path
+        self.PLUGIN_DIR_PATH: str = plugin_dir_path
         self.user_selection_id: str = ""  # 用户选择的插件的文件名（id)
-        self.background_dir_path = background_dir_path  # 用于存放背景图片的路径
+        self.background_dir_path: str = background_dir_path  # 用于存放背景图片的路径
         self.is_save_check_box_status: Optional[bool] = None  # 是否保存按键状态
 
         super().__init__()
         self.ui = Ui_MainWin()  # UI类的实例化()
         self.ui.setupUi(self)  # ui初始化
-        self.bindSignalWithSlots()  # 信号和槽的绑定
+
         self.setWindowTitle(f"hpyculator {doc.VERSION}")  # 设置标题
 
         self.move_fix = False  # 一个窗口全屏之后，拖动，窗口会回到正常大小，且指针和在窗口长度和比值和原来一致,True的话就进行校正
 
-        self.initCheck()  # 初始化checkbox
+        self.initCheck()  # 初始化checkbox和储存check的设置文件
+        self.bindSignalWithSlots()  # 信号和槽的绑定 (先初始设置文件和check)
 
         # 初始化背景图片
         if instance_settings_file.exists("background_img"):
@@ -76,15 +81,14 @@ class MainWinApp(FramelessWindow):
                 instance_settings_file.read("background_img")
             )
             # print(pathlib.Path().cwd())
-            if background_img_path.is_file():
-                self.bg_img = QPixmap(background_img_path)
         else:
             background_img_path = pathlib.Path(background_dir_path).joinpath(
                 "default.png"
             )
             instance_settings_file.add("background_img", "default.png")
-            if background_img_path.is_file():
-                self.bg_img = QPixmap(background_img_path)
+
+        if background_img_path.is_file():
+            self.bg_img = QPixmap(background_img_path)
 
         self.is_thread_running = [False]  # 防止反复启动计算线程
 
@@ -148,6 +152,12 @@ class MainWinApp(FramelessWindow):
             for _tag in _dict_set_tags[_special_tag]:
                 self.ui.output_box.appendPlainText(f"        {_tag}")  # 输出特殊tag
 
+    def _appendTextMakeContainer(self, msg: str):
+        self.ui.output_box.appendPlainText(f"{msg},")
+
+    def _insertTextMakeContainer(self, msg: str):
+        self.ui.output_box.insertPlainText(f"{msg},")
+
     def bindSignalWithSlots(self) -> None:
         """绑定信号和槽"""
         # self.ui.___ACTION___.triggered.connect(___FUNCTION___)
@@ -173,6 +183,7 @@ class MainWinApp(FramelessWindow):
             self.eventOutputLockMaximumsCheck
         )
         self.ui.check_auto_wrap.clicked.connect(self.eventAutoWrapCheck)
+        self.ui.check_make_container.clicked.connect(self.eventMakeContainer)
 
         self.ui.search_plugin.textChanged.connect(self.eventSearch)
         self.ui.list_choices_plugin.currentItemChanged.connect(
@@ -191,12 +202,28 @@ class MainWinApp(FramelessWindow):
             self.ui.output_box.setTextCursor(_cursor)
 
         # 自定义信号绑定函数
-        instance_main_win_signal.append_output_box.connect(
+        instance_main_win_signal.append_output_box_.connect(
             self.ui.output_box.appendPlainText
         )  # 输出前会添加换行符
-        instance_main_win_signal.insert_output_box.connect(
+        instance_main_win_signal.insert_output_box_.connect(
             self.ui.output_box.insertPlainText
         )  # 输出前不会添加换行符
+
+        if self.ui.check_make_container.isChecked():
+            instance_main_win_signal.append_output_box.connect(
+                self._appendTextMakeContainer
+            )  # 输出前会添加换行符
+            instance_main_win_signal.insert_output_box.connect(
+                self._insertTextMakeContainer
+            )  # 输出前不会添加换行符
+        else:
+            instance_main_win_signal.append_output_box.connect(
+                self.ui.output_box.appendPlainText
+            )  # 输出前会添加换行符
+            instance_main_win_signal.insert_output_box.connect(
+                self.ui.output_box.insertPlainText
+            )  # 输出前不会添加换行符
+
         instance_main_win_signal.set_output_box.connect(self.ui.output_box.setPlainText)
         instance_main_win_signal.clear_output_box.connect(self.ui.output_box.clear)
         instance_main_win_signal.get_output_box.connect(
@@ -212,6 +239,8 @@ class MainWinApp(FramelessWindow):
 
         instance_main_win_signal.set_output_box_cursor.connect(_setOutputBoxCursor)
 
+        instance_main_win_signal.draw_background.connect(self.drawBackground)
+
     def initCheck(self) -> None:
         """
         初始化check box
@@ -225,18 +254,23 @@ class MainWinApp(FramelessWindow):
             ),
             default_widget_state(
                 settings_key="output_optimization",
-                default_state=True,
+                default_state=False,
                 widget=self.ui.check_output_optimization,
             ),
             default_widget_state(
                 settings_key="output_lock_maximums",
-                default_state=True,
+                default_state=False,
                 widget=self.ui.check_output_lock_maximums,
             ),
             default_widget_state(
                 settings_key="auto_wrap",
                 default_state=True,
                 widget=self.ui.check_auto_wrap,
+            ),
+            default_widget_state(
+                settings_key="make_container",
+                default_state=False,
+                widget=self.ui.check_make_container,
             ),
         )
 
@@ -267,9 +301,12 @@ class MainWinApp(FramelessWindow):
             instance_settings_file.add(
                 key="is_save_check_box_status", value=False
             )  # 默认不保存按键状态
-            self.is_save_check_box_status = False  # 默认不保存按键状态
             for sequence in _default_state:
+                instance_settings_file.add(
+                    key=sequence.settings_key, value=sequence.default_state
+                )  # 初始化设置文件中对应的项
                 sequence.widget.setChecked(sequence.default_state)  # 初始化控件
+            self.is_save_check_box_status = False  # 默认不保存按键状态
 
     def eventStartCalculation(
         self,
@@ -643,6 +680,45 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         else:
             self.ui.output_box.setLineWrapMode(self.ui.output_box.NoWrap)
             self.ui.input_box.setLineWrapMode(self.ui.input_box.NoWrap)
+
+    def eventMakeContainer(self) -> None:
+        """
+        开关控制打表法
+
+        :return:
+        """
+
+        if self.is_save_check_box_status:  # 保存check设置
+            instance_settings_file.modify(
+                key="make_container", value=self.ui.check_make_container.isChecked()
+            )
+
+        if self.ui.check_make_container.isChecked():
+            instance_main_win_signal.append_output_box.disconnect(
+                self.ui.output_box.appendPlainText
+            )  # 输出前会添加换行符
+            instance_main_win_signal.insert_output_box.disconnect(
+                self.ui.output_box.insertPlainText
+            )  # 输出前不会添加换行符
+            instance_main_win_signal.append_output_box.connect(
+                self._appendTextMakeContainer
+            )  # 输出前会添加换行符
+            instance_main_win_signal.insert_output_box.connect(
+                self._insertTextMakeContainer
+            )  # 输出前不会添加换行符
+        else:
+            instance_main_win_signal.append_output_box.disconnect(
+                self._appendTextMakeContainer
+            )  # 输出前会添加换行符
+            instance_main_win_signal.insert_output_box.disconnect(
+                self._insertTextMakeContainer
+            )  # 输出前不会添加换行符
+            instance_main_win_signal.append_output_box.connect(
+                self.ui.output_box.appendPlainText
+            )  # 输出前会添加换行符
+            instance_main_win_signal.insert_output_box.connect(
+                self.ui.output_box.insertPlainText
+            )  # 输出前不会添加换行符
 
     def eventSearch(self) -> None:
         """
