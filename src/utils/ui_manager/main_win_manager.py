@@ -187,7 +187,7 @@ class MainWinApp(FramelessWindow):
 
         self.ui.search_plugin.textChanged.connect(self.eventSearch)
         self.ui.list_choices_plugin.currentItemChanged.connect(
-            lambda _: self.eventChooseOption(_)
+            self.eventChooseOption
         )  # _: QListWidgetItem*
 
         def _setOutputBoxCursor(where: str) -> None:  # 目前只有end
@@ -687,7 +687,6 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 
         :return:
         """
-
         if self.is_save_check_box_status:  # 保存check设置
             instance_settings_file.modify(
                 key="make_container", value=self.ui.check_make_container.isChecked()
@@ -766,7 +765,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             self.ui.list_choices_plugin.addItems(_set_matched_item)  # 匹配的添加到选框
             return None
 
-        for i in instance_plugin_manager.option_id_dict.keys():  # 选出符合要求的
+        for i in instance_plugin_manager.option_id_dict:  # 选出符合要求的
             if i.find(_search_keyword) == -1:  # 字符串方法，没找到指定子串就-1
                 continue
             self.ui.list_choices_plugin.addItem(i)

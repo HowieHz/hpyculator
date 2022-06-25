@@ -30,7 +30,7 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(inp):
+def on_calculate(data: str):
     """计算函数"""
     for pattern in [",", "，", " "]:
         if pattern in data:
@@ -40,5 +40,5 @@ def on_calculate(inp):
             break
     else:
         hpyc.output("请按格式输入！！！")
-        return
+        return None
     return x**n

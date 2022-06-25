@@ -17,7 +17,7 @@ PLUGIN_METADATA = {
     "author": AUTHOR,  # 作者
     "help": """\
 输入若干个大于等于1的整数，求这些数的公因数
-    
+
 输入格式
     a,b,c,...
     a b c
@@ -52,5 +52,8 @@ def on_calculate(data, do_what: str):
         return
 
     for num in range(1, num_list[0] + 1):
-        if all(map(lambda _: (_ % num) == 0, num_list)):
+        # 可以直接写lambda _: (_ % num) == 0, num_list)
+        # 但是编程指南里面说函数体不要依赖外部变量，这里是局部所以不会出现问题，要是num是全局变量那就寄了
+        # Cell variable defined in loop PYL-W0640
+        if all(map(lambda _, divisor=num: (_ % divisor) == 0, num_list)):
             output(num)

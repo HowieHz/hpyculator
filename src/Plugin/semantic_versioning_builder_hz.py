@@ -52,11 +52,11 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(inp: str) -> list | str:
+def on_calculate(data: str) -> list | str:
     """计算函数"""
     for pattern in [",", "，", " "]:
         if pattern in data:
-            a, b, mode, *_ = inp.split(pattern)
+            a, b, mode, *_ = data.split(pattern)
             break
     else:
         return "请按格式输入！！！"

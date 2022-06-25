@@ -32,7 +32,7 @@ PLUGIN_METADATA = {
 }
 
 
-def on_calculate(inp: str, do_what):
+def on_calculate(data: str, do_what):
     """计算函数"""
     for pattern in [",", "，", " "]:
         if pattern in data:

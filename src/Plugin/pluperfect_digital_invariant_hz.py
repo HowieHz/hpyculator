@@ -70,6 +70,13 @@ answer_list: tuple[int, ...] = (
 
 
 def on_calculate(data: str, do_what: str) -> None:
+    """
+    计算函数
+
+    :param str data: 输入的数据
+    :param str do_what: 计算模式
+    :return: None
+    """
     output = hpyc.output if do_what == "output" else hpyc.write  # 输出内容只需要用output就好了
     for pattern in [",", "，", " "]:
         if pattern in data:
@@ -94,7 +101,7 @@ def on_calculate(data: str, do_what: str) -> None:
             if (
                 sum(
                     map(
-                        lambda _: _ ** math.ceil(math.log10(num)),
+                        lambda _, n=num: _ ** math.ceil(math.log10(n)),
                         int_to_reverse_list(num),
                     )
                 )
