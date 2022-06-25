@@ -175,13 +175,12 @@ class CalculationThread(Thread):
                         buffering=1073741824,  # 1,073,741,824B = 1024MB  给插件足够的内存做缓冲区，也避免插件使得电脑内存爆炸
                         encoding="utf-8",
                     )
-                else:
-                    return tempfile.TemporaryFile(
-                        mode="w+t",
-                        buffering=1073741824,  # 1,073,741,824B = 1024MB  给插件足够的内存做缓冲区，也避免插件使得电脑内存爆炸
-                        encoding="utf-8",
-                        errors="ignore",
-                    )
+                return tempfile.TemporaryFile(
+                    mode="w+t",
+                    buffering=1073741824,  # 1,073,741,824B = 1024MB  给插件足够的内存做缓冲区，也避免插件使得电脑内存爆炸
+                    encoding="utf-8",
+                    errors="ignore",
+                )
 
             with _open_filestream() as filestream:  # buffering为-1的时候其实就是8192，现在显式的写出来
                 time_before_calculate = time.perf_counter_ns()  # 储存开始时间
