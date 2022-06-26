@@ -3,9 +3,10 @@ import hpyculator as hpyc
 NAME = "名"
 AUTHOR = "作者" or ["作者1", "作者2"]
 VERSION = "V1.0.0"
+ID = "${FILE_NAME}"[:-3]
 PLUGIN_METADATA = {
     'input_mode' : hpyc.STRING,  # 输入模式，STRING为传入字符串,NUM为传入int,FLOAT为传入float(传入的作为main函数的开始计算值)
-    'id' : '',  # 插件标识符,需要和文件名一致
+    'id' : ID,  # 插件标识符,需要和文件名一致
     "option": f"{NAME}{VERSION} by {', '.join(AUTHOR) if isinstance(AUTHOR,list) else AUTHOR}",  # 选项名-在选择算法列表中（必须）
     'version' : VERSION,  # 版本号
     'tag' : [""],
