@@ -3,17 +3,16 @@ import os
 import tempfile
 import time
 import traceback
-
+from types import ModuleType
 from functools import partial  # 偏函数真好用
 from threading import Thread
 from typing import Generator, Optional
 
-from ..plugin import instance_plugin_manager
+
 from .. import document as doc
+from ..data_structure import MetadataDict
 import hpyculator as hpyc
 from hpyculator.hpysignal import instance_main_win_signal
-
-# from multiprocessing import Process
 
 
 class CalculationThread(Thread):
@@ -21,16 +20,18 @@ class CalculationThread(Thread):
         self,
         converted_data: str | float | int,
         calculation_mode: str,
-        user_selection_id: str,
         output_dir_path: str,
+        plugin_attributes: MetadataDict,
+        instance_plugin: ModuleType,
     ):
         """
         计算线程
 
         :param converted_data: 经过类型转换处理的用户输入
         :param calculation_mode; 计算模式
-        :param user_selection_id; 用户选择的插件的id
         :param output_dir_path; 输出目录
+        :param plugin_attributes; 插件属性
+        :param instance_plugin; 插件实例
         :return:
         """
         Thread.__init__(self)
@@ -39,23 +40,19 @@ class CalculationThread(Thread):
 
         self.converted_data: str | float | int = converted_data
         self.calculation_mode: str = calculation_mode
-        self.user_selection_id: str = user_selection_id
         self.output_dir_path: str = output_dir_path
+        self.plugin_attributes: MetadataDict = plugin_attributes
+        self.instance_plugin: ModuleType = instance_plugin
 
     def run(self) -> None:
         converted_data: str | float | int = self.converted_data
         calculation_mode: str = self.calculation_mode
-        # instance_plugin_manager.initPlugin()  # 多进程用
-        plugin_attributes = instance_plugin_manager.getPluginAttributes(
-            self.user_selection_id
-        )  # 插件属性字典
-        selected_plugin = instance_plugin_manager.getPluginInstance(
-            self.user_selection_id
-        )
+        plugin_attributes: MetadataDict = self.plugin_attributes  # 插件属性字典
+        instance_plugin: ModuleType = self.instance_plugin  # 插件实例
 
         def _baseCalculate() -> int:
             """基础的计算模式"""
-            calculate_fun = selected_plugin.on_calculate
+            calculate_fun = instance_plugin.on_calculate
 
             time_before_calculate = time.perf_counter_ns()  # 储存开始时间
 
@@ -92,7 +89,7 @@ class CalculationThread(Thread):
             """
             # filepath - 储存保存到哪个文件里 路径+文件名
 
-            calculate_fun = selected_plugin.on_calculate
+            calculate_fun = instance_plugin.on_calculate
 
             def _open_filestream():
                 if filepath:  # 传入了保存路径，说明是要保存
@@ -128,7 +125,7 @@ class CalculationThread(Thread):
                             filestream.flush()  # 算出来最后存进去
                         case hpyc.NO_RETURN:
                             hpyc.setIoInstance(filestream)
-                            selected_plugin.on_calculate_with_save(converted_data)
+                            instance_plugin.on_calculate_with_save(converted_data)
                         case hpyc.NO_RETURN_SINGLE_FUNCTION:
                             hpyc.setIoInstance(filestream)
                             calculate_fun(converted_data, "save")

@@ -1,9 +1,12 @@
 import traceback
+from types import ModuleType
 
 import hpyculator as hpyc
 from hpyculator.hpysignal import instance_main_win_signal
 
+from ..data_structure import MetadataDict
 from .. import document as doc
+from ..plugin import instance_plugin_manager
 from .calculation_thread import CalculationThread
 
 # TODO 用了多进程之后main_win_signal的实例化效果消失
@@ -39,12 +42,20 @@ class CalculationManager:
         if converted_data is None:  # 转换发生错误
             return None
 
+        plugin_attributes: MetadataDict = instance_plugin_manager.getPluginAttributes(
+            user_selection_id
+        )  # 插件属性字典
+        instance_plugin: ModuleType = instance_plugin_manager.getPluginInstance(
+            user_selection_id
+        )
+
         # 覆盖旧实例
         instance_calculate_thread = CalculationThread(
             converted_data=converted_data,
             calculation_mode=calculation_mode,
-            user_selection_id=user_selection_id,
             output_dir_path=output_dir_path,
+            plugin_attributes=plugin_attributes,
+            instance_plugin=instance_plugin,
         )
 
         # 启动新实例
