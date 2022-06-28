@@ -1,5 +1,8 @@
+del ".\out\__main__.dist" -Force
+del ".\out\full" -Force
+del ".\out\lite\" -Force
 
-nuitka --mingw64 --standalone --quiet --show-progress --show-memory --follow-import-to=utils --nofollow-import-to=jpype1,jpype,numpy,numba --enable-plugin=pyside6,numpy --output-dir=out __main__.py
+nuitka --mingw64 --standalone --quiet --show-progress --show-memory --windows-icon-from-ico=.\use_for_packing\ico.ico --follow-imports --nofollow-import-to=jpype1,jpype,numpy,numba --enable-plugin=pyside6,numpy --output-dir=out __main__.py
 #  --windows-disable-console 
 
 copy-item -path ".\out\__main__.dist" -destination ".\out\lite\bin"  -recurse

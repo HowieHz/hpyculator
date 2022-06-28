@@ -154,7 +154,7 @@ class PluginManager:
 
         self._importPlugin(files_in_plugin_dir, dirs_in_plugin_dir)  # 导入单文件插件和文件夹插件
 
-    def getPluginAttributes(self, user_selection_id) -> dict:
+    def getPluginAttributes(self, user_selection_id) -> MetadataDict:
         """
         读取指定id的插件属性
 

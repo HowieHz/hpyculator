@@ -8,22 +8,18 @@ from typing import Any, Optional
 import hpyculator as hpyc
 from hpyculator.hpysignal import instance_main_win_signal
 from PySide6.QtCore import Qt
-
-# pyside6 ui signal导入
 from PySide6.QtGui import QBrush, QGuiApplication, QPalette, QPixmap, QTextCursor
 
+from .about_win_manager import AboutWinApp
+from .settings_win_manager import SettingsWinApp  # 窗口管理类（用于管理设置的窗口）
 from .. import document as doc
 from ..calculate import CalculationManager  # 计算管理
 from ..plugin import instance_plugin_manager  # 插件管理
-
-# refer to https://github.com/zhiyiYo/PyQt-Frameless-Window
-from ..pyside_frameless_win.framelesswindow import FramelessWindow
+from ..pyside_frameless_win.framelesswindow import (
+    FramelessWindow,
+)  # refer to https://github.com/zhiyiYo/PyQt-Frameless-Window
 from ..settings import instance_settings_file  # 设置文件实例
 from ..ui import Ui_MainWin
-from .about_win_manager import AboutWinApp
-
-# 窗口管理类（用于管理设置的窗口）
-from .settings_win_manager import SettingsWinApp
 
 
 @dataclass
