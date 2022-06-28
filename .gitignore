@@ -12,8 +12,6 @@ NoWinRun.exe
 Log/
 out/
 report/
-*.ps1
-*.bat
 *.py[cod]
 *$py.class
 *.fbp

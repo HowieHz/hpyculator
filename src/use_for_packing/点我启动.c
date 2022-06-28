@@ -2,6 +2,6 @@
 
 int main()
 {
-    system(".\\bin\\NoWinRun.exe .\\bin\\start.bat");
+    system(".\\bin\\__main__.exe");
     return 0;
 }
