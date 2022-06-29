@@ -1,6 +1,9 @@
-del ".\out\__main__.dist" -Force
-del ".\out\full" -Force
-del ".\out\lite\" -Force
+del -Force ".\out\__main__.dist\*"
+del -Force ".\out\__main__.dist\"
+del -Force ".\out\full\*"
+del -Force ".\out\full\"
+del -Force ".\out\lite\*"
+del -Force ".\out\lite\"
 
 nuitka --mingw64 --standalone --quiet --show-progress --show-memory --windows-icon-from-ico=.\use_for_packing\ico.ico --follow-imports --nofollow-import-to=jpype1,jpype,numpy,numba --enable-plugin=pyside6,numpy --output-dir=out __main__.py
 #  --windows-disable-console 

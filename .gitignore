@@ -16,6 +16,7 @@ report/
 *$py.class
 *.fbp
 .history/
+src/use_for_packing/打包所需/
 
 
 # C extensions
