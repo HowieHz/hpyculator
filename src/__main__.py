@@ -33,13 +33,11 @@ if __name__ == "__main__":
 # todo 重写无边框窗体
 # todo 学习snipaste的设置界面
 # todo 动画
-# todo 缓存结果模式 不是@cache
 # todo 把槽函数外移，在程序里面connect
 # todo 写test!!! 主程序和模块
 # todo 文件输入
 # todo 使插件可以获得文件的绝对路径
-# todo 打表模式
-# todo 分离出core
+# todo 分离出core 定义核心需要什么和外部程序交互的接口
 # todo 创建cli应用程序
 
 
