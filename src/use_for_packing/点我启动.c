@@ -2,6 +2,6 @@
 
 int main()
 {
-    system(".\\bin\\__main__.exe");
+    system("start .\\bin\\__main__.exe");
     return 0;
 }

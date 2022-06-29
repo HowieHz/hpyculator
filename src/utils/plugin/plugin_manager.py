@@ -73,8 +73,8 @@ class PluginManager:
 
     def _importPlugin(
         self,
-        plugin_files_name: list[str] | Generator[str, None, None],
-        plugin_dirs_name: list[str] | Generator[str, None, None],
+        plugin_files_name: list[str] | filter,
+        plugin_dirs_name: list[str] | filter,
     ) -> None:
         """
         导入指定单文件插件和文件夹插件
@@ -126,21 +126,20 @@ class PluginManager:
         things_in_plugin_dir = os.listdir(path)
 
         # 从所有读取的文件和文件夹中挑选出.py为后缀的文件
-        files_in_plugin_dir: Generator[str, Any, Any] = (
-            _
-            for _ in map(
+        files_in_plugin_dir: filter = filter(
+            None,
+            map(
                 lambda name: name.removesuffix(plugin_suffix)  # 后缀是.py 就提取文件名
                 if name.endswith(plugin_suffix)  # 检查文件名后缀是否是.py
                 else "",  # 后缀不是.py 就把这项置空
                 things_in_plugin_dir,
-            )
-            if _ != ""
+            ),
         )  # 去除空值
 
         # 从所有读取的文件和文件夹中挑选出文件夹
-        dirs_in_plugin_dir: Generator[str, Any, Any] = (
-            _
-            for _ in map(
+        dirs_in_plugin_dir: filter = filter(
+            None,
+            map(
                 lambda name: name  # 都满足就加入加载列表
                 if (
                     os.path.isdir(os.path.join(path, name))
@@ -148,8 +147,7 @@ class PluginManager:
                 )  # 检查是否是文件夹 检查是否是文件夹内是否有__init__.py文件
                 else "",  # 不满足就置空
                 things_in_plugin_dir,
-            )
-            if _ != ""
+            ),
         )  # 去除空值
 
         self._importPlugin(files_in_plugin_dir, dirs_in_plugin_dir)  # 导入单文件插件和文件夹插件
