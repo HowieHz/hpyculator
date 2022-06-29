@@ -269,6 +269,7 @@ class CalculationThread(Thread):
             )  # 输出本次计算时间
 
         # ------------------------------------------这些ui逻辑需外移
+        instance_main_win_signal.draw_background.emit()  # 不知道为何使用了打表模式之后会掉背景，干脆重绘一次背景
         instance_main_win_signal.set_start_button_text.emit(
             doc.CALCULATION_PROGRAM_IS_RUNNING_LITERAL
         )
