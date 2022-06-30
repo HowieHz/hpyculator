@@ -174,14 +174,9 @@ class PluginManager:
             )
 
         if _plugin_attributes["fullwidth_symbol"] == hpyc.ON:  # 处理全角转换
-            _plugin_attributes["help"] = (
-                _plugin_attributes["help"]
-                .replace(",", "，")
-                .replace(".", "。")
-                .replace("'", "‘")
-                .replace('"', "”")
-                .replace("(", "（")
-                .replace(")", "）")
+            table = str.maketrans(r""",.'"():""", r"""，。‘“（）：""")
+            _plugin_attributes["help"]: str = _plugin_attributes["help"].translate(
+                table
             )
 
         return _plugin_attributes

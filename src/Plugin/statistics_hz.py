@@ -1,7 +1,7 @@
 import hpyculator as hpyc
-import numpy as np
+import statistics as st
 
-VERSION = "V1.1.1"
+VERSION = "V1.2.1"
 PLUGIN_METADATA = {
     "input_mode": hpyc.STRING,
     "id": "statistics_hz",
@@ -81,23 +81,24 @@ def on_calculate(data: str) -> str:
     else:
         num = [data]  # 单值
 
-    list_num = np.array(sorted(map(int, num)))
+    list_num = sorted(map(int, num))
 
     mode_ret = mode(list_num)
 
+    avg = st.mean(list_num)
     return f"""\
 统计报告
-    平均数:{np.average(list_num)}
+    平均数:{avg}
     众数:{[i[0] for i in mode_ret if i[1] == mode_ret[-1][1]]}，出现了{mode_ret[-1][1]}次
-    中位数:{np.median(list_num)}
-    最大值:{np.max(list_num)}
-    最小值:{np.min(list_num)}
-    极差(全距)(最大值-最小值):{np.max(list_num) - np.min(list_num)}
+    中位数:{st.median(list_num)}
+    最大值:{max(list_num)}
+    最小值:{min(list_num)}
+    极差(全距)(最大值-最小值):{max(list_num) - min(list_num)}
 
-    总体方差:{np.var(list_num)}
-    样本方差:{np.var(list_num, ddof=1)}
-    标准差(均方差):{np.std(list_num)}
-    标准样本差:{np.std(list_num, ddof=1)}
+    总体标准差(均方差):{st.pstdev(list_num, mu=avg)}
+    总体方差:{st.pvariance(list_num, mu=avg)}
+    样本标准差:{st.stdev(list_num, xbar=avg)}
+    样本方差:{st.variance(list_num, xbar=avg)}
     """
 
 
