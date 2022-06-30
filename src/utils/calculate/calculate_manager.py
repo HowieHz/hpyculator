@@ -90,7 +90,7 @@ class CalculationManager:
                     ret = int(data)  # type: ignore
                 case _:
                     ret = None  # type: ignore # 缺省 转换不存在的类型就none
-        except Exception as e:
+        except Exception as e:  # skipcq: PYL-W0703 - Loop can sometimes crash.
             instance_main_win_signal.set_output_box.emit(
                 doc.TYPE_CONVERSION_ERROR_LITERAL % str(e)
             )
@@ -175,11 +175,12 @@ class CalculationThread(Thread):
                     _outputSpentTime(
                         time_spent, doc.THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL
                     )  # 输出本次计算时间
-        except Exception as e:
+        except Exception as e:  # skipcq: PYL-W0703 - Loop can sometimes crash.
             instance_main_win_signal.set_output_box.emit(
                 doc.PLUGIN_CALCULATION_ERROR_LITERAL % str(e)
             )
             traceback.print_exc()
+
         instance_main_win_signal.set_output_box_cursor.emit("end")  # 光标设到文本框尾部
         instance_main_win_signal.set_start_button_text.emit(
             doc.CALCULATION_LITERAL
