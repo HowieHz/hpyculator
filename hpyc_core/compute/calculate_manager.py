@@ -9,9 +9,8 @@ from types import ModuleType
 from typing import IO, Generator
 
 import hpyculator as hpyc
-from hpyculator.hpysignal import instance_main_win_signal
 
-from .. import document as doc
+from .. import error_queue, message_queue, output_queue
 from ..data_structure import MetadataDict
 from ..plugin import instance_plugin_manager
 
@@ -22,18 +21,15 @@ class CalculationManager:
 
     def start(
         self,
-        inputbox_data: str,
-        plugin_attribute_input_mode: int,
+        input_data: str,
         calculation_mode: str,
         user_selection_id: str,
         output_dir_path: str,
     ) -> None:
         """启动计算线程
 
-        :param inputbox_data: 未经处理的用户输入
-        :type inputbox_data: str
-        :param plugin_attribute_input_mode: 需要转换的模式
-        :type plugin_attribute_input_mode: int
+        :param input_data: 未经处理的用户输入
+        :type input_data: str
         :param calculation_mode: 计算模式
         :type calculation_mode: str
         :param user_selection_id: 用户选择的插件的id
@@ -44,15 +40,15 @@ class CalculationManager:
         :rtype: None
         """
         # 输入转换
+        plugin_attributes: MetadataDict = instance_plugin_manager.getPluginAttributes(
+            user_selection_id
+        )  # 插件属性字典
         converted_data: str | float | int | None = self.typeConversion(
-            plugin_attribute_input_mode, inputbox_data
+            plugin_attributes["input_mode"], input_data
         )
         if converted_data is None:  # 转换发生错误
             return None
 
-        plugin_attributes: MetadataDict = instance_plugin_manager.getPluginAttributes(
-            user_selection_id
-        )  # 插件属性字典
         instance_plugin: ModuleType = instance_plugin_manager.getPluginInstance(
             user_selection_id
         )
@@ -91,9 +87,7 @@ class CalculationManager:
                 case _:
                     ret = None  # type: ignore # 缺省 转换不存在的类型就none
         except Exception as e:  # skipcq: PYL-W0703 - Loop can sometimes crash.
-            instance_main_win_signal.set_output_box.emit(
-                doc.TYPE_CONVERSION_ERROR_LITERAL % str(e)
-            )
+            error_queue.put(f"TypeConversionError:{str(e)}")
             traceback.print_exc()
             return None  # 缺省 转换错误就none
         return ret
@@ -131,63 +125,6 @@ class CalculationThread(Thread):
         self.instance_plugin: ModuleType = instance_plugin  # 插件加载实例
 
     def run(self) -> None:
-        converted_data: str | float | int = self.converted_data
-        calculation_mode: str = self.calculation_mode
-        plugin_attributes: MetadataDict = self.plugin_attributes  # 插件属性字典
-        selected_plugin: ModuleType = self.instance_plugin  # 插件加载实例
-
-        instance_main_win_signal.draw_background.emit()  # 不知道为何使用了打表模式之后会掉背景，干脆重绘一次背景
-        instance_main_win_signal.set_start_button_text.emit(
-            doc.CALCULATION_PROGRAM_IS_RUNNING_LITERAL
-        )
-        instance_main_win_signal.set_start_button_state.emit(False)  # 防止按钮反复触发
-        instance_main_win_signal.clear_output_box.emit()  # 清空输出框
-        plugin_attribute_return_mode = plugin_attributes["return_mode"]
-        try:
-            match calculation_mode:
-                case "calculate_save":
-                    filename: str = f"{datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S')} {plugin_attributes['save_name']}{str(converted_data)}{plugin_attributes['quantifier']}"
-                    filepath_name: str = os.path.join(
-                        self.output_dir_path, f"{filename}.txt"
-                    )
-                    time_spent: int = _calculateWithSave(filepath_name)
-                    _outputSpentTime(
-                        time_spent,
-                        doc.THIS_CALCULATION_AND_SAVING_TOOK_LITERAL,
-                        f"{doc.SAVED_IN_LITERAL} {filepath_name}",
-                    )  # 输出本次计算时间
-                case "calculate_o":
-                    time_spent = _calculateWithOutputOptimization(limit=False)
-                    _outputSpentTime(
-                        time_spent,
-                        doc.THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL,
-                        doc.OUTPUT_OPTIMIZATION_ENABLED_LITERAL,
-                    )  # 输出本次计算时间
-                case "calculate_o_l":
-                    time_spent = _calculateWithOutputOptimization(limit=True)
-                    _outputSpentTime(
-                        time_spent,
-                        doc.THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL,
-                        doc.OUTPUT_OPTIMIZATION_ENABLED_LITERAL,
-                    )  # 输出本次计算时间
-                case "compute":
-                    time_spent = _baseCalculate()
-                    _outputSpentTime(
-                        time_spent, doc.THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL
-                    )  # 输出本次计算时间
-        except Exception as e:  # skipcq: PYL-W0703 - Loop can sometimes crash.
-            instance_main_win_signal.set_output_box.emit(
-                doc.PLUGIN_CALCULATION_ERROR_LITERAL % str(e)
-            )
-            traceback.print_exc()
-
-        instance_main_win_signal.set_output_box_cursor.emit("end")  # 光标设到文本框尾部
-        instance_main_win_signal.set_start_button_text.emit(
-            doc.CALCULATION_LITERAL
-        )  # 设置按钮字
-        instance_main_win_signal.set_start_button_state.emit(True)  # 启用按钮
-        instance_main_win_signal.draw_background.emit()  # 不知道为何使用了打表模式之后会掉背景，干脆重绘一次背景
-
         def _baseCalculate() -> int:
             """基础的计算模式
 
@@ -199,21 +136,11 @@ class CalculationThread(Thread):
             match plugin_attribute_return_mode:
                 case hpyc.RETURN_ONCE:
                     result = str(calculate_fun(converted_data))
-                    instance_main_win_signal.append_output_box.emit(
-                        str(result) + "\n"
-                    )  # 结果为str，直接输出
+                    output_queue.put(str(result) + "\n")  # 结果为str，直接输出
                 case hpyc.RETURN_ITERABLE:  # 算一行输出一行
                     result = calculate_fun(converted_data)
                     for result_process in result:
-                        instance_main_win_signal.append_output_box.emit(
-                            str(result_process)
-                        )  # 算一行输出一行
-                case hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
-                    result = calculate_fun(converted_data)
-                    for result_process in result:  # 计算
-                        instance_main_win_signal.insert_output_box.emit(
-                            str(result_process)
-                        )  # 算一行输出一行
+                        output_queue.put(str(result_process))  # 算一行输出一行
                 case hpyc.NO_RETURN_SINGLE_FUNCTION:
                     calculate_fun(converted_data, "output")
                 case hpyc.NO_RETURN:
@@ -245,11 +172,6 @@ class CalculationThread(Thread):
                         result = calculate_fun(converted_data)
                         for result_process in result:  # 计算
                             filestream.write(str(result_process) + "\n")
-                        filestream.flush()  # 算出来最后存进去
-                    case hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
-                        result = calculate_fun(converted_data)
-                        for result_process in result:  # 计算
-                            filestream.write(str(result_process))
                         filestream.flush()  # 算出来最后存进去
                     case hpyc.NO_RETURN:
                         hpyc.setIoInstance(filestream)
@@ -288,11 +210,6 @@ class CalculationThread(Thread):
                             for result_process in result:  # 计算
                                 filestream.write(str(result_process) + "\n")
                             filestream.flush()  # 算出来最后存进去
-                        case hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
-                            result = calculate_fun(converted_data)
-                            for result_process in result:  # 计算
-                                filestream.write(str(result_process))
-                            filestream.flush()  # 算出来最后存进去
                         case hpyc.NO_RETURN:
                             hpyc.setIoInstance(filestream)
                             selected_plugin.on_calculate_with_save(converted_data)
@@ -305,15 +222,13 @@ class CalculationThread(Thread):
                     filestream.seek(0)  # 将文件指针移到开始处，准备读取文件
                     if limit:
                         for times, line in enumerate(_quickTraverseFile(filestream)):
-                            instance_main_win_signal.append_output_box.emit(line)
+                            output_queue.put(line)
                             if times >= 128:
-                                instance_main_win_signal.append_output_box.emit(
-                                    doc.REACHED_OUTPUT_LIMIT_LITERAL
-                                )
+                                message_queue.put(f"OutputReachedLimit")
                                 break
                     else:
                         for line in _quickTraverseFile(filestream):
-                            instance_main_win_signal.append_output_box.emit(line)
+                            output_queue.put(line)
             return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
 
         def _quickTraverseFile(file: IO, chunk_size: int = 8192) -> Generator:
@@ -331,23 +246,31 @@ class CalculationThread(Thread):
             ):  # 用readline的话，读到换行符就会直接停止读取，不会读取到8192B，会增加读取次数
                 yield chunk
 
-        def _outputSpentTime(
-            time_spent_ns: int = 0, prefix: str = "", suffix: str = ""
-        ) -> None:
-            """输出计算总结
+        converted_data: str | float | int = self.converted_data
+        calculation_mode: str = self.calculation_mode
+        plugin_attributes: MetadataDict = self.plugin_attributes  # 插件属性字典
+        selected_plugin: ModuleType = self.instance_plugin  # 插件加载实例
 
-            :param time_spent_ns: 所花费的时间（单位ns）, 默认为0
-            :type time_spent_ns: int
-            :param prefix: 前缀, 默认为""
-            :type prefix: str
-            :param suffix: 后缀, 默认为""
-            :type suffix: str
-            """
-            instance_main_win_signal.append_output_box_.emit(
-                f"\n\n"
-                f"{prefix}"
-                f"{time_spent_ns}ns\n"
-                f"={time_spent_ns / 10_0000_0000}s\n"
-                f"={time_spent_ns / 600_0000_0000}min\n\n"
-                f"{suffix}"
-            )  # 输出本次计算时间
+        message_queue.put("CalculationProgramIsRunning")
+        plugin_attribute_return_mode = plugin_attributes["return_mode"]
+        try:
+            match calculation_mode:
+                case "Return":
+                    time_spent = _baseCalculate()
+                case "Save":
+                    filename: str = f"{datetime.datetime.now().strftime('%Y_%m_%d %H_%M_%S')} {plugin_attributes['save_name']}{str(converted_data)}{plugin_attributes['quantifier']}"
+                    filepath_name: str = os.path.join(
+                        self.output_dir_path, f"{filename}.txt"
+                    )
+                    time_spent: int = _calculateWithSave(filepath_name)
+                case "ReturnFromBuffer":
+                    time_spent = _calculateWithOutputOptimization(limit=False)
+                case "ReturnFromLimitedBuffer":
+                    time_spent = _calculateWithOutputOptimization(limit=True)
+
+        except Exception as e:  # skipcq: PYL-W0703 - Loop can sometimes crash.
+            error_queue.put(f"CalculationError:{str(e)}")
+            traceback.print_exc()
+
+        message_queue.put("CalculationProgramIsFinished")  # 已完成
+        message_queue.put(time_spent)

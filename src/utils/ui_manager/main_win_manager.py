@@ -6,10 +6,10 @@ from dataclasses import dataclass
 from typing import Any, Optional
 
 import hpyculator as hpyc
-from hpyculator.hpysignal import instance_main_win_signal
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QBrush, QGuiApplication, QPalette, QPixmap, QTextCursor
 
+from .signal import instance_main_win_signal
 from .about_win_manager import AboutWinApp
 from .settings_win_manager import SettingsWinApp  # 窗口管理类（用于管理设置的窗口）
 from .. import document as doc
@@ -349,7 +349,7 @@ class MainWinApp(FramelessWindow):
             if self.ui.check_save.isChecked():  # 检测保存按钮的状态判断是否保存
                 return "calculate_save"
             if not self.ui.check_output_optimization.isChecked():
-                return "calculate"
+                return "compute"
             if self.ui.check_output_lock_maximums.isChecked():
                 return "calculate_o_l"  # l=limit
             return "calculate_o"
