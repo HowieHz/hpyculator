@@ -27,6 +27,7 @@ class AboutWinApp(QDialog):
         self.ui.button_check_update.setText(doc.CHECK_UPDATE_LITERAL)
 
     def eventChooseShow(self, qstring) -> None:
+        """选择对应文档并显示"""
         match qstring:
             case doc.INTRODUCTION_LITERAL:
                 self.ui.output_doc.setText(doc.START_SHOW)
@@ -35,14 +36,6 @@ class AboutWinApp(QDialog):
             case doc.ABOUT_LITERAL:
                 # self.ui.output_doc.setText("<img src='..\\ui\\icons\\ico.ico'>")
                 self.ui.output_doc.setText(doc.ABOUT)
-        # s = qstring
-        # if s == doc.INTRODUCTION_LITERAL:
-        #     self.ui.output_doc.setText(doc.START_SHOW)
-        # elif s == doc.CHANGELOG_LITERAL:
-        #     self.ui.output_doc.setText(doc.CHANGELOG)
-        # elif s == doc.ABOUT_LITERAL:
-        #     # self.ui.output_doc.setText("<img src='..\\ui\\icons\\ico.ico'>")
-        #     self.ui.output_doc.setText(doc.ABOUT)
 
     @staticmethod
     def eventCheckUpdate() -> None:

@@ -43,13 +43,16 @@ class MainWinApp(FramelessWindow):
         plugin_dir_path: str,
         background_dir_path: str,
     ):
-        """
-        主窗口程序类
+        """主窗口程序类
 
         :param setting_file_path: 用于修改设置 设置文件路径
-        :param output_dir_path:  用于输出结果 输出路径
-        :param plugin_dir_path:  用于存放插件 插件文件夹路径
-        :param background_dir_path:  用于存放背景图片的路径
+        :type setting_file_path: str
+        :param output_dir_path: 用于输出结果 输出路径
+        :type output_dir_path: str
+        :param plugin_dir_path: 用于存放插件 插件文件夹路径
+        :type plugin_dir_path: str
+        :param background_dir_path: 用于存放背景图片的路径
+        :type background_dir_path: str
         """
         # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
         self.SETTING_FILE_PATH: str = setting_file_path
@@ -102,11 +105,7 @@ class MainWinApp(FramelessWindow):
         self.outputAvailableTag()  # 展示可用tag
 
     def outputAvailableTag(self) -> None:
-        """
-        展示可用tag
-
-        :return: None
-        """
+        """展示可用tag"""
         self.ui.output_box.appendPlainText(f"\n{doc.AVAILABLE_TAGS_LITERAL}\n")
         # tag和选项名的映射表_list_plugin_tag_option [(plugin1_tags: list, plugin1_option), (plugin2_tags: list, plugin2_option)]
         _list_plugin_tag_option: (
@@ -238,11 +237,7 @@ class MainWinApp(FramelessWindow):
         instance_main_win_signal.draw_background.connect(self.drawBackground)
 
     def initCheck(self) -> None:
-        """
-        初始化check box
-
-        :return:
-        """
+        """初始化check boxs"""
         # 初始化控件
         _default_state = (
             default_widget_state(
@@ -306,21 +301,23 @@ class MainWinApp(FramelessWindow):
 
     def eventStartCalculation(
         self,
-        test_input=None,
-        test_input_mode=None,
-        test_calculation_mode=None,
-        test_selection_id=None,
-        test_output_dir_path=None,
+        test_input: None | int | str | float = None,
+        test_input_mode: int | None = None,
+        test_selection_id: str | None = None,
+        test_output_dir_path: str | None = None,
     ) -> None:
-        """
-        输入检查，启动计算线程
+        """输入检查，启动计算线程
 
-        :param test_input: 测试输入，测试专用
-        :param test_input_mode: 测试模式，测试专用
-        :param test_calculation_mode: 测试模式，测试专用
-        :param test_selection_id: 测试选择id，测试专用
-        :param test_output_dir_path: 测试专用，测试目录
-        :return:
+        :param test_input: 测试输入，测试专用, defaults to None
+        :type test_input: None | int | str | float, optional
+        :param test_input_mode: 测试模式，测试专用, defaults to None
+        :type test_input_mode: int | None, optional
+        :param test_selection_id: 测试选择id，测试专用, defaults to None
+        :type test_selection_id: str | None, optional
+        :param test_output_dir_path: 测试专用，测试目录, defaults to None
+        :type test_output_dir_path: str | None, optional
+        :return: None
+        :rtype: None
         """
         # 输入数据
         # 有就录入测试数据 没有就从输入框获取
@@ -348,9 +345,7 @@ class MainWinApp(FramelessWindow):
         )
 
         # 获取计算模式
-        def _getCalculationMode(mode):
-            if mode:
-                return mode  # 有就录入测试数据
+        def _getCalculationMode():
             if self.ui.check_save.isChecked():  # 检测保存按钮的状态判断是否保存
                 return "calculate_save"
             if not self.ui.check_output_optimization.isChecked():
@@ -359,7 +354,7 @@ class MainWinApp(FramelessWindow):
                 return "calculate_o_l"  # l=limit
             return "calculate_o"
 
-        calculation_mode = _getCalculationMode(test_calculation_mode)
+        calculation_mode = _getCalculationMode()
 
         output_dir_path = (
             test_output_dir_path if test_output_dir_path else self.OUTPUT_DIR_PATH
@@ -377,11 +372,7 @@ class MainWinApp(FramelessWindow):
         return
 
     def flushListChoicesPlugin(self) -> None:
-        """
-        刷新左侧列表 和对应映射表
-
-        :return: None
-        """
+        """刷新左侧列表 和对应映射表"""
         self.ui.list_choices_plugin.clear()
         self.ui.list_choices_plugin.addItems(
             instance_plugin_manager.option_id_dict.keys()
@@ -391,8 +382,9 @@ class MainWinApp(FramelessWindow):
         """
         窗口大小改变 实现自适应背景图片
 
-        :param event:
-        :return:
+        :param event: just event
+        :return: None
+        :rtype: None
         """
         # don't forget to call the resizeEvent() of super class
         super().resizeEvent(event)
@@ -405,11 +397,7 @@ class MainWinApp(FramelessWindow):
         self.drawBackground()
 
     def drawBackground(self) -> None:
-        """
-        绘制背景
-
-        :return:
-        """
+        """绘制背景"""
         try:
             if not self.bg_img:
                 return
@@ -433,19 +421,11 @@ class MainWinApp(FramelessWindow):
         self.setPalette(palette)
 
     def eventMinimize(self) -> None:
-        """
-        最小化窗口
-
-        :return:
-        """
+        """最小化窗口"""
         self.showMinimized()
 
     def eventMaximize(self) -> None:
-        """
-        最大化窗口，和窗口还原
-
-        :return:
-        """
+        """最大化窗口，和窗口还原"""
         if self.isMaximized():
             self.showNormal()
         else:
@@ -455,8 +435,9 @@ class MainWinApp(FramelessWindow):
         """
         双击框体的最大化和还原
 
-        :param event:
-        :return:
+        :param event: just event
+        :return: None
+        :rtype: None
         """
         self.eventMaximize()
 
@@ -464,8 +445,9 @@ class MainWinApp(FramelessWindow):
         """
         鼠标按下的事件
 
-        :param event:
-        :return:
+        :param event: just event
+        :return: None
+        :rtype: None
         """
         self.start_mouse_pos = event.globalPos()  # 鼠标点击位置
         self.origin_win_pos = self.pos()  # 窗口位置
@@ -474,8 +456,9 @@ class MainWinApp(FramelessWindow):
         """
         鼠标移动窗口
 
-        :param event:
-        :return:
+        :param event: just event
+        :return: None
+        :rtype: None
         """
         if self.isMaximized():
             self.showNormal()  # 有个动画，所以会瞬移一下
@@ -517,8 +500,9 @@ class MainWinApp(FramelessWindow):
         """
         左侧选择算法之后触发的函数 选择算法事件
 
-        :param item:
+        :param item: just item
         :return: None
+        :rtype: None
         """
         # print(f"选中的选项名{item.text()}")
         if item is None:  # 刷新列表的时候选中的item是None
@@ -542,12 +526,13 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 {_METADATA["output_end"]}"""
         )
 
-    def closeEvent(self, event):
+    def closeEvent(self, event) -> None:
         """
         重构退出函数，处理可能导致子进程残留的模块
 
-        :param event:
-        :return:
+        :param event: just event
+        :return: None
+        :rtype: None
         """
 
         def _exitJpype():
@@ -563,28 +548,16 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
                 _check_modules[_module]()  # 调用对应退出处理函数
 
     def eventCloseMainWin(self) -> None:
-        """
-        关闭主窗口
-
-        :return:
-        """
+        """关闭主窗口"""
         self.close()
 
     def eventOpenAboutWin(self) -> None:
-        """
-        打开关于窗口
-
-        :return:
-        """
+        """打开关于窗口"""
         self.about_win = AboutWinApp()  # 绑定子窗口
         self.about_win.exec()
 
     def eventOpenSettingWin(self) -> None:
-        """
-        打开设置窗口
-
-        :return:
-        """
+        """打开设置窗口"""
         self.settings_win = SettingsWinApp()  # 绑定子窗口
         self.settings_win.exec()
 
@@ -605,22 +578,14 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         self.drawBackground()
 
     def eventSaveCheck(self) -> None:
-        """
-        当触发保存选项（那个√）事件
-
-        :return: None
-        """
+        """当触发保存选项（那个√）事件"""
         if self.is_save_check_box_status:  # 保存check设置
             instance_settings_file.modify(
                 key="is_save", value=self.ui.check_save.isChecked()
             )
 
     def eventOutputOptimizationCheck(self) -> None:
-        """
-        当触发优化输出选项
-
-        :return: None
-        """
+        """当触发优化输出选项"""
         if (
             self.ui.check_output_optimization.isChecked()
             and self.is_save_check_box_status
@@ -638,11 +603,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             )
 
     def eventOutputLockMaximumsCheck(self) -> None:
-        """
-        当触发锁内框输出上限选项，开启锁上限需要同时开启输出优化
-
-        :return: None
-        """
+        """当触发锁内框输出上限选项，开启锁上限需要同时开启输出优化"""
         if (
             not self.ui.check_output_lock_maximums.isChecked()
             and self.is_save_check_box_status
@@ -660,11 +621,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             )
 
     def eventAutoWrapCheck(self) -> None:
-        """
-        当点击切换 是否自动换行的勾勾
-
-        :return:
-        """
+        """当点击切换 是否自动换行的勾勾"""
         if self.is_save_check_box_status:  # 保存check设置
             instance_settings_file.modify(
                 key="auto_wrap", value=self.ui.check_auto_wrap.isChecked()
@@ -678,11 +635,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             self.ui.input_box.setLineWrapMode(self.ui.input_box.NoWrap)
 
     def eventMakeContainer(self) -> None:
-        """
-        开关控制打表法
-
-        :return:
-        """
+        """开关控制打表法"""
         if self.is_save_check_box_status:  # 保存check设置
             instance_settings_file.modify(
                 key="make_container", value=self.ui.check_make_container.isChecked()
@@ -716,19 +669,17 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             )  # 输出前不会添加换行符
 
     def eventSearch(self) -> None:
-        """
-        搜索框字符修改后触发的事件
-
-        :return: None
-        """
+        """搜索框字符修改后触发的事件"""
 
         def _tagCheck(user_tags: list[str], plugin_tags: tuple[str, ...]) -> bool:
-            """
-            检查此项是否符合tag
+            """检查此项是否符合tag
 
             :param user_tags: 用户输入的tag ["tag1","tag2"]
+            :type user_tags: list[str]
             :param plugin_tags: 插件的tag  (tag1,tag2)
-            :return:
+            :type plugin_tags: tuple[str, ...]
+            :return: 用户输入的tag是插件的tag的子集则返回True否则返回False
+            :rtype: bool
             """
             return all(
                 (user_tag in plugin_tags) for user_tag in user_tags
@@ -768,11 +719,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         return None
 
     def eventSearchCancel(self) -> None:
-        """
-        取消搜索结果，显示全部插件，显示介绍
-
-        :return: None
-        """
+        """取消搜索结果，显示全部插件，显示介绍"""
         self.ui.list_choices_plugin.clear()
         self.ui.list_choices_plugin.addItems(
             instance_plugin_manager.option_id_dict.keys()

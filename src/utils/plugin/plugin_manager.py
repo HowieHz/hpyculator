@@ -23,12 +23,11 @@ class PluginManager:
             str, ModuleType
         ] = {}  # 存放加载完毕的插件对象 键值对：ID-读取的插件对象
 
-    def _loadPluginMetadata(self, name: str):
-        """
-        加载插件元数据
+    def _loadPluginMetadata(self, name: str) -> None:
+        """加载插件元数据
 
         :param name: 插件名
-        :return:
+        :type name: str
         """
         try:
             # PLUGIN_METADATA暂时储存着插件的元数据
@@ -73,15 +72,15 @@ class PluginManager:
 
     def _importPlugin(
         self,
-        plugin_files_name: list[str] | filter | Generator[str, Any, Any],
-        plugin_dirs_name: list[str] | filter | Generator[str, Any, Any],
+        plugin_files_name: Generator[str, Any, Any],
+        plugin_dirs_name: Generator[str, Any, Any],
     ) -> None:
-        """
-        导入指定单文件插件和文件夹插件
+        """导入指定单文件插件和文件夹插件
 
         :param plugin_files_name: 插件文件名列表，如[asd,2asd,31qq]
-        :param plugin_files_name: 文件夹插件名列表，如["a","b","c"]
-        :return: None
+        :type plugin_files_name: Generator[str, Any, Any]
+        :param plugin_dirs_name: 文件夹插件名列表，如["a","b","c"]
+        :type plugin_dirs_name: Generator[str, Any, Any]
         """
         # print(f"去掉.py后缀的文件名 {list(plugin_files_name)}")
         for name in plugin_files_name:
@@ -115,12 +114,12 @@ class PluginManager:
             self._loadPluginMetadata(name)
 
     def initPlugin(self, path: str, plugin_suffix: str = ".py") -> None:
-        """
-        导入插件
+        """导入插件
 
         :param path: 插件目录路径
-        :param plugin_suffix: 插件后缀
-        :return: [dict]{插件id字段,对应的插件对象}
+        :type path: str
+        :param plugin_suffix: 插件后缀, 默认".py"
+        :type plugin_suffix: str
         """
         # 读取该目录下的的文件和文件夹
         things_in_plugin_dir = os.listdir(path)
@@ -144,12 +143,13 @@ class PluginManager:
 
         self._importPlugin(files_in_plugin_dir, dirs_in_plugin_dir)  # 导入单文件插件和文件夹插件
 
-    def getPluginAttributes(self, user_selection_id) -> MetadataDict:
-        """
-        读取指定id的插件属性
+    def getPluginAttributes(self, user_selection_id: str) -> MetadataDict:
+        """读取指定id的插件属性
 
         :param user_selection_id: 插件的id
+        :type user_selection_id: str
         :return: [list]attributes of plugin
+        :rtype: MetadataDict
         """
         _plugin_attributes = {}  # 读取好的属性放在这里
 
@@ -181,30 +181,31 @@ class PluginManager:
 
         return _plugin_attributes
 
-    def getPluginInstance(self, user_selection_id) -> ModuleType:
-        """
-        获取指定id的插件对象
+    def getPluginInstance(self, user_selection_id: str) -> ModuleType:
+        """获取指定id的插件对象
 
         :param user_selection_id: 插件的id
-        :return: A instance of plugin
+        :type user_selection_id: str
+        :return: 插件实例
+        :rtype: ModuleType
         """
         return self._dict_loaded_plugin[user_selection_id]
 
     @property
     def list_alL_plugin_tag_option(self) -> tuple[tuple[tuple[str, ...], str], ...]:
-        """
-        获取所有插件的tag，tag对应插件选项名
+        """获取所有插件的tag，tag对应插件选项名
         [(plugin1_tags: list, plugin1_option), (plugin2_tags: list, plugin2_option)]
 
-        :return:
+        :return: 所有插件的tag以及对应选项名
+        :rtype: tuple[tuple[tuple[str, ...], str], ...]
         """
         return self._list_alL_plugin_tag_option
 
     @property
     def option_id_dict(self) -> dict[str, str]:
-        """
-        获取插件选项名和id的映射表
+        """获取插件选项名和id的映射表
 
-        :return: A Dict [Option to Id]
+        :return: 选项名映射id的字典
+        :rtype: dict[str, str]
         """
         return self._dict_plugin_option_id

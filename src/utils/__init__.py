@@ -11,15 +11,19 @@ class CreateApp:
     """运行主程序和主程序的一些初始化"""
 
     def __init__(self, instance_num: int = 1):
-        """
-        创建app
+        """创建app
 
-        :param instance_num: 创建几个实例
+        :param instance_num: 创建几个实例, 默认为1
+        :type instance_num: int
         """
         self.instance_num = instance_num
 
-    def run(self):
-        """运行主程序"""
+    def run(self) -> list[MainWinApp]:
+        """运行主程序
+
+        :return: 一个列表里面有启动的主窗口实例
+        :rtype: list[MainWinApp]
+        """
         # TODO 路径检查需重构，默认路径改传参
         SETTING_FILE_PATH = instance_settings_file.setting_file_path
         OUTPUT_DIR_PATH = checkOutputPath()  # 输出路径检查
@@ -40,11 +44,11 @@ class CreateApp:
         return list_instance_main_window
 
 
-def checkOutputPath():
-    """
-    检查输出目录
+def checkOutputPath() -> str:
+    """检查输出目录
 
     :return: output_dir_path
+    :rtype: str
     """
     if instance_settings_file.exists("output_dir_path"):
         output_dir_path = instance_settings_file.read("output_dir_path")
@@ -60,11 +64,11 @@ def checkOutputPath():
     return output_dir_path
 
 
-def checkBackgroundImgPath():
-    """
-    背景图片路径检查
+def checkBackgroundImgPath() -> str:
+    """背景图片路径检查
 
-    :return: background_img_dir_path
+    :return: 存放背景图片的路径
+    :rtype: str
     """
     # 从设置文件读取输出目录
     if instance_settings_file.exists("background_img_dir_path"):
@@ -82,11 +86,11 @@ def checkBackgroundImgPath():
     return background_img_dir_path
 
 
-def pluginCheck():
-    """
-    加载插件
+def pluginCheck() -> str:
+    """加载插件
 
-    :return: 存放插件的文件夹路径
+    :return: 放置插件的路径
+    :rtype: str
     """
     # 从设置文件读取插件目录
     if instance_settings_file.exists("plugin_dir_path"):

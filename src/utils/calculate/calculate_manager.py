@@ -6,7 +6,7 @@ import traceback
 from functools import partial  # 偏函数真好用
 from threading import Thread
 from types import ModuleType
-from typing import Generator
+from typing import IO, Generator
 
 import hpyculator as hpyc
 from hpyculator.hpysignal import instance_main_win_signal
@@ -27,15 +27,21 @@ class CalculationManager:
         calculation_mode: str,
         user_selection_id: str,
         output_dir_path: str,
-    ):
-        """
-        启动计算线程
-        :param inputbox_data; 未经处理的用户输入
-        :param plugin_attribute_input_mode; 需要转换的模式
-        :param calculation_mode; 计算模式
-        :param user_selection_id; 用户选择的插件的id
-        :param output_dir_path; 输出目录
-        :return:
+    ) -> None:
+        """启动计算线程
+
+        :param inputbox_data: 未经处理的用户输入
+        :type inputbox_data: str
+        :param plugin_attribute_input_mode: 需要转换的模式
+        :type plugin_attribute_input_mode: int
+        :param calculation_mode: 计算模式
+        :type calculation_mode: str
+        :param user_selection_id: 用户选择的插件的id
+        :type user_selection_id: str
+        :param output_dir_path: 输出目录
+        :type output_dir_path: str
+        :return: None
+        :rtype: None
         """
         # 输入转换
         converted_data: str | float | int | None = self.typeConversion(
@@ -65,11 +71,14 @@ class CalculationManager:
 
     @staticmethod
     def typeConversion(to_type: int, data: str) -> str | float | int | None:
-        """
-        类型转换
+        """类型转换
+
         :param to_type: 目标类型
+        :type to_type: int
         :param data: 需要转换的数据
+        :type data: str
         :return: 转换后的数据
+        :rtype: str | float | int | None
         """
         try:
             match to_type:
@@ -99,12 +108,18 @@ class CalculationThread(Thread):
         plugin_attributes: MetadataDict,
         instance_plugin: ModuleType,
     ):
-        """
-        计算线程
+        """计算线程
+
         :param converted_data: 经过类型转换处理的用户输入
-        :param calculation_mode; 计算模式
-        :param output_dir_path; 输出目录
-        :return:
+        :type converted_data: str | float | int
+        :param calculation_mode: 计算模式
+        :type calculation_mode: str
+        :param output_dir_path: 输出目录
+        :type output_dir_path: str
+        :param plugin_attributes: 插件属性
+        :type plugin_attributes: MetadataDict
+        :param instance_plugin: 插件实例
+        :type instance_plugin: ModuleType
         """
         Thread.__init__(self)
         # Process.__init__(self)
@@ -121,154 +136,6 @@ class CalculationThread(Thread):
         plugin_attributes: MetadataDict = self.plugin_attributes  # 插件属性字典
         selected_plugin: ModuleType = self.instance_plugin  # 插件加载实例
 
-        def _baseCalculate() -> int:
-            """基础的计算模式"""
-            calculate_fun = selected_plugin.on_calculate
-            time_before_calculate = time.perf_counter_ns()  # 储存开始时间
-            match plugin_attribute_return_mode:
-                case hpyc.RETURN_ONCE:
-                    result = str(calculate_fun(converted_data))
-                    instance_main_win_signal.append_output_box.emit(
-                        str(result) + "\n"
-                    )  # 结果为str，直接输出
-                case hpyc.RETURN_ITERABLE:  # 算一行输出一行
-                    result = calculate_fun(converted_data)
-                    for result_process in result:
-                        instance_main_win_signal.append_output_box.emit(
-                            str(result_process)
-                        )  # 算一行输出一行
-                case hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
-                    result = calculate_fun(converted_data)
-                    for result_process in result:  # 计算
-                        instance_main_win_signal.insert_output_box.emit(
-                            str(result_process)
-                        )  # 算一行输出一行
-                case hpyc.NO_RETURN_SINGLE_FUNCTION:
-                    calculate_fun(converted_data, "output")
-                case hpyc.NO_RETURN:
-                    calculate_fun(converted_data)
-                case _:
-                    pass
-            return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
-
-        def _calculateWithSave(filepath: str) -> int:
-            """计算+保存模式"""
-            # filepath - 储存保存到哪个文件里 路径+文件名
-            calculate_fun = selected_plugin.on_calculate
-            time_before_calculate = time.perf_counter_ns()  # 储存开始时间
-            with open(
-                filepath,
-                mode="w",
-                buffering=1073741824,  # 1,073,741,824B = 1024MB  给插件足够的内存做缓冲区，也避免插件使得电脑内存爆炸
-                encoding="utf-8",
-            ) as filestream:  # buffering为-1的时候其实就是8192，现在显式的写出来
-                match plugin_attribute_return_mode:
-                    case hpyc.RETURN_ONCE:  # 分布输出和一次输出
-                        result = calculate_fun(converted_data)
-                        filestream.write(str(result) + "\n")
-                    case hpyc.RETURN_ITERABLE:  # 算一行输出一行，但是没有换行
-                        result = calculate_fun(converted_data)
-                        for result_process in result:  # 计算
-                            filestream.write(str(result_process) + "\n")
-                        filestream.flush()  # 算出来最后存进去
-                    case hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
-                        result = calculate_fun(converted_data)
-                        for result_process in result:  # 计算
-                            filestream.write(str(result_process))
-                        filestream.flush()  # 算出来最后存进去
-                    case hpyc.NO_RETURN:
-                        hpyc.setIoInstance(filestream)
-                        selected_plugin.on_calculate_with_save(converted_data)
-                    case hpyc.NO_RETURN_SINGLE_FUNCTION:
-                        hpyc.setIoInstance(filestream)
-                        calculate_fun(converted_data, "save")
-                    case _:
-                        pass
-            return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
-
-        def _calculateWithOutputOptimization(limit=False) -> int:
-            """
-            计算+输出优化的模式（先把结果存临时文件，再读取输出）
-            :param limit: 是否开启输出上限
-            :return:
-            """
-            calculate_fun = selected_plugin.on_calculate
-            with tempfile.TemporaryFile(
-                mode="w+t",
-                buffering=1073741824,  # 1,073,741,824B = 1024MB  给插件足够的内存做缓冲区，也避免插件使得电脑内存爆炸
-                encoding="utf-8",
-                errors="ignore",
-            ) as filestream:
-                time_before_calculate = time.perf_counter_ns()  # 储存开始时间
-                try:
-                    match plugin_attribute_return_mode:
-                        case hpyc.RETURN_ONCE:  # 分布输出和一次输出
-                            result = calculate_fun(converted_data)
-                            filestream.write(str(result) + "\n")
-                        case hpyc.RETURN_ITERABLE:  # 算一行输出一行，但是没有换行
-                            result = calculate_fun(converted_data)
-                            for result_process in result:  # 计算
-                                filestream.write(str(result_process) + "\n")
-                            filestream.flush()  # 算出来最后存进去
-                        case hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
-                            result = calculate_fun(converted_data)
-                            for result_process in result:  # 计算
-                                filestream.write(str(result_process))
-                            filestream.flush()  # 算出来最后存进去
-                        case hpyc.NO_RETURN:
-                            hpyc.setIoInstance(filestream)
-                            selected_plugin.on_calculate_with_save(converted_data)
-                        case hpyc.NO_RETURN_SINGLE_FUNCTION:
-                            hpyc.setIoInstance(filestream)
-                            calculate_fun(converted_data, "save")
-                        case _:
-                            pass
-                finally:
-                    filestream.seek(0)  # 将文件指针移到开始处，准备读取文件
-                    if limit:
-                        for times, line in enumerate(_quickTraverseFile(filestream)):
-                            instance_main_win_signal.append_output_box.emit(line)
-                            if times >= 128:
-                                instance_main_win_signal.append_output_box.emit(
-                                    doc.REACHED_OUTPUT_LIMIT_LITERAL
-                                )
-                                break
-                    else:
-                        for line in _quickTraverseFile(filestream):
-                            instance_main_win_signal.append_output_box.emit(line)
-            return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
-
-        def _quickTraverseFile(file, chunk_size: int = 8192) -> Generator:
-            """
-            较快，低占用读取文件，迭代器
-            :param file: 打开的文件流对象
-            :param chunk_size: 一次读取的字节大小
-            :return: 读取到的字节
-            """
-            for chunk in iter(
-                partial(file.read, chunk_size), ""
-            ):  # 用readline的话，读到换行符就会直接停止读取，不会读取到8192B，会增加读取次数
-                yield chunk
-
-        def _outputSpentTime(
-            time_spent_ns: int = 0, prefix: str = "", suffix: str = ""
-        ) -> None:
-            """
-            :param time_spent_ns: 所花费的时间（单位ns）
-            :param prefix: 前缀
-            :param suffix: 后缀
-            :return:
-            """
-            instance_main_win_signal.append_output_box_.emit(
-                f"\n\n"
-                f"{prefix}"
-                f"{time_spent_ns}ns\n"
-                f"={time_spent_ns / 10_0000_0000}s\n"
-                f"={time_spent_ns / 600_0000_0000}min\n\n"
-                f"{suffix}"
-            )  # 输出本次计算时间
-
-        # ------------------------------------------这些ui逻辑需外移
         instance_main_win_signal.draw_background.emit()  # 不知道为何使用了打表模式之后会掉背景，干脆重绘一次背景
         instance_main_win_signal.set_start_button_text.emit(
             doc.CALCULATION_PROGRAM_IS_RUNNING_LITERAL
@@ -318,5 +185,168 @@ class CalculationThread(Thread):
             doc.CALCULATION_LITERAL
         )  # 设置按钮字
         instance_main_win_signal.set_start_button_state.emit(True)  # 启用按钮
-
         instance_main_win_signal.draw_background.emit()  # 不知道为何使用了打表模式之后会掉背景，干脆重绘一次背景
+
+        def _baseCalculate() -> int:
+            """基础的计算模式
+
+            :return: 计算花费的时间 单位ns
+            :rtype: int
+            """
+            calculate_fun = selected_plugin.on_calculate
+            time_before_calculate = time.perf_counter_ns()  # 储存开始时间
+            match plugin_attribute_return_mode:
+                case hpyc.RETURN_ONCE:
+                    result = str(calculate_fun(converted_data))
+                    instance_main_win_signal.append_output_box.emit(
+                        str(result) + "\n"
+                    )  # 结果为str，直接输出
+                case hpyc.RETURN_ITERABLE:  # 算一行输出一行
+                    result = calculate_fun(converted_data)
+                    for result_process in result:
+                        instance_main_win_signal.append_output_box.emit(
+                            str(result_process)
+                        )  # 算一行输出一行
+                case hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
+                    result = calculate_fun(converted_data)
+                    for result_process in result:  # 计算
+                        instance_main_win_signal.insert_output_box.emit(
+                            str(result_process)
+                        )  # 算一行输出一行
+                case hpyc.NO_RETURN_SINGLE_FUNCTION:
+                    calculate_fun(converted_data, "output")
+                case hpyc.NO_RETURN:
+                    calculate_fun(converted_data)
+                case _:
+                    pass
+            return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
+
+        def _calculateWithSave(filepath: str) -> int:
+            """计算+保存模式
+
+            :return: 计算花费的时间 单位ns
+            :rtype: int
+            """
+            # filepath - 储存保存到哪个文件里 路径+文件名
+            calculate_fun = selected_plugin.on_calculate
+            time_before_calculate = time.perf_counter_ns()  # 储存开始时间
+            with open(
+                filepath,
+                mode="w",
+                buffering=1073741824,  # 1,073,741,824B = 1024MB  给插件足够的内存做缓冲区，也避免插件使得电脑内存爆炸
+                encoding="utf-8",
+            ) as filestream:  # buffering为-1的时候其实就是8192，现在显式的写出来
+                match plugin_attribute_return_mode:
+                    case hpyc.RETURN_ONCE:  # 分布输出和一次输出
+                        result = calculate_fun(converted_data)
+                        filestream.write(str(result) + "\n")
+                    case hpyc.RETURN_ITERABLE:  # 算一行输出一行，但是没有换行
+                        result = calculate_fun(converted_data)
+                        for result_process in result:  # 计算
+                            filestream.write(str(result_process) + "\n")
+                        filestream.flush()  # 算出来最后存进去
+                    case hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
+                        result = calculate_fun(converted_data)
+                        for result_process in result:  # 计算
+                            filestream.write(str(result_process))
+                        filestream.flush()  # 算出来最后存进去
+                    case hpyc.NO_RETURN:
+                        hpyc.setIoInstance(filestream)
+                        selected_plugin.on_calculate_with_save(converted_data)
+                    case hpyc.NO_RETURN_SINGLE_FUNCTION:
+                        hpyc.setIoInstance(filestream)
+                        calculate_fun(converted_data, "save")
+                    case _:
+                        pass
+            return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
+
+        def _calculateWithOutputOptimization(limit=False) -> int:
+            """
+            计算+输出优化的模式（先把结果存临时文件，再读取输出）
+
+            :param limit: 是否开启输出上限，默认是False
+            :type limit: bool
+            :return: 计算花费的时间 单位ns
+            :rtype: int
+            """
+            calculate_fun = selected_plugin.on_calculate
+            with tempfile.TemporaryFile(
+                mode="w+t",
+                buffering=1073741824,  # 1,073,741,824B = 1024MB  给插件足够的内存做缓冲区，也避免插件使得电脑内存爆炸
+                encoding="utf-8",
+                errors="ignore",
+            ) as filestream:
+                time_before_calculate = time.perf_counter_ns()  # 储存开始时间
+                try:
+                    match plugin_attribute_return_mode:
+                        case hpyc.RETURN_ONCE:  # 分布输出和一次输出
+                            result = calculate_fun(converted_data)
+                            filestream.write(str(result) + "\n")
+                        case hpyc.RETURN_ITERABLE:  # 算一行输出一行，但是没有换行
+                            result = calculate_fun(converted_data)
+                            for result_process in result:  # 计算
+                                filestream.write(str(result_process) + "\n")
+                            filestream.flush()  # 算出来最后存进去
+                        case hpyc.RETURN_ITERABLE_OUTPUT_IN_ONE_LINE:  # 算一行输出一行，但是没有换行
+                            result = calculate_fun(converted_data)
+                            for result_process in result:  # 计算
+                                filestream.write(str(result_process))
+                            filestream.flush()  # 算出来最后存进去
+                        case hpyc.NO_RETURN:
+                            hpyc.setIoInstance(filestream)
+                            selected_plugin.on_calculate_with_save(converted_data)
+                        case hpyc.NO_RETURN_SINGLE_FUNCTION:
+                            hpyc.setIoInstance(filestream)
+                            calculate_fun(converted_data, "save")
+                        case _:
+                            pass
+                finally:
+                    filestream.seek(0)  # 将文件指针移到开始处，准备读取文件
+                    if limit:
+                        for times, line in enumerate(_quickTraverseFile(filestream)):
+                            instance_main_win_signal.append_output_box.emit(line)
+                            if times >= 128:
+                                instance_main_win_signal.append_output_box.emit(
+                                    doc.REACHED_OUTPUT_LIMIT_LITERAL
+                                )
+                                break
+                    else:
+                        for line in _quickTraverseFile(filestream):
+                            instance_main_win_signal.append_output_box.emit(line)
+            return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
+
+        def _quickTraverseFile(file: IO, chunk_size: int = 8192) -> Generator:
+            """较快，低占用读取文件，迭代器
+
+            :param file: 打开的文件流对象
+            :type file: IO
+            :param chunk_size: 一次读取的字节大小,默认为8192
+            :type chunk_size: int
+            :yield: 读取到的字节
+            :rtype: Generator
+            """
+            for chunk in iter(
+                partial(file.read, chunk_size), ""
+            ):  # 用readline的话，读到换行符就会直接停止读取，不会读取到8192B，会增加读取次数
+                yield chunk
+
+        def _outputSpentTime(
+            time_spent_ns: int = 0, prefix: str = "", suffix: str = ""
+        ) -> None:
+            """输出计算总结
+
+            :param time_spent_ns: 所花费的时间（单位ns）, 默认为0
+            :type time_spent_ns: int
+            :param prefix: 前缀, 默认为""
+            :type prefix: str
+            :param suffix: 后缀, 默认为""
+            :type suffix: str
+            """
+            instance_main_win_signal.append_output_box_.emit(
+                f"\n\n"
+                f"{prefix}"
+                f"{time_spent_ns}ns\n"
+                f"={time_spent_ns / 10_0000_0000}s\n"
+                f"={time_spent_ns / 600_0000_0000}min\n\n"
+                f"{suffix}"
+            )  # 输出本次计算时间

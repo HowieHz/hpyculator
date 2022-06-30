@@ -1,7 +1,9 @@
 from typing import TypedDict
 
-# 插件元数据数据类型
+
 class MetadataDict(TypedDict, total=False):
+    """插件元数据数据类型"""
+
     input_mode: str
     id: str
     option: str

@@ -45,11 +45,7 @@ class SettingsWinApp(QDialog):
             )
 
     def eventSaveSettings(self) -> None:
-        """
-        按下保存按钮之后的事件
-
-        :return:
-        """
+        """按下保存按钮之后的事件"""
         (
             instance_settings_file.modify(
                 key="output_dir_path", value=self.ui.output_save_location.toPlainText()
@@ -65,9 +61,7 @@ class SettingsWinApp(QDialog):
         self.close()
 
     def eventSaveCheckBoxStatus(self) -> None:
-        """
-        占位用，因为都是最后统一读取写入设置文件的
-        """
+        """占位用，因为都是最后统一读取写入设置文件的"""
 
     def eventResetSaveLocation(self) -> None:
         """重置保存路径"""
@@ -83,18 +77,10 @@ class SettingsWinApp(QDialog):
 
     @staticmethod
     def eventOpenBackgroundDir() -> None:
-        """
-        打开存储背景图片的文件夹
-
-        :return:
-        """
+        """打开存储背景图片的文件夹"""
         os.system(f'explorer {instance_settings_file.read("background_img_dir_path")}')
 
     @staticmethod
     def eventOpenPluginDir() -> None:
-        """
-        打开储存插件的文件架
-
-        :return:
-        """
+        """打开储存插件的文件夹"""
         os.system(f'explorer {instance_settings_file.read("plugin_dir_path")}')
