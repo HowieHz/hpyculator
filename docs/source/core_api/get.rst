@@ -44,6 +44,7 @@ getSettingsDirPath
 getPluginsTagOption
 -----------------------
 获取所有插件的tag，tag对应插件选项名
+
 (((plugin1_tag1, plugin1_tag2, ...), plugin1_option), ((plugin2_tag1,), plugin2_option)), ...)
 
 .. code-block:: python

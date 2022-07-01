@@ -22,13 +22,13 @@
 
 创建核心实例
 
-.. list-table:: 选取顺序： 输入 > 设置文件 > 初始化!
+.. list-table:: 选取顺序： 输入 > 设置文件 > 默认值!
   :widths: 20 20 45 20
   :header-rows: 1
 
   * - 参数
     - 设置文件中对应键
-    - 初始化数据
+    - 默认值
     - 数据要求
   * - output_dir_path
     - output_dir_path

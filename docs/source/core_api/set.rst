@@ -4,7 +4,8 @@
 setPluginsDirPath
 -----------------------
 设置插件存放目录并且重新加载插件
-- :param path: 新插件存放目录
+
+    - path: 新插件存放目录
 
 .. code-block:: python
 
