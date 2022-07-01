@@ -8,18 +8,22 @@
     Fixed － 解决的问题
     Others － 性能优化和安全性增强等改进
 
-v1.7.0（草稿）
+v1.7.1
+
+    计划
+        创建cli应用程序hpyc_cli
+        完成hpyc_core模块的test
+
+v1.7.0
     
     Added
         分离核心为hpyc_core
         分离基于pyside6的ui为hpyc_pyside_ui
-        创建SDK文档
-        创建cli应用程序hpyc_cli
+        完成文档关于API的说明
         hpyc_pyside_ui新增打表模式，每次输出后添加一个","
         新增common_factor_hz，pluperfect_digital_invariant_hz插件
     Changed
-        内置文档对于打表模式做出了解释
-        文档更新，对于元数据进行了更详细的说明
+        多处文档更新
         插件更新
     Removed
         移除了output_without_line_break

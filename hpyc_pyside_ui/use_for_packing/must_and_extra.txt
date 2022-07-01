@@ -1,3 +1,14 @@
+must:
+
+hpyculator
+hpyc_core
+
+rtoml
+yaml(pyyaml)
+
+
+extra:
+
 jpype
 JPype1-1.4.0.dist-info
 llvmlite

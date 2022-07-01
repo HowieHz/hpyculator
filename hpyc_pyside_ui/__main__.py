@@ -23,8 +23,6 @@ if __name__ == "__main__":
 
 # todo debug qt.gui.imageio: libpng warning: iCCP: known incorrect sRGB profile
 # todo 1.可以分享脚本的平台（qq群也不错） 2.Github actions
-# todo 3.可以读取文件作为输入
-# todo 8.上线网页版
 # todo 插件管理窗口
 # todo 多套主题
 # todo combo的样式
@@ -34,10 +32,7 @@ if __name__ == "__main__":
 # todo 把槽函数外移，在程序里面connect
 # todo 写test!!! 主程序和模块
 # todo 文件输入
-# todo 使插件可以获得文件的绝对路径
-# todo 分离出core 定义核心需要什么和外部程序交互的接口
-# todo 创建cli应用程序
-
+# todo changelog的todo
 
 ## 更新方向
 # 0.就是作为一个可以自己编写算法的计算机，因为网上在线效率太低，打表也不方便，自己写想调rust，cpp，java都随意
