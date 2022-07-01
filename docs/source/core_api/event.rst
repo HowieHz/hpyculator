@@ -2,46 +2,39 @@
 =============================================
 以下均为 ``hpyc_core.Core`` 的方法
 
-eventReloadPlugins
------------------------
-重新加载插件
-
-.. code-block:: python
-
-    def eventReloadPlugins(self) -> None:
-
 eventStartCalculate
 -----------------------
 启动计算
-    - plugin_id: 插件id
-    - input_data: 未处理的原始输入数据
-    - mode: 计算模式
-    - None
+    - plugin_id: 插件id, 类型 ``str``
+    - input_data: 未处理的原始输入数据, 类型 ``typing.Any``
+    - mode: 计算模式, 类型 ``str``
+
+可能引发的异常
     - ValueError: 当输入了不存在的mode
 
-modes别名
-    - 仅返回到消息队列
+mode参数别名
+    - 运算结果仅返回到消息队列
                 "ReturnAfterComputing",
                 "ComputingAndReturn",
                 "RAC",
                 "Return",
                 "ReturnAfterCalculating",
 
-    - 仅保存到文件中
+    - 运算结果仅保存到文件中
                 "SaveAfterComputing",
                 "ComputingAndSave",
                 "SAC",
                 "Save",
                 "SaveAfterCalculating",
 
-    - 从缓冲区中返回
+    - 运算结果从缓冲区中返回到消息队列
                 "ReturnAfterComputingFromBuffer",
                 "ComputingAndReturnFromBuffer",
                 "RACFB",
                 "ReturnFromBuffer",
                 "ReturnAfterCalculatingFromBuffer",
 
-    - 从缓冲区中返回，但是有返回上限
+    - 运算结果从缓冲区中返回到消息队列，但是有返回上限
                 "ReturnAfterComputingFromLimitedBuffer",
                 "ComputingAndReturnFromLimitedBuffer",
                 "RACFLB",
@@ -52,9 +45,17 @@ modes别名
 
     eventStartCalculate(self, plugin_id: str, input_data: Any, mode="Return") -> None:
 
+eventReloadPlugins
+-----------------------
+重新加载插件
+
+.. code-block:: python
+
+    def eventReloadPlugins(self) -> None:
+
 eventExit
 -----------------------
-退出流程，防止进程残留
+退出流程，进行一些收尾工作防止进程残留
 
 默认使用atexit模块注册到退出事件
 
