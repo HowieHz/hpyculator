@@ -22,12 +22,31 @@
 
 创建核心实例
 
-采用顺序 输入 > 设置文件 > 初始化
+.. list-table:: 选取顺序： 输入 > 设置文件 > 初始化!
+  :widths: 20 20 45 20
+  :header-rows: 1
 
-    ====================  =========================  ==========================================
-    参数                   设置文件项目                 初始化数据
-    --------------------  -------------------------  ------------------------------------------
-    output_dir_path       output_dir_path            str(os.path.join(os.getcwd(), "Output"))
-    settings_dir_path     settings_dir_path          str(os.path.join(os.getcwd(), "Settings"))
-    plugins_dir_path      plugins_dir_path           str(os.path.join(os.getcwd(), "Plugin"))
-    --------------------  -------------------------  ------------------------------------------
+  * - 参数
+    - 设置文件中对应键
+    - 初始化数据
+    - 数据要求
+  * - output_dir_path
+    - output_dir_path
+    - str(os.path.join(os.getcwd(), "Output"))
+    - 字符串类型
+  * - settings_dir_path
+    - settings_dir_path
+    - str(os.path.join(os.getcwd(), "Settings"))
+    - 字符串类型
+  * - plugins_dir_path
+    - plugins_dir_path
+    - str(os.path.join(os.getcwd(), "Plugin"))
+    - 字符串类型
+  * - settings_file_name
+    - 无
+    - "hpyculator_setting"
+    - 字符串类型
+  * - settings_file_format
+    - 无
+    - "json"
+    - "json" | "yaml" | "toml"

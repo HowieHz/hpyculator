@@ -113,7 +113,7 @@ class Core:
 
     @staticmethod
     def getPluginIdFromOption(option: str) -> str:
-        """获取插件选项名和id的映射表
+        """通过选项名获得对应插件ID
 
         :param option: 插件选项名
         :return: 插件id
@@ -131,7 +131,7 @@ class Core:
 
     @staticmethod
     def getPluginMetadata(plugin_id: str) -> MetadataDict:
-        """获取对应插件元数据
+        """拖过插件ID获取对应插件元数据
 
         :param plugin_id: 插件id
         :return: 插件元数据
@@ -147,11 +147,13 @@ class Core:
         self.plugins_dir_path = self._checkPluginsPath(path)
         self.eventReloadPlugins()
 
-    def eventReloadPlugins(self):
+    def eventReloadPlugins(self) -> None:
         """重新加载插件"""
         instance_plugin_manager.initPlugin(self.plugins_dir_path)  # 加载插件
 
-    def eventStartCalculate(self, plugin_id: str, input_data: Any, mode="Return"):
+    def eventStartCalculate(
+        self, plugin_id: str, input_data: Any, mode="Return"
+    ) -> None:
         """启动计算
 
         :param plugin_id: 插件id

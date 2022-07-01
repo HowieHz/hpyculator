@@ -9,3 +9,4 @@
    事件<event>
    获取<get>
    设置<set>
+   消息<message>
