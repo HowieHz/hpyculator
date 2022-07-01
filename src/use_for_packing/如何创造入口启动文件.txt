@@ -1,8 +1,0 @@
-点我启动.exe 用c写，调用 bin 文件夹里面的 NoWinRun.exe
-NoWinRun.exe负责隐藏cmd窗口
-实际执行命令为NoWinRun.exe start.bat
-start.bat 启动主程序
-
-使用 pack_c.bat 将 点我启动.c 转换成 点我启动.exe
-
-打包的时候把 点我启动.exe 放外面， start.bat 和 NoWinRun.exe 放在bin文件夹里面

@@ -22,7 +22,7 @@ copyright = "2022, HowieHz"
 author = "HowieHz"
 
 # The full version, including alpha/beta/rc tags
-release = "v1.6.1"
+release = "v1.7.0"
 
 # -- General configuration ---------------------------------------------------
 

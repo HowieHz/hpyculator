@@ -15,8 +15,6 @@
 hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法太累了，要是能像加载Minecraft的mod一样加载算法就好了” 这样的想法
 
 在[各类数组程序V1.2](https://www.bilibili.com/video/BV18p4y1h7bQ)的基础上开发而来
-
-欢迎提pr和issue
   
 >本项目基于python3.10构建
 
@@ -26,29 +24,13 @@ hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法�
 
 2.写了一个小工具，这时候只需要添加一个包含一些数据的字典和一个函数，就可以把它变成一个hpyculator插件来使用
 
-## 快速开始
+## 开始
 
-### 用户
+- **用户手册**: [UserManual](docs/UserManual.md)
+- 开发文档: [开发插件](https://hpyculator.readthedocs.io/zh_CN/latest/quick_start.html#id3)或[参与到此项目](https://hpyculator.readthedocs.io/zh_CN/latest/quick_start.html#id9)
+- 更新日志: [release](https://github.com/HowieHz/hpyculator/releases) 或 [changelog](https://hpyculator.readthedocs.io/zh_CN/latest/changelog.html)
 
-1.从github的[releases](https://github.com/HowieHz/hpyculator/releases)下载最新版本
-
-2.解压，双击目录下的__main__.exe
-
-3.去[插件市场](https://github.com/HowieHz/hpyculatorPluginCatalogue)下点插件就能愉快的使用了
-
-（程序内置插件，可直接使用）
-
-### 开发者（开发插件）
-
-从github的releases下载最新版本
-
-然后到[插件开发](https://hpyculator.readthedocs.io/zh_CN/latest/plugin_dev/index.html)页面查看详情
-
-### 开发者（程序）
-
-从github项目src文件夹获取源码
-
-前往 [文档](https://hpyculator.readthedocs.io/zh_CN/latest/quick_start.html#id9) 查看简单部署流程
+[//]: # (- 开发计划: [milestones]&#40;https://github.com/HowieHz/hpyculator/milestones&#41;)
 
 ## 插件
 
@@ -64,7 +46,7 @@ hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法�
 
 ## 其他
 
-欢迎提issue和pr
+遇到问题或者有对项目发展的建议欢迎提issue
 
 ## 鸣谢
 

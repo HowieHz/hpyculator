@@ -17,7 +17,7 @@
 依赖
 ~~~~~~~~~~~~~~~~
 
-hpyculator 依赖 python3 运行环境。请确保你的 python 版本大于 3.6
+hpyculator 依赖 python3 运行环境。请确保你的 python 版本为 3.10
 
 安装
 ~~~~~~~~~~~~~~~~
@@ -56,33 +56,39 @@ hpyculator 在 `pypi <https://pypi.org/project/hpyculator>`__ 中可用。它可
 开发者（程序）
 ---------------------
 
-目前__main__.py是项目入口
+`项目结构 <project_structure.html>`_ 和 `核心API <core_api/index.html>`_
 
-src文件夹下
-    Plugin里面存放的是内置插件
+依赖
+~~~~~~~~~~~~~~~~
 
-    background_img文件夹里面是内置的背景图
+hpyculator 依赖 python3 运行环境。请确保你的 python 版本为 3.10
 
-    test内是单元测试
+安装
+~~~~~~~~~~~~~~~~
 
-    use_for_packing内存放的是用于打包，启动的工具
+hpyculator和hpyc_core 在 `pypi <https://pypi.org/project/hpyculator>`__ 中可用。它可以通过 ``pip``\命令安装：
 
-    utils内是主要代码
+.. code-block:: bash
 
-src/utils文件夹下
-    calculate -> 调用插件计算
+    pip install hpyculator hpyc_core
 
-    document -> 常量存放
+如果直连速度不畅，你可以使用清华镜像源来加速 hpyculator 的更新：
 
-    locale -> i18n
+.. code-block:: bash
 
-    plugin -> 插件管理，插件加载
+    pip install hpyculator hpyc_core -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-    pyside_frameless_win -> 无边框ui
+更新
+~~~~~~~~~~~~~~
 
-    settings -> 管理设置文件
+在 pypi 的帮助下，``hpyculator`` 和 ``hpyc_core`` 可以通过这个命令更新：
 
-    ui -> ui
+.. code-block:: bash
 
-    ui_manager -> 管理ui，大部分程序逻辑
+    pip install hpyculator hpyc_core --upgrade
 
+同样，如果直连速度不畅，你可以使用清华镜像源来加速 hpyculator 和 hpyc_core 的更新：
+
+.. code-block:: bash
+
+    pip install hpyculator hpyc_core --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
