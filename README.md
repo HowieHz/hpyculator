@@ -28,17 +28,9 @@ hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法�
 
 - **用户手册**: [UserManual](docs/UserManual.md)
 - 开发文档: [开发插件](https://hpyculator.readthedocs.io/zh_CN/latest/quick_start.html#id3)或[参与到此项目](https://hpyculator.readthedocs.io/zh_CN/latest/quick_start.html#id9)
-- 更新日志: [release](https://github.com/mamoe/mirai/releases) 或 [changelog](https://hpyculator.readthedocs.io/zh_CN/latest/changelog.html)
+- 更新日志: [release](https://github.com/HowieHz/hpyculator/releases) 或 [changelog](https://hpyculator.readthedocs.io/zh_CN/latest/changelog.html)
 
 [//]: # (- 开发计划: [milestones]&#40;https://github.com/HowieHz/hpyculator/milestones&#41;)
-
-1.从github的[releases](https://github.com/HowieHz/hpyculator/releases)下载最新版本
-
-2.解压，双击目录下的__main__.exe
-
-3.去[插件市场](https://github.com/HowieHz/hpyculatorPluginCatalogue)下点插件就能愉快的使用了
-
-（程序内置插件，可直接使用）
 
 ## 插件
 

@@ -12,6 +12,10 @@ hpyculator目前有一个版本，是基于pyside6的图形页面版
 前往 [HowieHz/hpyculator](https://github.com/HowieHz/hpyculator/releases)
 下载适合你的系统的压缩包，解压到一个文件夹内就可以使用。
 
+去[插件市场](https://github.com/HowieHz/hpyculatorPluginCatalogue)下点插件就能愉快的使用了
+
+（程序内置插件，可直接使用）
+
 [//]: # (## 使用纯控制台版本)
 
 [//]: # ()
@@ -21,4 +25,3 @@ hpyculator目前有一个版本，是基于pyside6的图形页面版
 
 如果遇到使用问题或想提建议，可以在 [issues](https://github.com/HowieHz/hpyculator/issues)
 发表
-
