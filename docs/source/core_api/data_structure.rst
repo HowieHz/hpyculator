@@ -1,5 +1,8 @@
 数据结构
 ==================
+可通过 ``from hpyc_core.data_structure import 结构名`` 来获取对应结构
+
+
 MetadataDict
 ---------------
 插件元数据规定

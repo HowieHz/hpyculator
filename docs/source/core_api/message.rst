@@ -7,23 +7,25 @@
 
 .. code-block:: python
 
-    def getMessageQueue() -> Queue:
+    from hpyc_core import Core
+    instance_core = Core()
+    message_queue = instance_core.getMessageQueue()
 
-使用.get()方法可获取消息，消息类型是元组
+在以上示例中使用 ``message_queue.get()`` 可获取消息，消息类型是元组
 
 出现的消息有以下几种
 
-("ERROR", "TypeConversionError", str(e))
+("ERROR", "TypeConversionError", str("详细信息"))
 ----------------------------------------------
 
-    类型转换出现错误，详细信息在第三项
+    类型转换出现错误，详细信息在第三项， 类型是 `str`
 
     此时运算线程停止
 
-("ERROR", "CalculationError", str(e))
+("ERROR", "CalculationError", str("详细信息"))
 ----------------------------------------------
 
-    运算出现错误，详细信息在第三项
+    运算出现错误，详细信息在第三项， 类型是 `str`
 
     此时运算线程停止
 
@@ -47,6 +49,6 @@
 ("MESSAGE", "CalculationProgramIsFinished", time_spent)
 --------------------------------------------------------------------------------------------
 
-    运算顺利完毕，第三项是运算所用时间
+    运算顺利完毕，第三项是运算所用时间，单位是 `ns` ，类型是 `int`
 
     此时运算线程停止
