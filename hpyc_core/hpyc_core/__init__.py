@@ -239,7 +239,9 @@ class Core:
             self.instance_settings_file.add(
                 key="output_dir_path", value=output_dir_path
             )  # 强制覆盖
-        elif self.instance_settings_file.exists("output_dir_path"):  # 读取配置
+        elif self.instance_settings_file and self.instance_settings_file.exists(
+            "output_dir_path"
+        ):  # 读取配置
             output_dir_path = self.instance_settings_file.read("output_dir_path")
         else:  # 初始化 为启动位置同目录下的Output文件夹
             output_dir_path = str(os.path.join(os.getcwd(), "Output"))
@@ -265,7 +267,9 @@ class Core:
             self.instance_settings_file.add(
                 key="plugins_dir_path", value=plugins_dir_path
             )  # 强制覆盖
-        elif self.instance_settings_file.exists("plugins_dir_path"):  # 从设置文件读取插件目录
+        elif self.instance_settings_file and self.instance_settings_file.exists(
+            "plugins_dir_path"
+        ):  # 从设置文件读取插件目录
             plugins_dir_path = self.instance_settings_file.read("plugins_dir_path")
         else:  # 初始化 为启动位置同目录下的Plugin文件夹
             plugins_dir_path = str(os.path.join(os.getcwd(), "Plugin"))

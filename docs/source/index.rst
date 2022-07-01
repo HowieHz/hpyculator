@@ -1,12 +1,12 @@
 欢迎来到 hpyculator 文档！
 ======================================
 
-本文档是 `hpyculator <https://github.com/HowieHz/hpyculator>`_ 的说明及帮助文档
+本文档是 `hpyculator <https://github.com/HowieHz/hpyculator>`_ 系列项目的说明及帮助文档
 
 文档api版本
-    - hpyculator == 1.5.0
-    - hpyc_pyside_ui == 1.7.0
-    - 1hpyc_core == 1.0.0
+    - `hpyculator <https://github.com/HowieHz/hpyculatorPackage>`_ == 1.5.0
+    - `hpyc_pyside_ui <https://github.com/HowieHz/hpyculator/tree/main/hpyc_pyside_ui>`_ == 1.7.0
+    - `hpyc_core <https://github.com/HowieHz/hpyculator/tree/main/hpyc_core>`_ == 1.0.0
 
 .. image:: images/ico.ico
 
