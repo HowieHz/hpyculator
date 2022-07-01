@@ -31,15 +31,15 @@
     - 默认值
     - 数据要求
   * - output_dir_path
-    - output_dir_path
+    - "output_dir_path"
     - str(os.path.join(os.getcwd(), "Output"))
     - 字符串类型
   * - settings_dir_path
-    - settings_dir_path
+    - 无
     - str(os.path.join(os.getcwd(), "Settings"))
     - 字符串类型
   * - plugins_dir_path
-    - plugins_dir_path
+    - "plugins_dir_path"
     - str(os.path.join(os.getcwd(), "Plugin"))
     - 字符串类型
   * - settings_file_name
