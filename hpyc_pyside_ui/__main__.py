@@ -4,9 +4,6 @@ import argparse
 import dbm
 import sys
 
-import hpyculator
-import hpyc_core
-
 # from PySide6 import QtWidgets, QtCore
 from PySide6.QtWidgets import QApplication
 

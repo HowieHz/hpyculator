@@ -15,7 +15,7 @@ from .settings import hpysettings
 from .data_structure import MetadataDict
 from .calculate import CalculationManager
 
-instance_settings_file: Optional[SettingsFileObject] = None
+# instance_settings_file: Optional[SettingsFileObject] = None
 
 # TODO  整体放到一个进程里面
 
@@ -39,11 +39,10 @@ class Core:
         :param settings_file_name: 设置文件名
         :param settings_file_format: 设置文件格式
         """
-        global instance_settings_file
         # 初始化参数 采用顺序 输入 > 设置文件 > 初始化
-        self.settings_dir_path = self._settingsFilePath(output_dir_path)  # 设置文件路径检查
+        self.settings_dir_path = self._settingsFilePath(settings_dir_path)  # 设置文件路径检查
 
-        instance_settings_file = hpysettings.load(
+        self.instance_settings_file: SettingsFileObject = hpysettings.load(
             settings_dir_path=self.settings_dir_path,
             settings_file_name=settings_file_name,
             settings_file_format=settings_file_format,
@@ -64,13 +63,12 @@ class Core:
         """
         return message_queue
 
-    @staticmethod
-    def getSettingsFileInstance() -> SettingsFileObject:
+    def getSettingsFileInstance(self) -> SettingsFileObject:
         """获取设置文件实例
 
         :return: 设置文件实例
         """
-        return instance_settings_file
+        return self.instance_settings_file
 
     def getPluginsDirPath(self) -> str:
         """获取插件存放路径
@@ -227,8 +225,7 @@ class Core:
             if _module in sys.modules:
                 _check_modules[_module]()  # 调用对应退出处理函数
 
-    @staticmethod
-    def _settingsFilePath(path: Optional[str] = None) -> str:
+    def _settingsFilePath(self, path: Optional[str] = None) -> str:
         """设置设置文件目录(当path有值),
         读取设置文件目录(当path无值)
 
@@ -237,14 +234,14 @@ class Core:
         """
         if path:
             settings_dir_path = path
-            instance_settings_file.add(
+            self.instance_settings_file.add(
                 key="settings_dir_path", value=settings_dir_path
             )  # 强制覆盖
-        elif instance_settings_file.exists("settings_dir_path"):  # 读取配置
-            settings_dir_path = instance_settings_file.read("settings_dir_path")
+        elif self.instance_settings_file.exists("settings_dir_path"):  # 读取配置
+            settings_dir_path = self.instance_settings_file.read("settings_dir_path")
         else:  # 初始化 为启动位置同目录下的Settings文件夹
             settings_dir_path = str(os.path.join(os.getcwd(), "Settings"))
-            instance_settings_file.add(
+            self.instance_settings_file.add(
                 key="settings_dir_path", value=settings_dir_path
             )  # 添加到配置文件
 
@@ -254,8 +251,7 @@ class Core:
 
         return settings_dir_path  # 返回路径
 
-    @staticmethod
-    def _checkOutputPath(path: Optional[str] = None) -> str:
+    def _checkOutputPath(self, path: Optional[str] = None) -> str:
         """设置输出目录(当path有值),
         读取输出目录(当path无值)
 
@@ -264,14 +260,14 @@ class Core:
         """
         if path:
             output_dir_path = path
-            instance_settings_file.add(
+            self.instance_settings_file.add(
                 key="output_dir_path", value=output_dir_path
             )  # 强制覆盖
-        elif instance_settings_file.exists("output_dir_path"):  # 读取配置
-            output_dir_path = instance_settings_file.read("output_dir_path")
+        elif self.instance_settings_file.exists("output_dir_path"):  # 读取配置
+            output_dir_path = self.instance_settings_file.read("output_dir_path")
         else:  # 初始化 为启动位置同目录下的Output文件夹
             output_dir_path = str(os.path.join(os.getcwd(), "Output"))
-            instance_settings_file.add(
+            self.instance_settings_file.add(
                 key="output_dir_path", value=output_dir_path
             )  # 添加到配置文件
 
@@ -281,8 +277,7 @@ class Core:
 
         return output_dir_path  # 返回输出路径
 
-    @staticmethod
-    def _checkPluginsPath(path: Optional[str] = None) -> str:
+    def _checkPluginsPath(self, path: Optional[str] = None) -> str:
         """设置存放插件的路径(当path有值),
         读取存放插件的路径(当path无值)
 
@@ -291,14 +286,14 @@ class Core:
         """
         if path:
             plugins_dir_path = path
-            instance_settings_file.add(
+            self.instance_settings_file.add(
                 key="plugins_dir_path", value=plugins_dir_path
             )  # 强制覆盖
-        elif instance_settings_file.exists("plugins_dir_path"):  # 从设置文件读取插件目录
-            plugins_dir_path = instance_settings_file.read("plugins_dir_path")
+        elif self.instance_settings_file.exists("plugins_dir_path"):  # 从设置文件读取插件目录
+            plugins_dir_path = self.instance_settings_file.read("plugins_dir_path")
         else:  # 初始化 为启动位置同目录下的Plugin文件夹
             plugins_dir_path = str(os.path.join(os.getcwd(), "Plugin"))
-            instance_settings_file.add(
+            self.instance_settings_file.add(
                 key="plugins_dir_path", value=plugins_dir_path
             )  # 添加到配置文件
 
