@@ -29,3 +29,9 @@ eventExit
 设置文件会设置
 plugins_dir_path
 output_dir_path
+
+要用对应方法获取，不推荐直接from import
+message_queue
+output_queue
+error_queue
+instance_settings_file

@@ -7,13 +7,14 @@ from typing import Optional, Any
 from types import ModuleType
 
 from hpyculator import message_queue, output_queue, error_queue
+from hpyculator.hpysettings import SettingsFileObject  # 类型标志用
 
 from .plugin import instance_plugin_manager  # 插件管理
 from .settings import hpysettings
 from .data_structure import MetadataDict
 from .compute import CalculationManager
 
-instance_settings_file: Any = None
+instance_settings_file: Optional[SettingsFileObject] = None
 
 # TODO  整体放到一个进程里面
 
@@ -57,7 +58,7 @@ class Core:
         return output_queue
 
     @staticmethod
-    def getErroeQueue() -> Queue:
+    def getErrorQueue() -> Queue:
         """获取错误输出队列
 
         :return: 错误输出队列
@@ -71,6 +72,14 @@ class Core:
         :return: 消息输出队列
         """
         return message_queue
+
+    @staticmethod
+    def getSettingsFileInstance() -> SettingsFileObject:
+        """获取设置文件实例
+
+        :return: 设置文件实例
+        """
+        return instance_settings_file
 
     def getPluginsDirPath(self) -> str:
         """获取插件存放路径
@@ -112,22 +121,22 @@ class Core:
         return instance_plugin_manager.option_id_dict
 
     @staticmethod
-    def getPluginInstance(id: str) -> ModuleType:
+    def getPluginInstance(plugin_id: str) -> ModuleType:
         """获取对应插件实例
 
-        :param id:
+        :param plugin_id: 插件id
         :return: 插件实例
         """
-        return instance_plugin_manager.getPluginInstance(id)
+        return instance_plugin_manager.getPluginInstance(plugin_id)
 
     @staticmethod
-    def getPluginMetadata(id: str) -> MetadataDict:
+    def getPluginMetadata(plugin_id: str) -> MetadataDict:
         """获取对应插件元数据
 
-        :param id:
+        :param plugin_id: 插件id
         :return: 插件元数据
         """
-        return instance_plugin_manager.getPluginMetadata(id)
+        return instance_plugin_manager.getPluginMetadata(plugin_id)
 
     def setPluginsDirPath(self, path: str) -> None:
         """设置插件存放目录并且重新加载插件
