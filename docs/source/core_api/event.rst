@@ -4,7 +4,13 @@
 
 eventStartCalculate
 -----------------------
-启动计算
+开始计算 （启动计算线程）
+
+.. code-block:: python
+
+    eventStartCalculate(self, plugin_id: str, input_data: Any, mode="Return") -> None:
+
+参数说明
     - plugin_id: 插件id, 类型 ``str``
     - input_data: 未处理的原始输入数据, 类型 ``typing.Any``
     - mode: 计算模式, 类型 ``str``
@@ -40,10 +46,6 @@ mode参数别名
                 "RACFLB",
                 "ReturnFromLimitedBuffer",
                 "ReturnAfterCalculatingFromLimitedBuffer",
-
-.. code-block:: python
-
-    eventStartCalculate(self, plugin_id: str, input_data: Any, mode="Return") -> None:
 
 eventReloadPlugins
 -----------------------
