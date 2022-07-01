@@ -1,4 +1,4 @@
-RAW_VERSION: str = "1.6.1"  # todo 发布的时候改版本号 和更新日志
+RAW_VERSION: str = "1.7.0"  # todo 发布的时候改版本号 和更新日志
 
 if "w" in RAW_VERSION:
     VERSION = RAW_VERSION + "  DEV"
