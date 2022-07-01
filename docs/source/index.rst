@@ -4,9 +4,9 @@
 本文档是 `hpyculator <https://github.com/HowieHz/hpyculator>`_ 的说明及帮助文档
 
 文档api版本
-    模块 >= 1.5.0
-
-    主程序 >= 1.7.0
+    - hpyculator == 1.5.0
+    - hpyc_pyside_ui == 1.7.0
+    - 1hpyc_core == 1.0.0
 
 .. image:: images/ico.ico
 
