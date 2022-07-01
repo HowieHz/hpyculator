@@ -26,9 +26,11 @@ hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法�
 
 2.写了一个小工具，这时候只需要添加一个包含一些数据的字典和一个函数，就可以把它变成一个hpyculator插件来使用
 
-## 快速开始
+## 开始
 
-### 用户
+### 用户手册
+
+
 
 1.从github的[releases](https://github.com/HowieHz/hpyculator/releases)下载最新版本
 

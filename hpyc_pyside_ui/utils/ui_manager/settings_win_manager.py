@@ -5,8 +5,10 @@ from PySide6.QtWidgets import QDialog, QMessageBox
 
 from .. import document as doc
 from ..document import VERSION  # 版本号导入
-from ..settings import instance_settings_file  # 导入实例
 from ..ui import Ui_SettingsWin  # 从init导
+from ..var import instance_core
+
+instance_settings_file = instance_core.getSettingsFileInstance()
 
 
 class SettingsWinApp(QDialog):
@@ -83,4 +85,4 @@ class SettingsWinApp(QDialog):
     @staticmethod
     def eventOpenPluginDir() -> None:
         """打开储存插件的文件夹"""
-        os.system(f'explorer {instance_settings_file.read("plugin_dir_path")}')
+        os.system(f'explorer {instance_settings_file.read("plugins_dir_path")}')

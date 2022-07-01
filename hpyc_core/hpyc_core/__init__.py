@@ -1,18 +1,19 @@
 """创建core"""
 import os
 import sys
+import atexit
 import importlib
 from queue import Queue
 from typing import Optional, Any
 from types import ModuleType
 
-from hpyculator import message_queue, output_queue, error_queue
+from hpyculator import message_queue
 from hpyculator.hpysettings import SettingsFileObject  # 类型标志用
 
 from .plugin import instance_plugin_manager  # 插件管理
 from .settings import hpysettings
 from .data_structure import MetadataDict
-from .compute import CalculationManager
+from .calculate import CalculationManager
 
 instance_settings_file: Optional[SettingsFileObject] = None
 
@@ -39,7 +40,7 @@ class Core:
             else str(os.path.join(os.getcwd(), "Setting"))  # 默认设置文件存放目录
         )
         instance_settings_file = hpysettings.load(
-            settings_dir_path=settings_dir_path,
+            settings_dir_path=self.settings_dir_path,
             settings_file_name=settings_file_name,
             settings_file_format=settings_file_format,
         )  # 单例
@@ -49,21 +50,7 @@ class Core:
         self.plugins_dir_path = self._checkPluginsPath(plugins_dir_path)  # 插件存放路径检查
         self.eventReloadPlugins()  # 加载插件
 
-    @staticmethod
-    def getOutputQueue() -> Queue:
-        """获取输出队列
-
-        :return: 输出队列
-        """
-        return output_queue
-
-    @staticmethod
-    def getErrorQueue() -> Queue:
-        """获取错误输出队列
-
-        :return: 错误输出队列
-        """
-        return error_queue
+        atexit.register(self.eventExit)  # 注册退出事件
 
     @staticmethod
     def getMessageQueue() -> Queue:
@@ -119,6 +106,15 @@ class Core:
         :return: 选项名映射id的字典
         """
         return instance_plugin_manager.option_id_dict
+
+    @staticmethod
+    def getPluginIdFromOption(option: str) -> str:
+        """获取插件选项名和id的映射表
+
+        :param option: 插件选项名
+        :return: 插件id
+        """
+        return instance_plugin_manager.option_id_dict[option]
 
     @staticmethod
     def getPluginInstance(plugin_id: str) -> ModuleType:
@@ -191,9 +187,9 @@ class Core:
             ),
         )  # 计算模式
         if mode in modes[0]:
-            calculation_mode = "Save"
-        elif mode in modes[1]:
             calculation_mode = "Return"
+        elif mode in modes[1]:
+            calculation_mode = "Save"
         elif mode in modes[2]:
             calculation_mode = "ReturnFromBuffer"
         elif mode in modes[3]:

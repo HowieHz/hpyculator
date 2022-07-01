@@ -35,3 +35,17 @@ message_queue
 output_queue
 error_queue
 instance_settings_file
+
+How to use
+
+在此文件夹下使用
+pip install -e .
+
+("ERROR", "TypeConversionError", str(e))
+("ERROR", "CalculationError", str(e))
+
+("OUTPUT", str(result))
+
+("MESSAGE", "OutputReachedLimit")
+("MESSAGE", "CalculationProgramIsRunning")
+("MESSAGE", "CalculationProgramIsFinished", time_spent)

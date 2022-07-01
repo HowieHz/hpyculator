@@ -10,7 +10,7 @@ from typing import IO, Generator
 
 import hpyculator as hpyc
 
-from .. import error_queue, message_queue, output_queue
+from .. import message_queue
 from ..data_structure import MetadataDict
 from ..plugin import instance_plugin_manager
 
@@ -29,18 +29,12 @@ class CalculationManager:
         """启动计算线程
 
         :param input_data: 未经处理的用户输入
-        :type input_data: str
         :param calculation_mode: 计算模式
-        :type calculation_mode: str
         :param user_selection_id: 用户选择的插件的id
-        :type user_selection_id: str
         :param output_dir_path: 输出目录
-        :type output_dir_path: str
-        :return: None
-        :rtype: None
         """
         # 输入转换
-        plugin_attributes: MetadataDict = instance_plugin_manager.getPluginAttributes(
+        plugin_attributes: MetadataDict = instance_plugin_manager.getPluginMetadata(
             user_selection_id
         )  # 插件属性字典
         converted_data: str | float | int | None = self.typeConversion(
@@ -70,11 +64,8 @@ class CalculationManager:
         """类型转换
 
         :param to_type: 目标类型
-        :type to_type: int
         :param data: 需要转换的数据
-        :type data: str
         :return: 转换后的数据
-        :rtype: str | float | int | None
         """
         try:
             match to_type:
@@ -87,7 +78,7 @@ class CalculationManager:
                 case _:
                     ret = None  # type: ignore # 缺省 转换不存在的类型就none
         except Exception as e:  # skipcq: PYL-W0703 - Loop can sometimes crash.
-            error_queue.put(f"TypeConversionError:{str(e)}")
+            message_queue.put(("ERROR", "TypeConversionError", str(e)))
             traceback.print_exc()
             return None  # 缺省 转换错误就none
         return ret
@@ -105,15 +96,10 @@ class CalculationThread(Thread):
         """计算线程
 
         :param converted_data: 经过类型转换处理的用户输入
-        :type converted_data: str | float | int
         :param calculation_mode: 计算模式
-        :type calculation_mode: str
         :param output_dir_path: 输出目录
-        :type output_dir_path: str
         :param plugin_attributes: 插件属性
-        :type plugin_attributes: MetadataDict
         :param instance_plugin: 插件实例
-        :type instance_plugin: ModuleType
         """
         Thread.__init__(self)
         # Process.__init__(self)
@@ -129,18 +115,17 @@ class CalculationThread(Thread):
             """基础的计算模式
 
             :return: 计算花费的时间 单位ns
-            :rtype: int
             """
             calculate_fun = selected_plugin.on_calculate
             time_before_calculate = time.perf_counter_ns()  # 储存开始时间
             match plugin_attribute_return_mode:
                 case hpyc.RETURN_ONCE:
                     result = str(calculate_fun(converted_data))
-                    output_queue.put(str(result) + "\n")  # 结果为str，直接输出
+                    message_queue.put(("OUTPUT", str(result)))  # 结果为str，直接输出
                 case hpyc.RETURN_ITERABLE:  # 算一行输出一行
                     result = calculate_fun(converted_data)
                     for result_process in result:
-                        output_queue.put(str(result_process))  # 算一行输出一行
+                        message_queue.put(("OUTPUT", str(result_process)))  # 算一行输出一行
                 case hpyc.NO_RETURN_SINGLE_FUNCTION:
                     calculate_fun(converted_data, "output")
                 case hpyc.NO_RETURN:
@@ -153,7 +138,6 @@ class CalculationThread(Thread):
             """计算+保存模式
 
             :return: 计算花费的时间 单位ns
-            :rtype: int
             """
             # filepath - 储存保存到哪个文件里 路径+文件名
             calculate_fun = selected_plugin.on_calculate
@@ -188,9 +172,7 @@ class CalculationThread(Thread):
             计算+输出优化的模式（先把结果存临时文件，再读取输出）
 
             :param limit: 是否开启输出上限，默认是False
-            :type limit: bool
             :return: 计算花费的时间 单位ns
-            :rtype: int
             """
             calculate_fun = selected_plugin.on_calculate
             with tempfile.TemporaryFile(
@@ -222,24 +204,21 @@ class CalculationThread(Thread):
                     filestream.seek(0)  # 将文件指针移到开始处，准备读取文件
                     if limit:
                         for times, line in enumerate(_quickTraverseFile(filestream)):
-                            output_queue.put(line)
+                            message_queue.put(("OUTPUT", line))
                             if times >= 128:
-                                message_queue.put(f"OutputReachedLimit")
+                                message_queue.put(("MESSAGE", "OutputReachedLimit"))
                                 break
                     else:
                         for line in _quickTraverseFile(filestream):
-                            output_queue.put(line)
+                            message_queue.put(("OUTPUT", line))
             return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
 
         def _quickTraverseFile(file: IO, chunk_size: int = 8192) -> Generator:
             """较快，低占用读取文件，迭代器
 
             :param file: 打开的文件流对象
-            :type file: IO
             :param chunk_size: 一次读取的字节大小,默认为8192
-            :type chunk_size: int
             :yield: 读取到的字节
-            :rtype: Generator
             """
             for chunk in iter(
                 partial(file.read, chunk_size), ""
@@ -251,8 +230,8 @@ class CalculationThread(Thread):
         plugin_attributes: MetadataDict = self.plugin_attributes  # 插件属性字典
         selected_plugin: ModuleType = self.instance_plugin  # 插件加载实例
 
-        message_queue.put("CalculationProgramIsRunning")
-        plugin_attribute_return_mode = plugin_attributes["return_mode"]
+        message_queue.put(("MESSAGE", "CalculationProgramIsRunning"))
+        plugin_attribute_return_mode = plugin_attributes["return_mode"]  # 读取返回模式
         try:
             match calculation_mode:
                 case "Return":
@@ -269,8 +248,14 @@ class CalculationThread(Thread):
                     time_spent = _calculateWithOutputOptimization(limit=True)
 
         except Exception as e:  # skipcq: PYL-W0703 - Loop can sometimes crash.
-            error_queue.put(f"CalculationError:{str(e)}")
+            message_queue.put(("ERROR", "CalculationError", str(e)))
             traceback.print_exc()
 
-        message_queue.put("CalculationProgramIsFinished")  # 已完成
-        message_queue.put(time_spent)
+        try:
+            message_queue.put(
+                ("MESSAGE", "CalculationProgramIsFinished", time_spent, filepath_name)
+            )  # 已完成
+        except UnboundLocalError:
+            message_queue.put(
+                ("MESSAGE", "CalculationProgramIsFinished", time_spent)
+            )  # 已完成

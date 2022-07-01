@@ -1,11 +1,13 @@
 import locale
 import pathlib
-import importlib
-import sys
+import time
 from dataclasses import dataclass
 from typing import Any, Optional
+from queue import Queue
+from threading import Thread
 
 import hpyculator as hpyc
+from hpyculator import SettingsFileObject
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QBrush, QGuiApplication, QPalette, QPixmap, QTextCursor
 
@@ -13,12 +15,10 @@ from .signal import instance_main_win_signal
 from .about_win_manager import AboutWinApp
 from .settings_win_manager import SettingsWinApp  # 窗口管理类（用于管理设置的窗口）
 from .. import document as doc
-from ..calculate import CalculationManager  # 计算管理
-from ..plugin import instance_plugin_manager  # 插件管理
+from ..var import instance_core
 from ..pyside_frameless_win.framelesswindow import (
     FramelessWindow,
 )  # refer to https://github.com/zhiyiYo/PyQt-Frameless-Window
-from ..settings import instance_settings_file  # 设置文件实例
 from ..ui import Ui_MainWin
 
 
@@ -40,27 +40,29 @@ class MainWinApp(FramelessWindow):
         self,
         setting_file_path: str,
         output_dir_path: str,
-        plugin_dir_path: str,
+        plugins_dir_path: str,
         background_dir_path: str,
+        message_queue: Queue,
+        instance_settings: SettingsFileObject,
     ):
         """主窗口程序类
 
         :param setting_file_path: 用于修改设置 设置文件路径
-        :type setting_file_path: str
         :param output_dir_path: 用于输出结果 输出路径
-        :type output_dir_path: str
-        :param plugin_dir_path: 用于存放插件 插件文件夹路径
-        :type plugin_dir_path: str
+        :param plugins_dir_path: 用于存放插件 插件文件夹路径
         :param background_dir_path: 用于存放背景图片的路径
-        :type background_dir_path: str
         """
         # 初始化（变量初始化，文件夹初始化，读取设置（创建设置文件））
+        global instance_settings_file
+        instance_settings_file = instance_settings
+
         self.SETTING_FILE_PATH: str = setting_file_path
         self.OUTPUT_DIR_PATH: str = output_dir_path
-        self.PLUGIN_DIR_PATH: str = plugin_dir_path
+        self.PLUGINS_DIR_PATH: str = plugins_dir_path
         self.user_selection_id: str = ""  # 用户选择的插件的文件名（id)
         self.background_dir_path: str = background_dir_path  # 用于存放背景图片的路径
         self.is_save_check_box_status: Optional[bool] = None  # 是否保存按键状态
+        self.message_queue: Queue = message_queue
 
         super().__init__()
         self.ui = Ui_MainWin()  # UI类的实例化()
@@ -110,7 +112,7 @@ class MainWinApp(FramelessWindow):
         # tag和选项名的映射表_list_plugin_tag_option [(plugin1_tags: list, plugin1_option), (plugin2_tags: list, plugin2_option)]
         _list_plugin_tag_option: (
             tuple[tuple[tuple[str, ...], str], ...]
-        ) = instance_plugin_manager.list_alL_plugin_tag_option
+        ) = instance_core.getPluginsTagOption()
         _set_tags = set()  # _set_tags里面有所有的tag
         for _tags_and_option in _list_plugin_tag_option:
             for _tag in _tags_and_option[0]:
@@ -302,11 +304,9 @@ class MainWinApp(FramelessWindow):
     def eventStartCalculation(
         self,
         test_input: None | int | str | float = None,
-        test_input_mode: int | None = None,
         test_selection_id: str | None = None,
-        test_output_dir_path: str | None = None,
     ) -> None:
-        """输入检查，启动计算线程
+        """输入检查，启动计算，输出计算结果
 
         :param test_input: 测试输入，测试专用, defaults to None
         :type test_input: None | int | str | float, optional
@@ -338,44 +338,37 @@ class MainWinApp(FramelessWindow):
 
         # 输入转换类型
         # 有就录入测试数据 没有就从属性列表获取
-        input_mode = (
-            test_input_mode
-            if test_input_mode
-            else self.selected_plugin_attributes["input_mode"]
-        )
 
         # 获取计算模式
         def _getCalculationMode():
             if self.ui.check_save.isChecked():  # 检测保存按钮的状态判断是否保存
-                return "calculate_save"
+                return "Save"
             if not self.ui.check_output_optimization.isChecked():
-                return "compute"
+                return "Return"
             if self.ui.check_output_lock_maximums.isChecked():
-                return "calculate_o_l"  # l=limit
-            return "calculate_o"
+                return "ReturnFromLimitedBuffer"
+            return "ReturnFromBuffer"
 
         calculation_mode = _getCalculationMode()
 
-        output_dir_path = (
-            test_output_dir_path if test_output_dir_path else self.OUTPUT_DIR_PATH
-        )
         # 以上是计算前工作
-        # print("启动计算")
-        calculate_manager = CalculationManager()
-        calculate_manager.start(
-            inputbox_data=input_data,
-            plugin_attribute_input_mode=input_mode,
-            calculation_mode=calculation_mode,
-            user_selection_id=user_selection_id,
-            output_dir_path=output_dir_path,
-        )  # 启动计算
+        instance_core.eventStartCalculate(
+            plugin_id=user_selection_id, input_data=input_data, mode=calculation_mode
+        )
+
+        # 实例化消息处理线程
+        message_processing_thread = MessageProcessingThread(
+            mode=calculation_mode, message_queue=self.message_queue
+        )
+        # 启动消息处理线程
+        message_processing_thread.start()
         return
 
     def flushListChoicesPlugin(self) -> None:
         """刷新左侧列表 和对应映射表"""
         self.ui.list_choices_plugin.clear()
         self.ui.list_choices_plugin.addItems(
-            instance_plugin_manager.option_id_dict.keys()
+            instance_core.getPluginsOptionToId()
         )  # 选项名添加到ui上 选项名映射id（文件或文件夹名）
 
     def resizeEvent(self, event) -> None:
@@ -508,11 +501,11 @@ class MainWinApp(FramelessWindow):
         if item is None:  # 刷新列表的时候选中的item是None
             return
         self.user_selection_id = str(
-            instance_plugin_manager.option_id_dict[item.text()]
+            instance_core.getPluginIdFromOption(item.text())
         )  # 转换成ID
-        self.selected_plugin_attributes = (
-            _METADATA
-        ) = instance_plugin_manager.getPluginAttributes(self.user_selection_id)
+        self.selected_plugin_attributes = _METADATA = instance_core.getPluginMetadata(
+            self.user_selection_id
+        )
         self.ui.output_box.setPlainText(
             f"""\
 {_METADATA["output_start"]}
@@ -535,17 +528,17 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         :rtype: None
         """
 
-        def _exitJpype():
-            # 退出流程，否则虚拟机不会退出，导致进程残留
-            jpype = importlib.import_module("jpype")  # 不直接用import是防止打包程序识别到
-
-            if jpype.isJVMStarted():
-                jpype.shutdownJVM()
-
-        _check_modules = {"jpype": _exitJpype}
-        for _module in _check_modules:
-            if _module in sys.modules:
-                _check_modules[_module]()  # 调用对应退出处理函数
+        # def _exitJpype():
+        #     # 退出流程，否则虚拟机不会退出，导致进程残留
+        #     jpype = importlib.import_module("jpype")  # 不直接用import是防止打包程序识别到
+        #
+        #     if jpype.isJVMStarted():
+        #         jpype.shutdownJVM()
+        #
+        # _check_modules = {"jpype": _exitJpype}
+        # for _module in _check_modules:
+        #     if _module in sys.modules:
+        #         _check_modules[_module]()  # 调用对应退出处理函数
 
     def eventCloseMainWin(self) -> None:
         """关闭主窗口"""
@@ -701,7 +694,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             _, *_user_tags = _search_keyword.split()  # 第一项是:tag, 剩下的是用户输入的tag
 
             # instance_plugin_manager.list_alL_plugin_tag_option 单项 tag和选项名_tags_and_option ((tag1,tag2),name)
-            for _tags_and_option in instance_plugin_manager.list_alL_plugin_tag_option:
+            for _tags_and_option in instance_core.getPluginsTagOption():
                 if _tagCheck(
                     _user_tags, _tags_and_option[0]
                 ):  # _tags_and_option[0] -> plugin_tags: tuple[list]
@@ -712,7 +705,7 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
             self.ui.list_choices_plugin.addItems(_set_matched_item)  # 匹配的添加到选框
             return None
 
-        for i in instance_plugin_manager.option_id_dict:  # 选出符合要求的
+        for i in instance_core.getPluginsOptionToId():  # 选出符合要求的
             if i.find(_search_keyword) == -1:  # 字符串方法，没找到指定子串就-1
                 continue
             self.ui.list_choices_plugin.addItem(i)
@@ -722,6 +715,118 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
         """取消搜索结果，显示全部插件，显示介绍"""
         self.ui.list_choices_plugin.clear()
         self.ui.list_choices_plugin.addItems(
-            instance_plugin_manager.option_id_dict.keys()
+            instance_core.getPluginsOptionToId().keys()
         )
         self.outputIntroduce()  # 输出介绍
+
+
+class MessageProcessingThread(Thread):
+    def __init__(self, mode, message_queue):
+        """消息处理线程
+
+        :param mode: 输出模式
+        :param message_queue: 消息队列
+        """
+        super().__init__()
+        self.daemon = True
+        self.mode = mode
+        self.message_queue: Queue = message_queue
+
+    @staticmethod
+    def _outputSpentTime(
+        time_spent_ns: int = 0, prefix: str = "", suffix: str = ""
+    ) -> None:
+        """输出计算总结
+
+        :param time_spent_ns: 所花费的时间（单位ns）, 默认为0
+        :param prefix: 前缀, 默认为""
+        :param suffix: 后缀, 默认为""
+        """
+        instance_main_win_signal.append_output_box_.emit(
+            f"\n\n"
+            f"{prefix}"
+            f"{time_spent_ns}ns\n"
+            f"={time_spent_ns / 10_0000_0000}s\n"
+            f"={time_spent_ns / 600_0000_0000}min\n\n"
+            f"{suffix}"
+        )  # 输出本次计算时间
+
+    def run(self):  # 消息处理
+        while True:
+            head, body, *data = self.message_queue.get(block=True)
+            if head == "OUTPUT":
+                instance_main_win_signal.append_output_box.emit(body)
+            elif head == "MESSAGE":
+                match body:
+                    case "OutputReachedLimit":
+                        instance_main_win_signal.append_output_box.emit(
+                            doc.REACHED_OUTPUT_LIMIT_LITERAL
+                        )
+                        break
+                    case "CalculationProgramIsRunning":
+                        instance_main_win_signal.draw_background.emit()  # 不知道为何使用了打表模式之后会掉背景，干脆重绘一次背景
+                        instance_main_win_signal.set_start_button_text.emit(
+                            doc.CALCULATION_PROGRAM_IS_RUNNING_LITERAL
+                        )
+                        instance_main_win_signal.set_start_button_state.emit(
+                            False
+                        )  # 防止按钮反复触发
+                        instance_main_win_signal.clear_output_box.emit()  # 清空输出框
+                    case "CalculationProgramIsFinished":
+                        time_spent = data[0]
+
+                        match self.mode:
+                            case "Save":
+                                filepath_name = data[1]
+                                self._outputSpentTime(
+                                    time_spent,
+                                    doc.THIS_CALCULATION_AND_SAVING_TOOK_LITERAL,
+                                    f"{doc.SAVED_IN_LITERAL} {filepath_name}",
+                                )  # 输出本次计算时间
+                            case "ReturnFromBuffer":
+                                self._outputSpentTime(
+                                    time_spent,
+                                    doc.THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL,
+                                    doc.OUTPUT_OPTIMIZATION_ENABLED_LITERAL,
+                                )  # 输出本次计算时间
+                            case "ReturnFromLimitedBuffer":
+                                self._outputSpentTime(
+                                    time_spent,
+                                    doc.THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL,
+                                    doc.OUTPUT_OPTIMIZATION_ENABLED_LITERAL,
+                                )  # 输出本次计算时间
+                            case "Return":
+                                self._outputSpentTime(
+                                    time_spent,
+                                    doc.THIS_CALCULATION_AND_OUTPUT_TOOK_LITERAL,
+                                )  # 输出本次计算时间
+
+                        instance_main_win_signal.set_output_box_cursor.emit(
+                            "end"
+                        )  # 光标设到文本框尾部
+                        instance_main_win_signal.set_start_button_text.emit(
+                            doc.CALCULATION_LITERAL
+                        )  # 设置按钮字
+                        instance_main_win_signal.set_start_button_state.emit(
+                            True
+                        )  # 启用按钮
+                        instance_main_win_signal.draw_background.emit()  # 不知道为何使用了打表模式之后会掉背景，干脆重绘一次背景
+                        break
+            elif head == "ERROR":
+                info = data[0]
+                if body == "TypeConversionError":
+                    instance_main_win_signal.set_output_box.emit(
+                        doc.TYPE_CONVERSION_ERROR_LITERAL % info
+                    )
+                    break
+                elif body == "CalculationError":
+                    instance_main_win_signal.set_output_box.emit(
+                        doc.PLUGIN_CALCULATION_ERROR_LITERAL % info
+                    )
+                    break
+                else:
+                    pass
+            else:
+                pass
+
+            time.sleep(0.0001)
