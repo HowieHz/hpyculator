@@ -12,35 +12,35 @@ eventReloadPlugins
 eventStartCalculate
 -----------------------
 启动计算
-    - :param plugin_id: 插件id
-    - :param input_data: 未处理的原始输入数据
-    - :param mode: 计算模式
-    - :return: None
-    - :raise ValueError: 当输入了不存在的mode
+    - plugin_id: 插件id
+    - input_data: 未处理的原始输入数据
+    - mode: 计算模式
+    - None
+    - ValueError: 当输入了不存在的mode
 
 modes别名
-    -仅返回到消息队列
+    - 仅返回到消息队列
                 "ReturnAfterComputing",
                 "ComputingAndReturn",
                 "RAC",
                 "Return",
                 "ReturnAfterCalculating",
 
-    -仅保存到文件中
+    - 仅保存到文件中
                 "SaveAfterComputing",
                 "ComputingAndSave",
                 "SAC",
                 "Save",
                 "SaveAfterCalculating",
 
-    -从缓冲区中返回
+    - 从缓冲区中返回
                 "ReturnAfterComputingFromBuffer",
                 "ComputingAndReturnFromBuffer",
                 "RACFB",
                 "ReturnFromBuffer",
                 "ReturnAfterCalculatingFromBuffer",
 
-    -从缓冲区中返回，但是有返回上限
+    - 从缓冲区中返回，但是有返回上限
                 "ReturnAfterComputingFromLimitedBuffer",
                 "ComputingAndReturnFromLimitedBuffer",
                 "RACFLB",
