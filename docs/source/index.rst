@@ -15,7 +15,9 @@
     :caption: 目录
 
     快速上手<quick_start>
+    用户手册<user_manual>
     插件开发<plugin_dev/index>
+    项目结构<sdk>
     关于<about>
     更新日志<changelog>
     特别鸣谢<credits>

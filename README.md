@@ -28,9 +28,11 @@ hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法�
 
 ## 开始
 
-### 用户手册
+- **用户手册**: [UserManual](docs/UserManual.md)
+- 开发文档: [在 hpyculator.readthedocs.io 阅读](https://docs.mirai.mamoe.net/)
+- 更新日志: [release](https://github.com/mamoe/mirai/releases) 或 [changelog](https://hpyculator.readthedocs.io/zh_CN/latest/changelog.html)
 
-
+[//]: # (- 开发计划: [milestones]&#40;https://github.com/HowieHz/hpyculator/milestones&#41;)
 
 1.从github的[releases](https://github.com/HowieHz/hpyculator/releases)下载最新版本
 
