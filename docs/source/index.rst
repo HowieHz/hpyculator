@@ -4,7 +4,7 @@
 本文档是 `hpyculator <https://github.com/HowieHz/hpyculator>`_ 的说明及帮助文档
 
 文档api版本
-    模块 >= 1.4.12
+    模块 >= 1.5.0
 
     主程序 >= 1.7.0
 
@@ -17,7 +17,8 @@
     快速上手<quick_start>
     用户手册<user_manual>
     插件开发<plugin_dev/index>
-    项目结构<sdk>
+    核心API<core_api/index>
+    项目结构<project_structure>
     关于<about>
     更新日志<changelog>
     特别鸣谢<credits>

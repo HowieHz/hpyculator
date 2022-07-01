@@ -56,5 +56,7 @@ hpyculator 在 `pypi <https://pypi.org/project/hpyculator>`__ 中可用。它可
 开发者（程序）
 ---------------------
 
-`项目结构 <sdk.html>`_
+`项目结构 <project_structure.html>`_
+
+`核心api <core_api/index.html>`_
 

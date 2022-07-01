@@ -31,14 +31,18 @@ class Core:
         settings_file_name: str = "hpyculator_setting",
         settings_file_format: str = "json",
     ) -> None:
-        """"""
+        """核心实例
+
+        :param output_dir_path: 输出目录
+        :param settings_dir_path: 设置文件目录
+        :param plugins_dir_path: 插件存放目录
+        :param settings_file_name: 设置文件名
+        :param settings_file_format: 设置文件格式
+        """
         global instance_settings_file
         # 初始化参数 采用顺序 输入 > 设置文件 > 初始化
-        self.settings_dir_path = (
-            settings_dir_path
-            if settings_dir_path
-            else str(os.path.join(os.getcwd(), "Setting"))  # 默认设置文件存放目录
-        )
+        self.settings_dir_path = self._settingsFilePath(output_dir_path)  # 设置文件路径检查
+
         instance_settings_file = hpysettings.load(
             settings_dir_path=self.settings_dir_path,
             settings_file_name=settings_file_name,
@@ -222,12 +226,39 @@ class Core:
                 _check_modules[_module]()  # 调用对应退出处理函数
 
     @staticmethod
+    def _settingsFilePath(path: Optional[str] = None) -> str:
+        """设置设置文件目录(当path有值),
+        读取设置文件目录(当path无值)
+
+        :param path: 设置文件路径
+        :return: 设置文件路径
+        """
+        if path:
+            settings_dir_path = path
+            instance_settings_file.add(
+                key="settings_dir_path", value=settings_dir_path
+            )  # 强制覆盖
+        elif instance_settings_file.exists("settings_dir_path"):  # 读取配置
+            settings_dir_path = instance_settings_file.read("settings_dir_path")
+        else:  # 初始化 为启动位置同目录下的Settings文件夹
+            settings_dir_path = str(os.path.join(os.getcwd(), "Settings"))
+            instance_settings_file.add(
+                key="settings_dir_path", value=settings_dir_path
+            )  # 添加到配置文件
+
+        # 检查输出文件夹是否存在
+        if not os.path.exists(settings_dir_path):
+            os.makedirs(settings_dir_path)
+
+        return settings_dir_path  # 返回路径
+
+    @staticmethod
     def _checkOutputPath(path: Optional[str] = None) -> str:
         """设置输出目录(当path有值),
         读取输出目录(当path无值)
 
         :param path: 输出目录
-        :return: output_dir_path
+        :return: 输出路径
         """
         if path:
             output_dir_path = path
