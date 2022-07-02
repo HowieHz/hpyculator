@@ -1,6 +1,6 @@
 # hpyculator 用户手册
 
-hpyculator 用户手册。本文面向对开发不熟悉而希望使用 hpyculator 的用户。如果你要开发，请先阅读 [开发文档](README.md)。
+hpyculator 用户手册。本文面向对开发不熟悉而希望使用 hpyculator 的用户。如果你要开发，请先阅读 [开发文档](https://hpyculator.readthedocs.io/zh_CN/latest/index.html)。
 
 ## 启动 hpyculator
 
