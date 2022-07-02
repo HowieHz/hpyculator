@@ -5,6 +5,8 @@
 
 具体说明请看 `参数会影响什么`_ 一节
 
+**数据类型要求**
+
 .. code-block:: python
 
     class MetadataDict(TypedDict, total=False):
@@ -23,7 +25,7 @@
         return_mode: int
         fullwidth_symbol: int
 
-这是一段示例元数据
+以下是一段示例元数据
 
 .. code-block:: python
 
@@ -58,78 +60,66 @@
         "fullwidth_symbol": hpyc.OFF  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
     }
 
+数据类型要求
+
+    - 作者名author支持的形式
+        - 字符串类型，如："作者名"
+        - 列表，如：["作者名1", "作者名2"]
+    - 标签tag支持的形式
+        - 列表，如：["标签1","标签2"] ["标签1"]
+        - 字符串，如："标签"
+    - 返回模式return_mode要求在以下常量中选择一个
+        - `hpyc.RETURN_ONCE`
+        - `hpyc.RETURN_ITERABLE`
+        - `hpyc.NO_RETURN`
+        - `hpyc.NO_RETURN_SINGLE_FUNCTION`
+
 参数会影响什么
 ----------------------------------------------------------------------------
 
-.. code-block:: python
+**以下内容是描述hpyc_pyside_ui的解析系统**
 
-    """内置文本框框在选择后的输出
+    - 内置文本框框在选择后的输出
 
-        output_start
-        output_name version
-        by author
+    .. code-block:: python
 
-        使用提示：
+            """
+            output_start
+            output_name version
+            by author
 
-        help
+            使用提示：
 
-        output_end
+            help
 
-        """
+            output_end
+            """
 
-    """内置文本框在选择保存后的输出
-        本次计算花费了*秒
-        结果输出（用户选择不保存时输出）
-        保存计算结果至文件中···（用户选择保存时输出）
-        计算结果已保存在 保存文件名的完整路径（用户选择保存时输出）
 
-    """
-
-    """保存文件名
-        时间 + save_name + 输入 + quantifier .txt
-
-        """
-
-    """添加的选项
-        option
-
-        """
-
-    """作者名author支持的形式
-    1. 字符串类型，如："作者名"
-    2. 列表，如：["作者名1", "作者名2"]
-    """
-
-    """标签tag支持的形式
-    1. 列表，如：["标签1","标签2"] ["标签1"]
-    2. 字符串，如："标签"
-    """
-
-    """会被特殊识别的标签
-    1. category:开头的标签，会被作为插件类别识别，如"category:math"
-    2. computer_language:开头的标签，会作为所用编程语言识别，如"computer_language:java"
-    3. depend:开头的标签，会作为依赖识别，如"depend:numpy"
-    """
-
+    - 保存文件名
+        - 时间 + save_name + 输入 + quantifier .txt
+    - 添加的选项
+        - option
+    - `会被特殊识别的标签 <https://github.com/HowieHz/hpyculator/blob/main/hpyc_pyside_ui/README.md#%E4%BC%9A%E8%A2%AB%E7%89%B9%E6%AE%8A%E8%AF%86%E5%88%AB%E7%9A%84tag>`_
+        - category:开头的标签，会被作为插件类别识别，如"category:math"
+        - computer_language:开头的标签，会作为所用编程语言识别，如"computer_language:java"
+        - depend:开头的标签，会作为依赖识别，如"depend:numpy"
 
 
 ``return_mode`` 参数讲解
 ----------------------------------------------------------------------------
-``import hpyculator as hpyc``
 
-方案0  -> hpyc.RETURN_ONCE
+.. code-block:: python
 
-方案1  -> hpyc.RETURN_ITERABLE
+    import hpyculator as hpyc
 
-方案2  -> hpyc.NO_RETURN
 
-方案3  -> hpyc.NO_RETURN_SINGLE_FUNCTION
+`hpyc.RETURN_ONCE` : on_calculate函数返回的结果会经过一次str转换之后输出
 
-由主程序控制读写和内屏输出，这两个方案的区别是，
+`hpyc.RETURN_ITERABLE` : on_calculate函数返回的结果会经过迭代，每一项都会经过str转换之后输出
 
-方案0是on_calculate函数return的对象 直接输出，比如输出一个字符串
 
-方案1是on_calculate函数return的对象 迭代输出，比如把一个列表的每一项依次输出
+**hpyc_pyside_ui对hpyc.RETURN_ITERABLE的处理方式**
 
     .. code-block:: python
 
@@ -142,19 +132,11 @@
         4
         """
 
-很显然，当用户输入数值比较大的时候，
 
-多项数组会迅速占用用户内存，导致死机等后果
+为了提供更高的自由度， `hpyc.NO_RETURN` 和 `hpyc.NO_RETURN_SINGLE_FUNCTION` 孕育而生
 
-保存的时候所有东西会先写入用户内存，最后再保存到硬盘
+`hpyc.NO_RETURN` 和 `hpyc.NO_RETURN_SINGLE_FUNCTION` 给与了插件作者调整输出时机和保存时机
 
-好处是此方案保存是最快的
-（输出也是，但是内存堆积太多再输出容易卡住输出框）
+`hpyc.NO_RETURN` 中，核心(hpyc_core)仅仅是把参数传给 ``on_calculate`` 函数和 ``on_calculate_with_save`` 函数 ，然后需要使用 `output <API.html#output>`_\， `write <API.html#write>`_\， `flush <API.html#flush>`_\等函数自己调节输出到文本框，写入内存，写入硬盘的时机
 
-为了解决内存爆炸的问题，方案2和3孕育而生
-
-方案2和方案3给与了插件作者调整输出时机和保存时机
-
-方案2中，程序仅仅是把参数传给 ``on_calculate`` 函数和 ``on_calculate_with_save``函数 ，然后需要使用 `output <API.html#output>`_\， `write <API.html#write>`_\， `flush <API.html#flush>`_\等函数自己调节输出到文本框，写入内存，写入硬盘的时机
-
-方案2分成两个函数不够高效，于是出现了方案3，会多传入一个参数(请看插件事件一节)，来告知插件究竟是保存还是输出到内屏
+`hpyc.NO_RETURN` 分成两个函数不够高效，于是出现了 `hpyc.NO_RETURN_SINGLE_FUNCTION` ，会多传入一个参数(请看插件事件一节)，来告知插件究竟是保存还是输出，来决定是使用 `output <API.html#output>`_\还是 `write <API.html#write>`_\ 函数

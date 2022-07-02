@@ -8,11 +8,9 @@
     Fixed － 解决的问题
     Others － 性能优化和安全性增强等改进
 
-v1.7.1
+v1.7.1(草稿)
 
-    计划
-        创建cli应用程序hpyc_cli
-        完成hpyc_core模块的test
+    锐意开发中
 
 v1.7.0
     

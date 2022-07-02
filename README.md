@@ -48,6 +48,8 @@ hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法�
 
 遇到问题或者有对项目发展的建议欢迎提issue
 
+[项目计划](project_plan.md)
+
 ## 鸣谢
 
 [感谢列表](https://hpyculator.readthedocs.io/zh_CN/latest/credits.html)

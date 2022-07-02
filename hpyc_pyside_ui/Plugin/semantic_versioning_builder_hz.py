@@ -47,7 +47,6 @@ PLUGIN_METADATA = {
     """,  # 帮助和说明(可选)
     "output_end": "",  # 输出小尾巴(可选)
     "output_mode": hpyc.RETURN_ONCE,
-    "save_mode": hpyc.OFF,
     "fullwidth_symbol": hpyc.OFF,
 }
 

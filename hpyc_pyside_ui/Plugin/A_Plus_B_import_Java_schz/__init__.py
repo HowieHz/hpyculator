@@ -15,7 +15,7 @@ PLUGIN_METADATA = {
     "version": VERSION,  # 版本号（必须）
     "tag": [
         "category:Mathematical-calculations",
-        "computer_language:java",
+        "computer-language:java",
         "depend:jpype",
     ],
     "save_name": "",  # 文件保存项目名-在输出（必须）
