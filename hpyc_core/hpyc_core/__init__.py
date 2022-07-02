@@ -50,8 +50,6 @@ class Core:
             settings_file_format=settings_file_format,
         )  # 单例
 
-        print(self.instance_settings_file)
-
         self.output_dir_path = self._checkOutputPath(output_dir_path)  # 输出路径检查
 
         self.plugins_dir_path = self._checkPluginsPath(plugins_dir_path)  # 插件存放路径检查

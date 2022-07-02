@@ -8,7 +8,7 @@ del -Force ".\out\full\" -Recurse
 del -Force ".\out\lite\*" -Recurse
 del -Force ".\out\lite\" -Recurse
 
-nuitka --mingw64 --standalone --quiet --show-progress --show-memory --windows-icon-from-ico=.\use_for_packing\ico.ico --follow-imports --nofollow-import-to=jpype1,jpype,numpy,numba,hpyculator,hpyc_core --enable-plugin=pyside6,numpy --output-dir=out __main__.py
+nuitka --mingw64 --standalone --windows-disable-console --quiet --show-progress --show-memory --windows-icon-from-ico=.\use_for_packing\ico.ico --follow-imports --nofollow-import-to=jpype1,jpype,numpy,numba,hpyculator,hpyc_core --enable-plugin=pyside6,numpy --output-dir=out __main__.py
 #  --windows-disable-console 
 
 copy-item -path ".\out\__main__.dist" -destination ".\out\lite\bin"  -recurse
