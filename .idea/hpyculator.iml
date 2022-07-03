@@ -37,6 +37,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.pytest_cache" />
       <excludeFolder url="file://$MODULE_DIR$/hpyc_pyside_ui/Output" />
       <excludeFolder url="file://$MODULE_DIR$/hpyc_pyside_ui/Settings" />
+      <excludeFolder url="file://$MODULE_DIR$/hpyc_pyside_ui/out" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.10 (hpyculator)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

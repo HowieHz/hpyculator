@@ -7,7 +7,7 @@ from queue import Queue
 from typing import Optional, Any
 from types import ModuleType
 
-from hpyculator import message_queue
+from hpyculator import _message_queue
 from hpyculator.hpysettings import SettingsFileObject  # 类型标志用
 
 from ._plugin import instance_plugin_manager  # 插件管理
@@ -63,7 +63,7 @@ class Core:
 
         :return: 消息输出队列
         """
-        return message_queue
+        return _message_queue
 
     def getSettingsFileInstance(self) -> SettingsFileObject:
         """获取设置文件实例

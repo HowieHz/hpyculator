@@ -10,7 +10,7 @@ from typing import IO, Generator
 
 import hpyculator as hpyc
 
-from .. import message_queue
+from .. import _message_queue
 from ..data_structure import MetadataDict
 from ..plugin import instance_plugin_manager
 
@@ -78,7 +78,7 @@ class CalculationManager:
                 case _:
                     ret = None  # type: ignore # 缺省 转换不存在的类型就none
         except Exception as e:  # skipcq: PYL-W0703 - Loop can sometimes crash.
-            message_queue.put(("ERROR", "TypeConversionError", str(e)))
+            _message_queue.put(("ERROR", "TypeConversionError", str(e)))
             traceback.print_exc()
             return None  # 缺省 转换错误就none
         return ret
@@ -121,11 +121,11 @@ class CalculationThread(Thread):
             match plugin_attribute_return_mode:
                 case hpyc.RETURN_ONCE:
                     result = str(calculate_fun(converted_data))
-                    message_queue.put(("OUTPUT", str(result)))  # 结果为str，直接输出
+                    _message_queue.put(("OUTPUT", str(result)))  # 结果为str，直接输出
                 case hpyc.RETURN_ITERABLE:  # 算一行输出一行
                     result = calculate_fun(converted_data)
                     for result_process in result:
-                        message_queue.put(("OUTPUT", str(result_process)))  # 算一行输出一行
+                        _message_queue.put(("OUTPUT", str(result_process)))  # 算一行输出一行
                 case hpyc.NO_RETURN_SINGLE_FUNCTION:
                     calculate_fun(converted_data, "output")
                 case hpyc.NO_RETURN:
@@ -204,13 +204,13 @@ class CalculationThread(Thread):
                     filestream.seek(0)  # 将文件指针移到开始处，准备读取文件
                     if limit:
                         for times, line in enumerate(_quickTraverseFile(filestream)):
-                            message_queue.put(("OUTPUT", line))
+                            _message_queue.put(("OUTPUT", line))
                             if times >= 128:
-                                message_queue.put(("MESSAGE", "OutputReachedLimit"))
+                                _message_queue.put(("MESSAGE", "OutputReachedLimit"))
                                 break
                     else:
                         for line in _quickTraverseFile(filestream):
-                            message_queue.put(("OUTPUT", line))
+                            _message_queue.put(("OUTPUT", line))
             return time.perf_counter_ns() - time_before_calculate  # 储存结束时间
 
         def _quickTraverseFile(file: IO, chunk_size: int = 8192) -> Generator:
@@ -230,7 +230,7 @@ class CalculationThread(Thread):
         plugin_attributes: MetadataDict = self.plugin_attributes  # 插件属性字典
         selected_plugin: ModuleType = self.instance_plugin  # 插件加载实例
 
-        message_queue.put(("MESSAGE", "CalculationProgramIsRunning"))
+        _message_queue.put(("MESSAGE", "CalculationProgramIsRunning"))
         plugin_attribute_return_mode = plugin_attributes["return_mode"]  # 读取返回模式
         try:
             match calculation_mode:
@@ -248,14 +248,14 @@ class CalculationThread(Thread):
                     time_spent = _calculateWithOutputOptimization(limit=True)
 
         except Exception as e:  # skipcq: PYL-W0703 - Loop can sometimes crash.
-            message_queue.put(("ERROR", "CalculationError", str(e)))
+            _message_queue.put(("ERROR", "CalculationError", str(e)))
             traceback.print_exc()
 
         try:
-            message_queue.put(
+            _message_queue.put(
                 ("MESSAGE", "CalculationProgramIsFinished", time_spent, filepath_name)
             )  # 已完成
         except UnboundLocalError:
-            message_queue.put(
+            _message_queue.put(
                 ("MESSAGE", "CalculationProgramIsFinished", time_spent)
             )  # 已完成
