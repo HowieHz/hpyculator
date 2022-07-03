@@ -1,6 +1,6 @@
 import hpyculator as hpyc
 
-VERSION = "V1.0.1"
+VERSION = "V1.0.2"
 PLUGIN_METADATA = {
     "input_mode": hpyc.NUM,
     "id": "yang_hui_s_triangle_hz",  # ID,插件标识符,需要和文件名一致（必须）
@@ -21,18 +21,48 @@ PLUGIN_METADATA = {
 }
 
 
+# def on_calculate(num: int, do_what: str) -> None:  # 返回一个列表
+#     if do_what == "output":
+#         output = hpyc.output
+#     else:
+#         output = hpyc.write
+#
+#     if not num:  # num = 0
+#         output([])
+#         return
+#
+#     all_line = [[1]]
+#     output([1])
+#     for _ in range(num - 1):
+#         # all_line.append([x + y for x, y in zip([0] + all_line[-1], all_line[-1] + [0])])
+#         # 等价代码
+#         line = []
+#         last_line = [0] + all_line[-1]
+#         for x, y in zip(last_line, last_line[::-1]):
+#             line.append(x + y)
+#         all_line.append(line)
+#         output(line)
+
+
 def on_calculate(num: int, do_what: str) -> None:  # 返回一个列表
     if do_what == "output":
         output = hpyc.output
     else:
         output = hpyc.write
 
-    if num == 0:
+    if not num:  # num = 0
         output([])
         return
-    l1 = [[1]]
+
+    all_line = [[1]]
     for _ in range(num - 1):
-        l1.append(list(map(lambda x, y: x + y, [0] + l1[-1], l1[-1] + [0])))
-    for i in l1:
-        output(i)
+        all_line.append([x + y for x, y in zip([0] + all_line[-1], all_line[-1] + [0])])
+        # 等价代码
+        # line = []
+        # last_line = [0] + all_line[-1]
+        # for x, y in zip(last_line, last_line[::-1]):
+        #     line.append(x + y)
+        # all_line.append(line)
+
+    [output(line) for line in all_line]
     return

@@ -12,7 +12,7 @@ import hpyculator as hpyc
 
 from .. import _message_queue
 from ..data_structure import MetadataDict
-from ..plugin import instance_plugin_manager
+from .._plugin import instance_plugin_manager
 
 
 class CalculationManager:
