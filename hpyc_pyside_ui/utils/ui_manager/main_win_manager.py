@@ -762,7 +762,6 @@ class MessageProcessingThread(Thread):
                         instance_main_win_signal.append_output_box.emit(
                             doc.REACHED_OUTPUT_LIMIT_LITERAL
                         )
-                        break
                     case "CalculationProgramIsRunning":
                         instance_main_win_signal.draw_background.emit()  # 不知道为何使用了打表模式之后会掉背景，干脆重绘一次背景
                         instance_main_win_signal.set_start_button_text.emit(

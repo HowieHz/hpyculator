@@ -36,10 +36,10 @@ def on_calculate(data: str, do_what):
     """计算函数"""
     for pattern in [",", "，", " "]:
         if pattern in data:
-            a, b, c, *_ = map(
-                lambda num: int(num) if num.isdigit() else float(num),
-                data.split(pattern),
-            )
+            a, b, c, *_ = [
+                (int(num) if num.isdigit() else float(num))
+                for num in data.split(pattern)
+            ]
             break
     else:
         hpyc.output("请按格式输入！！！")

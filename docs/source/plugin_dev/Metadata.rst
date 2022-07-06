@@ -9,8 +9,14 @@
 
 .. code-block:: python
 
+    from typing import TypedDict, Literal
+    import hpyculator as hpyc
+
+
     class MetadataDict(TypedDict, total=False):
-        input_mode: str
+        """插件元数据数据类型"""
+
+        input_mode: Literal[hpyc.STRING, hpyc.NUM, hpyc.FLOAT]
         id: str
         option: str
         version: str
@@ -22,8 +28,13 @@
         author: str | list
         help: str
         output_end: str
-        return_mode: int
-        fullwidth_symbol: int
+        return_mode: Literal[
+            hpyc.RETURN_ONCE,
+            hpyc.RETURN_ITERABLE,
+            hpyc.NO_RETURN,
+            hpyc.NO_RETURN_SINGLE_FUNCTION,
+        ]
+        fullwidth_symbol: Literal[hpyc.ON, hpyc.OFF]
 
 以下是一段示例元数据
 
@@ -60,19 +71,47 @@
         "fullwidth_symbol": hpyc.OFF  # 懒人专用，默认是0，开1之后help段符号全部转换成全角(可选)
     }
 
-数据类型要求
+数据类型要求和说明
 
-    - 作者名author支持的形式
-        - 字符串类型，如："作者名"
-        - 列表，如：["作者名1", "作者名2"]
-    - 标签tag支持的形式
+    .. code-block:: python
+
+        import hpyculator as hpyc
+
+    - 输入数据类型 ``input_mode`` , 会将原始输入转换成对应类型, 要求在以下常量中选择一个
+        - `hpyc.STRING` -> 对应 `str` 类型
+        - `hpyc.NUM` -> 对应 `int` 类型
+        - `hpyc.FLOAT` -> 对应 `float` 类型
+    - 插件 ``id``
+        - `str` 类型, 要求于文件名(单文件插件)/文件夹名(文件夹插件)一致, 否则无法正常加载插件
+    - 选项名 `option`
+        - `str` 类型, 给用户展示选项所用
+    - 版本号 `version`
+        - `str` 类型, 建议使用语义化版本
+    - 标签 ``tag`` 支持的形式
         - 列表，如：["标签1","标签2"] ["标签1"]
         - 字符串，如："标签"
-    - 返回模式return_mode要求在以下常量中选择一个
+    - 保存所用名称 ``save_name``
+        - `str` 类型
+    - 量词, 保存用 ``quantifier``
+        - `str` 类型
+    - 输出头 ``output_start``
+        - `str` 类型, 一般与 ``help `` 同时输出
+    - 输出名 ``output_name``
+        - `str` 类型, 一般与 ``help `` 同时输出
+    - 作者名 ``author`` 支持的形式
+        - 字符串类型，如："作者名"
+        - 列表，如：["作者名1", "作者名2"]
+    - 详细介绍, 帮助, 介绍正文 ``help``
+        - `str` 类型
+    - 输出尾 ``output_end``
+        - `str` 类型, 一般与 ``help `` 同时输出
+    - 返回模式 ``return_mode`` 要求在以下常量中选择一个
         - `hpyc.RETURN_ONCE`
         - `hpyc.RETURN_ITERABLE`
         - `hpyc.NO_RETURN`
         - `hpyc.NO_RETURN_SINGLE_FUNCTION`
+    - 全角模式 ``fullwidth_symbol``
+        - 会将 ``help`` 字段值中的半角符号转换为全角符号
 
 参数会影响什么
 ----------------------------------------------------------------------------

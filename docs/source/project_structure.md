@@ -4,6 +4,7 @@
 分别是
 - [hpyc_core](https://github.com/HowieHz/hpyculator/tree/main/hpyc_core) 核心SDK
 - [hpyc_pyside_ui](https://github.com/HowieHz/hpyculator/tree/main/hpyc_pyside_ui) 基于pyside6的应用程序
+- [hpyc_cli](https://github.com/HowieHz/hpyculator/tree/main/hpyc_cli) 尽可能小的实现功能的应用程序
 
 [hpyculatorPackage](https://github.com/HowieHz/hpyculatorPackage)仓库内存放着hpyculator模块 可通过pip获取
 
@@ -30,6 +31,16 @@ pip install hpyculator
 - [data_structure](https://github.com/HowieHz/hpyculator/tree/main/hpyc_core/data_structure) -> 数据结构
 - [settings](https://github.com/HowieHz/hpyculator/tree/main/hpyc_core/settings) -> 管理设置文件
 
+### [hpyculatorPackage](https://github.com/HowieHz/hpyculatorPackage)
+
+作为包使用
+
+- [tests](https://github.com/HowieHz/hpyculatorPackage/tree/main/tests) -> 单元测试
+- [hpyculator](https://github.com/HowieHz/hpyculatorPackage/tree/main/hpyculator) -> 存放模块
+  - [hpycore.py](https://github.com/HowieHz/hpyculatorPackage/blob/main/hpyculator/hpycore.py) -> 核心
+  - [hpydecorator.py](https://github.com/HowieHz/hpyculatorPackage/blob/main/hpyculator/hpydecorator.py) -> 为了方便使用而添加的装饰器
+  - [hpyfunc.py](https://github.com/HowieHz/hpyculatorPackage/blob/main/hpyculator/hpyfunc.py) -> 为了方便添加的函数
+
 ### [hpyc_pyside_ui](https://github.com/HowieHz/hpyculator/tree/main/hpyc_pyside_ui)
     
 `__main__.py` 是入口文件
@@ -47,12 +58,6 @@ pip install hpyculator
        - ui -> ui
        - ui_manager -> 管理ui, 程序逻辑
 
-### [hpyculatorPackage](https://github.com/HowieHz/hpyculatorPackage)
-
-作为包使用
-
-- [tests](https://github.com/HowieHz/hpyculatorPackage/tree/main/tests) -> 单元测试
-- [hpyculator](https://github.com/HowieHz/hpyculatorPackage/tree/main/hpyculator) -> 存放模块
-  - [hpycore.py](https://github.com/HowieHz/hpyculatorPackage/blob/main/hpyculator/hpycore.py) -> 核心
-  - [hpydecorator.py](https://github.com/HowieHz/hpyculatorPackage/blob/main/hpyculator/hpydecorator.py) -> 为了方便使用而添加的装饰器
-  - [hpyfunc.py](https://github.com/HowieHz/hpyculatorPackage/blob/main/hpyculator/hpyfunc.py) -> 为了方便添加的函数
+### [hpyc_cli](https://github.com/HowieHz/hpyculator/tree/main/hpyc_cli)
+    
+`__main__.py` 是入口文件

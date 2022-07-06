@@ -32,12 +32,12 @@
       <excludeFolder url="file://$MODULE_DIR$/src/use_for_packing/可选文件" />
       <excludeFolder url="file://$MODULE_DIR$/src/use_for_packing/必须文件" />
       <excludeFolder url="file://$MODULE_DIR$/src/use_for_packing/打包所需" />
-      <excludeFolder url="file://$MODULE_DIR$/hpyc_pyside_ui/use_for_packing/打包所需" />
       <excludeFolder url="file://$MODULE_DIR$/hpyc_core/hpyc_core.egg-info" />
       <excludeFolder url="file://$MODULE_DIR$/.pytest_cache" />
       <excludeFolder url="file://$MODULE_DIR$/hpyc_pyside_ui/Output" />
       <excludeFolder url="file://$MODULE_DIR$/hpyc_pyside_ui/Settings" />
       <excludeFolder url="file://$MODULE_DIR$/hpyc_pyside_ui/out" />
+      <excludeFolder url="file://$MODULE_DIR$/use_for_packing/打包所需" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.10 (hpyculator)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
