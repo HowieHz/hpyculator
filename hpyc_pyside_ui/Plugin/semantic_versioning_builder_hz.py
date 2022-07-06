@@ -1,5 +1,4 @@
 import hpyculator as hpyc
-from typing import Optional
 
 VERSION = "V1.0.1"
 PLUGIN_METADATA = {
