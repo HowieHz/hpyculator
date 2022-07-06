@@ -8,10 +8,11 @@
     Fixed － 解决的问题
     Others － 性能优化和安全性增强等改进
 
-v1.7.1(草稿)
+v1.7.1
 
     Added
         文档修改，补充
+        添加hpyc_cli v1.0.0
     Changed
         修改一些插件的处理算法
     Fixed
