@@ -64,5 +64,6 @@ def on_calculate(num: int, do_what: str) -> None:  # 返回一个列表
         #     line.append(x + y)
         # all_line.append(line)
 
-    [output(line) for line in all_line]
+    for line in all_line:
+        output(line)
     return

@@ -34,7 +34,7 @@ def on_calculate(num, do_what):
         output("1")
     fs1 = 1
     fs2 = 1
-    for i in range(num - 2):
+    for _ in range(num - 2):
         fs3 = fs1
         fs1 += fs2
         fs2 = fs3
