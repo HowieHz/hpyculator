@@ -26,7 +26,7 @@ hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法�
 
 ## 开始
 
-- **用户手册**: [UserManual](docs/UserManual.md)
+- **用户手册**: [UserManual](docs/source/user_manual.md)
 - 开发文档: [开发插件](https://hpyculator.readthedocs.io/zh_CN/latest/quick_start.html#id3)或[参与到此项目](https://hpyculator.readthedocs.io/zh_CN/latest/quick_start.html#id9)
 - 更新日志: [release](https://github.com/HowieHz/hpyculator/releases) 或 [changelog](https://hpyculator.readthedocs.io/zh_CN/latest/changelog.html)
 
