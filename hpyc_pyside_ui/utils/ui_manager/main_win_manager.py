@@ -757,7 +757,7 @@ class MessageProcessingThread(Thread):
             if head == "OUTPUT":
                 instance_main_win_signal.append_output_box.emit(body)
             elif head == "MESSAGE":
-                match body:
+                match body:  # noqa: F999
                     case "OutputReachedLimit":
                         instance_main_win_signal.append_output_box.emit(
                             doc.REACHED_OUTPUT_LIMIT_LITERAL
@@ -774,7 +774,7 @@ class MessageProcessingThread(Thread):
                     case "CalculationProgramIsFinished":
                         time_spent = data[0]
 
-                        match self.mode:
+                        match self.mode:  # noqa: F999
                             case "Save":
                                 filepath_name = data[1]
                                 self._outputSpentTime(

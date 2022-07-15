@@ -28,7 +28,7 @@ class AboutWinApp(QDialog):
 
     def eventChooseShow(self, qstring) -> None:
         """选择对应文档并显示"""
-        match qstring:
+        match qstring:  # noqa: F999
             case doc.INTRODUCTION_LITERAL:
                 self.ui.output_doc.setText(doc.START_SHOW)
             case doc.CHANGELOG_LITERAL:

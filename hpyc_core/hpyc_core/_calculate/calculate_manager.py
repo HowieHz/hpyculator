@@ -68,7 +68,7 @@ class CalculationManager:
         :return: 转换后的数据
         """
         try:
-            match to_type:
+            match to_type:  # noqa: F999
                 case hpyc.STRING:
                     ret = data
                 case hpyc.FLOAT:
@@ -118,7 +118,7 @@ class CalculationThread(Thread):
             """
             calculate_fun = selected_plugin.on_calculate
             time_before_calculate = time.perf_counter_ns()  # 储存开始时间
-            match plugin_attribute_return_mode:
+            match plugin_attribute_return_mode:  # noqa: F999
                 case hpyc.RETURN_ONCE:
                     result = str(calculate_fun(converted_data))
                     _message_queue.put(("OUTPUT", str(result)))  # 结果为str，直接输出
@@ -148,7 +148,7 @@ class CalculationThread(Thread):
                 buffering=1073741824,  # 1,073,741,824B = 1024MB  给插件足够的内存做缓冲区，也避免插件使得电脑内存爆炸
                 encoding="utf-8",
             ) as filestream:  # buffering为-1的时候其实就是8192，现在显式的写出来
-                match plugin_attribute_return_mode:
+                match plugin_attribute_return_mode:  # noqa: F999
                     case hpyc.RETURN_ONCE:  # 分布输出和一次输出
                         result = calculate_fun(converted_data)
                         filestream.write(str(result) + "\n")
@@ -183,7 +183,7 @@ class CalculationThread(Thread):
             ) as filestream:
                 time_before_calculate = time.perf_counter_ns()  # 储存开始时间
                 try:
-                    match plugin_attribute_return_mode:
+                    match plugin_attribute_return_mode:  # noqa: F999
                         case hpyc.RETURN_ONCE:  # 分布输出和一次输出
                             result = calculate_fun(converted_data)
                             filestream.write(str(result) + "\n")
@@ -233,7 +233,7 @@ class CalculationThread(Thread):
         _message_queue.put(("MESSAGE", "CalculationProgramIsRunning"))
         plugin_attribute_return_mode = plugin_attributes["return_mode"]  # 读取返回模式
         try:
-            match calculation_mode:
+            match calculation_mode:  # noqa: F999
                 case "Return":
                     time_spent = _baseCalculate()
                 case "Save":
