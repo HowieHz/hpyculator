@@ -9,7 +9,6 @@
 [结构介绍](https://hpyculator.readthedocs.io/zh_CN/latest/project_structure.html#hpyc-pyside-ui)
 
 # 命名规范v1.0.0
-
   - 1类：hello_world 变量，文件名(xswl.txt)全部小写，使用下划线连接
   - 2类：helloWorld 函数(def)和方法使用小驼峰式命名法，首单词字母小写，后面单词字母大写
   - 3类：HelloWorld 类名(Class)、使用帕斯卡命名规则(大驼峰式命名法,每一个单词的首字母都采用大写字母)。
@@ -20,7 +19,6 @@
   - instance_signal_信号名 作为信号实例特别标识，属于1类
 
 # ui控件名命名规范v1.0.0
-
   - 按钮 button_功能
   - 输入输出框 input_/output_功能
   - 搜索框 search_功能
