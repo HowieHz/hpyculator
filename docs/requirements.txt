@@ -1,4 +1,4 @@
 recommonmark
-sphinx_markdown_tables
 sphinx
 sphinx-rtd-theme
+setuptools >= 63.2.0

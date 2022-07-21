@@ -379,14 +379,7 @@ class MainWinApp(FramelessWindow):
         :return: None
         :rtype: None
         """
-        # don't forget to call the resizeEvent() of super class
         super().resizeEvent(event)
-        # print("resizeEvent",self.width(), self.height())
-        # self.ui.central_widget.resize(length, length)
-        # self.ui.central_widget.move(
-        #     self.width() // 2 - length // 2,
-        #     self.height() // 2 - length // 2
-        # )
         self.drawBackground()
 
     def drawBackground(self) -> None:
@@ -518,27 +511,6 @@ by {", ".join(_METADATA['author']) if isinstance(_METADATA['author'], list) else
 
 {_METADATA["output_end"]}"""
         )
-
-    def closeEvent(self, event) -> None:
-        """
-        重构退出函数，处理可能导致子进程残留的模块
-
-        :param event: just event
-        :return: None
-        :rtype: None
-        """
-
-        # def _exitJpype():
-        #     # 退出流程，否则虚拟机不会退出，导致进程残留
-        #     jpype = importlib.import_module("jpype")  # 不直接用import是防止打包程序识别到
-        #
-        #     if jpype.isJVMStarted():
-        #         jpype.shutdownJVM()
-        #
-        # _check_modules = {"jpype": _exitJpype}
-        # for _module in _check_modules:
-        #     if _module in sys.modules:
-        #         _check_modules[_module]()  # 调用对应退出处理函数
 
     def eventCloseMainWin(self) -> None:
         """关闭主窗口"""
@@ -828,4 +800,4 @@ class MessageProcessingThread(Thread):
             else:
                 pass
 
-            time.sleep(0.0001)
+            time.sleep(0.00001)

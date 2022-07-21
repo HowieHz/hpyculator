@@ -24,11 +24,6 @@ hpyc_core目前有两个实现，一个是使用纯控制台版本，另一个�
 
 （程序内置插件，可直接使用）
 
-[//]: # (## 使用纯控制台版本)
-
-[//]: # ()
-[//]: # (查看 [ConsoleTerminal.md]&#40;ConsoleTerminal.md&#41;。)
-
 ## 遇到问题
 
 如果遇到使用问题或想提建议，可以在 [issues](https://github.com/HowieHz/hpyculator/issues)

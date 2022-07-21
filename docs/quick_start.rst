@@ -18,7 +18,7 @@ hpyculator 依赖 python3 运行环境。请确保你的 python 版本为 3.10
 安装
 ~~~~~~~~~~~~~~~~
 
-hpyculator 在 `pypi <https://pypi.org/project/hpyculator>`__ 中可用。它可以通过 ``pip``\命令安装：
+hpyculator 在 `pypi <https://pypi.org/project/hpyculator>`_ 中可用。它可以通过 ``pip``\命令安装：
 
 .. code-block:: bash
 

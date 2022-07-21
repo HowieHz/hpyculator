@@ -8,6 +8,9 @@
     Fixed － 解决的问题
     Others － 性能优化和安全性增强等改进
 
+v1.7.2(草稿)
+    None 
+
 v1.7.1
 
     Added
