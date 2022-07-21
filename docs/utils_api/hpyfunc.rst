@@ -1,7 +1,7 @@
 hpyfunc
 ====================
 
-flatten
+hpyfunc.flatten
 -----------------
 
 .. code-block:: python
@@ -19,7 +19,7 @@ flatten
     ret_lst = flatten([[1,2,3],[4,5,6,[7,8,9]]])
     print(ret_lst)
 
-flatten_layer
+hpyfunc.flatten_layer
 -----------------
 
 .. code-block:: python
@@ -38,7 +38,7 @@ flatten_layer
     print(ret_lst)
 
 
-flatten_no_recursion
+hpyfunc.flatten_no_recursion
 -----------------------
 
 .. code-block:: python
