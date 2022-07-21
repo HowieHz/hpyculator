@@ -2,7 +2,7 @@ hpyfunc
 ====================
 
 hpyfunc.flatten
------------------
+----------------------
 
 .. code-block:: python
 
@@ -22,7 +22,7 @@ hpyfunc.flatten
     print(ret_lst)
 
 hpyfunc.flatten_layer
------------------
+-------------------------------
 
 .. code-block:: python
 
@@ -42,7 +42,7 @@ hpyfunc.flatten_layer
     print(ret_lst)
 
 hpyfunc.flatten_no_recursion
------------------------
+--------------------------------
 
 .. code-block:: python
 

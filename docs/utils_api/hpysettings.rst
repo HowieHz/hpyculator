@@ -64,7 +64,7 @@ hpysettings.SettingsFileObject.read
         """
 
 hpysettings.SettingsFileObject.readAll
------------------------------------------
+------------------------------------------
 
 .. code-block:: python
 
@@ -101,7 +101,7 @@ hpysettings.SettingsFileObject.modify
         """
 
 hpysettings.SettingsFileObject.exists
------------------------------------------
+------------------------------------------
 
 .. code-block:: python
 
