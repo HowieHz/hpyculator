@@ -61,7 +61,7 @@ hpyfunc.flatten_no_recursion
     ret_lst = flatten_no_recursion([[1,2,3],[4,5,6,[7,8,9]]])
     print(ret_lst)
 
-hpyfunc.flatten_no_recursion
+hpyfunc.expand_dims
 --------------------------------
 
 .. code-block:: python
