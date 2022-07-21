@@ -8,6 +8,11 @@ hpyculator (module)更新日志
     Fixed － 解决的问题
     Others － 性能优化和安全性增强等改进
 
+1.5.3
+
+    Added
+        添加hpyfunc.expand_dims
+
 1.5.2
 
     Changed
