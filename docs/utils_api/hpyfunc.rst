@@ -112,13 +112,22 @@ hpyfunc.dont_change_my_code
 
 .. code-block:: python
 
-    def dont_change_my_code(fun: Callable, sign: str) -> None:
+    def dont_change_my_code(
+        fun: Callable,
+        sign: str,
+        hash_fun: Optional[Callable[[str], Union[int, str]]] = None,
+        multisign: bool = False,
+    ) -> str:
         """沙雕系列：别修改我的代码！
-        直接使用print输出hash值，未计算出结果则输出-1
+        使用print为计算出的hash值，未计算出结果则输出-1
+        返回值也为计算出的hash值，未计算出结果则输出-1
 
         :param fun: 不要修改这个函数！
         :param sign: 标识符
-        :return: None
+        :param hash_fun: 你滴哈希函数，要求hash值范围在 0到(10 * 50 - 1)
+        :param multisign: 允许多个标识符
+        :return: hash值
+        """
 
 例子
 ~~~~~~~~~~~~~~
@@ -137,7 +146,7 @@ hpyfunc.dont_change_my_code
     dont_change_my_code(fun = fun_name_aaa, sign = "!!!")
 
 得到输出
-    1610
+    283
 
 (注：如输出-1，说明未能计算出结果，请修改代码(如注释增加一个逗号)再次计算)
 
@@ -153,7 +162,7 @@ hpyfunc.dont_change_my_code
     import inspect
     def fun_name_aaa():
         """给组员：你要是改了，有你好果子吃,,,"""
-        if not easy_text_hash(inspect.getsource(fun_name_aaa)) == "1610": # ""里面的是标识符
+        if not easy_text_hash(inspect.getsource(fun_name_aaa)) == "283": # ""里面的是标识符
             print("改了是吧，有你好果子吃")
 
 此时如果修改函数，运行fun_name_aaa()，则会输出"改了是吧，有你好果子吃"(除非hash碰撞)

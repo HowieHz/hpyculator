@@ -8,6 +8,12 @@ hpyculator (module)更新日志
     Fixed － 解决的问题
     Others － 性能优化和安全性增强等改进
 
+1.5.4.1
+
+    Changed
+        hpyfunc.easy_text_hash 修改实现
+        hpyfunc.dont_change_my_code 添加参数hash_fun和multisign
+
 1.5.4
 
     Added
