@@ -104,3 +104,56 @@ hpyfunc.expand_dims
                             [6]
                         ]
                     ]
+
+hpyfunc.dont_change_my_code
+--------------------------------
+
+灵感来源: https://www.bilibili.com/video/BV1aP41157hu
+
+.. code-block:: python
+
+    def dont_change_my_code(fun: Callable, sign: str) -> None:
+        """沙雕系列：别修改我的代码！
+        直接使用print输出hash值，未计算出结果则输出-1
+
+        :param fun: 不要修改这个函数！
+        :param sign: 标识符
+        :return: None
+
+例子
+~~~~~~~~~~~~~~
+
+第一步
+
+.. code-block:: python
+
+    from hpyculator.hpyfunc import dont_change_my_code, easy_text_hash
+    import inspect
+    def fun_name_aaa():
+        """给组员：你要是改了，有你好果子吃,,,"""
+        if not easy_text_hash(inspect.getsource(fun_name_aaa)) == "!!!": # ""里面的是标识符
+            print("改了是吧，有你好果子吃")
+
+    dont_change_my_code(fun = fun_name_aaa, sign = "!!!")
+
+得到输出
+    1610
+
+(注：如输出-1，说明未能计算出结果，请修改代码(如注释增加一个逗号)再次计算)
+
+第二步
+
+将上一步得到的数字，选一个替换掉标识符
+
+以下是最终代码
+
+.. code-block:: python
+
+    from hpyculator.hpyfunc import easy_text_hash
+    import inspect
+    def fun_name_aaa():
+        """给组员：你要是改了，有你好果子吃,,,"""
+        if not easy_text_hash(inspect.getsource(fun_name_aaa)) == "1610": # ""里面的是标识符
+            print("改了是吧，有你好果子吃")
+
+此时如果修改函数，运行fun_name_aaa()，则会输出"改了是吧，有你好果子吃"(除非hash碰撞)

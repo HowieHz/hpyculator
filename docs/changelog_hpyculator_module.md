@@ -8,6 +8,12 @@ hpyculator (module)更新日志
     Fixed － 解决的问题
     Others － 性能优化和安全性增强等改进
 
+1.5.4
+
+    Added
+        添加hpyfunc.easy_text_hash和hpyfunc.dont_change_my_code
+            灵感来源: https://www.bilibili.com/video/BV1aP41157hu
+
 1.5.3
 
     Added
@@ -47,7 +53,7 @@ hpyculator (module)更新日志
     文档更新
 
 1.4.12.1
-    
+
     文档更新
 
 1.4.12
@@ -69,7 +75,7 @@ hpyculator (module)更新日志
     并将RETURN_LIST和RETURN_LIST_OUTPUT_IN_ONE_LINE标记为将移除
 
 1.4.10
-    
+
     修改了错误的变量名
     添加了设置文件管理模块
 
@@ -78,7 +84,7 @@ hpyculator (module)更新日志
     修改变量名，去除不需要的代码
 
 1.4.8
-    
+
     修改说明
     编程风格更新
 
@@ -108,7 +114,7 @@ hpyculator (module)更新日志
     提升程序效率
 
 22w20
-    
+
     简化api
 
 1.4.0
@@ -128,13 +134,13 @@ hpyculator (module)更新日志
     更新api
 
 1.1.0
-    
+
     完全迁移到pyside6
 
 1.0.5
-    
+
     部分迁移到pyside6
-    
+
 1.0.3
 
     准备从wxpython迁移到pyside6
