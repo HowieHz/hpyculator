@@ -5,7 +5,7 @@
 
 文档api版本
     - `hpyc_core (module) <https://github.com/HowieHz/hpyculator/tree/main/hpyc_core>`_ == 1.0.0
-    - `hpyculator (module) <https://github.com/HowieHz/hpyculatorPackage>`_ == 1.5.2
+    - `hpyculator (module) <https://github.com/HowieHz/hpyculatorPackage>`_ == 1.5.4.1
     - `hpyc_pyside_ui <https://github.com/HowieHz/hpyculator/tree/main/hpyc_pyside_ui>`_ == 1.7.1
     - `hpyc_cli <https://github.com/HowieHz/hpyculator/tree/main/hpyc_cli>`_ == 1.0.0
 
