@@ -10,6 +10,13 @@
 ![GitHub all releases](https://img.shields.io/github/downloads/HowieHz/hpyculator/total)
 ![GitHub repo size](https://img.shields.io/github/repo-size/HowieHz/hpyculator)
 
+**项目重构中……**
+## 重构计划
+1. 重构核心（进度0%）
+2. 重构ui（进度0%）
+3. 重写示例（进度0%）
+5. 重构cui程序（进度0%）
+
 **这是一个基于python的高拓展性计算器**
 
 hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法太累了，要是能像加载Minecraft的mod一样加载算法就好了” 这样的想法
