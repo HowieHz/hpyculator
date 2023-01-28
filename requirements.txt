@@ -1,11 +1,11 @@
 hpyculator>=1.5.0
 hpyc_core>=1.0.0
 PySide6
-pywin32
 jpype1
 numba
 numpy
 black
+PySideSix-Frameless-Window
 
 pytest
 pytest-assume

@@ -16,9 +16,7 @@ from .about_win_manager import AboutWinApp
 from .settings_win_manager import SettingsWinApp  # 窗口管理类（用于管理设置的窗口）
 from .. import document as doc
 from ..var import instance_core
-from ..pyside_frameless_win.framelesswindow import (
-    FramelessWindow,
-)  # refer to https://github.com/zhiyiYo/PyQt-Frameless-Window
+from qframelesswindow import FramelessWindow
 from ..ui import Ui_MainWin
 
 
@@ -67,6 +65,8 @@ class MainWinApp(FramelessWindow):
         super().__init__()
         self.ui = Ui_MainWin()  # UI类的实例化()
         self.ui.setupUi(self)  # ui初始化
+
+        self.titleBar.hide()  # 隐藏默认标题栏
 
         self.setWindowTitle(f"hpyculator {doc.VERSION}")  # 设置标题
 
