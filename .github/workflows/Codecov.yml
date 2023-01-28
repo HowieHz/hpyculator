@@ -20,7 +20,7 @@ jobs:
       run: |
         pip install pytest
         pip install pytest-cov
-        pip install hpyculator PySide6 pywin32 jpype1 numba  numpy
+        pip install hpyculator PySide6 PySideSix-Frameless-Window jpype1 numba  numpy
         pip install pytest-assume pytest-metadata pytest-html pytest-ordering pytest-rerunfailures pytest-sugar python-dateutil
         pytest --cov=./ --cov-report=xml
     - name: Upload coverage to Codecov

@@ -66,6 +66,8 @@ class MainWinApp(FramelessWindow):
         self.ui = Ui_MainWin()  # UI类的实例化()
         self.ui.setupUi(self)  # ui初始化
 
+        self.titleBar.hide()  # 隐藏默认标题栏
+
         self.setWindowTitle(f"hpyculator {doc.VERSION}")  # 设置标题
 
         self.move_fix = False  # 一个窗口全屏之后，拖动，窗口会回到正常大小，且指针和在窗口长度和比值和原来一致,True的话就进行校正
