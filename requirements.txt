@@ -6,6 +6,7 @@ jpype1
 numba
 numpy
 black
+PySideSix-Frameless-Window
 
 pytest
 pytest-assume
