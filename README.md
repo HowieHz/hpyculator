@@ -61,6 +61,10 @@ hpyculator（下文简称hpyc），是我怀揣着 “一个一个添加算法�
 
 [感谢列表](https://hpyculator.readthedocs.io/zh_CN/latest/credits.html)
 
+## 项目状态
+
+![Alt](https://repobeats.axiom.co/api/embed/1e810fa52b1587b03cbb92a8a897dc9696919f8a.svg "Repobeats analytics image")
+
 ### 感谢以下项目
 
 #### Qt实现无边框窗口
