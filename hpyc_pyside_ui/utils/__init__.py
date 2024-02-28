@@ -1,5 +1,6 @@
 """运行主程序和主程序的一些初始化"""
 import os
+
 from .ui_manager import MainWinApp  # 窗口管理类（用于管理设置的窗口）
 from .var import instance_core
 

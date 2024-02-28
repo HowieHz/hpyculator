@@ -1,5 +1,6 @@
-from hpyc_core import Core
 import os
+
+from hpyc_core import Core
 
 VERSION = "V1.0.1"
 yes = ("y", "Y", "YES", "Yes", "yes", "true", "True", "是", "确认")

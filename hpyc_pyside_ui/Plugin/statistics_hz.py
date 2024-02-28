@@ -1,5 +1,6 @@
-import hpyculator as hpyc
 import statistics as st
+
+import hpyculator as hpyc
 
 VERSION = "V1.2.1"
 PLUGIN_METADATA = {

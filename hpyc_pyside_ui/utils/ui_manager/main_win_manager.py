@@ -2,22 +2,23 @@ import locale
 import pathlib
 import time
 from dataclasses import dataclass
-from typing import Any, Optional
 from queue import Queue
 from threading import Thread
+from typing import Any, Optional
 
 import hpyculator as hpyc
 from hpyculator import SettingsFileObject
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QBrush, QGuiApplication, QPalette, QPixmap, QTextCursor
+from PySide6.QtGui import (QBrush, QGuiApplication, QPalette, QPixmap,
+                           QTextCursor)
+from qframelesswindow import FramelessWindow
 
-from .signal import instance_main_win_signal
+from .. import document as doc
+from ..ui import Ui_MainWin
+from ..var import instance_core
 from .about_win_manager import AboutWinApp
 from .settings_win_manager import SettingsWinApp  # 窗口管理类（用于管理设置的窗口）
-from .. import document as doc
-from ..var import instance_core
-from qframelesswindow import FramelessWindow
-from ..ui import Ui_MainWin
+from .signal import instance_main_win_signal
 
 
 @dataclass

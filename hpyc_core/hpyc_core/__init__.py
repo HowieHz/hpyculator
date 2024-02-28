@@ -1,18 +1,18 @@
 """创建core"""
-import os
-import sys
 import atexit
 import importlib
+import os
+import sys
 from queue import Queue
-from typing import Optional, Any
 from types import ModuleType
+from typing import Any, Optional
 
 from hpyculator import _message_queue
 from hpyculator.hpysettings import SettingsFileObject  # 类型标志用
 
+from ._calculate import CalculationManager
 from ._plugin import instance_plugin_manager  # 插件管理
 from ._settings import hpysettings
-from ._calculate import CalculationManager
 from .data_structure import MetadataDict
 
 # _instance_settings_file: Optional[SettingsFileObject] = None
