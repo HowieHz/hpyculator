@@ -1,6 +1,7 @@
-import hpyculator as hpyc
-from typing import Generator
 import math
+from typing import Generator
+
+import hpyculator as hpyc
 
 NAME = "自幂数计算"
 AUTHOR = "HowieHz" or ["HowieHz", ""]

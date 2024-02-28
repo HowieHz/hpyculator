@@ -3,7 +3,7 @@ import os
 import sys
 import traceback
 from types import ModuleType
-from typing import Generator, Any
+from typing import Any, Generator
 
 import hpyculator as hpyc
 

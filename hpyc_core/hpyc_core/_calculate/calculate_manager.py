@@ -11,8 +11,8 @@ from typing import IO, Generator
 import hpyculator as hpyc
 
 from .. import _message_queue
-from ..data_structure import MetadataDict
 from .._plugin import instance_plugin_manager
+from ..data_structure import MetadataDict
 
 
 class CalculationManager:

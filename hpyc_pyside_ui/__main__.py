@@ -5,7 +5,6 @@ import dbm
 import sys
 
 from PySide6.QtWidgets import QApplication
-
 from utils import CreateApp
 
 if __name__ == "__main__":
